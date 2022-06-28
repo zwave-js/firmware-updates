@@ -3,7 +3,7 @@ import fastifyLib from "fastify";
 const fastify = fastifyLib({ logger: true });
 
 // Declare a route
-fastify.get("/", async (request, reply) => {
+fastify.get("/", async (_request, _reply) => {
 	return { hello: "world!" };
 });
 
