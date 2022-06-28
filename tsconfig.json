@@ -4,6 +4,7 @@
 		"outDir": "build",
 		"importsNotUsedAsValues": "error",
 		"pretty": true,
+		"diagnostics": true
 	},
 	"include": ["src/**/*.ts"]
 }
