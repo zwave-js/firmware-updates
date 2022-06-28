@@ -1,9 +1,9 @@
-import fastifyLib from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 
-const fastify = fastifyLib({ logger: true });
+const server: FastifyInstance = fastify({ logger: true });
 
 // Declare a route
-fastify.get("/", async (_request, _reply) => {
+server.get("/", async (_request, _reply) => {
 	return { hello: "world!" };
 });
 
@@ -13,9 +13,12 @@ async function start() {
 	if (isNaN(port)) port = 3000;
 
 	try {
-		await fastify.listen({ port });
+		await server.listen({
+			host: "::",
+			port,
+		});
 	} catch (err) {
-		fastify.log.error(err);
+		server.log.error(err);
 		process.exit(1);
 	}
 }
