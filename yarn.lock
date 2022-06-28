@@ -212,7 +212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8":
+"@types/eslint@npm:^8.4.3":
   version: 8.4.3
   resolution: "@types/eslint@npm:8.4.3"
   dependencies:
@@ -275,7 +275,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:^7":
+"@types/semver@npm:^7.3.10":
   version: 7.3.10
   resolution: "@types/semver@npm:7.3.10"
   checksum: 7047c2822b1759b2b950f39cfcf261f2b9dca47b4b55bdebba0905a8553631f1531eb0f59264ffe4834d1198c8331c8e0010a4cd742f4e0b60abbf399d134364
@@ -432,11 +432,11 @@ __metadata:
   resolution: "@zwave-js/firmware-updates@workspace:."
   dependencies:
     "@tsconfig/node16": ^1.0.3
-    "@types/eslint": ^8
+    "@types/eslint": ^8.4.3
     "@types/json-logic-js": ^2.0.1
     "@types/node": ^18.0.0
     "@types/prettier": ^2
-    "@types/semver": ^7
+    "@types/semver": ^7.3.10
     "@types/source-map-support": ^0.5.4
     "@types/supertest": ^2.0.12
     "@typescript-eslint/eslint-plugin": ^5.30.0
