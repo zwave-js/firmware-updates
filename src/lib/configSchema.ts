@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared";
 
-const firmwareVersionSchema = z
+export const firmwareVersionSchema = z
 	.string()
 	.refine(isFirmwareVersion, "Is not a valid firmware version");
 
@@ -24,7 +24,16 @@ const deviceSchema = z.object({
 			min: firmwareVersionSchema,
 			max: firmwareVersionSchema,
 		})
-		.optional(),
+		.optional()
+		.transform((val) => {
+			if (val == undefined) {
+				return {
+					min: "0.0",
+					max: "255.255",
+				};
+			}
+			return val;
+		}),
 });
 
 const fileSchema = z.object({
@@ -65,6 +74,7 @@ export const configSchema = z.object({
 });
 
 export type DeviceIdentifier = z.infer<typeof deviceSchema>;
-export type UpgradeInfo = z.infer<typeof upgradeSchemaMultiple>;
+export type ConditionalUpgradeInfo = z.infer<typeof upgradeSchemaMultiple>;
+export type UpgradeInfo = Omit<ConditionalUpgradeInfo, "$if">;
 
 export type IConfig = z.infer<typeof configSchema>;

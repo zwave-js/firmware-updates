@@ -1,0 +1,29 @@
+{
+	"devices": [
+		{
+			"brand": "Coolio",
+			"model": "Z-Dim 7",
+
+			"manufacturerId": "0x1234",
+			"productType": "0xabcd",
+			"productId": "0xcafe",
+
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.1 && firmwareVersion < 1.7 && productId === 0xcafe",
+
+			"version": "1.7",
+			"changelog": "* Fixed some bugs\n*Added more bugs",
+
+			"url": "https://example.com/firmware/1.7.otz",
+			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
+		}
+	]
+}

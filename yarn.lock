@@ -229,6 +229,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/json-logic-js@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/json-logic-js@npm:2.0.1"
+  checksum: 79ad033c01c1ac4003d495be45af7d8a3e0cbd70c65f3ee285b9458b2ab79dba82d3da44964b5dc89dd49b248084f77c9e9af18099d0d9b24f1799cc6510cb4a
+  languageName: node
+  linkType: hard
+
 "@types/json-schema@npm:*, @types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
@@ -265,6 +272,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e99fc7cc6265407987b30deda54c1c24bb1478803faf6037557a774b2f034c5b097ffd65847daa87e82a61a250d919f35c3588654b0fdaa816906650f596d1b0
+  languageName: node
+  linkType: hard
+
+"@types/semver@npm:^7":
+  version: 7.3.10
+  resolution: "@types/semver@npm:7.3.10"
+  checksum: 7047c2822b1759b2b950f39cfcf261f2b9dca47b4b55bdebba0905a8553631f1531eb0f59264ffe4834d1198c8331c8e0010a4cd742f4e0b60abbf399d134364
   languageName: node
   linkType: hard
 
@@ -419,8 +433,10 @@ __metadata:
   dependencies:
     "@tsconfig/node16": ^1.0.3
     "@types/eslint": ^8
+    "@types/json-logic-js": ^2.0.1
     "@types/node": ^18.0.0
     "@types/prettier": ^2
+    "@types/semver": ^7
     "@types/source-map-support": ^0.5.4
     "@types/supertest": ^2.0.12
     "@typescript-eslint/eslint-plugin": ^5.30.0
@@ -430,10 +446,12 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.1.0
     fastify: ^4.2.0
+    json-logic-js: ^2.0.2
     json5: ^2.2.1
     nodemon: ^2.0.18
     prettier: ^2.7.1
     prettier-plugin-organize-imports: ^3.0.0
+    semver: ^7.3.7
     supertest: ^6.2.3
     ts-node: ^10.8.1
     typescript: ~4.7.4
@@ -2475,6 +2493,13 @@ __metadata:
   version: 3.0.0
   resolution: "json-buffer@npm:3.0.0"
   checksum: 0cecacb8025370686a916069a2ff81f7d55167421b6aa7270ee74e244012650dd6bce22b0852202ea7ff8624fce50ff0ec1bdf95914ccb4553426e290d5a63fa
+  languageName: node
+  linkType: hard
+
+"json-logic-js@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "json-logic-js@npm:2.0.2"
+  checksum: 34846500b76a25a86de65560afe358e844b384f0f61c1832fed6a9dfc8f45d884be0b0c8ab033d1a2df7c92b33910d8cee1b3d28e0f461cc55c715d2761219ef
   languageName: node
   linkType: hard
 

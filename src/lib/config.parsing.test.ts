@@ -1,5 +1,5 @@
 import test from "ava";
-import { UpdateConfig } from "./config";
+import { ConditionalUpdateConfig } from "./config";
 
 test("Parse single config", async (t) => {
 	const definition = {
@@ -33,7 +33,7 @@ test("Parse single config", async (t) => {
 		],
 	};
 
-	const config = new UpdateConfig(definition);
+	const config = new ConditionalUpdateConfig(definition);
 
 	t.is(config.devices.length, 1);
 	t.is(config.upgrades.length, 1);
@@ -73,7 +73,7 @@ test("Parse single config with missing field in devices", async (t) => {
 	};
 
 	try {
-		new UpdateConfig(definition);
+		new ConditionalUpdateConfig(definition);
 		t.fail("Expected error");
 	} catch (e: any) {
 		const msg = e.issues;
@@ -122,7 +122,7 @@ test("Parse single config with invalid URL", async (t) => {
 	};
 
 	try {
-		new UpdateConfig(definition);
+		new ConditionalUpdateConfig(definition);
 		t.fail("Expected error");
 	} catch (e: any) {
 		const msg = e.issues;
@@ -181,7 +181,7 @@ test("Parse multi-file config with invalid hash", async (t) => {
 	};
 
 	try {
-		new UpdateConfig(definition);
+		new ConditionalUpdateConfig(definition);
 		t.fail("Expected error");
 	} catch (e: any) {
 		const msg = e.issues;
@@ -239,7 +239,7 @@ test("Parse multi-file config with duplicate target", async (t) => {
 		],
 	};
 
-	t.throws(() => new UpdateConfig(definition), {
+	t.throws(() => new ConditionalUpdateConfig(definition), {
 		message: "Duplicate target 0 in upgrades[0]",
 	});
 });
@@ -287,7 +287,7 @@ test("Parse multi-file config with duplicate URL", async (t) => {
 		],
 	};
 
-	t.throws(() => new UpdateConfig(definition), {
+	t.throws(() => new ConditionalUpdateConfig(definition), {
 		message:
 			"Duplicate URL https://example.com/firmware/1.7.otz in upgrades[0]",
 	});

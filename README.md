@@ -13,3 +13,39 @@ When desired, Z-Wave JS will download the update(s) from the provided URL, verif
 ## Defining firmware updates
 
 WIP, see https://github.com/zwave-js/node-zwave-js/issues/4739
+
+## How to use?
+
+Send a HTTP request to one of the API endpoints. Currently these are defined:
+
+### API v1, get updates
+
+```
+POST https://firmware.zwave-js.io/api/v1/updates
+Content-Type: application/json
+
+{
+	"manufacturerId": "0x1234",
+	"productType": "0xabcd",
+	"productId": "0xcafe",
+	"firmwareVersion": "1.6"
+}
+```
+
+Example response:
+
+```json
+[
+	{
+		"version": "1.7",
+		"changelog": "* Fixed some bugs\n*Added more bugs",
+		"files": [
+			{
+				"target": 0,
+				"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+				"url": "https://example.com/firmware/1.7.otz"
+			}
+		]
+	}
+]
+```
