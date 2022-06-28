@@ -212,7 +212,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eslint@npm:^8":
+"@types/eslint@npm:^8.4.3":
   version: 8.4.3
   resolution: "@types/eslint@npm:8.4.3"
   dependencies:
@@ -226,6 +226,13 @@ __metadata:
   version: 0.0.52
   resolution: "@types/estree@npm:0.0.52"
   checksum: d1cba22160e7aebf865ea0dbc30807bee272fdafdb57d8dd25749f4b312cd9a99e9e933340b7b26284d7a47c8805aba43bb46cf5f1df00cdaaec67bbdc894d4a
+  languageName: node
+  linkType: hard
+
+"@types/json-logic-js@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/json-logic-js@npm:2.0.1"
+  checksum: 79ad033c01c1ac4003d495be45af7d8a3e0cbd70c65f3ee285b9458b2ab79dba82d3da44964b5dc89dd49b248084f77c9e9af18099d0d9b24f1799cc6510cb4a
   languageName: node
   linkType: hard
 
@@ -265,6 +272,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e99fc7cc6265407987b30deda54c1c24bb1478803faf6037557a774b2f034c5b097ffd65847daa87e82a61a250d919f35c3588654b0fdaa816906650f596d1b0
+  languageName: node
+  linkType: hard
+
+"@types/semver@npm:^7.3.10":
+  version: 7.3.10
+  resolution: "@types/semver@npm:7.3.10"
+  checksum: 7047c2822b1759b2b950f39cfcf261f2b9dca47b4b55bdebba0905a8553631f1531eb0f59264ffe4834d1198c8331c8e0010a4cd742f4e0b60abbf399d134364
   languageName: node
   linkType: hard
 
@@ -418,9 +432,11 @@ __metadata:
   resolution: "@zwave-js/firmware-updates@workspace:."
   dependencies:
     "@tsconfig/node16": ^1.0.3
-    "@types/eslint": ^8
+    "@types/eslint": ^8.4.3
+    "@types/json-logic-js": ^2.0.1
     "@types/node": ^18.0.0
     "@types/prettier": ^2
+    "@types/semver": ^7.3.10
     "@types/source-map-support": ^0.5.4
     "@types/supertest": ^2.0.12
     "@typescript-eslint/eslint-plugin": ^5.30.0
@@ -430,12 +446,16 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.1.0
     fastify: ^4.2.0
+    json-logic-js: ^2.0.2
+    json5: ^2.2.1
     nodemon: ^2.0.18
     prettier: ^2.7.1
     prettier-plugin-organize-imports: ^3.0.0
+    semver: ^7.3.7
     supertest: ^6.2.3
     ts-node: ^10.8.1
     typescript: ~4.7.4
+    zod: ^3.17.3
   languageName: unknown
   linkType: soft
 
@@ -2476,6 +2496,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-logic-js@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "json-logic-js@npm:2.0.2"
+  checksum: 34846500b76a25a86de65560afe358e844b384f0f61c1832fed6a9dfc8f45d884be0b0c8ab033d1a2df7c92b33910d8cee1b3d28e0f461cc55c715d2761219ef
+  languageName: node
+  linkType: hard
+
 "json-schema-traverse@npm:^0.4.1":
   version: 0.4.1
   resolution: "json-schema-traverse@npm:0.4.1"
@@ -2494,6 +2521,15 @@ __metadata:
   version: 1.0.1
   resolution: "json-stable-stringify-without-jsonify@npm:1.0.1"
   checksum: cff44156ddce9c67c44386ad5cddf91925fe06b1d217f2da9c4910d01f358c6e3989c4d5a02683c7a5667f9727ff05831f7aa8ae66c8ff691c556f0884d49215
+  languageName: node
+  linkType: hard
+
+"json5@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "json5@npm:2.2.1"
+  bin:
+    json5: lib/cli.js
+  checksum: 74b8a23b102a6f2bf2d224797ae553a75488b5adbaee9c9b6e5ab8b510a2fc6e38f876d4c77dea672d4014a44b2399e15f2051ac2b37b87f74c0c7602003543b
   languageName: node
   linkType: hard
 
@@ -4283,5 +4319,12 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 2cac84540f65c64ccc1683c267edce396b26b1e931aa429660aefac8fbe0188167b7aee815a3c22fa59a28a58d898d1a2b1825048f834d8d629f4c2a5d443801
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.17.3":
+  version: 3.17.3
+  resolution: "zod@npm:3.17.3"
+  checksum: f74b5d8a307cbed734e7a4a7f57a0c6b0a2d5062adee25e86eceaa1bec606621d6861804130f53342dec2d6e77fe9365f3a5118d55c81688f69f3de5fd3e59af
   languageName: node
   linkType: hard

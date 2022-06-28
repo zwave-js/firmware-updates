@@ -7,9 +7,10 @@
   "author": "Dominic Griesel <dominic.griesel@nabucasa.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "clean": "yarn run build --clean",
-    "watch": "yarn run build --watch --pretty",
+    "b": "tsc -p tsconfig.build.json",
+    "build": "yarn run b && ts-node src/maintenance/generateIndex",
+    "clean": "yarn run b --clean",
+    "watch": "yarn run b --watch --pretty",
     "lint": "eslint .",
     "dev": "nodemon src/server.ts",
     "start": "node build/server.js",
@@ -17,13 +18,19 @@
     "test": "yarn test:ci --watch"
   },
   "dependencies": {
-    "fastify": "^4.2.0"
+    "fastify": "^4.2.0",
+    "json-logic-js": "^2.0.2",
+    "json5": "^2.2.1",
+    "semver": "^7.3.7",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.3",
-    "@types/eslint": "^8",
+    "@types/eslint": "^8.4.3",
+    "@types/json-logic-js": "^2.0.1",
     "@types/node": "^18.0.0",
     "@types/prettier": "^2",
+    "@types/semver": "^7.3.10",
     "@types/source-map-support": "^0.5.4",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.30.0",

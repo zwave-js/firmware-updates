@@ -4,9 +4,7 @@ import { build } from "./app";
 
 test("GET `/` route", async (t) => {
 	const fastify = build();
-
 	t.teardown(() => fastify.close());
-
 	await fastify.ready();
 
 	const response = await supertest(fastify.server)

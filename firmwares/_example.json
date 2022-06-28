@@ -1,0 +1,81 @@
+{
+	// Each "devices" entry defines a single device for which this file
+	// contains the available firmware updates.
+	"devices": [
+		{
+			// The brand and model are used to display the information to end users
+			// and allow them to double-check
+			"brand": "Coolio",
+			"model": "Z-Dim 7",
+
+			// These are required to identify the device
+			"manufacturerId": "0x1234",
+			"productType": "0xabcd",
+			"productId": "0xcafe",
+
+			// The firmware version range is optional, the default is 0.0 - 255.255
+			// This can be used to split the definitions into multiple files
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+		// ... more devices which support the same firmware updates
+	],
+
+	// Each entry in "upgrades" defines a single available firmware update
+	"upgrades": [
+		{
+			// Each entry can further limit the conditions under which it is applicable.
+			// Non-matching upgrades will not be offered.
+			//
+			// The syntax is the same as in https://zwave-js.github.io/node-zwave-js/#/config-files/conditional-settings?id=conditional-configuration-settings
+			// This field is optional
+			"$if": "firmwareVersion >= 1.1 && firmwareVersion < 1.7 && productId === 0xcafe",
+
+			// The version field MUST indicate the version of the new firmware
+			"version": "1.7",
+			// The changelog field will be displayed to the user and is purely informational
+			"changelog": "* Fixed some bugs\n*Added more bugs",
+
+			// Optionally define the target chip. If not defined, target 0 will be used
+			"target": 0,
+
+			// The url MUST point to a publicly downloadable file in one of the supported
+			// formats, e.g. ota, otz, hex, hec, gbl, etc.
+			// Z-Wave JS will download this in the background when doing an upgrade.
+			"url": "https://example.com/firmware/1.7.otz",
+			// The integrity field contains a hash of the file as a hexadecimal string.
+			// to verify that the correct file was downloaded.
+			// The prefix indicates the hash algorithm, e.g. "sha256:" for SHA256.
+			// At the moment, only SHA256 is supported.
+			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
+		},
+		{
+			// Devices with multiple firmware targets can define
+			// multiple downloads in a single entry.
+			// The updates are applied in the order they are defined.
+
+			// The version field MUST indicate the version of the new firmware
+			"version": "1.7",
+			// The changelog field will be displayed to the user and is purely informational
+			"changelog": "* Fixed some bugs\n*Added more bugs",
+
+			"files": [
+				// Update chip 1 first
+				{
+					"target": 1,
+					"url": "https://example.com/firmware/1.7_target1.otz",
+					"integrity": "..."
+				},
+				// then chip 0
+				{
+					"target": 0,
+					"url": "https://example.com/firmware/1.7_target0.otz",
+					"integrity": "..."
+				}
+			]
+		}
+		// ... more firmware updates for the same file
+	]
+}
