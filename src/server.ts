@@ -1,22 +1,17 @@
-import fastify, { FastifyInstance } from "fastify";
+import { build } from "./app";
 
-const server: FastifyInstance = fastify({ logger: true });
-
-// Declare a route
-server.get("/", async (_request, _reply) => {
-	return { hello: "world!" };
-});
-
-// Run the server!
 async function start() {
 	let port = parseInt(process.env.PORT!);
 	if (isNaN(port)) port = 3000;
 
+	const server = build({
+		logger: {
+			level: "info",
+		},
+	});
+
 	try {
-		await server.listen({
-			host: "::",
-			port,
-		});
+		await server.listen({ host: "::", port });
 	} catch (err) {
 		server.log.error(err);
 		process.exit(1);
