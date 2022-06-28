@@ -5,10 +5,8 @@
 		"outDir": "build",
 		"importsNotUsedAsValues": "error",
 		"pretty": true,
-		"diagnostics": true
+		"diagnostics": true,
+		"noErrorTruncation": true
 	},
-	"include": [
-		"src/**/*.ts",
-		"test/**/*.ts"
-	]
+	"include": ["src/**/*.ts", "test/**/*.ts"]
 }
