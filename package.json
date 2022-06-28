@@ -1,0 +1,36 @@
+{
+  "name": "@zwave-js/firmware-updates",
+  "version": "0.0.1",
+  "description": "The firmware update service for Z-Wave JS",
+  "main": "build/server.js",
+  "repository": "https://github.com/zwave-js/firmware-updates",
+  "author": "Dominic Griesel <dominic.griesel@nabucasa.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --verbose",
+    "clean": "tsc --clean",
+    "watch": "yarn run build --watch --pretty",
+    "lint": "eslint .",
+    "dev": "nodemon src/server.ts",
+    "start": "node build/server.js"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/eslint": "^8",
+    "@types/node": "^18.0.0",
+    "@types/prettier": "^2",
+    "@types/source-map-support": "^0.5.4",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.1.0",
+    "fastify": "^4.2.0",
+    "nodemon": "^2.0.18",
+    "prettier": "^2.7.1",
+    "prettier-plugin-organize-imports": "^3.0.0",
+    "ts-node": "^10.8.1",
+    "typescript": "~4.7.4"
+  },
+  "packageManager": "yarn@3.2.1"
+}
