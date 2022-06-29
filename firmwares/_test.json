@@ -19,7 +19,7 @@
 		{
 			"$if": "firmwareVersion >= 1.1 && firmwareVersion < 1.7 && productId === 0xcafe",
 
-			"version": "1.7",
+			"version": "1.77",
 			"changelog": "* Fixed some bugs\n*Added more bugs",
 
 			"url": "https://example.com/firmware/1.7.otz",

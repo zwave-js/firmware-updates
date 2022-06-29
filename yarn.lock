@@ -456,6 +456,7 @@ __metadata:
     ts-node: ^10.8.1
     typescript: ~4.7.4
     zod: ^3.17.3
+    zod-to-json-schema: ^3.17.0
   languageName: unknown
   linkType: soft
 
@@ -4319,6 +4320,15 @@ __metadata:
   version: 1.0.0
   resolution: "yocto-queue@npm:1.0.0"
   checksum: 2cac84540f65c64ccc1683c267edce396b26b1e931aa429660aefac8fbe0188167b7aee815a3c22fa59a28a58d898d1a2b1825048f834d8d629f4c2a5d443801
+  languageName: node
+  linkType: hard
+
+"zod-to-json-schema@npm:^3.17.0":
+  version: 3.17.0
+  resolution: "zod-to-json-schema@npm:3.17.0"
+  peerDependencies:
+    zod: ^3.14.4
+  checksum: b1020ac02d581a79d2bf0b8dd9fee86903491e9bd1ac315cacde6acfeb7d6b835e77c30a28f3f4a06dd58a10d406cb9bddac37d2065e5631f4b71a358379b2f3
   languageName: node
   linkType: hard
 

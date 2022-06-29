@@ -1,0 +1,174 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$ref": "#/definitions/firmwareConfig",
+	"definitions": {
+		"firmwareConfig": {
+			"type": "object",
+			"properties": {
+				"devices": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"brand": {
+								"type": "string",
+								"minLength": 1
+							},
+							"model": {
+								"type": "string",
+								"minLength": 1
+							},
+							"manufacturerId": {
+								"$ref": "#/definitions/hexId",
+								"description": "The manufacturer ID as assigned by the Z-Wave Alliance"
+							},
+							"productType": {
+								"$ref": "#/definitions/hexId",
+								"description": "The product type of this device as a 4-digit hex string"
+							},
+							"productId": {
+								"$ref": "#/definitions/hexId",
+								"description": "The product ID of this device as a 4-digit hex string"
+							},
+							"firmwareVersion": {
+								"type": "object",
+								"description": "The optional firmware version range for which this file applies. Can be used to split a definition into multiple files.",
+								"properties": {
+									"min": {
+										"$ref": "#/definitions/firmwareVersion",
+										"description": "The minimum firmware version this config file targets"
+									},
+									"max": {
+										"$ref": "#/definitions/firmwareVersion",
+										"description": "The maximum firmware version this config file targets"
+									}
+								},
+								"required": ["min", "max"],
+								"additionalProperties": false
+							}
+						},
+						"required": [
+							"brand",
+							"model",
+							"manufacturerId",
+							"productType",
+							"productId"
+						],
+						"additionalProperties": false
+					},
+					"minItems": 1
+				},
+				"upgrades": {
+					"type": "array",
+					"items": {
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {
+									"$if": {
+										"$ref": "#/definitions/condition"
+									},
+									"version": {
+										"$ref": "#/definitions/firmwareVersion",
+										"description": "The version of the NEW firmware after upgrading"
+									},
+									"changelog": {
+										"$ref": "#/definitions/changelog"
+									},
+									"target": {
+										"$ref": "#/definitions/firmwareTarget"
+									},
+									"url": {
+										"$ref": "#/definitions/downloadLink"
+									},
+									"integrity": {
+										"$ref": "#/definitions/integrity"
+									}
+								},
+								"required": [
+									"version",
+									"changelog",
+									"url",
+									"integrity"
+								],
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"properties": {
+									"$if": {
+										"$ref": "#/definitions/condition"
+									},
+									"version": {
+										"$ref": "#/definitions/firmwareVersion"
+									},
+									"changelog": {
+										"$ref": "#/definitions/changelog"
+									},
+									"files": {
+										"type": "array",
+										"items": {
+											"type": "object",
+											"properties": {
+												"target": {
+													"$ref": "#/definitions/firmwareTarget"
+												},
+												"url": {
+													"$ref": "#/definitions/downloadLink"
+												},
+												"integrity": {
+													"$ref": "#/definitions/integrity"
+												}
+											},
+											"required": ["url", "integrity"],
+											"additionalProperties": false
+										}
+									}
+								},
+								"required": ["version", "changelog", "files"],
+								"additionalProperties": false
+							}
+						]
+					},
+					"minItems": 1
+				}
+			},
+			"required": ["devices", "upgrades"],
+			"additionalProperties": false
+		},
+		"condition": {
+			"type": "string",
+			"minLength": 1,
+			"description": "A condition that must be fulfilled for this entry to exist. See https://zwave-js.github.io/node-zwave-js/#/config-files/conditional-settings?id=conditional-configuration-settings for a description of the syntax."
+		},
+		"hexId": {
+			"type": "string",
+			"pattern": "^0x[a-f0-9]{4}$"
+		},
+		"firmwareVersion": {
+			"type": "string",
+			"pattern": "^([0-9]|[1-9][0-9]|[1-2][0-9][0-9])\\.([0-9]|[1-9][0-9]|[1-2][0-9][0-9])$"
+		},
+		"integrity": {
+			"type": "string",
+			"pattern": "^sha256:[a-f0-9A-F]{64}$",
+			"description": "A hash of the of the file as a hexadecimal string, prefixed with the hash algorithm. Used to  verify that the correct file was downloaded."
+		},
+		"changelog": {
+			"type": "string",
+			"description": "Will be displayed to the user to decide on updates.",
+			"minLength": 1
+		},
+		"downloadLink": {
+			"type": "string",
+			"format": "uri",
+			"description": "A link to a publicly downloadable file in one of the supported formats, e.g. ota, otz, hex, hec, gbl, etc."
+		},
+		"firmwareTarget": {
+			"type": "number",
+			"description": "The zero-based target chip to upgrade. Defaults to 0.",
+			"minimum": 0,
+			"default": 0
+		}
+	}
+}

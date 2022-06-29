@@ -7,9 +7,9 @@ test("GET `/` route", async (t) => {
 	t.teardown(() => fastify.close());
 	await fastify.ready();
 
-	const response = await supertest(fastify.server)
+	await supertest(fastify.server)
 		.get("/")
 		.expect(200)
-		.expect("Content-Type", "application/json; charset=utf-8");
-	t.deepEqual(response.body, { hello: "world!" });
+		.expect("Content-Type", "text/html");
+	t.pass();
 });

@@ -15,4 +15,10 @@
 	"files.associations": {
 		"**/firmwares/**/*.json": "jsonc"
 	},
+	"json.schemas": [
+		{
+			"fileMatch": ["/firmwares/**/*.json"],
+			"url": "/schemas/firmware.json"
+		}
+	]
 }

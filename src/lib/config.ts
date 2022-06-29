@@ -115,13 +115,7 @@ async function generateIndexWorker<T extends Record<string, unknown>>(
 			const message = `Error parsing config file ${relativePath}: ${
 				(e as Error).message
 			}`;
-			// Crash hard during tests, just print an error when in production systems.
-			// A user could have changed a config file
-			if (process.env.NODE_ENV === "test" || !!process.env.CI) {
-				throw new Error(message);
-			} else {
-				console.error(message);
-			}
+			throw new Error(message);
 		}
 	}
 
