@@ -66,7 +66,11 @@ export class ConditionalUpdateConfig implements IConfig {
 		return {
 			devices: this.devices,
 			upgrades: this.upgrades
-				.filter((upgrade) => conditionApplies(upgrade, deviceId))
+				.filter(
+					(upgrade) =>
+						upgrade.version !== deviceId.firmwareVersion &&
+						conditionApplies(upgrade, deviceId),
+				)
 				.map(({ $if, ...upgrade }) => upgrade),
 		};
 	}

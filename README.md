@@ -10,9 +10,12 @@ Z-Wave JS will query the web service on demand, providing the device identificat
 
 When desired, Z-Wave JS will download the update(s) from the provided URL, verify their integrity and install them.
 
-## Defining firmware updates
+## Providing firmware definition files
 
-WIP, see https://github.com/zwave-js/node-zwave-js/issues/4739
+We kindly ask you to open a PR for any changes to firmware updates.
+This way they can automatically be checked for errors.
+
+See [the documentation](docs/firmware-files.md) for more information on how to author these files.
 
 ## How to use?
 
