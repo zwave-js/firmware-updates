@@ -74,3 +74,10 @@ export function padVersion(version: string): string {
 	if (version.split(".").length === 3) return version;
 	return version + ".0";
 }
+
+// expands object types recursively
+export type ExpandRecursively<T> = T extends object
+	? T extends infer O
+		? { [K in keyof O]: ExpandRecursively<O[K]> }
+		: never
+	: T;

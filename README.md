@@ -25,10 +25,10 @@ POST https://firmware.zwave-js.io/api/v1/updates
 Content-Type: application/json
 
 {
-	"manufacturerId": "0x1234",
-	"productType": "0xabcd",
-	"productId": "0xcafe",
-	"firmwareVersion": "1.6"
+    "manufacturerId": "0x1234",
+    "productType": "0xabcd",
+    "productId": "0xcafe",
+    "firmwareVersion": "1.6"
 }
 ```
 
@@ -36,16 +36,30 @@ Example response:
 
 ```json
 [
-	{
-		"version": "1.7",
-		"changelog": "* Fixed some bugs\n*Added more bugs",
-		"files": [
-			{
-				"target": 0,
-				"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
-				"url": "https://example.com/firmware/1.7.otz"
-			}
-		]
-	}
+    {
+        "version": "1.7",
+        "changelog": "* Fixed some bugs\n*Added more bugs",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                "url": "https://example.com/firmware/1.7.otz"
+            }
+        ]
+    }
 ]
+```
+
+Response type definition:
+
+```ts
+type APIv1_Response = {
+    version: string;
+    changelog: string;
+    files: {
+        target: number;
+        url: string;
+        integrity: string;
+    }[];
+}[];
 ```

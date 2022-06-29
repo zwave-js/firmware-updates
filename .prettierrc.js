@@ -24,5 +24,12 @@ module.exports = {
 				singleQuote: true,
 			},
 		},
+		{
+			files: "README.md",
+			options: {
+				useTabs: false,
+				tabWidth: 4,
+			},
+		},
 	],
 };

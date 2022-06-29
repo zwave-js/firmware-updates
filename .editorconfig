@@ -26,6 +26,10 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+[README.md]
+indent_style = space
+indent_size = 4
+
 [config/**/*.json]
 indent_style = tab
 indent_size = 4
