@@ -4,7 +4,7 @@ async function start() {
 	let port = parseInt(process.env.PORT!);
 	if (isNaN(port)) port = 3000;
 
-	const server = build({
+	const server = await build({
 		logger: {
 			level: "info",
 		},

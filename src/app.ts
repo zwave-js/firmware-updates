@@ -2,8 +2,16 @@ import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
 import { APIv1_RequestSchema } from "./apiV1";
 import { lookupConfig } from "./lib/config";
 
-export function build(opts: FastifyServerOptions = {}): FastifyInstance {
+export async function build(
+	opts: FastifyServerOptions = {},
+): Promise<FastifyInstance> {
 	const app = fastify(opts);
+
+	await app.register(import("@fastify/rate-limit"), {
+		global: true,
+		max: 1000,
+		timeWindow: "1 hour",
+	});
 
 	app.get("/", async (_request, reply) => {
 		return reply.type("text/html").send(`

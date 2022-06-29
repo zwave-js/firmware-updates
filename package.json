@@ -18,6 +18,7 @@
     "test": "yarn test:ci --watch"
   },
   "dependencies": {
+    "@fastify/rate-limit": "^7.0.0",
     "fastify": "^4.2.0",
     "json-logic-js": "^2.0.2",
     "json5": "^2.2.1",

@@ -3,7 +3,7 @@ import supertest from "supertest";
 import { build } from "./app";
 
 test("GET `/` route", async (t) => {
-	const fastify = build();
+	const fastify = await build();
 	t.teardown(() => fastify.close());
 	await fastify.ready();
 

@@ -58,6 +58,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/rate-limit@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@fastify/rate-limit@npm:7.0.0"
+  dependencies:
+    fastify-plugin: ^3.0.1
+    ms: ^2.1.3
+    tiny-lru: ^8.0.1
+  checksum: ecb698c94b2f931c6a3282c19698a9ce7c7b59f476c3ed7b1760984765c76399c3b28ea99716e2b92bb6471e9a90a30b07f96ea5090c01768f00b5ea5a3d917c
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.1.3":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -431,6 +442,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@zwave-js/firmware-updates@workspace:."
   dependencies:
+    "@fastify/rate-limit": ^7.0.0
     "@tsconfig/node16": ^1.0.3
     "@types/eslint": ^8.4.3
     "@types/json-logic-js": ^2.0.1
@@ -1748,6 +1760,13 @@ __metadata:
   version: 2.1.0
   resolution: "fast-uri@npm:2.1.0"
   checksum: 60ecece5ab05515729ec04d1732ee68bd4429cab8c06ebf8db512a094a0077ddc5af6a27c75922875bc9e13b58e947832242cdcb2cb23c51dc753412222dca83
+  languageName: node
+  linkType: hard
+
+"fastify-plugin@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "fastify-plugin@npm:3.0.1"
+  checksum: 131ba0a388f777829c3fb0fd5b75cf057688ce6d0ca354fb1ebf829767a8c853b0825762b9185b5200097454df0ede2f3095da2efe1aa1b3736d07f194e6d374
   languageName: node
   linkType: hard
 
@@ -3946,7 +3965,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tiny-lru@npm:^8.0.2":
+"tiny-lru@npm:^8.0.1, tiny-lru@npm:^8.0.2":
   version: 8.0.2
   resolution: "tiny-lru@npm:8.0.2"
   checksum: ec4d884914626760eef05cd57850f21a153adeeb7c4242eb8d44a031f1bd8489f18c1bf5d6f10f0a11c5dcfe03b302f26b00f2b879b38853599486bf0dca8c97
