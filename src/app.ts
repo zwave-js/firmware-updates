@@ -13,6 +13,8 @@ export async function build(
 		timeWindow: "1 hour",
 	});
 
+	await app.register(import("@fastify/helmet"));
+
 	app.get("/", async (_request, reply) => {
 		return reply.type("text/html").send(`
 			<h1>Z-Wave JS Firmware Update Service</h1>
