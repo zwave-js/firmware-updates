@@ -16,6 +16,8 @@ node_modules/
 *.map
 
 .secrets
+.env
+keys.txt
 
 # Auto-generated firmware index
 firmwares/index.json

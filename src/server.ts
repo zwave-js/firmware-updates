@@ -1,3 +1,5 @@
+import "dotenv/config";
+
 import { build } from "./app";
 
 async function start() {
