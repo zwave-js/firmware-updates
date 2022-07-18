@@ -3,6 +3,8 @@ import supertest from "supertest";
 import { build } from "./app";
 
 test("GET `/` route", async (t) => {
+	process.env.API_REQUIRE_KEY = "false";
+
 	const fastify = await build();
 	t.teardown(() => fastify.close());
 	await fastify.ready();
