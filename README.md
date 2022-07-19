@@ -19,13 +19,25 @@ See [the documentation](docs/firmware-files.md) for more information on how to a
 
 ## How to use?
 
-Send a HTTP request to one of the API endpoints. Currently these are defined:
+### API Keys
+
+All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for open source** projects. Commercial projects will be charged to cover the server costs.
+
+To request an API key, please [reach out](mailto:info@zwave-js.io) and provide the following information:
+
+-   Project/Company name
+-   Open source / Commercial
+-   Repository URL (open source only)
+-   Approximate no. of requests/hour
+
+Once you have your API key, you can use it to make HTTP requests to the API endpoints. Currently these are defined:
 
 ### API v1, get updates
 
 ```
 POST https://firmware.zwave-js.io/api/v1/updates
 Content-Type: application/json
+X-API-Key: <Your API Key>
 
 {
     "manufacturerId": "0x1234",

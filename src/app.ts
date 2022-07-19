@@ -1,5 +1,6 @@
 import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
 import { APIv1_RequestSchema } from "./apiV1";
+import { getAPIKey } from "./lib/apiKeys";
 import { lookupConfig } from "./lib/config";
 
 export async function build(
@@ -7,9 +8,17 @@ export async function build(
 ): Promise<FastifyInstance> {
 	const app = fastify(opts);
 
+	if (process.env.API_REQUIRE_KEY !== "false") {
+		await app.register(import("./plugins/checkAPIKey"));
+	}
+
 	await app.register(import("@fastify/rate-limit"), {
 		global: true,
-		max: 1000,
+		keyGenerator:
+			process.env.API_REQUIRE_KEY !== "false"
+				? (req) => getAPIKey(req)?.id.toString() ?? "anonymous"
+				: undefined,
+		max: (req) => getAPIKey(req)?.rateLimit ?? 1000,
 		timeWindow: "1 hour",
 	});
 

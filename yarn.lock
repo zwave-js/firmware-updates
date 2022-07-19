@@ -465,10 +465,12 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.30.0
     "@typescript-eslint/parser": ^5.30.0
     ava: ^4.3.0
+    dotenv: ^16.0.1
     eslint: ^8.18.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.1.0
     fastify: ^4.2.0
+    fastify-plugin: ^4.0.0
     json-logic-js: ^2.0.2
     json5: ^2.2.1
     nodemon: ^2.0.18
@@ -1407,6 +1409,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:^16.0.1":
+  version: 16.0.1
+  resolution: "dotenv@npm:16.0.1"
+  checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
+  languageName: node
+  linkType: hard
+
 "duplexer3@npm:^0.1.4":
   version: 0.1.4
   resolution: "duplexer3@npm:0.1.4"
@@ -1778,6 +1787,13 @@ __metadata:
   version: 3.0.1
   resolution: "fastify-plugin@npm:3.0.1"
   checksum: 131ba0a388f777829c3fb0fd5b75cf057688ce6d0ca354fb1ebf829767a8c853b0825762b9185b5200097454df0ede2f3095da2efe1aa1b3736d07f194e6d374
+  languageName: node
+  linkType: hard
+
+"fastify-plugin@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "fastify-plugin@npm:4.0.0"
+  checksum: b929f94e70e3815643842cd50bdfecd26ca2c34ef7a31b1570bd3fe7437174858e9bc4dfa70c2984340d5450c24b830d37fe4789c103ef80565dcc9037ae987a
   languageName: node
   linkType: hard
 
