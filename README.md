@@ -47,6 +47,8 @@ X-API-Key: <Your API Key>
 }
 ```
 
+The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When no patch version is provided, it will be assumed to be `0`, so `1.6` is equivalent to `1.6.0`.
+
 Example response:
 
 ```json

@@ -51,6 +51,10 @@ Each `"devices"` entry defines a single device for which this file contains the 
 			// The firmware version range is optional, the default is 0.0 - 255.255
 			// (matches all CURRENT firmwares)
 			// This can be used to split the definitions into multiple files
+
+			// The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`.
+			// When no patch version is provided, it will be assumed to be `0`,
+			// so `1.6` is equivalent to `1.6.0`.
 			"firmwareVersion": {
 				"min": "0.0",
 				"max": "255.255"
