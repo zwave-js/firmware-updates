@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "UltraPro",
+			"model": "ZW3010 / 39351",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3339"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.54",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/UltraPro/ZW3010/39351%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3010_UltraPro_39351-54897-54898_5.54.otz",
+			"integrity": "sha256:661b1c38c3fb5820fd28ad52028bd647b740af31489a3e2a2ed7fa2c73a4d5df"
+		}
+	]
+}

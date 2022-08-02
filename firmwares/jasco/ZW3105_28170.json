@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW3105 / 28170",
+			"manufacturerId": "0x0063",
+			"productType": "0x5044",
+			"productId": "0x3039"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.20",
+			"changelog": "1. Updated Switch Multilevel command class to latest version\n2. Added parameter 6\n3. Modify the default setting for LED indication",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3105/28170%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%201%20Controlled%2C%20500S/5.20/ZW3105_Jasco_28170_5.20.hex",
+			"integrity": "sha256:b0528bad4da159cf9c73895a712a93a528ebb17336ab7056c5b6985b66f3524e"
+		}
+	]
+}

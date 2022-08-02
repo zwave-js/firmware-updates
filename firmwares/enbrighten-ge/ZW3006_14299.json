@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW3006 / 14299",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3039"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.22",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3006/14299%20-%20In-Wall%201000W%20Smart%20Paddle%20Dimmer%2C%20500S/5.22/ZW3006_Enbrighten-GE_14299_5.22.hex",
+			"integrity": "sha256:262c9665452864e18664d4aa11ff68c438128e1f7db38cbe68d8416d81c626ff"
+		},
+		{
+			"version": "5.25",
+			"changelog": "1. Fixed AGI issue\n2. Fixed Scene actuator and scene activation",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3006/14299%20-%20In-Wall%201000W%20Smart%20Paddle%20Dimmer%2C%20500S/5.25/ZW3006_Enbrighten-GE_14299_5.25.hex",
+			"integrity": "sha256:955f6e4f84467cd9850cc02bb677ace782074bbcefd994e26b7344c90ce9e1bb"
+		},
+		{
+			"version": "5.26",
+			"changelog": "1. Added parameters 16 and 20\n2. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3006/14299%20-%20In-Wall%201000W%20Smart%20Paddle%20Dimmer%2C%20500S/5.26/ZW3006_Enbrighten-GE_14299_5.26.hex",
+			"integrity": "sha256:7f81efbd1aebda4a712ab7949af0fcdddb78fb4b833fa980ce21fc566042d663"
+		}
+	]
+}

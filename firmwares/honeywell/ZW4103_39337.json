@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW4103 / 39337",
+			"manufacturerId": "0x0039",
+			"productType": "0x5052",
+			"productId": "0x3038"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.23",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW4103/39337%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.23/ZW4103_Honeywell_39337_5.23.hex",
+			"integrity": "sha256:9699116e065e066ae66a6e93c3d744c9a6033f8e3ad6d827badd4858b1a67fb9"
+		},
+		{
+			"version": "5.25",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW4103/39337%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.25/ZW4103_Honeywell_39337_5.25.hex",
+			"integrity": "sha256:6adfa2e0b4de248eaa18593318ba631b05a5b4f9ca3800deb43b518572d0acf3"
+		}
+	]
+}

@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4002 / 14314",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3138"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.22",
+			"changelog": "1. Updated the Devkit from 6.51.06 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW4002/14314%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.22/ZW4002_Jasco_14314_5.22.hex",
+			"integrity": "sha256:7c4f0c915709d6fb325994694d0f7e54d1bbebdcc4ae71a3c4ccd77f00bcb0b5"
+		},
+		{
+			"version": "5.24",
+			"changelog": "1. Corrected ID information for 39358\n2. Added parameter 3\n3. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW4002/14314%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.24/ZW4002_Jasco_14314_5.24.hex",
+			"integrity": "sha256:f1972fc325adc9d4f17f0d7af9884c5eb4a3d33a416e156a9f91bd17691dc25e"
+		}
+	]
+}

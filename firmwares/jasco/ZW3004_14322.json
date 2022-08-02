@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW3004 / 14322",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3137"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.24",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3004/14322%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.24/ZW3004_Jasco_14322_5.24.hex",
+			"integrity": "sha256:c2950dbdf77b295fc424686fc5ddadf685b8d9cba303013d776f7ac0da416e12"
+		},
+		{
+			"version": "5.26",
+			"changelog": "1. Added parameter 20",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3004/14322%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3004_Jasco_14322_5.26.hex",
+			"integrity": "sha256:d47b3ed6946915ae476249354e702fe9f7fa6f4255d1d56fc4c748d68c37b968"
+		}
+	]
+}

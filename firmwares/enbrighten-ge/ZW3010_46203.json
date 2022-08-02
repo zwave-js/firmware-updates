@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW3010 / 46203",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3235"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3010/46203%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3010_Enbrighten-GE_46203_5.53.otz",
+			"integrity": "sha256:f745bd3a1b2cecbcfc99dd6795262c0ec039d599d6b8822e048289cc096d0105"
+		},
+		{
+			"version": "5.54",
+			"changelog": "1. Adjusted low-end dimming threshold to match Model 14294",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3010/46203%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3010_Enbrighten-GE_46203_5.54.otz",
+			"integrity": "sha256:12065ab784bd018589932163a5ff5b968aa45f39b35fbe731e810c2a0b57b1dc"
+		}
+	]
+}

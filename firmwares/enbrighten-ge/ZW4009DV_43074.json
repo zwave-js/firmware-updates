@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4009DV / 43074",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3231"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4009DV/43074%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20120%2B277%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009DV_Enbrighten-GE_43074_5.53.otz",
+			"integrity": "sha256:6b8d4960e927d678049afc6e22274108f79e5ca8785ef53ba88e6cea2e8aeb53"
+		}
+	]
+}

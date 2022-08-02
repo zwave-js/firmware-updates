@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW6302 / 34193",
+			"manufacturerId": "0x0063",
+			"productType": "0x4953",
+			"productId": "0x3133"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.24",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW6302/34193%20-%20Portable%20Smart%20Motion%20Sensor%2C%20500S/5.24/ZW6302_Enbrighten-GE_34193_5.24.hex",
+			"integrity": "sha256:54807bcc5a66bd3127f00a266cec0078fa9bee5f5e01f1871d2d700cb3e624f2"
+		},
+		{
+			"version": "5.25",
+			"changelog": "1. Bug fixed for the false trigger in low sensitivity mode",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW6302/34193%20-%20Portable%20Smart%20Motion%20Sensor%2C%20500S/5.25/ZW6302_Enbrighten-GE_34193_5.25.hex",
+			"integrity": "sha256:997eaee9f216de79ce39523a10085c18ab149ee20f2bc72cf290e834f3d47cde"
+		}
+	]
+}

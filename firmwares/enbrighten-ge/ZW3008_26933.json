@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW3008 / 26933",
+			"manufacturerId": "0x0063",
+			"productType": "0x494d",
+			"productId": "0x3034"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.32",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3008/26933%20-%20In-Wall%20Smart%20Motion%20Dimmer%2C%20500S/5.32/ZW3008_Enbrighten-GE_26933_5.32.hex",
+			"integrity": "sha256:917d739264d16c89d1c601f073ac6f8267fcebac9441cff3da95bf7dfebcd981"
+		}
+	]
+}

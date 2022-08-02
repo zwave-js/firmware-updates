@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4106 / 55249",
+			"manufacturerId": "0x0063",
+			"productType": "0x5052",
+			"productId": "0x3133"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.51",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4106/55249%20-%20Plug-in%202-Outlet%20Smart%20Switch%2C%20Simultaneous%2C%20500S/5.51/ZW4106_Enbrighten-GE_55249_5.51.otz",
+			"integrity": "sha256:0a773ee1f453c6161d2adcf6cf565e0ae555b8a8f6ca2f5fea7fde67728d9dcf"
+		}
+	]
+}
