@@ -12,7 +12,7 @@
 		{
 			"version": "5.32",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW3008/26933%20-%20In-Wall%20Smart%20Motion%20Dimmer%2C%20500S/5.32/ZW3008_Enbrighten-GE_26933_5.32.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3008/26933%20-%20In-Wall%20Smart%20Motion%20Dimmer%2C%20500S/5.32/ZW3008_Enbrighten-GE_26933_5.32.hex",
 			"integrity": "sha256:917d739264d16c89d1c601f073ac6f8267fcebac9441cff3da95bf7dfebcd981"
 		}
 	]

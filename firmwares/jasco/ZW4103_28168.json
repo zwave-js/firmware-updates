@@ -12,7 +12,7 @@
 		{
 			"version": "5.25",
 			"changelog": "1. Fixed AGI issue\n2. Updated Devkit from 6.51.06 to 6.51.10\n3. Added parameter 19 for alternate exclusion",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4103/28168%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.25/ZW4103_Jasco_28168_5.25.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW4103/28168%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.25/ZW4103_Jasco_28168_5.25.hex",
 			"integrity": "sha256:baa846cb12c165cb0339c0115be8270369117a832ca36713feacfa60c6ae56c0"
 		}
 	]

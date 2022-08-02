@@ -12,13 +12,13 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3011/46565%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3011_Jasco_46565_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3011/46565%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3011_Jasco_46565_5.53.otz",
 			"integrity": "sha256:030cea5d04541b73a4c86060bf67eb4023ba87a2c28f71acc98772c1d5b4fb44"
 		},
 		{
 			"version": "5.54",
 			"changelog": "1. Adjusted low-end dimming threshold to match Model 14294",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3011/46565%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3011_Jasco_46565_5.54.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3011/46565%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3011_Jasco_46565_5.54.otz",
 			"integrity": "sha256:e08f58fe0f44d7e595057fef0cb064046b474799fbdea778569562eeeaddb92c"
 		}
 	]

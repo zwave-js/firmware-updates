@@ -12,7 +12,7 @@
 		{
 			"version": "5.18",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW5307/37792%20-%20Portable%202-Button%20Remote%2C%20500S/5.18/ZW5307_Jasco_37792_5.18.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW5307/37792%20-%20Portable%202-Button%20Remote%2C%20500S/5.18/ZW5307_Jasco_37792_5.18.otz",
 			"integrity": "sha256:b46cacffe76ad20763178e440b1f2f15bac19fe14bf5065b8e1b3c2f0c38af2e"
 		}
 	]

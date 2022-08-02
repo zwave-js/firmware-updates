@@ -12,7 +12,7 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4008/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Honeywell_39348_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW4008/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Honeywell_39348_5.53.otz",
 			"integrity": "sha256:df0e7d5b89ffb12eb4ce4159c5b523134e4298ee482f62d0a7f052c486a18d1e"
 		}
 	]

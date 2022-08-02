@@ -12,7 +12,7 @@
 		{
 			"version": "5.22",
 			"changelog": "1. Updated the devkit from 6.51.06 to 6.51.10",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4106/14282%20-%20Plug-in%202-Outlet%20Smart%20Switch%2C%20Simultaneous%2C%20500S/5.22/ZW4106_Enbrighten-GE_14282_5.22.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW4106/14282%20-%20Plug-in%202-Outlet%20Smart%20Switch%2C%20Simultaneous%2C%20500S/5.22/ZW4106_Enbrighten-GE_14282_5.22.hex",
 			"integrity": "sha256:78fa4b1321c33a6fc36e3a9412ad26aa82b067365e6d5703b43aeb1c6f08c051"
 		}
 	]

@@ -12,7 +12,7 @@
 		{
 			"version": "5.22",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4106/39342%20-%20Plug-in%202-Outlet%20Smart%20Switch%2C%20Simultaneous%2C%20500S/5.22/ZW4106_Honeywell_39342_5.22.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW4106/39342%20-%20Plug-in%202-Outlet%20Smart%20Switch%2C%20Simultaneous%2C%20500S/5.22/ZW4106_Honeywell_39342_5.22.hex",
 			"integrity": "sha256:a6381540b45ee1512c2dd14281f69313a32d6a97b8b7de9c4206fc060ab7c25c"
 		}
 	]

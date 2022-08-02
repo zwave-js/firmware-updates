@@ -12,7 +12,7 @@
 		{
 			"version": "5.25",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW3104/39336%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.25/ZW3104_Honeywell_39336_5.25.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW3104/39336%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.25/ZW3104_Honeywell_39336_5.25.hex",
 			"integrity": "sha256:974dee8311a7b7cf4a1525a7e608a533348b210c9e25ae5410ac3529c6e2a2c5"
 		}
 	]

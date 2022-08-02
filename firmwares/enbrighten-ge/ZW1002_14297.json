@@ -12,13 +12,13 @@
 		{
 			"version": "5.26",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/14297%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20Lt%20Almd%2C%20500S/5.26/ZW1002_Enbrighten-GE_14297_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW1002/14297%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20Lt%20Almd%2C%20500S/5.26/ZW1002_Enbrighten-GE_14297_5.26.hex",
 			"integrity": "sha256:7dd003e505b70d7b9d5235f0107d0c2b28566ef54fc3e74306fe1eda3aa30e5f"
 		},
 		{
 			"version": "5.51",
 			"changelog": "1. S2 implementation\n2. Central Scene implementation\n3. Remove All ON/OFF\n4. Modify parameter 3",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/14297%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20Lt%20Almd%2C%20500S/5.51/ZW1002_Enbrighten-GE_14297_5.51.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW1002/14297%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20Lt%20Almd%2C%20500S/5.51/ZW1002_Enbrighten-GE_14297_5.51.otz",
 			"integrity": "sha256:a95566e5d91402b19ccb4d26bf6883b29ea16e8e70bbca5200757f8cb641a8b6"
 		}
 	]

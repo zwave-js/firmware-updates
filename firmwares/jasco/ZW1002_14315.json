@@ -12,13 +12,13 @@
 		{
 			"version": "5.24",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW1002/14315%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.24/ZW1002_Jasco_14315_5.24.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW1002/14315%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.24/ZW1002_Jasco_14315_5.24.hex",
 			"integrity": "sha256:17de1ad1b0e0fdec9cee32815fcd7e7e62ec7c2122cb1557e7a8fee049f0bdae"
 		},
 		{
 			"version": "5.26",
 			"changelog": "1. Added parameter 19 for alternate exclusion",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW1002/14315%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.26/ZW1002_Jasco_14315_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW1002/14315%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.26/ZW1002_Jasco_14315_5.26.hex",
 			"integrity": "sha256:059865567bec5fd9b611cc16638c6e5a196ddd22a0a55bc134fc7255e0cb49ec"
 		}
 	]

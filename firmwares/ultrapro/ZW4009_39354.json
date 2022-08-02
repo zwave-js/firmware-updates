@@ -12,7 +12,7 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/UltraPro/ZW4009/39354%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009_UltraPro_39354-54912_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/UltraPro/ZW4009/39354%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009_UltraPro_39354-54912_5.53.otz",
 			"integrity": "sha256:35b020c56b25a173c85842b91088851f82b0b288f3bcd3e45c7d4434b90da4ad"
 		}
 	]

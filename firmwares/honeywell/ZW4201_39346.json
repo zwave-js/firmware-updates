@@ -12,7 +12,7 @@
 		{
 			"version": "5.21",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4201/39346%20-%20Plug-in%20Outdoor%20Smart%20Switch%2C%20500S/5.21/ZW4201_Honeywell_39346_5.21.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW4201/39346%20-%20Plug-in%20Outdoor%20Smart%20Switch%2C%20500S/5.21/ZW4201_Honeywell_39346_5.21.hex",
 			"integrity": "sha256:df5335c7d5585d83ebe93b768ddadb83a68f41c4fbdeb1f52d717f45445f7063"
 		}
 	]

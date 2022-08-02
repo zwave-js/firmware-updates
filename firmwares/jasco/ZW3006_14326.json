@@ -12,13 +12,13 @@
 		{
 			"version": "5.23",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3006/14326%20-%20In-Wall%201000W%20Smart%20Toggle%20Dimmer%2C%20500S/5.23/ZW3006_Jasco_14326_5.23.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3006/14326%20-%20In-Wall%201000W%20Smart%20Toggle%20Dimmer%2C%20500S/5.23/ZW3006_Jasco_14326_5.23.hex",
 			"integrity": "sha256:565065606ca5d7a81a501ca51c77b0b46da345ea0842d1b78437b9a11f2ced87"
 		},
 		{
 			"version": "5.26",
 			"changelog": "1. Added parameters 16 and 20\n2. Added parameter 19 for alternate exclusion",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3006/14326%20-%20In-Wall%201000W%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3006_Jasco_14326_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3006/14326%20-%20In-Wall%201000W%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3006_Jasco_14326_5.26.hex",
 			"integrity": "sha256:c46a378245e2d43dd58a1a4b0462c77bec5519b6f90b4d52d356945f198135f3"
 		}
 	]

@@ -12,7 +12,7 @@
 		{
 			"version": "5.11",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW5306/34176%20-%20Portable%204-Scene%20Controller%2C%20500S/5.11/ZW5306_Enbrighten-GE_34176_5.11.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW5306/34176%20-%20Portable%204-Scene%20Controller%2C%20500S/5.11/ZW5306_Enbrighten-GE_34176_5.11.hex",
 			"integrity": "sha256:28be22038738c1cfd2814040b28cc82152de6782ee562fb3bcb9b28793aca303"
 		}
 	]

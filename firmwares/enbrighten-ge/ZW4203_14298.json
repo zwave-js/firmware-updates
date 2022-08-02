@@ -12,7 +12,7 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4203/14298%20-%20Plug-in%20Outdoor%20Smart%20Switch%20V2%2C%20500S/5.53/ZW4203_Enbrighten-GE_14298_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW4203/14298%20-%20Plug-in%20Outdoor%20Smart%20Switch%20V2%2C%20500S/5.53/ZW4203_Enbrighten-GE_14298_5.53.otz",
 			"integrity": "sha256:032fcc96591e0d69b5ed3815e6b803aec25ed3a47be00e26ee05a7d46f221444"
 		}
 	]

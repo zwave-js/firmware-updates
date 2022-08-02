@@ -12,13 +12,13 @@
 		{
 			"version": "5.21",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW3004/14295%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.21/ZW3004_Enbrighten-GE_14295_5.21.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3004/14295%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.21/ZW3004_Enbrighten-GE_14295_5.21.hex",
 			"integrity": "sha256:08572f5cca0afe4e31a04ddbd1fadaa39c77961413edd2984758fd9d40b3fa46"
 		},
 		{
 			"version": "5.26",
 			"changelog": "1. Added parameter 16\n2. Added paramter 19 for alternate exclusion\n3. Modiffied the 3-way function\n4. Added parameter 20",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW3004/14295%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3004_Enbrighten-GE_14295_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3004/14295%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3004_Enbrighten-GE_14295_5.26.hex",
 			"integrity": "sha256:4f8487c33e9d6c6c02b0823f054a98bc221b9921448e69c02159e9255b01e9e5"
 		}
 	]

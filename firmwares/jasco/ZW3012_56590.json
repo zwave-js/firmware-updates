@@ -12,7 +12,7 @@
 		{
 			"version": "7.06",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3012/56590%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20No%20Ntrl%2C%20700S/7.06/ZW3012_Jasco_56590_7.06.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3012/56590%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20No%20Ntrl%2C%20700S/7.06/ZW3012_Jasco_56590_7.06.hex",
 			"integrity": "sha256:89c551e1fb8ede34a96c62494bc74f05228b40741facc13e0ce8f5382e46e279"
 		}
 	]

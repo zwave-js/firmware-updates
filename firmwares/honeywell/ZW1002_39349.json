@@ -12,13 +12,13 @@
 		{
 			"version": "5.25",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW1002/39349%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.25/ZW1002_Honeywell_39349_5.25.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW1002/39349%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.25/ZW1002_Honeywell_39349_5.25.hex",
 			"integrity": "sha256:0be75f81510d897bbd0826f10e9d3de67568a3215261334eace956c605be27c9"
 		},
 		{
 			"version": "5.26",
 			"changelog": "1. Reworked version data for consistency",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW1002/39349%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.26/ZW1002_Honeywell_39349_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW1002/39349%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.26/ZW1002_Honeywell_39349_5.26.hex",
 			"integrity": "sha256:76e8d34af569a561eadcd6a6b9163100a02f42274f85b954aa0199d1c789bd14"
 		}
 	]
