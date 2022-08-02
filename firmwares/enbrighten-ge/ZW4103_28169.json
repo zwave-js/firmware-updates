@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4103 / 28169",
+			"manufacturerId": "0x0063",
+			"productType": "0x5052",
+			"productId": "0x3038"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.23",
+			"changelog": "1. Fixed AGI issue\n2. Updated Devkit from 6.51.06 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4103/28169%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.23/ZW4103_Enbrighten-GE_28169_5.23.hex",
+			"integrity": "sha256:0d766456701304a0d4993b8338ce051d2d0927f68bca92e2ac01a67d0a913084"
+		},
+		{
+			"version": "5.25",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4103/28169%20-%20Plug-in%201-Outlet%20Smart%20Switch%2C%20500S/5.25/ZW4103_Enbrighten-GE_28169_5.25.hex",
+			"integrity": "sha256:f03497a2f703ba3014f6a08d2ece266c38a2275087c92be75fcb6c9571358c89"
+		}
+	]
+}

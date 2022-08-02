@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4003 / 14292",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3037"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.21",
+			"changelog": "1. Updated the Devkit from 6.51.06 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4003/14292%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.21/ZW4003_Enbrighten-GE_14292_5.21.hex",
+			"integrity": "sha256:4ec00996c98db4162ef58483c47abf2dfd138a238aa051a3b987230031c079f2"
+		},
+		{
+			"version": "5.22",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4003/14292%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.22/ZW4003_Enbrighten-GE_14292_5.22.hex",
+			"integrity": "sha256:d94b014265092c2fd68a4a2d7f9c44858825bdab0841cfbcf76e19eacf66c069"
+		}
+	]
+}

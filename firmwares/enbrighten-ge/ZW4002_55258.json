@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4002 / 55258",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3337"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.50",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4002/55258%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.50/ZW4002_Enbrighten-GE_55258_5.50.otz",
+			"integrity": "sha256:59ae4c4f749d3ad22b1d490e9dd0afe855bbd9914337f37a41beb56d62c638b2"
+		}
+	]
+}

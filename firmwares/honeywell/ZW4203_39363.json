@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW4203 / 39363",
+			"manufacturerId": "0x0039",
+			"productType": "0x4f50",
+			"productId": "0x3034"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.52",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4203/39363%20-%20Plug-in%20Outdoor%20Smart%20Switch%20V2%2C%20500S/5.52/ZW4203_Honeywell_39363_5.52.otz",
+			"integrity": "sha256:7550a78dd5b8033fd8c2e5c0d3508510226a0ac442744f4443ae02f36406c4f5"
+		}
+	]
+}

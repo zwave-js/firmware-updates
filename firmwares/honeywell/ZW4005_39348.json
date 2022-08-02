@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW4005 / 39348",
+			"manufacturerId": "0x0039",
+			"productType": "0x4952",
+			"productId": "0x3036"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.22",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4005/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20500S/5.22/ZW4005_Honeywell_39348_5.22.hex",
+			"integrity": "sha256:58bb0bc72bf5d4724ebb7bb9f675ff6ed09050d94009225ccb97a6b40c6a0e34"
+		},
+		{
+			"version": "5.24",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4005/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20500S/5.24/ZW4005_Honeywell_39348_5.24.hex",
+			"integrity": "sha256:ba64651fcdad9ceeb4ab92a0b78068808b9dae9757778f7ad0d09330dae1d310"
+		}
+	]
+}

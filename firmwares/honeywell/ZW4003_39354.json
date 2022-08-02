@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW4003 / 39354",
+			"manufacturerId": "0x0039",
+			"productType": "0x4952",
+			"productId": "0x3037"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.21",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4003/39354%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.21/ZW4003_Honeywell_39354_5.21.hex",
+			"integrity": "sha256:7e8f7e865089205f546e61abd36553b5e380ffaf915450204e4e472e91e60e1c"
+		},
+		{
+			"version": "5.22",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4003/39354%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.22/ZW4003_Honeywell_39354_5.22.hex",
+			"integrity": "sha256:634a9294b78fa61f67f159326ffa6867a84d6c96d33eb051f43be7fe2668e977"
+		}
+	]
+}

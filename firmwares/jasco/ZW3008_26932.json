@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW3008 / 26932",
+			"manufacturerId": "0x0063",
+			"productType": "0x494d",
+			"productId": "0x3033"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.27",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3008/26932%20-%20In-Wall%20Smart%20Motion%20Dimmer%2C%20500S/5.27/ZW3008_Jasco_26932_5.27.hex",
+			"integrity": "sha256:b20f5e4da1b49047db612515457dfabd42ed0da22b68d00b4dbcb765b544904f"
+		},
+		{
+			"version": "5.32",
+			"changelog": "1. Changed device behavior: restart the reset cycle once motion detected (if PIR triggered, 08 sent); if continuous motion detected, the reset cycle will keep being restarted without sending an additional 08; and if no motion detected for a continuous 20s (default), 00 will be sent.\n2. Fixed the notification report/GET report issues\n3. Fixed AGI issues\n4. Modified the operation for factory reset when parameter 19 (alternate exclusion) is set to 1\n5. Fixed scene activation issue\n6. Fixed an issue to report Lifeline Group 1 if we GET a non-supported group\n7. Modified the button press procedure for alternate exclusion and alternate factory reset",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3008/26932%20-%20In-Wall%20Smart%20Motion%20Dimmer%2C%20500S/5.32/ZW3008_Jasco_26932_5.32.hex",
+			"integrity": "sha256:7427b79abb54aefa0986aedfc57ef3ba38d32df71fbd124e0d77387a587e6260"
+		}
+	]
+}

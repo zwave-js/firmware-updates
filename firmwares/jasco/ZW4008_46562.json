@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4008 / 46562",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3136"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4008/46562%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Jasco_46562_5.53.otz",
+			"integrity": "sha256:c8734cf39cc3c940ab999e77004c1bbc942abad1ada0fcff8b57daca4f0ad34f"
+		},
+		{
+			"version": "5.55",
+			"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary\n3. Valid Value 1 – Reset Switch to Factory Defaults\n4. Modified the feature for ON button",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4008/46562%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.55/ZW4008_Jasco_46562_5.55.otz",
+			"integrity": "sha256:d33326717eaf5434d4df31ad1adcaaff554eed49c49d971d90ab609907086650"
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW3010 / 39351",
+			"manufacturerId": "0x0039",
+			"productType": "0x4944",
+			"productId": "0x3235"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.54",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW3010/39351%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3010_Honeywell_39351_5.54.otz",
+			"integrity": "sha256:67a92d0132464677c74f89c4ada0d69ee50e8478ff618b3880f08ba78378cc14"
+		}
+	]
+}

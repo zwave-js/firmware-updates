@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4009 / 46202",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3137"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4009/46202%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009_Enbrighten-GE_46202_5.53.otz",
+			"integrity": "sha256:6a54fef35b2de811904bc985419e5522820bfd8d188a4abdc2debc85ed118b63"
+		},
+		{
+			"version": "5.54",
+			"changelog": "1. Modify the feature for ON button",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4009/46202%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4009_Enbrighten-GE_46202_5.54.otz",
+			"integrity": "sha256:774c8fb2beb520e5674c4ff66bdc3b8d6224bccb76e5495e495fd8f5ecc47a05"
+		}
+	]
+}

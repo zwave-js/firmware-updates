@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW1002 / 14288",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3133"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.23",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/14288%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.23/ZW1002_Enbrighten-GE_14288_5.23.hex",
+			"integrity": "sha256:f7a7f0f925c679d4e13fc74ecd79d8b8b697bdb26d02e9dd6822d5a2529d63f3"
+		},
+		{
+			"version": "5.24",
+			"changelog": "1. Updated Devkit from 6.51.09 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/14288%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.24/ZW1002_Enbrighten-GE_14288_5.24.hex",
+			"integrity": "sha256:841a5e3d7226c9f9b2eec8472a15b4b9db82042406900247761ce786158764ad"
+		},
+		{
+			"version": "5.26",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/14288%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.26/ZW1002_Enbrighten-GE_14288_5.26.hex",
+			"integrity": "sha256:9a60517d2f300bda4be3e56c5eca2687bb5e1de40c06349fb8519921737b72cd"
+		}
+	]
+}

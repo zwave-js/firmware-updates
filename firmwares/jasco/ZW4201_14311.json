@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4201 / 14311",
+			"manufacturerId": "0x0063",
+			"productType": "0x4f50",
+			"productId": "0x3033"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.20",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4201/14311%20-%20Plug-in%20Outdoor%20Smart%20Switch%2C%20500S/5.20/ZW4201_Jasco_14311_5.20.hex",
+			"integrity": "sha256:cbe45f31dc90f4b5f2b2c9f86abe15a150b8da0f1bcb498bb1044800a50d62ca"
+		}
+	]
+}

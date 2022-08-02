@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW3005 / 14321",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3135"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.23",
+			"changelog": "TBD",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3005/14321%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.23/ZW3005_Jasco_14321_5.23.hex",
+			"integrity": "sha256:33b226ee4f02b57019d3fa93b257299ee936bfaaad88183fe0df87af91a89f9f"
+		},
+		{
+			"version": "5.26",
+			"changelog": "1. Added parameter 16 for switch mode\n2. Added parameter 19 for alternate exclusion\n3. Modified the value for parameter 3 (Default = 0)\n4. Modified Switch Mode (Dim the light manually)\n5. Added parameter 20 (Press and hold the bottom button to turn the light to its lowest dimming level)\n6. Modified the feature for Add-On Switch",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3005/14321%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.26/ZW3005_Jasco_14321_5.26.hex",
+			"integrity": "sha256:6d4ebf9c389d15230e7aae1407d17a8baee5b62d64c0703a0fccf5f6c2899dd5"
+		},
+		{
+			"version": "5.29",
+			"changelog": "1. Fixed scene actuator and scene activation\n2. Modified the dimming duration for Command Class Switch_Multilevel_Set",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3005/14321%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.29/ZW3005_Jasco_14321_5.29.hex",
+			"integrity": "sha256:e305eb9ea544fe8a3ee678dc5c54197009c91d5b3de207040ce22bdc125a7a65"
+		}
+	]
+}

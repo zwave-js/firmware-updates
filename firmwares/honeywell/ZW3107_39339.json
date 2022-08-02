@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW3107 / 39339",
+			"manufacturerId": "0x0039",
+			"productType": "0x5044",
+			"productId": "0x3033"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.21",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW3107/39339%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%20Simultaneous%2C%20500S/5.21/ZW3107_Honeywell_39339_5.21.hex",
+			"integrity": "sha256:7bf4b7a04dc58b3ea760cb49932de2d35864f13d5ab7c1bb5f9fb7f4dc1cb8cb"
+		}
+	]
+}

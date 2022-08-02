@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4009 / 46563",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3138"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4009/46563%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009_Jasco_46563_5.53.otz",
+			"integrity": "sha256:c28a3ae15394652d8c10bc88493ced9360ea953a9b4a6030de764fe92a35a977"
+		},
+		{
+			"version": "5.54",
+			"changelog": "1. Modify the feature for ON button",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4009/46563%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4009_Jasco_46563_5.54.otz",
+			"integrity": "sha256:72be223922dc327c603213ce40ae7e1f84d92d25584f59a95825c9d7bcb596fc"
+		}
+	]
+}

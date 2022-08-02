@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW6305 / 43973",
+			"manufacturerId": "0x0063",
+			"productType": "0x4953",
+			"productId": "0x3235"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.55",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW6305/43973%20-%20Slim%20Door%20and%20Window%20Sensor%2C%20500S/5.55/ZW6305_Jasco_43973_5.55.otz",
+			"integrity": "sha256:f1b5fe9788b02b07371679a19aa2382960694281ef6e61526edf9bd093e2f9e0"
+		}
+	]
+}

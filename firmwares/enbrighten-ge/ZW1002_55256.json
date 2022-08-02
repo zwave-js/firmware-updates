@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW1002 / 55256",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3234"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.51",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW1002/55256%20-%20In-Wall%20Smart%20Outlet%2C%20Tamper%20Resistant%2C%20500S/5.51/ZW1002_Enbrighten-GE_55256_5.51.otz",
+			"integrity": "sha256:25d1bfc234ea986cbdb45d91c91b57840e3a32d6603684ffe583bfb42dc55d8b"
+		}
+	]
+}

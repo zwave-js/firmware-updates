@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW6301 / 32563",
+			"manufacturerId": "0x0063",
+			"productType": "0x4953",
+			"productId": "0x3032"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.35",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW6301/32563%20-%20Hinge%20Pin%20Door%20Sensor%2C%20500S/1.35/ZW6301_Enbrighten-GE_32563_1.35.hex",
+			"integrity": "sha256:33b3675b835ae8ce50bd495cc4e0fb0be6028baec917b5b0fe0857d5a7e3d4a4"
+		},
+		{
+			"version": "5.20",
+			"changelog": "1. Modified the version number",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW6301/32563%20-%20Hinge%20Pin%20Door%20Sensor%2C%20500S/5.20/ZW6301_Enbrighten-GE_32563_5.20.hex",
+			"integrity": "sha256:f69df88f66c42036d2dc3eca4a8eb8ccc93bec221c465097afdfcf89f16d7902"
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4008DV / 43072",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3139"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4008DV/43072%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20120%2B277%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008DV_Enbrighten-GE_43072_5.53.otz",
+			"integrity": "sha256:1a1e24945b09f4f5599c18dd56ad74de3969fbf0b5dc583abb8f33a29f8f8440"
+		}
+	]
+}

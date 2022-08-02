@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW5305 / 34174",
+			"manufacturerId": "0x0063",
+			"productType": "0x4843",
+			"productId": "0x3033"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.11",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW5305/34174%20-%20Portable%202-Scene%20Controller%2C%20500S/5.11/ZW5305_Enbrighten-GE_34174_5.11.hex",
+			"integrity": "sha256:8b7fc99916a525a015e17eb3c6beb6bba06d185cb91914313078c80ef291bdd9"
+		}
+	]
+}

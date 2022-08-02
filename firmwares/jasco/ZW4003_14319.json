@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4003 / 14319",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3131"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.21",
+			"changelog": "1. Updated the devkit from 6.51.06 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4003/14319%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.21/ZW4003_Jasco_14319_5.21.hex",
+			"integrity": "sha256:106f73c1defe6ec6b374d5f31d8d8afe560a14903050a50a226fe431b56649a5"
+		},
+		{
+			"version": "5.22",
+			"changelog": "1. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4003/14319%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20500S/5.22/ZW4003_Jasco_14319_5.22.hex",
+			"integrity": "sha256:2765babf421bebc254a78aab8a4321f7c0d074aad0b0c71bb0ed5de78d343278"
+		}
+	]
+}

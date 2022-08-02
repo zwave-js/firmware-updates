@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4105 / 28177",
+			"manufacturerId": "0x0063",
+			"productType": "0x5052",
+			"productId": "0x3132"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.22",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4105/28177%20-%20Plug-in%202-Outlet%20Smart%20Switch%20with%20USB%2C%20500S/5.22/ZW4105_Enbrighten-GE_28177_5.22.hex",
+			"integrity": "sha256:6a53cd8e935fcaaa0a3402d57a710b999aec69f97e36125f4089f30cafb93e60"
+		}
+	]
+}

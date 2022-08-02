@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW3104 / 28166",
+			"manufacturerId": "0x0063",
+			"productType": "0x5044",
+			"productId": "0x3037"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.21",
+			"changelog": "1. Modified the button press process to change the LED status\n2. Modified the value to 2 for parameters 8, 10 and 12\n3. Modified the asscoation to 3 groups (5 nodes each group)\n4. Added Instantaneous reports CC, Scene Activation CC and Scene Actuator CC\n5. Modified the button press process for association group 2 and 3\n6. Modified the lifeline assocation group, 5 nodes will send singlecast message when the device is reset locally\n7. Removed CRC\n8. Updated to S-0\n9. Modified some command classes to support both security and non-security networks\n10. Updated the multilevel command class to version 2\n11. Added parameter 6\n12. Modified the default status for LED\n13. Dimming fix (bKeep) is added for LED light bulb flickering improvement",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW3104/28166%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.21/ZW3104_Jasco_28166_5.21.hex",
+			"integrity": "sha256:b2218758a1a4f009013314fa9a9ac3d7ec47a5376454c48b55dfe3e90962218f"
+		}
+	]
+}

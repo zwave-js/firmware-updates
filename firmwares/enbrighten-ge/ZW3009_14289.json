@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW3009 / 14289",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3233"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.12",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW3009/14289%20-%20In-Wall%20Capacitive%20Touch%20Smart%20Dimmer%2C%20500S/5.12/ZW3009_Enbrighten-GE_14289_5.12.hex",
+			"integrity": "sha256:c4261ea1218c7d67db51b3568701109e901b5657382a1c06f3c4d4ec1f0be21d"
+		}
+	]
+}

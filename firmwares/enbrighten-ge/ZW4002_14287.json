@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4002 / 14287",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3131"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.22",
+			"changelog": "1. Fixed the reset and exclusion failed status if the host is powered off and associated with G1, G2 and G3\n2. Fixed the manual reset failed status if the host is powered off and excluded\n3. Updated the Devkit from 6.51.06 to 6.51.10",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4002/14287%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.22/ZW4002_Enbrighten-GE_14287_5.22.hex",
+			"integrity": "sha256:d52a861d514f748d9204e1493421859e083c53980df5488d1c0fa22daeef69df"
+		},
+		{
+			"version": "5.24",
+			"changelog": "1. Added parameter 3\n2. Added parameter 19 for alternate exclusion",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4002/14287%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.24/ZW4002_Enbrighten-GE_14287_5.24.hex",
+			"integrity": "sha256:6a461bebcd96823b7d261506500fe2f05bd57b1b5c265955813fb2d55dfe0299"
+		}
+	]
+}

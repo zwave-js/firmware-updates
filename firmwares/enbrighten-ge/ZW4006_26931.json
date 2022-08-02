@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZW4006 / 26931",
+			"manufacturerId": "0x0063",
+			"productType": "0x494d",
+			"productId": "0x3032"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.38",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4006/26931%20-%20In-Wall%20Smart%20Motion%20Switch%2C%20500S/5.38/ZW4006_Enbrighten-GE_26931_5.38.hex",
+			"integrity": "sha256:a4615f8d8df265f3d411604baeeb7f445458c08dd3137691193d12c4a71d7a16"
+		},
+		{
+			"version": "5.39",
+			"changelog": "1. Fixed Press and Hold timing to ensure light turns on if button is held instead of Pressed and Released",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Enbrighten-GE/ZW4006/26931%20-%20In-Wall%20Smart%20Motion%20Switch%2C%20500S/5.39/ZW4006_Enbrighten-GE_26931_5.39.hex",
+			"integrity": "sha256:4ee59f36e81415b72da5a4e5655ea7e954d57f664de7410debcbd61043b737ba"
+		}
+	]
+}

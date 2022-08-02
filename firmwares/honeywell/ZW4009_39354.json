@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Honeywell",
+			"model": "ZW4009 / 39354",
+			"manufacturerId": "0x0039",
+			"productType": "0x4952",
+			"productId": "0x3137"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.53",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Honeywell/ZW4009/39354%20-%20In-Wall%20Smart%20Toggle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4009_Honeywell_39354_5.53.otz",
+			"integrity": "sha256:35b020c56b25a173c85842b91088851f82b0b288f3bcd3e45c7d4434b90da4ad"
+		}
+	]
+}

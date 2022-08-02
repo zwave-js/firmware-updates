@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZW4203 / 14325",
+			"manufacturerId": "0x0063",
+			"productType": "0x4f50",
+			"productId": "0x3035"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.52",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/main/zwave/Jasco/ZW4203/14325%20-%20Plug-in%20Outdoor%20Smart%20Switch%20V2%2C%20500S/5.52/ZW4203_Jasco_14325_5.52.otz",
+			"integrity": "sha256:a5172e80e5d5e40500a4fdda6696a7abab8e83d2abf95852982c3ba3d8fd2970"
+		}
+	]
+}
