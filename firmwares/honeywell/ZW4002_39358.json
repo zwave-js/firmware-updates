@@ -12,7 +12,7 @@
 		{
 			"version": "5.24",
 			"changelog": "1. Updated the Devkit from 6.51.06 to 6.51.10\n2. Added parameter 3\n3. Added parameter 19 for alternate exclusion",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW4002/39358%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.24/ZW4002_Honeywell_39358_5.24.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW4002/39358%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.24/ZW4002_Honeywell_39358_5.24.hex",
 			"integrity": "sha256:cc5dcca17c6ef1542ac7ae2bd57ac0755ef6609cecc6b0c3abaaf9eaec95af2a"
 		}
 	]

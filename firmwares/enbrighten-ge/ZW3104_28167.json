@@ -12,13 +12,13 @@
 		{
 			"version": "5.21",
 			"changelog": "1. Modified the button press process to change the LED status\n2. Modified the value to 2 for the parameters 8, 10 and 12\n3. Modified the asscoation to 3 groups (5 node each group)\n4. Added Instantaneous Reports CC, Scene Activation CC and Scene Actuator CC\n5. Modified the button press process for association groups 2 and 3\n6. Modified the lifeline assocation group, 5 node will send singlecast message when the devicereset locally\n7. Removed CRC\n8. Updated to S-0\n9. Modified some command classes to support both security and non-security networks\n10. Updated the multilevel command class to version 2\n11. Added parameter 6\n12. Modify the default status for LED",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3104/28167%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.21/ZW3104_Enbrighten-GE_28167_5.21.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3104/28167%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.21/ZW3104_Enbrighten-GE_28167_5.21.hex",
 			"integrity": "sha256:3209866fd3a2258b6f5d2310622790768d6e0dc27f54d1e5682980049b48d7ba"
 		},
 		{
 			"version": "5.25",
 			"changelog": "1. Added parameter 16\n2. Added minimum dim level\n3. Added button press process to enter switch mode\n4. Fixed Scene Actuator Configuration\n5. Fixed Scene Activation command class\n6. Fixed the dimming duration for command class Switch Multilevel Set",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3104/28167%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.25/ZW3104_Enbrighten-GE_28167_5.25.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3104/28167%20-%20Plug-in%201-Outlet%20Smart%20Dimmer%2C%20500S/5.25/ZW3104_Enbrighten-GE_28167_5.25.hex",
 			"integrity": "sha256:01cd6391d69380f1edee6764ff83fe682d490d81353a138f414457ef609a7fa1"
 		}
 	]

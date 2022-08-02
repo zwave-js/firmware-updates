@@ -12,7 +12,7 @@
 		{
 			"version": "5.55",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW4007/14285%20-%20Direct%20Wire%2040A%20Outdoor%20Smart%20Switch%2C%20500S/5.55/ZW4007_Enbrighten-GE_14285_5.55.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4007/14285%20-%20Direct%20Wire%2040A%20Outdoor%20Smart%20Switch%2C%20500S/5.55/ZW4007_Enbrighten-GE_14285_5.55.otz",
 			"integrity": "sha256:b8b8c8748a66befafadbcc31efd10e0b44df0b8c12416b63d484a31b26fb3aab"
 		}
 	]

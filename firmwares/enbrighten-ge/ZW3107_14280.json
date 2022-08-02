@@ -12,7 +12,7 @@
 		{
 			"version": "5.20",
 			"changelog": "1. Updated the multilevel command class to version 2\n2. Added parameter 6\n3. Fixed dimming behavior\n3. Modified the default setting for LED indication",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3107/14280%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%20Simultaneous%2C%20500S/5.20/ZW3107_Enbrighten-GE_14280_5.20.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3107/14280%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%20Simultaneous%2C%20500S/5.20/ZW3107_Enbrighten-GE_14280_5.20.hex",
 			"integrity": "sha256:6260d8ac99ee55623632b76beb9d35f5bdf3e0482e9c7abcc693a691410b2210"
 		}
 	]

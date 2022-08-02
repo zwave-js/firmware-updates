@@ -12,13 +12,13 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3011/46204%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3011_Enbrighten-GE_46204_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3011/46204%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3011_Enbrighten-GE_46204_5.53.otz",
 			"integrity": "sha256:4b21da8b65fa3fcc75c076d53d85b18a7097abbaa7bdc1c7c6e965ae5f55a318"
 		},
 		{
 			"version": "5.54",
 			"changelog": "1. Adjusted low-end dimming threshold to match 14294",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3011/46204%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3011_Enbrighten-GE_46204_5.54.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3011/46204%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3011_Enbrighten-GE_46204_5.54.otz",
 			"integrity": "sha256:d0fa32a98f6829e29e2e79667cb7f4f5b76a04b7bb25060412f3c6a6c8743273"
 		}
 	]

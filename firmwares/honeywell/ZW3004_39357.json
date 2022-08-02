@@ -12,13 +12,13 @@
 		{
 			"version": "5.25",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW3004/39357%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.25/ZW3004_Honeywell_39357_5.25.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW3004/39357%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.25/ZW3004_Honeywell_39357_5.25.hex",
 			"integrity": "sha256:1f0c8c01ec5b9108f173d48ff623196a66363d20c436941b6f87fa28e64aafb0"
 		},
 		{
 			"version": "5.26",
 			"changelog": "1. Reworked version data for consistency",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW3004/39357%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3004_Honeywell_39357_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW3004/39357%20-%20In-Wall%20Smart%20Toggle%20Dimmer%2C%20500S/5.26/ZW3004_Honeywell_39357_5.26.hex",
 			"integrity": "sha256:fe072288d395e84cade356bab48c5a28d786c1fb0397e250751832ba457a3d3f"
 		}
 	]

@@ -12,7 +12,7 @@
 		{
 			"version": "5.50",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW4002/55258%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.50/ZW4002_Enbrighten-GE_55258_5.50.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4002/55258%20-%20In-Wall%20Smart%20Fan%20Speed%20Control%2C%20500S/5.50/ZW4002_Enbrighten-GE_55258_5.50.otz",
 			"integrity": "sha256:59ae4c4f749d3ad22b1d490e9dd0afe855bbd9914337f37a41beb56d62c638b2"
 		}
 	]

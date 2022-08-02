@@ -12,19 +12,19 @@
 		{
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3010_Jasco_46564_5.53.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW3010_Jasco_46564_5.53.otz",
 			"integrity": "sha256:024a60a1e99ef9f47100a0e9d472522cd8ddffe1f330b7489edbbc2eb5444589"
 		},
 		{
 			"version": "5.54",
 			"changelog": "1. Adjusted low-end dimming threshold to match Model 14294",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3010_Jasco_46564_5.54.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW3010_Jasco_46564_5.54.otz",
 			"integrity": "sha256:4707a7c7e713703b8f8da1e06d3a58148854747c4e372054bad5a92484e0d779"
 		},
 		{
 			"version": "5.55",
 			"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary\n3. Valid Value 1 – Reset Switch to Factory Defaults",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.55/ZW3010_Jasco_46564_5.55.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW3010/46564%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.55/ZW3010_Jasco_46564_5.55.otz",
 			"integrity": "sha256:e398ca0eaa28dad1a22442aa2e504c5a145043e67dec49d04f562fdf5b641b57"
 		}
 	]

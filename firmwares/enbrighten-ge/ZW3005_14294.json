@@ -12,13 +12,13 @@
 		{
 			"version": "5.26",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3005/14294%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.26/ZW3005_Enbrighten-GE_14294_5.26.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3005/14294%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.26/ZW3005_Enbrighten-GE_14294_5.26.hex",
 			"integrity": "sha256:9e7841287948fd4208f8f332b4ecb07fdcc1a5290b78b3569b5b60600402701f"
 		},
 		{
 			"version": "5.29",
 			"changelog": "1. Fixed scene actuator and scene activation\n2. Modified the dimming duration for Command Class Switch_Multilevel_Set",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3005/14294%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.29/ZW3005_Enbrighten-GE_14294_5.29.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3005/14294%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.29/ZW3005_Enbrighten-GE_14294_5.29.hex",
 			"integrity": "sha256:bc825b5cf2e665c07e2d459d939817a84338043e20df86271f04da670303a198"
 		}
 	]

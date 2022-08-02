@@ -12,7 +12,7 @@
 		{
 			"version": "5.12",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3009/14289%20-%20In-Wall%20Capacitive%20Touch%20Smart%20Dimmer%2C%20500S/5.12/ZW3009_Enbrighten-GE_14289_5.12.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3009/14289%20-%20In-Wall%20Capacitive%20Touch%20Smart%20Dimmer%2C%20500S/5.12/ZW3009_Enbrighten-GE_14289_5.12.hex",
 			"integrity": "sha256:c4261ea1218c7d67db51b3568701109e901b5657382a1c06f3c4d4ec1f0be21d"
 		}
 	]

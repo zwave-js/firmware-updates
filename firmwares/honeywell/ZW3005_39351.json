@@ -12,7 +12,7 @@
 		{
 			"version": "5.29",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW3005/39351%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.29/ZW3005_Honeywell_39351_5.29.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW3005/39351%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20500S/5.29/ZW3005_Honeywell_39351_5.29.hex",
 			"integrity": "sha256:8c96569e72f356889cddaf6ad3190e5d1b907f2fab06404873fd1d1b918f60e3"
 		}
 	]

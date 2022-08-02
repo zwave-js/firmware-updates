@@ -12,7 +12,7 @@
 		{
 			"version": "5.21",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Honeywell/ZW3107/39339%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%20Simultaneous%2C%20500S/5.21/ZW3107_Honeywell_39339_5.21.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Honeywell/ZW3107/39339%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%2C%20Simultaneous%2C%20500S/5.21/ZW3107_Honeywell_39339_5.21.hex",
 			"integrity": "sha256:7bf4b7a04dc58b3ea760cb49932de2d35864f13d5ab7c1bb5f9fb7f4dc1cb8cb"
 		}
 	]

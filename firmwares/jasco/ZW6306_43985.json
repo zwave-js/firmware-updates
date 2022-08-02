@@ -12,7 +12,7 @@
 		{
 			"version": "5.55",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW6306/43985%20-%20Flood%2BFreeze%20Sensor%2C%20500S/5.55/ZW6306_Jasco_43985_5.55.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW6306/43985%20-%20Flood%2BFreeze%20Sensor%2C%20500S/5.55/ZW6306_Jasco_43985_5.55.otz",
 			"integrity": "sha256:14adb99729bb235e9f006876fa220005d023c3a0d0cea85735b6f1109c5d25b3"
 		}
 	]

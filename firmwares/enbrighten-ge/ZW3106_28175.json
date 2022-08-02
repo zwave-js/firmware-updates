@@ -12,7 +12,7 @@
 		{
 			"version": "5.23",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Enbrighten-GE/ZW3106/28175%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%20with%20USB%2C%20500S/5.23/ZW3106_Enbrighten-GE_28175_5.23.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3106/28175%20-%20Plug-in%202-Outlet%20Smart%20Dimmer%20with%20USB%2C%20500S/5.23/ZW3106_Enbrighten-GE_28175_5.23.hex",
 			"integrity": "sha256:c671d5af6f2377f997f70e6b0b93d52464dbe48e815f5a66dcc9ed902352d835"
 		}
 	]

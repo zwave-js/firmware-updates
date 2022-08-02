@@ -12,7 +12,7 @@
 		{
 			"version": "5.20",
 			"changelog": "1. Original Release Firmware",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/64ac3db078827ebe46ae17be05fb6c5b92d90d48/zwave/Jasco/ZW4201/14311%20-%20Plug-in%20Outdoor%20Smart%20Switch%2C%20500S/5.20/ZW4201_Jasco_14311_5.20.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Jasco/ZW4201/14311%20-%20Plug-in%20Outdoor%20Smart%20Switch%2C%20500S/5.20/ZW4201_Jasco_14311_5.20.hex",
 			"integrity": "sha256:cbe45f31dc90f4b5f2b2c9f86abe15a150b8da0f1bcb498bb1044800a50d62ca"
 		}
 	]
