@@ -105,7 +105,7 @@ Each entry in `"upgrades"` defines a single available firmware update for ALL de
 }
 ```
 
-The changelog MUST NOT be a link. Instead, the changelog text MUST be included in the upgrade definition. It MUST be plaintext or Markdown, encoded so it is a valid JSON string.
+The changelog MUST NOT be a link. Instead, the changelog text MUST be included in the upgrade definition. It MUST be plaintext or Markdown, encoded so it is a valid JSON string. This is easiest if you use our [Changelog Helper Utility](https://zwave-js.github.io/firmware-updates/).
 
 The integrity hash must be generated using the raw firmware data as it will be transferred to the device. If the firmware file is Intel HEX encoded or similar, this must be the hash of the **decoded** data. We've provided a small utility to do this for you, which just requires [Node.js](https://nodejs.org/en/download/) 16.9 or newer to be installed. Then you can run one of the following commands (replace `<url>` or `<file>` with the URL or path to the file):
 
