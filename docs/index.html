@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Z-Wave JS Changelog Helper Utility</title>
+		<link rel="stylesheet" href="./changelog-helper.css" type="text/css" />
+		<script src="./marked.min.js"></script>
+	</head>
+	<body>
+		<h1>Z-Wave JS Changelog Helper Utility</h1>
+
+		<div class="editor-pane">
+			<h2>Edit changelog (as Markdown) here:</h2>
+			<textarea id="markdown" class="inputPane"></textarea>
+		</div>
+
+		<div class="preview-pane">
+			<h2>Check the preview here:</h2>
+			<div id="preview"></div>
+			<div class="copy">
+				<span>And when you're done, </span>
+				<button id="copy" class="button-9">
+					copy escaped changelog
+				</button>
+			</div>
+		</div>
+
+		<script>
+			let hasChange = true;
+			const markdown = document.getElementById("markdown");
+			const preview = document.getElementById("preview");
+			const copyButton = document.getElementById("copy");
+
+			setInterval(() => {
+				if (!hasChange) return;
+
+				preview.innerHTML = marked.parse(markdown.value);
+				hasChange = false;
+			}, 250);
+
+			markdown.addEventListener("input", () => {
+				hasChange = true;
+			});
+
+			copyButton.addEventListener("click", async () => {
+				const obj = { _: markdown.value };
+				const json = JSON.stringify(obj);
+				const escaped = json.slice(6, -2);
+				try {
+					await navigator.clipboard.writeText(escaped);
+					alert("Copied to clipboard!");
+				} catch {
+					alert("Failed to copy to clipboard!");
+				}
+			});
+		</script>
+	</body>
+</html>
