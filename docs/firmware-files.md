@@ -105,6 +105,19 @@ Each entry in `"upgrades"` defines a single available firmware update for ALL de
 }
 ```
 
+The changelog MUST NOT be a link. Instead, the changelog text MUST be included in the upgrade definition. It MUST be plaintext or Markdown, encoded so it is a valid JSON string.
+
+The integrity hash must be generated using the raw firmware data as it will be transferred to the device. If the firmware file is Intel HEX encoded or similar, this must be the hash of the **decoded** data. We've provided a small utility to do this for you, which just requires [Node.js](https://nodejs.org/en/download/) 16.9 or newer to be installed. Then you can run one of the following commands (replace `<url>` or `<file>` with the URL or path to the file):
+
+```sh
+npx @zwave-js/firmware-integrity <url>
+npx @zwave-js/firmware-integrity <file>
+```
+
+and the tool will output the integrity string. More information can be found at https://github.com/zwave-js/firmware-integrity.
+
+### Multiple firmware upgrades
+
 Devices with multiple firmware targets can define multiple downloads in a single entry. The updates are applied in the order they are defined.
 
 ```jsonc
@@ -171,5 +184,3 @@ Content-Disposition: attachment; filename="firmware.otz"
 ```
 
 or included in the URL itself, e.g. https://example.com/firmware.otz.
-
-The integrity hash must be generated using the raw firmware data as it will be transferred to the device. If the firmware file is Intel HEX encoded or similar, this must be the hash of the decoded data.
