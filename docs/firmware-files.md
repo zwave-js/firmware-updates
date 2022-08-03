@@ -118,7 +118,7 @@ and the tool will output the integrity string. More information can be found at 
 
 ### Multiple firmware upgrades
 
-Devices with multiple firmware targets can define multiple downloads in a single entry. The updates are applied in the order they are defined.
+Devices with multiple firmware targets can define multiple downloads in a single entry. The downloads should appear in the order they are meant to be applied.
 
 ```jsonc
 {
@@ -149,6 +149,8 @@ Devices with multiple firmware targets can define multiple downloads in a single
 	]
 }
 ```
+
+### Offer upgrades conditionally
 
 Each entry can further limit the conditions under which it is applicable. Non-matching upgrades will not be offered.
 
