@@ -1,3 +1,5 @@
+import semver from "semver";
+
 export const hexKeyRegex4Digits = /^0x[a-f0-9]{4}$/;
 export const hexKeyRegex2Digits = /^0x[a-f0-9]{2}$/;
 export const firmwareVersionRegex = /^\d{1,3}\.\d{1,3}$/;
@@ -45,6 +47,10 @@ export function formatId(id: number | string): string {
 export function padVersion(version: string): string {
 	if (version.split(".").length === 3) return version;
 	return version + ".0";
+}
+
+export function compareVersions(v1: string, v2: string): -1 | 0 | 1 {
+	return semver.compare(padVersion(v1), padVersion(v2));
 }
 
 // expands object types recursively

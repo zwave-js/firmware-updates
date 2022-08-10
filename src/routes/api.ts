@@ -5,6 +5,7 @@ import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { withCache } from "../lib/cache";
 import { lookupConfig } from "../lib/config";
 import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
+import { compareVersions, padVersion } from "../lib/shared";
 import {
 	clientError,
 	ContentProps,
@@ -106,7 +107,23 @@ export default function register(router: ThrowableRouter): void {
 						firmwareVersion
 					);
 
-					return json(config?.upgrades ?? []);
+					const result =
+						config?.upgrades.map((u) => {
+							// Add missing fields to the returned objects
+							const downgrade =
+								compareVersions(u.version, firmwareVersion) < 0;
+							let normalizedVersion = padVersion(u.version);
+							if (u.channel === "beta")
+								normalizedVersion += "-beta";
+
+							return {
+								...u,
+								downgrade,
+								normalizedVersion,
+							};
+						}) ?? [];
+
+					return json(result);
 				}
 			);
 		}

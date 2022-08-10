@@ -75,6 +75,9 @@
 									"changelog": {
 										"$ref": "#/definitions/changelog"
 									},
+									"channel": {
+										"$ref": "#/definitions/releaseChannel"
+									},
 									"target": {
 										"$ref": "#/definitions/firmwareTarget"
 									},
@@ -104,6 +107,9 @@
 									},
 									"changelog": {
 										"$ref": "#/definitions/changelog"
+									},
+									"channel": {
+										"$ref": "#/definitions/releaseChannel"
 									},
 									"files": {
 										"type": "array",
@@ -163,6 +169,11 @@
 			"type": "string",
 			"format": "uri",
 			"description": "A link to a publicly downloadable file in one of the supported formats, e.g. ota, otz, hex, hec, gbl, etc. The file extension must be provided using the HTTP-Header `Content-Disposition: attachment; filename=\"firmware.otz\"` or included in the URL itself, e.g. https://example.com/firmware.otz"
+		},
+		"releaseChannel": {
+			"enum": ["stable", "beta"],
+			"default": "stable",
+			"description": "Used to assign an upgrade to a specific release channel. \"stable\" is for production-ready, well-tested firmwares. \"beta\" is for beta or pre-release firmwares which are stable enough for public release."
 		},
 		"firmwareTarget": {
 			"type": "number",

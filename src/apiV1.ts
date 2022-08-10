@@ -15,4 +15,11 @@ export const APIv1_RequestSchema = z.object({
 	firmwareVersion: firmwareVersionSchema,
 });
 
-export type APIv1_Response = ExpandRecursively<UpgradeInfo[]>;
+export type APIv1_UpgradeInfo = UpgradeInfo & APIv1_UpgradeMeta;
+
+export interface APIv1_UpgradeMeta {
+	downgrade: boolean;
+	normalizedVersion: string;
+}
+
+export type APIv1_Response = ExpandRecursively<APIv1_UpgradeInfo[]>;

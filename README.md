@@ -49,34 +49,50 @@ X-API-Key: <Your API Key>
 
 The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When no patch version is provided, it will be assumed to be `0`, so `1.6` is equivalent to `1.6.0`.
 
-Example response:
+**Example response:**
 
 ```json
 [
     {
         "version": "1.7",
         "changelog": "* Fixed some bugs\n*Added more bugs",
+        "channel": "stable",
         "files": [
             {
                 "target": 0,
                 "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
                 "url": "https://example.com/firmware/1.7.otz"
             }
-        ]
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.7.0"
     }
 ]
 ```
 
-Response type definition:
+To help applications decide which updates to show and how, additional fields are added to the response:
+
+-   `downgrade`: Whether this version is a downgrade (`false`) or an upgrade (`true`). Applications may want to only show downgrades when specifically requested.
+-   `normalizedVersion`: A normalized, [semver](https://semver.org/) compatible representation of the version field to make it easier to compare them. Examples:
+    -   stable version `1.7` becomes `1.7.0`
+    -   stable version `1.7.0` stays `1.7.0`
+    -   stable version `1.7.2` stays `1.7.2`
+    -   beta version `1.8` becomes `1.8.0-beta`
+    -   beta version `1.8.2` becomes `1.8.2-beta`
+
+**Response type definition:**
 
 ```ts
 type APIv1_Response = {
     version: string;
     changelog: string;
+    channel: "stable" | "beta";
     files: {
         target: number;
         url: string;
         integrity: string;
     }[];
+    downgrade: boolean;
+    normalizedVersion: string;
 }[];
 ```
