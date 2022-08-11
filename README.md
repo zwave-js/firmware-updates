@@ -72,7 +72,7 @@ The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When
 
 To help applications decide which updates to show and how, additional fields are added to the response:
 
--   `downgrade`: Whether this version is a downgrade (`false`) or an upgrade (`true`). Applications may want to only show downgrades when specifically requested.
+-   `downgrade`: Whether this version is a downgrade (`true`) or an upgrade (`false`). Applications may want to only show downgrades when specifically requested.
 -   `normalizedVersion`: A normalized, [semver](https://semver.org/) compatible representation of the version field to make it easier to compare them. Examples:
     -   stable version `1.7` becomes `1.7.0`
     -   stable version `1.7.0` stays `1.7.0`
