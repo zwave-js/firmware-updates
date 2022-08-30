@@ -21,7 +21,7 @@ See [the documentation](docs/firmware-files.md) for more information on how to a
 
 ### API Keys
 
-All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for non-commercial use** or installations in non-commercial environments. Commercial use will be charged to cover the server costs.
+All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for non-commercial use** or installations in non-commercial environments. Commercial use will be charged.
 
 To request an API key, please [reach out](mailto:info@zwave-js.io) and provide the following information:
 
