@@ -8,15 +8,18 @@ import {
 	DeviceIdentifier,
 	IConfig,
 	UpgradeInfo,
-} from "./configSchema";
-import { conditionApplies } from "./Logic";
+} from "./configSchema.js";
+import { conditionApplies } from "./Logic.js";
 import {
 	DeviceID,
 	enumFilesRecursive,
 	FirmwareVersionRange,
 	formatId,
 	padVersion,
-} from "./shared";
+} from "./shared.js";
+
+import { fileURLToPath } from "url";
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
 export const configDir = path.join(__dirname, "../../firmwares");
 let index: ConfigIndexEntry[] | undefined;

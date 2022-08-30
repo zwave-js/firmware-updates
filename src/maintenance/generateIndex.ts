@@ -1,6 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import { configDir, generateIndex } from "../lib/config";
+import { configDir, generateIndex } from "../lib/config.js";
 
 void (async () => {
 	console.log();

@@ -1,7 +1,9 @@
-import { add_operation, apply, RulesLogic } from "json-logic-js";
+import jsonLogic, { type RulesLogic } from "json-logic-js";
 import * as semver from "semver";
-import { parse } from "./LogicParser";
-import { DeviceID, padVersion } from "./shared";
+import { parse } from "./LogicParser.js";
+import { DeviceID, padVersion } from "./shared.js";
+
+const { add_operation, apply } = jsonLogic;
 
 function tryOr<T extends (...args: any[]) => any>(
 	operation: T,

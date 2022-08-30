@@ -6,7 +6,7 @@
 
 import "dotenv/config";
 
-import { encryptAPIKey } from "../lib/apiKeys";
+import { encryptAPIKey } from "../lib/apiKeys.js";
 
 const id = parseInt(process.argv[2]);
 const limit = parseInt(process.argv[3]);

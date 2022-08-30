@@ -1,0 +1,12 @@
+name = "zwave-js-firmware-updates"
+usage_model = "unbound"
+workers_dev = true
+compatibility_date = "2022-08-28"
+
+node_compat = true
+
+main = "build/worker.js"
+
+[build]
+command = "yarn build"
+watch_dir = "build"

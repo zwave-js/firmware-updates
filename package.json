@@ -2,20 +2,22 @@
   "name": "@zwave-js/firmware-updates",
   "version": "0.0.1",
   "description": "The firmware update service for Z-Wave JS",
+  "type": "module",
   "main": "build/server.js",
   "repository": "https://github.com/zwave-js/firmware-updates",
   "author": "Dominic Griesel <dominic.griesel@nabucasa.com>",
   "license": "MIT",
   "scripts": {
     "b": "tsc -p tsconfig.build.json",
-    "build": "yarn run b && ts-node src/maintenance/generateIndex",
+    "build": "yarn run b && ts-node --esm src/maintenance/generateIndex.ts",
     "clean": "yarn run b --clean",
     "watch": "yarn run b --watch --pretty",
     "lint": "eslint .",
     "dev": "nodemon src/server.ts",
     "start": "node build/server.js",
     "test:ci": "ava",
-    "test": "yarn test:ci --watch"
+    "test": "yarn test:ci --watch",
+    "dev:cf": "wrangler dev --local"
   },
   "dependencies": {
     "@fastify/helmet": "^9.1.0",
@@ -29,6 +31,7 @@
     "zod": "^3.17.3"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^3.14.1",
     "@tsconfig/node16": "^1.0.3",
     "@types/eslint": "^8.4.3",
     "@types/json-logic-js": "^2.0.1",
@@ -49,6 +52,7 @@
     "supertest": "^6.2.3",
     "ts-node": "^10.8.1",
     "typescript": "~4.7.4",
+    "wrangler": "^2.0.28",
     "zod-to-json-schema": "^3.17.0"
   },
   "packageManager": "yarn@3.2.1"

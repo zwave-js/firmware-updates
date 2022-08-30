@@ -6,7 +6,12 @@
 		"importsNotUsedAsValues": "error",
 		"pretty": true,
 		"diagnostics": true,
-		"noErrorTruncation": true
+		"noErrorTruncation": true,
+
+		/* Support for Cloudflare */
+		"types": ["@cloudflare/workers-types", "node"],
+		"module": "ES2020",
+		"moduleResolution": "node"
 	},
 	"include": ["src/**/*.ts", "test/**/*.ts"]
 }
