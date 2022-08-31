@@ -10,8 +10,6 @@
 
 		/* Support for Cloudflare */
 		"types": ["@cloudflare/workers-types", "node"],
-		"module": "ES2020",
-		"moduleResolution": "node"
 	},
-	"include": ["src/**/*.ts", "test/**/*.ts"]
+	"include": ["src/**/*.ts", "src/**/*.mts", "test/**/*.ts", "src/worker.ts"]
 }

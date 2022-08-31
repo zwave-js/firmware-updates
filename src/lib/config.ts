@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "fs";
 import JSON5 from "json5";
 import path from "path";
 import semver from "semver";
@@ -8,20 +8,16 @@ import {
 	DeviceIdentifier,
 	IConfig,
 	UpgradeInfo,
-} from "./configSchema.js";
-import { conditionApplies } from "./Logic.js";
+} from "./configSchema";
+import { conditionApplies } from "./Logic";
 import {
 	DeviceID,
 	enumFilesRecursive,
 	FirmwareVersionRange,
 	formatId,
 	padVersion,
-} from "./shared.js";
+} from "./shared.mjs";
 
-import { fileURLToPath } from "url";
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
-
-export const configDir = path.join(__dirname, "../../firmwares");
 let index: ConfigIndexEntry[] | undefined;
 
 export class ConditionalUpdateConfig implements IConfig {
@@ -84,13 +80,13 @@ export interface UpdateConfig {
 	readonly upgrades: readonly UpgradeInfo[];
 }
 
-async function generateIndexWorker<T extends Record<string, unknown>>(
+function generateIndexWorker<T extends Record<string, unknown>>(
 	configDir: string,
 	extractIndexEntries: (config: IConfig) => T[],
-): Promise<(T & { filename: string })[]> {
+): (T & { filename: string })[] {
 	const index: (T & { filename: string })[] = [];
 
-	const configFiles = await enumFilesRecursive(
+	const configFiles = enumFilesRecursive(
 		configDir,
 		(file) =>
 			file.endsWith(".json") &&
@@ -105,7 +101,7 @@ async function generateIndexWorker<T extends Record<string, unknown>>(
 		// Try parsing the file
 
 		try {
-			const fileContent = await fs.readFile(file, "utf8");
+			const fileContent = fs.readFileSync(file, "utf8");
 			const definition = JSON5.parse(fileContent);
 			const config = new ConditionalUpdateConfig(definition);
 			// Add the file to the index
@@ -137,23 +133,22 @@ export interface ConfigIndexEntry {
 	filename: string;
 }
 
-export async function generateIndex(): Promise<ConfigIndexEntry[]> {
-	const index: ConfigIndexEntry[] = await generateIndexWorker(
-		configDir,
-		(config) =>
-			config.devices.map((dev) => ({
-				manufacturerId: dev.manufacturerId,
-				productType: dev.productType,
-				productId: dev.productId,
-				firmwareVersion: dev.firmwareVersion,
-			})),
+export function generateIndex(configDir: string): ConfigIndexEntry[] {
+	return generateIndexWorker(configDir, (config) =>
+		config.devices.map((dev) => ({
+			manufacturerId: dev.manufacturerId,
+			productType: dev.productType,
+			productId: dev.productId,
+			firmwareVersion: dev.firmwareVersion,
+		})),
 	);
-	return index;
 }
 
-export async function loadIndex(): Promise<ConfigIndexEntry[]> {
+export async function loadIndex(
+	configDir: string,
+): Promise<ConfigIndexEntry[]> {
 	const indexFile = path.join(configDir, "index.json");
-	const index = await fs.readFile(indexFile, "utf8");
+	const index = fs.readFileSync(indexFile, "utf8");
 	return JSON5.parse(index);
 }
 
@@ -185,12 +180,13 @@ export function getConfigEntryPredicate(
 }
 
 export async function lookupConfig(
+	configDir: string,
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string,
 ): Promise<UpdateConfig | undefined> {
-	index ??= await loadIndex();
+	index ??= await loadIndex(configDir);
 
 	const entry = index.find(
 		getConfigEntryPredicate(
@@ -204,7 +200,7 @@ export async function lookupConfig(
 
 	// Try parsing the file
 	try {
-		const fileContent = await fs.readFile(
+		const fileContent = fs.readFileSync(
 			path.join(configDir, entry.filename),
 			"utf8",
 		);

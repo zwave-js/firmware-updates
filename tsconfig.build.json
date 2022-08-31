@@ -2,11 +2,14 @@
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
 		"noEmit": false,
+
+		/* Support for Cloudflare */
+		"types": ["@cloudflare/workers-types", "node"],
+		"module": "ES2020",
+		"moduleResolution": "node"
 	},
 	"include": [
 		"src/**/*.ts"
 	],
-	"exclude": [
-		"src/**/*.test.ts"
-	],
+	"exclude": ["src/**/*.test.ts"]
 }

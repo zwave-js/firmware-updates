@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
 
 export const hexKeyRegex4Digits = /^0x[a-f0-9]{4}$/;
@@ -34,18 +34,18 @@ export function getErrorMessage(e: unknown, includeStack?: boolean): string {
 	return String(e);
 }
 
-export async function enumFilesRecursive(
+export function enumFilesRecursive(
 	rootDir: string,
 	predicate?: (filename: string) => boolean,
-): Promise<string[]> {
+): string[] {
 	const ret: string[] = [];
 	try {
-		const filesAndDirs = await fs.readdir(rootDir);
+		const filesAndDirs = fs.readdirSync(rootDir);
 		for (const f of filesAndDirs) {
 			const fullPath = path.join(rootDir, f);
 
-			if ((await fs.stat(fullPath)).isDirectory()) {
-				ret.push(...(await enumFilesRecursive(fullPath, predicate)));
+			if (fs.statSync(fullPath).isDirectory()) {
+				ret.push(...enumFilesRecursive(fullPath, predicate));
 			} else if (predicate?.(fullPath)) {
 				ret.push(fullPath);
 			}

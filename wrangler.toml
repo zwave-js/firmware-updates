@@ -9,4 +9,19 @@ main = "build/worker.js"
 
 [build]
 command = "yarn build"
-watch_dir = "build"
+watch_dir = "src"
+
+# Required for Miniflare:
+[build.upload]
+format = "modules"
+
+[miniflare]
+port = 8787
+watch = true
+
+cache = false
+env_path = ".env"
+
+kv_persist = true
+do_persist = true
+r2_persist = true

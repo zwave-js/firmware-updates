@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { build } from "./app";
+import { build } from "./app.js";
 
 async function start() {
 	let port = parseInt(process.env.PORT!);

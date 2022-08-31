@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared.js";
+import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared_safe";
 
 export const firmwareVersionSchema = z
 	.string()

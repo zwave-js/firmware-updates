@@ -17,6 +17,7 @@ node_modules/
 
 .secrets
 .env
+.dev.vars
 keys.txt
 
 # Auto-generated firmware index
