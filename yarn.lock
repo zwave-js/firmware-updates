@@ -430,6 +430,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/itty-router-extras@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@types/itty-router-extras@npm:0.4.0"
+  dependencies:
+    itty-router: ^2.3.10
+  checksum: 615c0de94e8a06d4db33262d2bb9a348ffb76aaad4a6ebf103771fae42d0458879815c1c604a601b7e95e553f11a662b780125a8054e101cd7fe124278a4d1a3
+  languageName: node
+  linkType: hard
+
 "@types/json-logic-js@npm:^2.0.1":
   version: 2.0.1
   resolution: "@types/json-logic-js@npm:2.0.1"
@@ -625,6 +634,7 @@ __metadata:
     "@cloudflare/workers-types": ^3.14.1
     "@tsconfig/node16": ^1.0.3
     "@types/eslint": ^8.4.3
+    "@types/itty-router-extras": ^0.4.0
     "@types/json-logic-js": ^2.0.1
     "@types/node": ^18.0.0
     "@types/prettier": ^2
@@ -639,6 +649,9 @@ __metadata:
     eslint: ^8.18.0
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.1.0
+    itty-durable: ^1.2.0
+    itty-router: ^2.6.1
+    itty-router-extras: ^0.4.2
     json-logic-js: ^2.0.2
     json5: ^2.2.1
     miniflare: ^2.7.1
@@ -2725,6 +2738,30 @@ __metadata:
   version: 2.0.0
   resolution: "isexe@npm:2.0.0"
   checksum: 26bf6c5480dda5161c820c5b5c751ae1e766c587b1f951ea3fcfc973bafb7831ae5b54a31a69bd670220e42e99ec154475025a468eae58ea262f813fdc8d1c62
+  languageName: node
+  linkType: hard
+
+"itty-durable@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "itty-durable@npm:1.2.0"
+  dependencies:
+    itty-router: ^2.6.1
+    itty-router-extras: ^0.4.2
+  checksum: 11e945a19b56c5e5ab896a7eaf042f4d2f8e760af528cac7d21468aac7e3c47a604365518720ffcda719dc2016b6babb5864f4ed21124594d892b11a7cab1e64
+  languageName: node
+  linkType: hard
+
+"itty-router-extras@npm:^0.4.2":
+  version: 0.4.2
+  resolution: "itty-router-extras@npm:0.4.2"
+  checksum: 3d98dac81561a9d7aab19f35c5a23af23ad5ff035c57b221c8991a6e6f79faf023e107c1c368af1c61b77e3861263967b0c7957c86ecfaed8879ae13b09bffe8
+  languageName: node
+  linkType: hard
+
+"itty-router@npm:^2.3.10, itty-router@npm:^2.6.1":
+  version: 2.6.1
+  resolution: "itty-router@npm:2.6.1"
+  checksum: 9305e00e9a84d5adc15920207f69efc203cb73f408306040e2196d3e57b2f36e5792f07b1ac08577768f8f4f258bef6086e0c18bd9955ecf5ee631e2bb231d88
   languageName: node
   linkType: hard
 

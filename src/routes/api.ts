@@ -1,50 +1,75 @@
+import { withDurables } from "itty-durable";
+import { json, type ThrowableRouter } from "itty-router-extras";
 import { APIv1_RequestSchema } from "../apiV1";
-import type { Router } from "../lib/router";
+import type { RateLimiterProps } from "../durable_objects/RateLimiter";
+import {
+	clientError,
+	ContentProps,
+	type RequestWithProps,
+} from "../lib/shared_safe";
+import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
+import type { CloudflareEnvironment } from "../worker";
 
-export default function register(router: Router): void {
-	// TODO: Re-enable API KEY
-	// if (process.env.API_REQUIRE_KEY !== "false") {
-	// 	await app.register(import("../plugins/checkAPIKey"));
-	// }
+export default function register(router: ThrowableRouter): void {
+	// Check API keys and apply rate limiter
+	router.all("/api/*", withAPIKey, withDurables({ parse: true }), (async (
+		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
+		env: CloudflareEnvironment
+	) => {
+		const RateLimiter = req.RateLimiter.get("_default");
 
-	// TODO: Re-enable rate limiter
-	// await app.register(import("@fastify/rate-limit"), {
-	// 	global: true,
-	// 	keyGenerator:
-	// 		process.env.API_REQUIRE_KEY !== "false"
-	// 			? (req) => getAPIKey(req)?.id.toString() ?? "anonymous"
-	// 			: undefined,
-	// 	max: (req) => getAPIKey(req)?.rateLimit ?? 1000,
-	// 	timeWindow: "1 hour",
-	// });
+		const result = await RateLimiter.request(
+			req.apiKey?.id ?? 0,
+			req.apiKey?.rateLimit ?? 3
+		);
 
-	router.post("/api/v1/updates", async ({ req, res }) => {
-		const result = await APIv1_RequestSchema.safeParseAsync(req.body);
-		if (!result.success) {
-			// Invalid request
-			res.status = 400;
-			res.body = result.error.format();
-			console.log(res.body);
-			return;
+		env.responseHeaders = {
+			...env.responseHeaders,
+			"x-ratelimit-limit": result.maxPerHour.toString(),
+			"x-ratelimit-remaining": result.remaining.toString(),
+			"x-ratelimit-reset": Math.ceil(result.resetDate / 1000).toString(),
+		};
+
+		if (result.limitExceeded) {
+			// Rate limit exceeded
+			return new Response(undefined, {
+				status: 429,
+				headers: {
+					"retry-after": Math.ceil(
+						(result.resetDate - Date.now()) / 1000
+					).toString(),
+				},
+			});
 		}
-		const { manufacturerId, productType, productId, firmwareVersion } =
-			result.data;
+	}) as any);
 
-		// const config = await lookupConfig(
-		// 	// TODO: Make this dynamic
-		// 	"/home/dominic/Repositories/firmware-updates/firmwares",
-		// 	manufacturerId,
-		// 	productType,
-		// 	productId,
-		// 	firmwareVersion,
-		// );
-		const config = undefined as any;
-		if (!config) {
-			// Config not found
-			res.body = [];
-			return;
+	router.post(
+		"/api/v1/updates",
+		async (req: RequestWithProps<[ContentProps]>) => {
+			const result = await APIv1_RequestSchema.safeParseAsync(
+				req.content
+			);
+			if (!result.success) {
+				return clientError(result.error.format() as any);
+			}
+			const { manufacturerId, productType, productId, firmwareVersion } =
+				result.data;
+
+			// const config = await lookupConfig(
+			// 	// TODO: Make this dynamic
+			// 	"/home/dominic/Repositories/firmware-updates/firmwares",
+			// 	manufacturerId,
+			// 	productType,
+			// 	productId,
+			// 	firmwareVersion,
+			// );
+			const config = undefined as any;
+			if (!config) {
+				// Config not found
+				return json([]);
+			}
+
+			return json(config.updates);
 		}
-
-		res.body = config.upgrades;
-	});
+	);
 }

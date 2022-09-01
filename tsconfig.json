@@ -10,6 +10,13 @@
 
 		/* Support for Cloudflare */
 		"types": ["@cloudflare/workers-types", "node"],
+		"target": "ESNext"
 	},
-	"include": ["src/**/*.ts", "src/**/*.mts", "test/**/*.ts", "src/worker.ts"]
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.mts",
+		"test/**/*.ts",
+		"src/worker.ts",
+		"src/maintenance/makeAPIKey.ts"
+	]
 }

@@ -15,6 +15,11 @@ watch_dir = "src"
 [build.upload]
 format = "modules"
 
+[durable_objects]
+bindings = [
+  {name = "RateLimiter", class_name = "RateLimiterDurableObject"},
+]
+
 [miniflare]
 port = 8787
 watch = true
