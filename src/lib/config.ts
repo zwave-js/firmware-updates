@@ -1,6 +1,5 @@
-import fs from "fs";
 import JSON5 from "json5";
-import path from "path";
+import path from "path-browserify";
 import semver from "semver";
 import {
 	ConditionalUpgradeInfo,
@@ -9,14 +8,9 @@ import {
 	IConfig,
 	UpgradeInfo,
 } from "./configSchema";
+import type { FileSystem } from "./fs/filesystem";
 import { conditionApplies } from "./Logic";
-import {
-	DeviceID,
-	enumFilesRecursive,
-	FirmwareVersionRange,
-	formatId,
-	padVersion,
-} from "./shared.mjs";
+import { DeviceID, FirmwareVersionRange, formatId, padVersion } from "./shared";
 
 let index: ConfigIndexEntry[] | undefined;
 
@@ -33,7 +27,7 @@ export class ConditionalUpdateConfig implements IConfig {
 			for (const file of upgrade.files) {
 				if (targets.has(file.target)) {
 					throw new Error(
-						`Duplicate target ${file.target} in upgrades[${i}]`,
+						`Duplicate target ${file.target} in upgrades[${i}]`
 					);
 				}
 				targets.add(file.target);
@@ -47,7 +41,7 @@ export class ConditionalUpdateConfig implements IConfig {
 			for (const file of upgrade.files) {
 				if (urls.has(file.url)) {
 					throw new Error(
-						`Duplicate URL ${file.url} in upgrades[${i}]`,
+						`Duplicate URL ${file.url} in upgrades[${i}]`
 					);
 				}
 				urls.add(file.url);
@@ -68,7 +62,7 @@ export class ConditionalUpdateConfig implements IConfig {
 				.filter(
 					(upgrade) =>
 						upgrade.version !== deviceId.firmwareVersion &&
-						conditionApplies(upgrade, deviceId),
+						conditionApplies(upgrade, deviceId)
 				)
 				.map(({ $if, ...upgrade }) => upgrade),
 		};
@@ -80,20 +74,20 @@ export interface UpdateConfig {
 	readonly upgrades: readonly UpgradeInfo[];
 }
 
-function generateIndexWorker<T extends Record<string, unknown>>(
+async function generateIndexWorker<T extends Record<string, unknown>>(
+	fs: FileSystem,
 	configDir: string,
-	extractIndexEntries: (config: IConfig) => T[],
-): (T & { filename: string })[] {
+	extractIndexEntries: (config: IConfig) => T[]
+): Promise<(T & { filename: string })[]> {
 	const index: (T & { filename: string })[] = [];
 
-	const configFiles = enumFilesRecursive(
-		configDir,
+	const configFiles = (await fs.readDir(configDir, true)).filter(
 		(file) =>
 			file.endsWith(".json") &&
 			!file.endsWith("index.json") &&
 			!path.basename(file).startsWith("_") &&
 			!file.includes("/templates/") &&
-			!file.includes("\\templates\\"),
+			!file.includes("\\templates\\")
 	);
 
 	for (const file of configFiles) {
@@ -101,7 +95,7 @@ function generateIndexWorker<T extends Record<string, unknown>>(
 		// Try parsing the file
 
 		try {
-			const fileContent = fs.readFileSync(file, "utf8");
+			const fileContent = await fs.readFile(file);
 			const definition = JSON5.parse(fileContent);
 			const config = new ConditionalUpdateConfig(definition);
 			// Add the file to the index
@@ -112,7 +106,7 @@ function generateIndexWorker<T extends Record<string, unknown>>(
 						filename: relativePath,
 					};
 					return ret;
-				}),
+				})
 			);
 		} catch (e) {
 			const message = `Error parsing config file ${relativePath}: ${
@@ -133,22 +127,26 @@ export interface ConfigIndexEntry {
 	filename: string;
 }
 
-export function generateIndex(configDir: string): ConfigIndexEntry[] {
-	return generateIndexWorker(configDir, (config) =>
+export function generateIndex(
+	fs: FileSystem,
+	configDir: string
+): Promise<ConfigIndexEntry[]> {
+	return generateIndexWorker(fs, configDir, (config) =>
 		config.devices.map((dev) => ({
 			manufacturerId: dev.manufacturerId,
 			productType: dev.productType,
 			productId: dev.productId,
 			firmwareVersion: dev.firmwareVersion,
-		})),
+		}))
 	);
 }
 
 export async function loadIndex(
-	configDir: string,
+	fs: FileSystem,
+	configDir: string
 ): Promise<ConfigIndexEntry[]> {
 	const indexFile = path.join(configDir, "index.json");
-	const index = fs.readFileSync(indexFile, "utf8");
+	const index = await fs.readFile(indexFile);
 	return JSON5.parse(index);
 }
 
@@ -156,7 +154,7 @@ export function getConfigEntryPredicate(
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
-	firmwareVersion: string,
+	firmwareVersion: string
 ): (entry: ConfigIndexEntry) => boolean {
 	return (entry) => {
 		if (entry.manufacturerId !== formatId(manufacturerId)) return false;
@@ -167,11 +165,11 @@ export function getConfigEntryPredicate(
 			return (
 				semver.lte(
 					padVersion(entry.firmwareVersion.min),
-					padVersion(firmwareVersion),
+					padVersion(firmwareVersion)
 				) &&
 				semver.gte(
 					padVersion(entry.firmwareVersion.max),
-					padVersion(firmwareVersion),
+					padVersion(firmwareVersion)
 				)
 			);
 		}
@@ -180,29 +178,29 @@ export function getConfigEntryPredicate(
 }
 
 export async function lookupConfig(
+	fs: FileSystem,
 	configDir: string,
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
-	firmwareVersion: string,
+	firmwareVersion: string
 ): Promise<UpdateConfig | undefined> {
-	index ??= await loadIndex(configDir);
+	index ??= await loadIndex(fs, configDir);
 
 	const entry = index.find(
 		getConfigEntryPredicate(
 			manufacturerId,
 			productType,
 			productId,
-			firmwareVersion,
-		),
+			firmwareVersion
+		)
 	);
 	if (!entry) return;
 
 	// Try parsing the file
 	try {
-		const fileContent = fs.readFileSync(
-			path.join(configDir, entry.filename),
-			"utf8",
+		const fileContent = await fs.readFile(
+			path.join(configDir, entry.filename)
 		);
 		const definition = JSON5.parse(fileContent);
 		const ret = new ConditionalUpdateConfig(definition);

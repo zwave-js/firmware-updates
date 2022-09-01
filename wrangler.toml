@@ -20,6 +20,11 @@ bindings = [
   {name = "RateLimiter", class_name = "RateLimiterDurableObject"},
 ]
 
+[[r2_buckets]]
+binding = "CONFIG_FILES"
+bucket_name = "abcdefg"
+
+
 [miniflare]
 port = 8787
 watch = true

@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import { error } from "itty-router-extras";
 
 export const hexKeyRegex4Digits = /^0x[a-f0-9]{4}$/;
 export const hexKeyRegex2Digits = /^0x[a-f0-9]{2}$/;
@@ -34,31 +33,6 @@ export function getErrorMessage(e: unknown, includeStack?: boolean): string {
 	return String(e);
 }
 
-export function enumFilesRecursive(
-	rootDir: string,
-	predicate?: (filename: string) => boolean,
-): string[] {
-	const ret: string[] = [];
-	try {
-		const filesAndDirs = fs.readdirSync(rootDir);
-		for (const f of filesAndDirs) {
-			const fullPath = path.join(rootDir, f);
-
-			if (fs.statSync(fullPath).isDirectory()) {
-				ret.push(...enumFilesRecursive(fullPath, predicate));
-			} else if (predicate?.(fullPath)) {
-				ret.push(fullPath);
-			}
-		}
-	} catch (e) {
-		console.error(
-			`Cannot read directory: "${rootDir}": ${getErrorMessage(e, true)}`,
-		);
-	}
-
-	return ret;
-}
-
 /**
  * Formats an ID as a 4-digit lowercase hexadecimal string, to guarantee a representation that matches the Z-Wave specs.
  * This is meant to be used to display manufacturer ID, product type and product ID, etc.
@@ -75,9 +49,62 @@ export function padVersion(version: string): string {
 	return version + ".0";
 }
 
+export function array2hex(arr: Uint8Array): string {
+	return [...arr].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+export function hex2array(hex: string): Uint8Array {
+	if (hex.length % 2 !== 0) throw new Error("Invalid hex string");
+	const ret = new Uint8Array(hex.length / 2);
+	for (let i = 0; i < hex.length; i += 2) {
+		ret[i / 2] = parseInt(hex.substr(i, 2), 16);
+	}
+	return ret;
+}
+
+/** Constant-time string comparison */
+export function safeCompare(expected: string, actual: string): boolean {
+	const lenExpected = expected.length;
+	let result = 0;
+
+	if (lenExpected !== actual.length) {
+		actual = expected;
+		result = 1;
+	}
+
+	for (let i = 0; i < lenExpected; i++) {
+		result |= expected.charCodeAt(i) ^ actual.charCodeAt(i);
+	}
+
+	return result === 0;
+}
+
 // expands object types recursively
 export type ExpandRecursively<T> = T extends object
 	? T extends infer O
 		? { [K in keyof O]: ExpandRecursively<O[K]> }
 		: never
 	: T;
+
+export function clientError(
+	message: BodyInit | Record<string, any> | undefined,
+	code: number = 400
+): Response {
+	return error(code, message);
+}
+
+export function serverError(
+	message: BodyInit | Record<string, any>,
+	code: number = 500
+): Response {
+	return error(code, message);
+}
+
+export type RequestWithProps<
+	U extends Record<string, unknown>[],
+	T extends Request = Request
+> = U extends [infer First, ...infer Rest extends Record<string, unknown>[]]
+	? RequestWithProps<Rest, T & First>
+	: T;
+
+export type ContentProps = { content: unknown };

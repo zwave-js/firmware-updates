@@ -1,12 +1,12 @@
 import { build } from "./app";
 
 export interface CloudflareEnvironment {
-	// 	APP_ID: string;
-	// 	WEBHOOK_SECRET: string;
-	// 	PRIVATE_KEY: string;
 	API_REQUIRE_KEY: string;
 	API_KEY_ENC_KEY: string;
 	ADMIN_SECRET?: string;
+
+	CONFIG_FILES: R2Bucket;
+
 	responseHeaders: Record<string, string>;
 }
 

@@ -1,5 +1,5 @@
 import { APIKey, decryptAPIKey } from "../lib/apiKeys";
-import { clientError, hex2array } from "../lib/shared_safe";
+import { clientError, hex2array } from "../lib/shared";
 import type { CloudflareEnvironment } from "../worker";
 
 export async function withAPIKey(req: Request, env: CloudflareEnvironment) {

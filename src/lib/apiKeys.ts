@@ -1,4 +1,4 @@
-import { array2hex, hex2array } from "./shared_safe";
+import { array2hex, hex2array } from "./shared";
 
 const IV_LEN = 12;
 const AUTH_TAG_LEN = 8;

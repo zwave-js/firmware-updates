@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { firmwareVersionSchema, UpgradeInfo } from "./lib/configSchema";
-import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared_safe";
+import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared";
 
 export const APIv1_RequestSchema = z.object({
 	manufacturerId: z.string().regex(hexKeyRegex4Digits, {

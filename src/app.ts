@@ -1,4 +1,4 @@
-import { ThrowableRouter, withContent } from "itty-router-extras";
+import { missing, ThrowableRouter, withContent } from "itty-router-extras";
 import registerAdmin from "./routes/admin";
 import registerAPI from "./routes/api";
 
@@ -27,6 +27,8 @@ export function build(): ThrowableRouter {
 
 	registerAPI(router);
 	registerAdmin(router);
+
+	router.all("*", () => missing());
 
 	return router;
 

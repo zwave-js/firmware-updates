@@ -2,11 +2,13 @@ import { withDurables } from "itty-durable";
 import { json, type ThrowableRouter } from "itty-router-extras";
 import { APIv1_RequestSchema } from "../apiV1";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
+import { lookupConfig } from "../lib/config";
+import { createR2FS } from "../lib/fs/r2";
 import {
 	clientError,
 	ContentProps,
 	type RequestWithProps,
-} from "../lib/shared_safe";
+} from "../lib/shared";
 import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
 import type { CloudflareEnvironment } from "../worker";
 
@@ -45,7 +47,10 @@ export default function register(router: ThrowableRouter): void {
 
 	router.post(
 		"/api/v1/updates",
-		async (req: RequestWithProps<[ContentProps]>) => {
+		async (
+			req: RequestWithProps<[ContentProps]>,
+			env: CloudflareEnvironment
+		) => {
 			const result = await APIv1_RequestSchema.safeParseAsync(
 				req.content
 			);
@@ -55,21 +60,21 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
-			// const config = await lookupConfig(
-			// 	// TODO: Make this dynamic
-			// 	"/home/dominic/Repositories/firmware-updates/firmwares",
-			// 	manufacturerId,
-			// 	productType,
-			// 	productId,
-			// 	firmwareVersion,
-			// );
-			const config = undefined as any;
+			const config = await lookupConfig(
+				createR2FS(env.CONFIG_FILES),
+				"/",
+				manufacturerId,
+				productType,
+				productId,
+				firmwareVersion
+			);
+			// const config = undefined as any;
 			if (!config) {
 				// Config not found
 				return json([]);
 			}
 
-			return json(config.updates);
+			return json(config.upgrades);
 		}
 	);
 }

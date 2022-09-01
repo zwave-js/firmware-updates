@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared_safe";
+import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared";
 
 export const firmwareVersionSchema = z
 	.string()
@@ -51,7 +51,7 @@ const upgradeBaseSchema = z.object({
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
-	z.object({ files: z.array(fileSchema) }),
+	z.object({ files: z.array(fileSchema) })
 );
 
 const upgradeSchemaSingle = upgradeBaseSchema
