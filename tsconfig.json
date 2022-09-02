@@ -18,5 +18,5 @@
 		/* Support for Cloudflare */
 		"types": ["@cloudflare/workers-types"]
 	},
-	"include": ["src/**/*.ts", "test/**/*.ts", "src/app.route1.test._ts"]
+	"include": ["src/**/*.ts", "test/**/*.ts"]
 }

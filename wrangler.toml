@@ -7,13 +7,16 @@ node_compat = true
 
 main = "build/worker.js"
 
+[vars]
+API_REQUIRE_KEY = "false"
+
 [build]
 command = "yarn build"
 watch_dir = "src"
 
-# Required for Miniflare:
-[build.upload]
-format = "modules"
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["RateLimiterDurableObject"]
 
 [durable_objects]
 bindings = [
@@ -22,8 +25,13 @@ bindings = [
 
 [[r2_buckets]]
 binding = "CONFIG_FILES"
-bucket_name = "abcdefg"
+bucket_name = "zwave-js-firmware-updates--config-files"
 
+# ------------------------------------------------------------------------------
+
+# Required for Miniflare:
+[build.upload]
+format = "modules"
 
 [miniflare]
 port = 8787

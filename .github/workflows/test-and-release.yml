@@ -6,6 +6,7 @@ on:
     branches:
       # This avoids having duplicate builds in non-forked PRs
       - "main"
+      - "cloudflare"
   pull_request: {}
 
 # Cancel previous PR/branch runs when a new commit is pushed
@@ -15,8 +16,8 @@ concurrency:
 
 jobs:
   # ===================
-  # Catches style errors
-  lint:
+  # Tests everything
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,17 +35,30 @@ jobs:
 
     - name: Install dependencies
       run: yarn install --immutable
+
+    - name: Check TypeScript code
+      run: yarn check
 
     - name: Compile TypeScript code
       run: yarn build
 
     - name: Run linter
       run: yarn run lint
+    
+    - name: Try to generate index file
+      run: yarn build:index
+
+    - name: Run component tests
+      run: yarn run test:ci
 
   # ===================
-  # Runs unit tests
-  unit-tests:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+  # Deploys successful builds on the main branch to Cloudflare
+  deploy:
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/cloudflare'
+
+    needs: [test]
 
     runs-on: ubuntu-latest
     strategy:
@@ -64,9 +78,14 @@ jobs:
     - name: Install dependencies
       run: yarn install --immutable
 
-    # Compilation is necessary, or the tests won't run
-    - name: Compile TypeScript code
-      run: yarn run build
+    - name: Generate index file
+      run: yarn build:index
 
-    - name: Run component tests
-      run: yarn run test:ci
+    - name: Publish to cloudflare
+      uses: cloudflare/wrangler-action@2.0.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    
+    - name: Upload config files to Cloudflare
+      run: yarn upload

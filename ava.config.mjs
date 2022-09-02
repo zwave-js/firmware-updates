@@ -4,8 +4,12 @@ export default {
 	},
 	nodeArguments: [
 		"--no-warnings",
-		"--loader=ts-node/esm",
+		"--experimental-loader",
+		"./src/maintenance/ts-loader.mjs",
+		"-r",
+		"esbuild-register",
 		"--experimental-specifier-resolution=node",
+		"--experimental-vm-modules",
 	],
 	files: ["src/**/*.test.ts", "test/**/*.ts"],
 };
