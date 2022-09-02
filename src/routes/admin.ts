@@ -1,6 +1,7 @@
 import {
 	json,
 	missing,
+	text,
 	withParams,
 	type ThrowableRouter,
 } from "itty-router-extras";
@@ -74,7 +75,7 @@ export default function register(router: ThrowableRouter): void {
 	);
 
 	router.post(
-		"/admin/updateConfig",
+		"/admin/config/upload",
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment
@@ -114,6 +115,17 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			return json({ ok: true });
+		}
+	);
+
+	router.get(
+		"/admin/config/version",
+		async (req: Request, env: CloudflareEnvironment) => {
+			const versionObj = await env.CONFIG_FILES.get("version");
+			if (versionObj) {
+				return text(await versionObj.text());
+			}
+			return text("");
 		}
 	);
 }
