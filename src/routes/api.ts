@@ -24,7 +24,7 @@ export default function register(router: ThrowableRouter): void {
 		);
 		const RateLimiter = req.RateLimiter.get(objId);
 
-		const maxPerHour = req.apiKey?.rateLimit ?? 3;
+		const maxPerHour = req.apiKey?.rateLimit ?? 10000;
 		const result = await RateLimiter.request(maxPerHour);
 
 		env.responseHeaders = {
