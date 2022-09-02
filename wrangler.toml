@@ -11,9 +11,6 @@ kv_namespaces = [
   { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" }
 ]
 
-[vars]
-API_REQUIRE_KEY = "false"
-
 [build]
 command = "yarn build"
 watch_dir = "src"
