@@ -27,14 +27,31 @@ void (async () => {
 	);
 	const index = JSON5.parse<ConfigIndexEntry[]>(indexContent);
 
-	const files: { filename: string; data: string }[] = [];
+	const files: { filename: string; data: string }[] = [
+		{ filename: "index.json", data: indexContent },
+	];
 	for (const entry of index) {
 		const filenameFull = path.join(configDir, entry.filename);
 		const fileContent = await NodeFS.readFile(filenameFull);
 		files.push({ filename: entry.filename, data: fileContent });
 	}
 
-	const version = crypto.randomBytes(4).toString("hex");
+	const hasher = crypto.createHash("sha256");
+	const data = JSON.stringify(files);
+	const version = hasher.update(data, "utf8").digest("hex").slice(0, 8);
+
+	const { data: onlineVersion } = await axios.get<string>(
+		new URL("/admin/config/version", baseURL).toString(),
+		{
+			headers: { "x-admin-secret": adminSecret },
+		}
+	);
+
+	if (onlineVersion === version) {
+		console.log("No change in config files, skipping upload...");
+		return;
+	}
+
 	let cursor = 0;
 
 	while (cursor < files.length) {
@@ -56,7 +73,7 @@ void (async () => {
 			} of ${files.length}...`
 		);
 		await axios.post(
-			new URL("/admin/updateConfig", baseURL).toString(),
+			new URL("/admin/config/upload", baseURL).toString(),
 			payload,
 			{
 				headers: { "x-admin-secret": adminSecret },
@@ -68,14 +85,11 @@ void (async () => {
 
 	const finalizePayload: UploadPayload = {
 		version,
-		actions: [
-			{ task: "put", filename: "index.json", data: indexContent },
-			{ task: "enable" },
-		],
+		actions: [{ task: "enable" }],
 	};
 	console.log("finalizing...");
 	await axios.post(
-		new URL("/admin/updateConfig", baseURL).toString(),
+		new URL("/admin/config/upload", baseURL).toString(),
 		finalizePayload,
 		{
 			headers: { "x-admin-secret": adminSecret },
