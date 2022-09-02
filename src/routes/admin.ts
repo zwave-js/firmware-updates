@@ -27,20 +27,17 @@ export default function register(router: ThrowableRouter): void {
 	// x-admin-secret: <your-admin-secret>
 
 	// Verify the admin token
-	router.post(
-		"/admin/*",
-		async (req: Request, env: CloudflareEnvironment) => {
-			// Avoid timing attacks, but still do not do unnecessary work
-			const secret = req.headers.get("x-admin-secret");
-			if (
-				!secret ||
-				!env.ADMIN_SECRET ||
-				!safeCompare(env.ADMIN_SECRET, secret)
-			) {
-				return missing();
-			}
+	router.post("/admin/*", (req: Request, env: CloudflareEnvironment) => {
+		// Avoid timing attacks, but still do not do unnecessary work
+		const secret = req.headers.get("x-admin-secret");
+		if (
+			!secret ||
+			!env.ADMIN_SECRET ||
+			!safeCompare(env.ADMIN_SECRET, secret)
+		) {
+			return missing();
 		}
-	);
+	});
 
 	router.post(
 		"/admin/makeKey/:id/:limit",
@@ -58,7 +55,7 @@ export default function register(router: ThrowableRouter): void {
 				limit < 1
 			) {
 				console.error("Usage: /admin/makeKey/:id/:limit");
-				process.exit(1);
+				return clientError("Invalid id or limit");
 			}
 
 			const key = hex2array(env.API_KEY_ENC_KEY);
@@ -87,20 +84,32 @@ export default function register(router: ThrowableRouter): void {
 				return clientError(result.error.format() as any);
 			}
 
-			const fs = createR2FS(env.CONFIG_FILES);
+			const newVersion = result.data.version;
+			const fs = createR2FS(env.CONFIG_FILES, newVersion);
 
-			for (const action of result.data) {
-				if (action.task === "clear") {
-					await fs.deleteDir("/");
-				} else if (action.task === "put") {
+			for (const action of result.data.actions) {
+				if (action.task === "put") {
+					// Upload a file for the current revision/version
 					if (!action.filename.startsWith("/")) {
 						action.filename = "/" + action.filename;
 					}
 
-					await fs.writeFile(
-						action.filename,
-						JSON.stringify(action.data)
-					);
+					await fs.writeFile(action.filename, action.data);
+				} else if (action.task === "enable") {
+					// Enable the current revision, delete all other revisions
+					const oldVersionObj = await env.CONFIG_FILES.get("version");
+					if (oldVersionObj) {
+						const oldVersion = await oldVersionObj.text();
+						if (oldVersion !== newVersion) {
+							const oldFs = createR2FS(
+								env.CONFIG_FILES,
+								oldVersion
+							);
+							await oldFs.deleteDir("/");
+						}
+					}
+
+					await env.CONFIG_FILES.put("version", newVersion);
 				}
 			}
 

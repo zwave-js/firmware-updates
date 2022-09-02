@@ -16,9 +16,10 @@ export class RateLimiter extends createDurable() {
 		id: number,
 		maxPerHour: number
 	): RateLimit & { limitExceeded: boolean } {
+		const inOneHour = Date.now() + 3600000;
 		if (!this.limits.has(id)) {
 			this.limits.set(id, {
-				resetDate: Date.now() + 10000,
+				resetDate: inOneHour,
 				maxPerHour,
 				remaining: maxPerHour,
 			});
@@ -27,7 +28,7 @@ export class RateLimiter extends createDurable() {
 		if (limit.resetDate < Date.now()) {
 			// Reset limits first, the window has elapsed
 			limit.remaining = limit.maxPerHour;
-			limit.resetDate = Date.now() + 10000;
+			limit.resetDate = inOneHour;
 		}
 
 		let limitExceeded = false;

@@ -1,22 +1,22 @@
 {
-	"extends": "@tsconfig/node16/tsconfig.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"outDir": "build",
 		"importsNotUsedAsValues": "error",
 		"pretty": true,
 		"diagnostics": true,
 		"noErrorTruncation": true,
 
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+
+		"target": "ESNext",
+		"module": "ES2020",
+		"moduleResolution": "Node",
+
 		/* Support for Cloudflare */
-		"types": ["@cloudflare/workers-types", "node"],
-		"target": "ESNext"
+		"types": ["@cloudflare/workers-types"]
 	},
-	"include": [
-		"src/**/*.ts",
-		"src/**/*.mts",
-		"test/**/*.ts",
-		"src/worker.ts",
-		"src/maintenance/makeAPIKey.ts"
-	]
+	"include": ["src/**/*.ts", "test/**/*.ts", "src/app.route1.test._ts"]
 }

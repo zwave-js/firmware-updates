@@ -1,27 +1,29 @@
 import type { FileSystem } from "./filesystem";
 
-const FILE_PREFIX = "file$";
-
-export function createR2FS(bucket: R2Bucket): FileSystem {
+export function createR2FS(bucket: R2Bucket, version: string): FileSystem {
+	const PREFIX = `${version}:file:`;
 	const ret: FileSystem = {
 		async writeFile(file, data) {
-			await bucket.put(`${FILE_PREFIX}${file}`, data);
+			await bucket.put(`${PREFIX}${file}`, data);
 		},
 		async readFile(file) {
-			const obj = await bucket.get(`${FILE_PREFIX}${file}`);
+			const obj = await bucket.get(`${PREFIX}${file}`);
 			if (!obj) {
 				throw new Error(`File not found in R2: ${file}`);
 			}
 			return obj.text();
 		},
 		async deleteFile(file) {
-			await bucket.delete(`${FILE_PREFIX}${file}`);
+			await bucket.delete(`${PREFIX}${file}`);
 		},
 		async readDir(dir, recursive) {
 			let truncated: boolean;
 			let cursor: R2ListOptions["cursor"];
+
+			if (!dir.endsWith("/")) dir += "/";
+
 			const options: R2ListOptions = {
-				prefix: `${FILE_PREFIX}${dir}/`,
+				prefix: `${PREFIX}${dir}`,
 			};
 			if (!recursive) {
 				options.delimiter = "/";
@@ -31,7 +33,7 @@ export function createR2FS(bucket: R2Bucket): FileSystem {
 			do {
 				const next = await bucket.list({ ...options, cursor });
 				ret.push(
-					...next.objects.map((o) => o.key.slice(FILE_PREFIX.length))
+					...next.objects.map((o) => o.key.slice(PREFIX.length))
 				);
 				truncated = next.truncated;
 			} while (truncated);

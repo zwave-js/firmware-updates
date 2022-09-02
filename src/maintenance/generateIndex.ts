@@ -1,13 +1,13 @@
 import path from "path-browserify";
 import { generateIndex } from "../lib/config";
-import { NodeFS } from "../lib/fs/node";
+import { NodeFS } from "./nodeFS";
 
 const configDir = path.join(__dirname, "../../firmwares");
 
 void (async () => {
 	console.log();
 	console.log("Generating index...");
-	const index = generateIndex(NodeFS, configDir);
+	const index = await generateIndex(NodeFS, configDir);
 	await NodeFS.writeFile(
 		path.join(configDir, "index.json"),
 		`// This file is auto-generated. DO NOT edit it by hand if you don't know what you're doing!

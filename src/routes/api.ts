@@ -7,6 +7,7 @@ import { createR2FS } from "../lib/fs/r2";
 import {
 	clientError,
 	ContentProps,
+	serverError,
 	type RequestWithProps,
 } from "../lib/shared";
 import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
@@ -60,8 +61,15 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
+			const version = await (
+				await env.CONFIG_FILES.get("version")
+			)?.text();
+			if (!version) {
+				return serverError("Filesystem empty");
+			}
+
 			const config = await lookupConfig(
-				createR2FS(env.CONFIG_FILES),
+				createR2FS(env.CONFIG_FILES, version),
 				"/",
 				manufacturerId,
 				productType,

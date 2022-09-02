@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { getErrorMessage } from "../shared";
-import type { FileSystem } from "./filesystem";
+import type { FileSystem } from "../lib/fs/filesystem";
+import { getErrorMessage } from "../lib/shared";
 
 export const NodeFS: FileSystem = {
 	writeFile: function (file: string, data: string): Promise<void> {
