@@ -25,7 +25,7 @@ export default function register(router: ThrowableRouter): void {
 		);
 		const RateLimiter = req.RateLimiter.get(objId);
 
-		console.log(
+		env.logs.push(
 			`[timing] took ${Date.now() - env.timing}ms to get RateLimiter`
 		);
 		env.timing = Date.now();
@@ -33,7 +33,7 @@ export default function register(router: ThrowableRouter): void {
 		const maxPerHour = req.apiKey?.rateLimit ?? 10000;
 		const result = await RateLimiter.request(maxPerHour);
 
-		console.log(
+		env.logs.push(
 			`[timing] took ${Date.now() - env.timing}ms to check RateLimiter`
 		);
 		env.timing = Date.now();
@@ -64,7 +64,7 @@ export default function register(router: ThrowableRouter): void {
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment
 		) => {
-			console.log(
+			env.logs.push(
 				`[timing] took ${
 					Date.now() - env.timing!
 				}ms to get to update route`
@@ -80,13 +80,13 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
-			console.log(
+			env.logs.push(
 				`[timing] took ${Date.now() - env.timing}ms to parse request`
 			);
 			env.timing = Date.now();
 
 			const versionFile = await env.CONFIG_FILES.get("version");
-			console.log(
+			env.logs.push(
 				`[timing] took ${
 					Date.now() - env.timing
 				}ms to access version file`
@@ -95,7 +95,7 @@ export default function register(router: ThrowableRouter): void {
 
 			const version = await versionFile?.text();
 
-			console.log(
+			env.logs.push(
 				`[timing] took ${
 					Date.now() - env.timing
 				}ms to read version file`
@@ -115,7 +115,7 @@ export default function register(router: ThrowableRouter): void {
 				firmwareVersion
 			);
 
-			console.log(
+			env.logs.push(
 				`[timing] took ${Date.now() - env.timing}ms to lookup config`
 			);
 			env.timing = Date.now();

@@ -1,3 +1,4 @@
+import { withDurables } from "itty-durable";
 import {
 	json,
 	missing,
@@ -5,6 +6,7 @@ import {
 	withParams,
 	type ThrowableRouter,
 } from "itty-router-extras";
+import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { encryptAPIKey } from "../lib/apiKeys";
 import { createR2FS } from "../lib/fs/r2";
 import {
@@ -126,6 +128,24 @@ export default function register(router: ThrowableRouter): void {
 				return text(await versionObj.text());
 			}
 			return text("");
+		}
+	);
+
+	router.post(
+		"/admin/resetRateLimit/:id",
+		withParams,
+		withDurables({ parse: true }),
+		async (
+			req: RequestWithProps<
+				[{ params: { id: string } }, RateLimiterProps]
+			>,
+			env: CloudflareEnvironment
+		) => {
+			const objId = env.RateLimiter.idFromName(req.params.id);
+			const RateLimiter = req.RateLimiter.get(objId);
+			await RateLimiter.reset();
+
+			return json({ ok: true });
 		}
 	);
 }

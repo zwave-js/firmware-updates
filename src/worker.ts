@@ -10,6 +10,7 @@ export interface CloudflareEnvironment {
 	RateLimiter: DurableObjectNamespace;
 
 	responseHeaders: Record<string, string>;
+	logs: string[];
 	timing?: number;
 }
 
@@ -23,10 +24,16 @@ export default {
 		env: CloudflareEnvironment,
 		context: ExecutionContext
 	): Promise<Response> {
-		env = { ...env, responseHeaders: {} };
+		env = { ...env, responseHeaders: {}, logs: [] };
 		const resp: Response = await router.handle(request, env, context);
 		for (const [key, value] of Object.entries(env.responseHeaders)) {
 			resp.headers.set(key, value);
+		}
+		for (let i = 0; i < env.logs.length; i++) {
+			resp.headers.append(
+				`x-log-${i.toString().padStart(3, "0")}`,
+				env.logs[i]
+			);
 		}
 		return resp;
 	},
