@@ -5,7 +5,7 @@ export interface FileSystem {
 		data: string | ReadableStream | ArrayBuffer | ArrayBufferView | Blob
 	): Promise<void>;
 	readFile(file: string): Promise<string>;
-	deleteFile(file: string): Promise<void>;
+	// deleteFile(file: string): Promise<void>;
 
 	readDir(dir: string, recursive: boolean): Promise<string[]>;
 	deleteDir(dir: string): Promise<void>;

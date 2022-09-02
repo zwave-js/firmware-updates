@@ -1,3 +1,4 @@
+import { withDurables } from "itty-durable";
 import {
 	json,
 	missing,
@@ -5,8 +6,9 @@ import {
 	withParams,
 	type ThrowableRouter,
 } from "itty-router-extras";
+import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { encryptAPIKey } from "../lib/apiKeys";
-import { createR2FS } from "../lib/fs/r2";
+import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
 import {
 	clientError,
 	ContentProps,
@@ -86,7 +88,11 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			const newVersion = result.data.version;
-			const fs = createR2FS(env.CONFIG_FILES, newVersion);
+			const fs = createCachedR2FS(
+				env.CONFIG_FILES,
+				env.R2_CACHE,
+				newVersion
+			);
 
 			for (const action of result.data.actions) {
 				if (action.task === "put") {
@@ -98,19 +104,25 @@ export default function register(router: ThrowableRouter): void {
 					await fs.writeFile(action.filename, action.data);
 				} else if (action.task === "enable") {
 					// Enable the current revision, delete all other revisions
-					const oldVersionObj = await env.CONFIG_FILES.get("version");
-					if (oldVersionObj) {
-						const oldVersion = await oldVersionObj.text();
-						if (oldVersion !== newVersion) {
-							const oldFs = createR2FS(
-								env.CONFIG_FILES,
-								oldVersion
-							);
-							await oldFs.deleteDir("/");
-						}
+					const oldVersion = await getFilesVersion(
+						env.CONFIG_FILES,
+						env.R2_CACHE
+					);
+					if (oldVersion && oldVersion !== newVersion) {
+						const oldFs = createCachedR2FS(
+							env.CONFIG_FILES,
+							env.R2_CACHE,
+							oldVersion
+						);
+						await oldFs.deleteDir("/");
 					}
 
+					// Update version file and purge cache
 					await env.CONFIG_FILES.put("version", newVersion);
+					await env.R2_CACHE.delete("version");
+
+					// Make sure not to write any extra files after this
+					break;
 				}
 			}
 
@@ -121,11 +133,26 @@ export default function register(router: ThrowableRouter): void {
 	router.get(
 		"/admin/config/version",
 		async (req: Request, env: CloudflareEnvironment) => {
-			const versionObj = await env.CONFIG_FILES.get("version");
-			if (versionObj) {
-				return text(await versionObj.text());
-			}
-			return text("");
+			const ret = await getFilesVersion(env.CONFIG_FILES, env.R2_CACHE);
+			return text(ret || "");
+		}
+	);
+
+	router.post(
+		"/admin/resetRateLimit/:id",
+		withParams,
+		withDurables({ parse: true }),
+		async (
+			req: RequestWithProps<
+				[{ params: { id: string } }, RateLimiterProps]
+			>,
+			env: CloudflareEnvironment
+		) => {
+			const objId = env.RateLimiter.idFromName(req.params.id);
+			const RateLimiter = req.RateLimiter.get(objId);
+			await RateLimiter.reset();
+
+			return json({ ok: true });
 		}
 	);
 }

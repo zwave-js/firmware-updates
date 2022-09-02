@@ -3,7 +3,7 @@ import { json, type ThrowableRouter } from "itty-router-extras";
 import { APIv1_RequestSchema } from "../apiV1";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { lookupConfig } from "../lib/config";
-import { createR2FS } from "../lib/fs/r2";
+import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
 import {
 	clientError,
 	ContentProps,
@@ -62,22 +62,24 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
-			const version = await (
-				await env.CONFIG_FILES.get("version")
-			)?.text();
+			const version = await getFilesVersion(
+				env.CONFIG_FILES,
+				env.R2_CACHE
+			);
+
 			if (!version) {
 				return serverError("Filesystem empty");
 			}
 
 			const config = await lookupConfig(
-				createR2FS(env.CONFIG_FILES, version),
+				createCachedR2FS(env.CONFIG_FILES, env.R2_CACHE, version),
 				"/",
 				manufacturerId,
 				productType,
 				productId,
 				firmwareVersion
 			);
-			// const config = undefined as any;
+
 			if (!config) {
 				// Config not found
 				return json([]);
