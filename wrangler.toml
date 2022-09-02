@@ -3,7 +3,7 @@ usage_model = "unbound"
 workers_dev = true
 compatibility_date = "2022-08-28"
 
-node_compat = true
+# node_compat = true
 
 main = "build/worker.js"
 

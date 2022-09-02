@@ -88,4 +88,7 @@ jobs:
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     
     - name: Upload config files to Cloudflare
+      env:
+        BASE_URL: ${{ secrets.BASE_URL }}
+        ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
       run: yarn upload
