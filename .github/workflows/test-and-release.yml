@@ -15,8 +15,8 @@ concurrency:
 
 jobs:
   # ===================
-  # Catches style errors
-  lint:
+  # Tests everything
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,17 +34,30 @@ jobs:
 
     - name: Install dependencies
       run: yarn install --immutable
+
+    - name: Check TypeScript code
+      run: yarn check
 
     - name: Compile TypeScript code
       run: yarn build
 
     - name: Run linter
       run: yarn run lint
+    
+    - name: Try to generate index file
+      run: yarn build:index
+
+    - name: Run component tests
+      run: yarn run test:ci
 
   # ===================
-  # Runs unit tests
-  unit-tests:
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
+  # Deploys successful builds on the main branch to Cloudflare
+  deploy:
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+
+    needs: [test]
 
     runs-on: ubuntu-latest
     strategy:
@@ -64,9 +77,17 @@ jobs:
     - name: Install dependencies
       run: yarn install --immutable
 
-    # Compilation is necessary, or the tests won't run
-    - name: Compile TypeScript code
-      run: yarn run build
+    - name: Generate index file
+      run: yarn build:index
 
-    - name: Run component tests
-      run: yarn run test:ci
+    - name: Publish to Cloudflare
+      uses: cloudflare/wrangler-action@2.0.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    
+    - name: Upload config files to Cloudflare
+      env:
+        BASE_URL: ${{ secrets.BASE_URL }}
+        ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
+      run: yarn upload

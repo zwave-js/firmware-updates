@@ -1,0 +1,45 @@
+name = "zwave-js-firmware-updates"
+usage_model = "unbound"
+workers_dev = true
+compatibility_date = "2022-08-28"
+
+# node_compat = true
+
+main = "build/worker.js"
+
+[vars]
+API_REQUIRE_KEY = "false"
+
+[build]
+command = "yarn build"
+watch_dir = "src"
+
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["RateLimiterDurableObject"]
+
+[durable_objects]
+bindings = [
+  {name = "RateLimiter", class_name = "RateLimiterDurableObject"},
+]
+
+[[r2_buckets]]
+binding = "CONFIG_FILES"
+bucket_name = "zwave-js-firmware-updates--config-files"
+
+# ------------------------------------------------------------------------------
+
+# Required for Miniflare:
+[build.upload]
+format = "modules"
+
+[miniflare]
+port = 8787
+watch = true
+
+cache = false
+env_path = ".env"
+
+kv_persist = true
+do_persist = true
+r2_persist = true

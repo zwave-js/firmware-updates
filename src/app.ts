@@ -1,22 +1,40 @@
-import fastify, { FastifyInstance, FastifyServerOptions } from "fastify";
+import { missing, ThrowableRouter, withContent } from "itty-router-extras";
+import registerAdmin from "./routes/admin";
+import registerAPI from "./routes/api";
 
-export async function build(
-	opts: FastifyServerOptions = {},
-): Promise<FastifyInstance> {
-	const app = fastify(opts);
+export function build(): ThrowableRouter {
+	// opts: FastifyServerOptions = {},
+	// Initialize router
+	const router = ThrowableRouter();
 
-	await app.register(import("@fastify/helmet"));
-
-	app.get("/", async (_request, reply) => {
-		return reply.type("text/html").send(`
-			<h1>Z-Wave JS Firmware Update Service</h1>
-			<p>
-				See documentation on <a href="https://github.com/zwave-js/firmware-updates">GitHub</a>.
-			</p>
-		`);
+	router.get("/", (_request) => {
+		return new Response(
+			`
+<h1>Z-Wave JS Firmware Update Service</h1>
+<p>
+	See documentation on <a href="https://github.com/zwave-js/firmware-updates">GitHub</a>.
+</p>`,
+			{
+				headers: {
+					"Content-Type": "text/html",
+				},
+			}
+		);
 	});
 
-	await app.register(import("./routes/api"));
+	// Parse JSON for POST requests
+	router.post("*", withContent);
 
-	return app;
+	registerAPI(router);
+	registerAdmin(router);
+
+	router.all("*", () => missing());
+
+	return router;
+
+	// const app = fastify(opts);
+
+	// await app.register(import("@fastify/helmet"));
+
+	// return app;
 }

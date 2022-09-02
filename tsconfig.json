@@ -1,12 +1,22 @@
 {
-	"extends": "@tsconfig/node16/tsconfig.json",
 	"compilerOptions": {
 		"noEmit": true,
-		"outDir": "build",
 		"importsNotUsedAsValues": "error",
 		"pretty": true,
 		"diagnostics": true,
-		"noErrorTruncation": true
+		"noErrorTruncation": true,
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+
+		"target": "ESNext",
+		"module": "ES2020",
+		"moduleResolution": "Node",
+
+		/* Support for Cloudflare */
+		"types": ["@cloudflare/workers-types"]
 	},
 	"include": ["src/**/*.ts", "test/**/*.ts"]
 }

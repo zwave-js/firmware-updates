@@ -51,7 +51,7 @@ const upgradeBaseSchema = z.object({
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
-	z.object({ files: z.array(fileSchema) }),
+	z.object({ files: z.array(fileSchema) })
 );
 
 const upgradeSchemaSingle = upgradeBaseSchema

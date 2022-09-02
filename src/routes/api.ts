@@ -1,47 +1,88 @@
-import type { FastifyPluginCallback } from "fastify";
+import { withDurables } from "itty-durable";
+import { json, type ThrowableRouter } from "itty-router-extras";
 import { APIv1_RequestSchema } from "../apiV1";
-import { getAPIKey } from "../lib/apiKeys";
+import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { lookupConfig } from "../lib/config";
+import { createR2FS } from "../lib/fs/r2";
+import {
+	clientError,
+	ContentProps,
+	serverError,
+	type RequestWithProps,
+} from "../lib/shared";
+import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
+import type { CloudflareEnvironment } from "../worker";
 
-const api: FastifyPluginCallback = async (app, opts, done) => {
-	if (process.env.API_REQUIRE_KEY !== "false") {
-		await app.register(import("../plugins/checkAPIKey"));
-	}
+export default function register(router: ThrowableRouter): void {
+	// Check API keys and apply rate limiter
+	router.all("/api/*", withAPIKey, withDurables({ parse: true }), (async (
+		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
+		env: CloudflareEnvironment
+	) => {
+		const RateLimiter = req.RateLimiter.get("_default");
 
-	await app.register(import("@fastify/rate-limit"), {
-		global: true,
-		keyGenerator:
-			process.env.API_REQUIRE_KEY !== "false"
-				? (req) => getAPIKey(req)?.id.toString() ?? "anonymous"
-				: undefined,
-		max: (req) => getAPIKey(req)?.rateLimit ?? 1000,
-		timeWindow: "1 hour",
-	});
-
-	app.post("/api/v1/updates", async (request, reply) => {
-		const result = await APIv1_RequestSchema.safeParseAsync(request.body);
-		if (!result.success) {
-			// Invalid request
-			return reply.code(400).send(result.error.format());
-		}
-		const { manufacturerId, productType, productId, firmwareVersion } =
-			result.data;
-
-		const config = await lookupConfig(
-			manufacturerId,
-			productType,
-			productId,
-			firmwareVersion,
+		const result = await RateLimiter.request(
+			req.apiKey?.id ?? 0,
+			req.apiKey?.rateLimit ?? 10000
 		);
-		if (!config) {
-			// Config not found
-			return reply.send([]);
+
+		env.responseHeaders = {
+			...env.responseHeaders,
+			"x-ratelimit-limit": result.maxPerHour.toString(),
+			"x-ratelimit-remaining": result.remaining.toString(),
+			"x-ratelimit-reset": Math.ceil(result.resetDate / 1000).toString(),
+		};
+
+		if (result.limitExceeded) {
+			// Rate limit exceeded
+			return new Response(undefined, {
+				status: 429,
+				headers: {
+					"retry-after": Math.ceil(
+						(result.resetDate - Date.now()) / 1000
+					).toString(),
+				},
+			});
 		}
+	}) as any);
 
-		return config.upgrades;
-	});
+	router.post(
+		"/api/v1/updates",
+		async (
+			req: RequestWithProps<[ContentProps]>,
+			env: CloudflareEnvironment
+		) => {
+			const result = await APIv1_RequestSchema.safeParseAsync(
+				req.content
+			);
+			if (!result.success) {
+				return clientError(result.error.format() as any);
+			}
+			const { manufacturerId, productType, productId, firmwareVersion } =
+				result.data;
 
-	done();
-};
+			const version = await (
+				await env.CONFIG_FILES.get("version")
+			)?.text();
+			if (!version) {
+				return serverError("Filesystem empty");
+			}
 
-export default api;
+			const config = await lookupConfig(
+				createR2FS(env.CONFIG_FILES, version),
+				"/",
+				manufacturerId,
+				productType,
+				productId,
+				firmwareVersion
+			);
+			// const config = undefined as any;
+			if (!config) {
+				// Config not found
+				return json([]);
+			}
+
+			return json(config.upgrades);
+		}
+	);
+}
