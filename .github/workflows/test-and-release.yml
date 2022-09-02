@@ -81,7 +81,7 @@ jobs:
     - name: Generate index file
       run: yarn build:index
 
-    - name: Publish to cloudflare
+    - name: Publish to Cloudflare
       uses: cloudflare/wrangler-action@2.0.0
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

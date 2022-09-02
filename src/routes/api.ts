@@ -23,7 +23,7 @@ export default function register(router: ThrowableRouter): void {
 
 		const result = await RateLimiter.request(
 			req.apiKey?.id ?? 0,
-			req.apiKey?.rateLimit ?? 3
+			req.apiKey?.rateLimit ?? 10000
 		);
 
 		env.responseHeaders = {
