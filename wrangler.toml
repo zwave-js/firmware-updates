@@ -41,5 +41,5 @@ cache = false
 env_path = ".env"
 
 kv_persist = true
-do_persist = true
+durable_objects_persist = true
 r2_persist = true
