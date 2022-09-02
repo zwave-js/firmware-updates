@@ -19,16 +19,17 @@ export default function register(router: ThrowableRouter): void {
 		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
 		env: CloudflareEnvironment
 	) => {
-		const RateLimiter = req.RateLimiter.get("_default");
-
-		const result = await RateLimiter.request(
-			req.apiKey?.id ?? 0,
-			req.apiKey?.rateLimit ?? 10000
+		const objId = env.RateLimiter.idFromName(
+			(req.apiKey?.id ?? 0).toString()
 		);
+		const RateLimiter = req.RateLimiter.get(objId);
+
+		const maxPerHour = req.apiKey?.rateLimit ?? 3;
+		const result = await RateLimiter.request(maxPerHour);
 
 		env.responseHeaders = {
 			...env.responseHeaders,
-			"x-ratelimit-limit": result.maxPerHour.toString(),
+			"x-ratelimit-limit": maxPerHour.toString(),
 			"x-ratelimit-remaining": result.remaining.toString(),
 			"x-ratelimit-reset": Math.ceil(result.resetDate / 1000).toString(),
 		};

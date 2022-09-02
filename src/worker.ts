@@ -7,6 +7,8 @@ export interface CloudflareEnvironment {
 
 	CONFIG_FILES: R2Bucket;
 
+	RateLimiter: DurableObjectNamespace;
+
 	responseHeaders: Record<string, string>;
 }
 
