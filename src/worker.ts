@@ -10,6 +10,7 @@ export interface CloudflareEnvironment {
 	RateLimiter: DurableObjectNamespace;
 
 	responseHeaders: Record<string, string>;
+	timing?: number;
 }
 
 const router = build();

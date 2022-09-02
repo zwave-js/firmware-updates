@@ -19,13 +19,24 @@ export default function register(router: ThrowableRouter): void {
 		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
 		env: CloudflareEnvironment
 	) => {
+		env.timing = Date.now();
 		const objId = env.RateLimiter.idFromName(
 			(req.apiKey?.id ?? 0).toString()
 		);
 		const RateLimiter = req.RateLimiter.get(objId);
 
+		console.log(
+			`[timing] took ${Date.now() - env.timing}ms to get RateLimiter`
+		);
+		env.timing = Date.now();
+
 		const maxPerHour = req.apiKey?.rateLimit ?? 10000;
 		const result = await RateLimiter.request(maxPerHour);
+
+		console.log(
+			`[timing] took ${Date.now() - env.timing}ms to check RateLimiter`
+		);
+		env.timing = Date.now();
 
 		env.responseHeaders = {
 			...env.responseHeaders,
@@ -53,6 +64,13 @@ export default function register(router: ThrowableRouter): void {
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment
 		) => {
+			console.log(
+				`[timing] took ${
+					Date.now() - env.timing!
+				}ms to get to update route`
+			);
+			env.timing = Date.now();
+
 			const result = await APIv1_RequestSchema.safeParseAsync(
 				req.content
 			);
@@ -62,9 +80,28 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
-			const version = await (
-				await env.CONFIG_FILES.get("version")
-			)?.text();
+			console.log(
+				`[timing] took ${Date.now() - env.timing}ms to parse request`
+			);
+			env.timing = Date.now();
+
+			const versionFile = await env.CONFIG_FILES.get("version");
+			console.log(
+				`[timing] took ${
+					Date.now() - env.timing
+				}ms to access version file`
+			);
+			env.timing = Date.now();
+
+			const version = await versionFile?.text();
+
+			console.log(
+				`[timing] took ${
+					Date.now() - env.timing
+				}ms to read version file`
+			);
+			env.timing = Date.now();
+
 			if (!version) {
 				return serverError("Filesystem empty");
 			}
@@ -77,6 +114,12 @@ export default function register(router: ThrowableRouter): void {
 				productId,
 				firmwareVersion
 			);
+
+			console.log(
+				`[timing] took ${Date.now() - env.timing}ms to lookup config`
+			);
+			env.timing = Date.now();
+
 			// const config = undefined as any;
 			if (!config) {
 				// Config not found
