@@ -19,24 +19,13 @@ export default function register(router: ThrowableRouter): void {
 		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
 		env: CloudflareEnvironment
 	) => {
-		env.timing = Date.now();
 		const objId = env.RateLimiter.idFromName(
 			(req.apiKey?.id ?? 0).toString()
 		);
 		const RateLimiter = req.RateLimiter.get(objId);
 
-		env.logs.push(
-			`[timing] took ${Date.now() - env.timing}ms to get RateLimiter`
-		);
-		env.timing = Date.now();
-
 		const maxPerHour = req.apiKey?.rateLimit ?? 10000;
 		const result = await RateLimiter.request(maxPerHour);
-
-		env.logs.push(
-			`[timing] took ${Date.now() - env.timing}ms to check RateLimiter`
-		);
-		env.timing = Date.now();
 
 		env.responseHeaders = {
 			...env.responseHeaders,
@@ -64,13 +53,6 @@ export default function register(router: ThrowableRouter): void {
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment
 		) => {
-			env.logs.push(
-				`[timing] took ${
-					Date.now() - env.timing!
-				}ms to get to update route`
-			);
-			env.timing = Date.now();
-
 			const result = await APIv1_RequestSchema.safeParseAsync(
 				req.content
 			);
@@ -80,22 +62,10 @@ export default function register(router: ThrowableRouter): void {
 			const { manufacturerId, productType, productId, firmwareVersion } =
 				result.data;
 
-			env.logs.push(
-				`[timing] took ${Date.now() - env.timing}ms to parse request`
-			);
-			env.timing = Date.now();
-
 			const version = await getFilesVersion(
 				env.CONFIG_FILES,
 				env.R2_CACHE
 			);
-
-			env.logs.push(
-				`[timing] took ${
-					Date.now() - env.timing
-				}ms to read version file`
-			);
-			env.timing = Date.now();
 
 			if (!version) {
 				return serverError("Filesystem empty");
@@ -110,12 +80,6 @@ export default function register(router: ThrowableRouter): void {
 				firmwareVersion
 			);
 
-			env.logs.push(
-				`[timing] took ${Date.now() - env.timing}ms to lookup config`
-			);
-			env.timing = Date.now();
-
-			// const config = undefined as any;
 			if (!config) {
 				// Config not found
 				return json([]);
