@@ -10,9 +10,9 @@ export const NodeFS: FileSystem = {
 	readFile: function (file: string): Promise<string> {
 		return fs.readFile(file, "utf8");
 	},
-	deleteFile: function (file: string): Promise<void> {
-		return fs.unlink(file);
-	},
+	// deleteFile: function (file: string): Promise<void> {
+	// 	return fs.unlink(file);
+	// },
 	async readDir(dir, recursive) {
 		if (recursive) {
 			const ret: string[] = [];
