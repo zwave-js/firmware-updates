@@ -20,15 +20,6 @@ import { uploadSchema } from "../lib/uploadSchema";
 import type { CloudflareEnvironment } from "../worker";
 
 export default function register(router: ThrowableRouter): void {
-	// Creates an API key with the given information. In order to work, the
-	// API_KEY_ENC_KEY environment variable must be set to the same value as on production
-	// and the ADMIN_SECRET environment variable must be configured.
-	//
-	// Call this using a HTTP request
-	//
-	// POST http://127.0.0.1:8787/admin/makeKey/:id/:requests-per-hour
-	// x-admin-secret: <your-admin-secret>
-
 	// Verify the admin token
 	router.post("/admin/*", (req: Request, env: CloudflareEnvironment) => {
 		// Avoid timing attacks, but still do not do unnecessary work
@@ -42,6 +33,14 @@ export default function register(router: ThrowableRouter): void {
 		}
 	});
 
+	// Creates an API key with the given information. In order to work, the
+	// API_KEY_ENC_KEY environment variable must be set to the same value as on production
+	// and the ADMIN_SECRET environment variable must be configured.
+	//
+	// Call this using a HTTP request
+	//
+	// POST http://127.0.0.1:8787/admin/makeKey/:id/:requests-per-hour
+	// x-admin-secret: <your-admin-secret>
 	router.post(
 		"/admin/makeKey/:id/:limit",
 		withParams,
