@@ -138,18 +138,30 @@ export default function register(router: ThrowableRouter): void {
 	);
 
 	router.post(
-		"/admin/resetRateLimit/:id",
+		"/admin/resetRateLimit/:id/:limit",
 		withParams,
 		withDurables({ parse: true }),
 		async (
 			req: RequestWithProps<
-				[{ params: { id: string } }, RateLimiterProps]
+				[{ params: { id: string; limit: string } }, RateLimiterProps]
 			>,
 			env: CloudflareEnvironment
 		) => {
+			const id = parseInt(req.params.id);
+			const limit = parseInt(req.params.limit);
+			if (
+				Number.isNaN(id) ||
+				id < 1 ||
+				Number.isNaN(limit) ||
+				limit < 1
+			) {
+				console.error("Usage: /admin/resetRateLimit/:id/:limit");
+				return clientError("Invalid id or limit");
+			}
+
 			const objId = env.RateLimiter.idFromName(req.params.id);
 			const RateLimiter = req.RateLimiter.get(objId);
-			await RateLimiter.reset();
+			await RateLimiter.setTo(limit);
 
 			return json({ ok: true });
 		}

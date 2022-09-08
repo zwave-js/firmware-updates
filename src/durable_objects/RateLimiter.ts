@@ -45,6 +45,13 @@ export class RateLimiter extends createDurable() {
 		};
 	}
 
+	/** Refreshes the rate limiter and sets its remaining requests to the given value */
+	public async setTo(maxPerHour: number): Promise<void> {
+		this.resetDate = Date.now() + 3600000;
+		this.remaining = maxPerHour;
+		await this.persist();
+	}
+
 	public async alarm(): Promise<void> {
 		await this.destroy();
 	}
