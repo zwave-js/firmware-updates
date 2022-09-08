@@ -10,7 +10,7 @@ import {
 	ContentProps,
 	serverError,
 	type RequestWithProps,
-} from "../lib/shared";
+} from "../lib/shared_cloudflare";
 import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
 import type { CloudflareEnvironment } from "../worker";
 

@@ -9,13 +9,13 @@ import {
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { encryptAPIKey } from "../lib/apiKeys";
 import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
+import { hex2array } from "../lib/shared";
 import {
 	clientError,
 	ContentProps,
-	hex2array,
 	safeCompare,
 	type RequestWithProps,
-} from "../lib/shared";
+} from "../lib/shared_cloudflare";
 import { uploadSchema } from "../lib/uploadSchema";
 import type { CloudflareEnvironment } from "../worker";
 
