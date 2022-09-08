@@ -2,7 +2,7 @@
 export interface FileSystem {
 	writeFile(
 		file: string,
-		data: string | ReadableStream | ArrayBuffer | ArrayBufferView | Blob
+		data: string | ArrayBuffer | ArrayBufferView | Blob
 	): Promise<void>;
 	readFile(file: string): Promise<string>;
 	// deleteFile(file: string): Promise<void>;

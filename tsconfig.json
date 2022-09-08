@@ -16,7 +16,8 @@
 		"moduleResolution": "Node",
 
 		/* Support for Cloudflare */
-		"types": ["@cloudflare/workers-types"]
+		"types": ["@cloudflare/workers-types"],
+		"lib": ["ESNext"]
 	},
 	"include": ["src/**/*.ts", "test/**/*.ts"]
 }

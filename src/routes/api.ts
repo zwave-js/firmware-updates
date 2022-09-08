@@ -2,6 +2,7 @@ import { withDurables } from "itty-durable";
 import { json, type ThrowableRouter } from "itty-router-extras";
 import { APIv1_RequestSchema } from "../apiV1";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
+import { withCache } from "../lib/cache";
 import { lookupConfig } from "../lib/config";
 import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
 import {
@@ -9,7 +10,7 @@ import {
 	ContentProps,
 	serverError,
 	type RequestWithProps,
-} from "../lib/shared";
+} from "../lib/shared_cloudflare";
 import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
 import type { CloudflareEnvironment } from "../worker";
 
@@ -51,7 +52,8 @@ export default function register(router: ThrowableRouter): void {
 		"/api/v1/updates",
 		async (
 			req: RequestWithProps<[ContentProps]>,
-			env: CloudflareEnvironment
+			env: CloudflareEnvironment,
+			context: ExecutionContext
 		) => {
 			const result = await APIv1_RequestSchema.safeParseAsync(
 				req.content
@@ -71,21 +73,42 @@ export default function register(router: ThrowableRouter): void {
 				return serverError("Filesystem empty");
 			}
 
-			const config = await lookupConfig(
-				createCachedR2FS(env.CONFIG_FILES, env.R2_CACHE, version),
-				"/",
-				manufacturerId,
-				productType,
-				productId,
-				firmwareVersion
+			// Figure out if this info is already cached
+			const cacheUrl = new URL(
+				`/${manufacturerId}:${productType}:${productId}:${firmwareVersion}?version=${version}`,
+				req.url
 			);
+			const cacheKey = cacheUrl.toString();
 
-			if (!config) {
-				// Config not found
-				return json([]);
-			}
+			return withCache(
+				{
+					req,
+					context,
+					cacheKey,
+					// Cache for 1 hour on the client
+					maxAge: 60 * 60,
+					// Cache for 1 day on the server.
+					// We use the file hash/revision as part of the cache key,
+					// so we can safely cache for a longer time.
+					sMaxAge: 60 * 60 * 24,
+				},
+				async () => {
+					const config = await lookupConfig(
+						createCachedR2FS(
+							env.CONFIG_FILES,
+							env.R2_CACHE,
+							version
+						),
+						"/",
+						manufacturerId,
+						productType,
+						productId,
+						firmwareVersion
+					);
 
-			return json(config.upgrades);
+					return json(config?.upgrades ?? []);
+				}
+			);
 		}
 	);
 }

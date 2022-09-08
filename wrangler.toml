@@ -1,6 +1,6 @@
 name = "zwave-js-firmware-updates"
 usage_model = "bundled"
-workers_dev = true
+# workers_dev = true
 compatibility_date = "2022-08-28"
 
 # node_compat = true
@@ -38,7 +38,7 @@ format = "modules"
 port = 8787
 watch = true
 
-cache = false
+cache_persist = true
 env_path = ".env"
 
 kv_persist = true
