@@ -13,22 +13,27 @@ export async function withAPIKey(
 		}
 	};
 
-	const keyHex = env.API_KEY_ENC_KEY;
-	if (!keyHex || !/^[0-9a-f]{64}$/.test(keyHex)) {
-		return fail("Setup not complete", 500);
-	}
-	const key = hex2array(keyHex); // Buffer.from(keyHex, "hex");
-
 	const apiKeyHex = req.headers.get("x-api-key");
 	if (typeof apiKeyHex !== "string" || !apiKeyHex) {
 		return fail("API key not provided", 401);
 	}
 
-	let apiKey: APIKey;
-	try {
-		apiKey = await decryptAPIKey(key, apiKeyHex);
-	} catch (e: any) {
-		return fail(e.message, 401);
+	// If the API key is stored in KV, use that
+	let apiKey = await env.API_KEYS.get<APIKey>(apiKeyHex, "json");
+
+	// otherwise, decrypt it
+	if (!apiKey) {
+		const keyHex = env.API_KEY_ENC_KEY;
+		if (!keyHex || !/^[0-9a-f]{64}$/.test(keyHex)) {
+			return fail("Setup not complete", 500);
+		}
+		const key = hex2array(keyHex); // Buffer.from(keyHex, "hex");
+
+		try {
+			apiKey = await decryptAPIKey(key, apiKeyHex);
+		} catch (e: any) {
+			return fail(e.message, 401);
+		}
 	}
 
 	(req as any).apiKey = apiKey;
