@@ -25,7 +25,13 @@ export async function withCache(
 			return new Response(null, { status: 304 });
 		}
 		console.log("cache hit");
-		return response;
+		// Create a new response from the cached one, so we can modify its headers
+		// Just cloning doesn't seem to be enough
+		return new Response(response.body, {
+			status: response.status,
+			statusText: response.statusText,
+			headers: response.headers,
+		});
 	}
 
 	response = await responseFactory();
