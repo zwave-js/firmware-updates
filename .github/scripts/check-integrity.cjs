@@ -127,8 +127,12 @@ Got:      ${hash}`
 	}
 
 	if (errors.length) {
-		const comment = `Checking firmware downloads and integrity hashes failed with the following errors:
-${errors.join("\n\n")}`;
+		const comment = `Checking firmware downloads and integrity hashes had ${
+			errors.length
+		} error${errors.length !== 1 ? "s" : ""}:
+\`\`\`
+${errors.map((e) => `* `).join("\n\n")}
+\`\`\``;
 
 		await github.rest.issues.createComment({
 			...context.repo,
