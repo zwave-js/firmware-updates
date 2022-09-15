@@ -37,15 +37,11 @@ async function main(param) {
 				},
 				(response) => response.data
 			);
-			core.debug(
-				"existing comments: " + JSON.stringify(existingComments)
-			);
+			core.info("existing comments: " + JSON.stringify(existingComments));
 
 			for (const comment of existingComments) {
 				if (comment.body?.endsWith(COMMENT_TAG)) {
-					core.debug(
-						`Deleting existing comment from ${comment.user}`
-					);
+					core.info(`Deleting existing comment from ${comment.user}`);
 					await github.rest.issues
 						.deleteComment({
 							...context.repo,
@@ -55,7 +51,7 @@ async function main(param) {
 				}
 			}
 		} catch (e) {
-			core.debug(`Failed to delete existing comments: ${e.stack}`);
+			core.info(`Failed to delete existing comments: ${e.stack}`);
 		}
 	};
 
