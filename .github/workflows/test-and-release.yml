@@ -56,7 +56,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const script = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/check-integrity.cjs`);
-          return script({github, context});
+          return script({github, context, core});
 
   # ===================
   # Deploys successful builds on the main branch to Cloudflare
