@@ -27,15 +27,39 @@ async function main(param) {
 	const { github, context, core } = param;
 	if (!context.payload.pull_request) return;
 
+	const deleteOldComments = async () => {
+		try {
+			const existingComments = await github.paginate(
+				github.rest.issues.listComments,
+				{
+					...context.repo,
+					issue_number: pull_number,
+				},
+				(response) => response.data
+			);
+			core.debug(
+				"existing comments: " + JSON.stringify(existingComments)
+			);
+
+			for (const comment of existingComments) {
+				if (comment.body?.endsWith(COMMENT_TAG)) {
+					core.debug(
+						`Deleting existing comment from ${comment.user}`
+					);
+					await github.rest.issues
+						.deleteComment({
+							...context.repo,
+							comment_id: comment.id,
+						})
+						.catch(() => {});
+				}
+			}
+		} catch (e) {
+			core.debug(`Failed to delete existing comments: ${e.stack}`);
+		}
+	};
+
 	const pull_number = context.payload.pull_request.number;
-
-	// console.dir(context.payload.pull_request, { depth: Infinity });
-
-	const indexJson = await fs.readFile(
-		path.join(workspaceRoot, "firmwares/index.json"),
-		"utf-8"
-	);
-	const files = JSON5.parse(indexJson).map((entry) => entry.filename);
 
 	let errors = [];
 
@@ -61,6 +85,9 @@ async function main(param) {
 
 	if (filesToCheck.length === 0) {
 		core.info("No firmware files changed, skipping integrity check");
+
+		await deleteOldComments();
+
 		return;
 	}
 
@@ -138,35 +165,10 @@ Got:      ${hash}
 		}
 	}
 
+	await deleteOldComments();
+
 	if (errors.length) {
-		try {
-			const existingComments = await github.paginate(
-				github.rest.issues.listComments,
-				{
-					...context.repo,
-					issue_number: pull_number,
-				},
-				(response) => response.data
-			);
-
-			for (const comment of existingComments) {
-				if (comment.body?.endsWith(COMMENT_TAG)) {
-					core.debug(
-						`Deleting existing comment from ${comment.user}`
-					);
-					await github.rest.issues
-						.deleteComment({
-							...context.repo,
-							comment_id: comment.id,
-						})
-						.catch(() => {});
-				}
-			}
-		} catch (e) {
-			core.debug(`Failed to delete existing comments: ${e.stack}`);
-		}
-
-		const comment = `#### Checking firmware downloads and integrity hashes had ${
+		const comment = `### Checking firmware downloads and integrity hashes had ${
 			errors.length
 		} error${errors.length !== 1 ? "s" : ""}
 		
