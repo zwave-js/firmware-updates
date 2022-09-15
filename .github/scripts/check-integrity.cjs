@@ -37,11 +37,13 @@ async function main(param) {
 				},
 				(response) => response.data
 			);
-			core.info("existing comments: " + JSON.stringify(existingComments));
+			// core.info("existing comments: " + JSON.stringify(existingComments));
 
 			for (const comment of existingComments) {
-				if (comment.body?.endsWith(COMMENT_TAG)) {
-					core.info(`Deleting existing comment from ${comment.user}`);
+				if (
+					comment.body?.endsWith(COMMENT_TAG) &&
+					comment.user?.login === "github-actions[bot]"
+				) {
 					await github.rest.issues
 						.deleteComment({
 							...context.repo,
@@ -51,7 +53,8 @@ async function main(param) {
 				}
 			}
 		} catch (e) {
-			core.info(`Failed to delete existing comments: ${e.stack}`);
+			// Ignore
+			// core.info(`Failed to delete existing comments: ${e.stack}`);
 		}
 	};
 
@@ -147,7 +150,7 @@ ${e.message}`
 					errors.push(
 						`${errorPrefix}
 Integrity hash mismatch
-\`\`\`
+\`\`\`diff
 Expected: ${integrity}
 Got:      ${hash}
 \`\`\``
@@ -168,7 +171,7 @@ Got:      ${hash}
 			errors.length
 		} error${errors.length !== 1 ? "s" : ""}
 		
-${errors.join("\n\n")}`;
+${errors.join("\n\n---\n\n")}`;
 
 		await github.rest.issues.createComment({
 			...context.repo,
