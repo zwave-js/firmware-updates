@@ -91,11 +91,16 @@ async function main(param) {
 				let filename;
 				let rawData;
 				let hash;
+
+				const errorPrefix = `**${file}**, version **${upgrade.version}**, target **${target}**`;
+
 				try {
 					({ filename, rawData } = await downloadFirmware(url));
 				} catch (e) {
 					errors.push(
-						`${file}: Failed to download upgrade for version ${upgrade.version}, target ${target}, url ${url}: ${e.message}`
+						`${errorPrefix}
+Failed to download ${url}
+${e.message}`
 					);
 					core.error(errors[errors.length - 1]);
 					continue;
@@ -107,7 +112,9 @@ async function main(param) {
 					hash = generateHash(filename, rawData);
 				} catch (e) {
 					errors.push(
-						`${file}: Failed to generate integrity hash for version ${upgrade.version}, target ${target}, url ${url}: ${e.message}`
+						`${errorPrefix}
+Failed to generate integrity hash
+${e.message}`
 					);
 					core.error(errors[errors.length - 1]);
 					continue;
@@ -115,9 +122,12 @@ async function main(param) {
 
 				if (hash !== integrity) {
 					errors.push(
-						`${file}: Integrity hash mismatch for version ${upgrade.version}, target ${target}, url ${url}:
+						`${errorPrefix}
+Integrity hash mismatch
+\`\`\`
 Expected: ${integrity}
-Got:      ${hash}`
+Got:      ${hash}
+\`\`\``
 					);
 					core.error(errors[errors.length - 1]);
 					continue;
@@ -141,6 +151,9 @@ Got:      ${hash}`
 
 			for (const comment of existingComments) {
 				if (comment.body?.endsWith(COMMENT_TAG)) {
+					core.debug(
+						`Deleting existing comment from ${comment.user}`
+					);
 					await github.rest.issues
 						.deleteComment({
 							...context.repo,
@@ -153,12 +166,11 @@ Got:      ${hash}`
 			core.debug(`Failed to delete existing comments: ${e.stack}`);
 		}
 
-		const comment = `Checking firmware downloads and integrity hashes had ${
+		const comment = `#### Checking firmware downloads and integrity hashes had ${
 			errors.length
-		} error${errors.length !== 1 ? "s" : ""}:
-\`\`\`
-${errors.map((e) => `* ${e}`).join("\n\n")}
-\`\`\``;
+		} error${errors.length !== 1 ? "s" : ""}
+		
+${errors.join("\n\n")}`;
 
 		await github.rest.issues.createComment({
 			...context.repo,
