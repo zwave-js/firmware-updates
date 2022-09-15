@@ -50,6 +50,14 @@ jobs:
     - name: Run component tests
       run: yarn run test:ci
 
+    - name: Check file download/integrity
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const script = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/check-integrity.cjs`);
+          return script({github, context});
+
   # ===================
   # Deploys successful builds on the main branch to Cloudflare
   deploy:
