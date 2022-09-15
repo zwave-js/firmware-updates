@@ -26,7 +26,9 @@ async function main(param) {
 	const { github, context, core } = param;
 	if (!context.payload.pull_request) return;
 
-	console.dir(context.payload.pull_request, { depth: Infinity });
+	const pull_number = context.payload.pull_request.number;
+
+	// console.dir(context.payload.pull_request, { depth: Infinity });
 
 	const indexJson = await fs.readFile(
 		path.join(firmwaresDir, "index.json"),
@@ -36,20 +38,35 @@ async function main(param) {
 
 	let errors = [];
 
-	const { data: prFiles } = await github.rest.pulls.listFiles({
-		...context.repo,
-		pull_number: context.payload.pull_request.number,
-	});
+	const prFiles = await github.paginate(
+		github.rest.pulls.listFiles,
+		{
+			...context.repo,
+			pull_number,
+		},
+		(response) => response.data
+	);
 
-	console.dir(prFiles, { depth: Infinity });
+	// Whatever the difference between "modified" and "changed" is 🤷‍♂️
+	const filesToCheck = prFiles
+		.filter(
+			(file) =>
+				file.status === "added" ||
+				file.status === "modified" ||
+				file.status === "changed"
+		)
+		.map((file) => file.filename)
+		.filter((filename) => filename.startsWith("firmwares/"));
 
-	return;
+	if (filesToCheck.length === 0) {
+		core.info("No firmware files changed, skipping integrity check");
+		return;
+	}
 
-	for (const file of files) {
+	for (const file of filesToCheck) {
 		core.info(" ");
 		core.info(`Checking download(s) for ${file}`);
 		const filenameFull = path.join(firmwaresDir, file);
-		// TODO: Filter based on changed files (in PRs)
 
 		// TODO: Reuse ConditionalUpdateConfig for parsing
 		const { upgrades } = JSON5.parse(
@@ -111,18 +128,17 @@ Got:      ${hash}`
 	}
 
 	if (errors.length) {
-		core.setFailed(`Check had the following errors:
-${errors.join("\n\n")}`);
-	}
+		const comment = `Checking firmware downloads and integrity hashes failed with the following errors:
+${errors.join("\n\n")}`;
 
-	// if (message) {
-	// 	// Make a new one otherwise
-	// 	await github.rest.issues.createComment({
-	// 		...options,
-	// 		issue_number: context.issue.number,
-	// 		body: message,
-	// 	});
-	// }
+		await github.rest.issues.createComment({
+			...context.repo,
+			issue_number: pull_number,
+			body: comment,
+		});
+
+		core.setFailed(comment);
+	}
 }
 
 module.exports = main;
