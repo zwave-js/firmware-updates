@@ -18,6 +18,8 @@ const {
 
 const workspaceRoot = path.join(__dirname, "../..");
 
+const COMMENT_TAG = "<!-- integrity-check -->";
+
 /**
  * @param {{github: Github, context: Context, core: Core}} param
  */
@@ -127,17 +129,41 @@ Got:      ${hash}`
 	}
 
 	if (errors.length) {
+		try {
+			const existingComments = await github.paginate(
+				github.rest.issues.listComments,
+				{
+					...context.repo,
+					issue_number: pull_number,
+				},
+				(response) => response.data
+			);
+
+			for (const comment of existingComments) {
+				if (comment.body?.endsWith(COMMENT_TAG)) {
+					await github.rest.issues
+						.deleteComment({
+							...context.repo,
+							comment_id: comment.id,
+						})
+						.catch(() => {});
+				}
+			}
+		} catch (e) {
+			core.debug(`Failed to delete existing comments: ${e.stack}`);
+		}
+
 		const comment = `Checking firmware downloads and integrity hashes had ${
 			errors.length
 		} error${errors.length !== 1 ? "s" : ""}:
 \`\`\`
-${errors.map((e) => `* `).join("\n\n")}
+${errors.map((e) => `* ${e}`).join("\n\n")}
 \`\`\``;
 
 		await github.rest.issues.createComment({
 			...context.repo,
 			issue_number: pull_number,
-			body: comment,
+			body: comment + "\n" + COMMENT_TAG,
 		});
 
 		core.setFailed(comment);
