@@ -73,8 +73,6 @@ export default function register(router: ThrowableRouter): void {
 				return serverError("Filesystem empty");
 			}
 
-			console.dir(req.headers);
-
 			// Figure out if this info is already cached
 			const cacheUrl = new URL(
 				`/${manufacturerId}:${productType}:${productId}:${firmwareVersion}?version=${version}`,
