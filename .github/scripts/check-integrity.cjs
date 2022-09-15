@@ -34,8 +34,11 @@ async function main(param) {
 	const files = JSON5.parse(indexJson).map((entry) => entry.filename);
 
 	let errors = [];
+	let checksOk = [];
 
 	for (const file of files) {
+		core.info(" ");
+		core.info(`Checking download(s) for ${file}`);
 		const filenameFull = path.join(firmwaresDir, file);
 		// TODO: Filter based on changed files (in PRs)
 
@@ -45,6 +48,7 @@ async function main(param) {
 		);
 
 		for (const upgrade of upgrades) {
+			core.info(`  -> upgrade ${upgrade.version}`);
 			const upgradeFiles = upgrade.files ?? [
 				{
 					target: upgrade.target,
@@ -55,6 +59,8 @@ async function main(param) {
 
 			for (const uf of upgradeFiles) {
 				const { url, integrity, target = 0 } = uf;
+				core.info(`    -> target ${target}, url ${url}`);
+
 				let filename;
 				let rawData;
 				let hash;
@@ -64,8 +70,11 @@ async function main(param) {
 					errors.push(
 						`${file}: Failed to download upgrade for version ${upgrade.version}, target ${target}, url ${url}: ${e.message}`
 					);
+					core.error(errors[errors.length - 1]);
 					continue;
 				}
+
+				core.info(`      ✅ Download successful`);
 
 				try {
 					hash = generateHash(filename, rawData);
@@ -73,6 +82,7 @@ async function main(param) {
 					errors.push(
 						`${file}: Failed to generate integrity hash for version ${upgrade.version}, target ${target}, url ${url}: ${e.message}`
 					);
+					core.error(errors[errors.length - 1]);
 					continue;
 				}
 
@@ -82,8 +92,11 @@ async function main(param) {
 Expected: ${integrity}
 Got:      ${hash}`
 					);
+					core.error(errors[errors.length - 1]);
 					continue;
 				}
+
+				core.info(`      ✅ Integrity hash matches`);
 			}
 		}
 	}
