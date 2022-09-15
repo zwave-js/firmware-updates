@@ -54,9 +54,21 @@ The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When
 ```json
 [
     {
+        "version": "1.5",
+        "changelog": "* Initial release",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:45d004e1b5997a053f1de40753d19fc534fd657080810cfb697b868a3cf0e764",
+                "url": "https://example.com/firmware/1.5.otz"
+            }
+        ],
+        "downgrade": true,
+        "normalizedVersion": "1.5.0"
+    },
+    {
         "version": "1.7",
         "changelog": "* Fixed some bugs\n*Added more bugs",
-        "channel": "stable",
         "files": [
             {
                 "target": 0,
@@ -74,16 +86,93 @@ To help applications decide which updates to show and how, additional fields are
 
 -   `downgrade`: Whether this version is a downgrade (`true`) or an upgrade (`false`). Applications may want to only show downgrades when specifically requested.
 -   `normalizedVersion`: A normalized, [semver](https://semver.org/) compatible representation of the version field to make it easier to compare them. Examples:
+    -   version `1.7` becomes `1.7.0`
+    -   version `1.7.0` stays `1.7.0`
+    -   version `1.7.2` stays `1.7.2`
+
+> **Note**
+> API version 1 will only return updates from the `stable` channel. To also get updates from the `beta` channel, use API version 2.
+
+**Response type definition:**
+
+```ts
+type APIv1_Response = {
+    version: string;
+    changelog: string;
+    files: {
+        target: number;
+        url: string;
+        integrity: string;
+    }[];
+    downgrade: boolean;
+    normalizedVersion: string;
+}[];
+```
+
+### API v2, get updates
+
+```
+POST https://firmware.zwave-js.io/api/v2/updates
+Content-Type: application/json
+X-API-Key: <Your API Key>
+
+{
+    "manufacturerId": "0x1234",
+    "productType": "0xabcd",
+    "productId": "0xcafe",
+    "firmwareVersion": "1.6"
+}
+```
+
+Changes compared to v1:
+
+-   Adds the `channel` field to the response, which can be either `stable` or `beta`
+-   `normalizedVersion` distinguishes between versions from the `stable` and `beta` channels. Examples:
     -   stable version `1.7` becomes `1.7.0`
     -   stable version `1.7.0` stays `1.7.0`
     -   stable version `1.7.2` stays `1.7.2`
     -   beta version `1.8` becomes `1.8.0-beta`
     -   beta version `1.8.2` becomes `1.8.2-beta`
 
+**Example response:**
+
+```json
+[
+    {
+        "version": "1.7",
+        "changelog": "* Fixed some bugs\n*Added more bugs",
+        "channel": "stable",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                "url": "https://example.com/firmware/1.7.otz"
+            }
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.7.0"
+    },
+    {
+        "version": "1.8",
+        "changelog": "* Fixed some bugs\n*Added more bugs",
+        "channel": "beta",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:833f9eea2328cb05cbddc00b482e73225a09ca15dc8f90060e8b58ed9aa83a99",
+                "url": "https://example.com/firmware/1.8.otz"
+            }
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.8.0-beta"
+    }
+]
+```
+
 **Response type definition:**
 
 ```ts
-type APIv1_Response = {
+type APIv2_Response = {
     version: string;
     changelog: string;
     channel: "stable" | "beta";
