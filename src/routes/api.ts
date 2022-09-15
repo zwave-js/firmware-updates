@@ -168,7 +168,7 @@ export default function register(router: ThrowableRouter): void {
 										u.version,
 										firmwareVersion
 									) < 0;
-								let normalizedVersion = padVersion(u.version);
+								const normalizedVersion = padVersion(u.version);
 
 								return {
 									...u,

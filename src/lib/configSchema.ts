@@ -68,7 +68,7 @@ const upgradeSchemaSingle = upgradeBaseSchema
 				channel: channel as typeof channel,
 				files: [{ target, integrity, url }],
 			};
-		},
+		}
 	);
 
 const upgradeSchema = upgradeSchemaSingle.or(upgradeSchemaMultiple);
