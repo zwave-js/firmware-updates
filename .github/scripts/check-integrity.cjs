@@ -17,7 +17,6 @@ const {
  */
 
 const workspaceRoot = path.join(__dirname, "../..");
-const firmwaresDir = path.join(workspaceRoot, "firmwares");
 
 /**
  * @param {{github: Github, context: Context, core: Core}} param
@@ -31,7 +30,7 @@ async function main(param) {
 	// console.dir(context.payload.pull_request, { depth: Infinity });
 
 	const indexJson = await fs.readFile(
-		path.join(firmwaresDir, "index.json"),
+		path.join(workspaceRoot, "firmwares/index.json"),
 		"utf-8"
 	);
 	const files = JSON5.parse(indexJson).map((entry) => entry.filename);
@@ -66,7 +65,7 @@ async function main(param) {
 	for (const file of filesToCheck) {
 		core.info(" ");
 		core.info(`Checking download(s) for ${file}`);
-		const filenameFull = path.join(firmwaresDir, file);
+		const filenameFull = path.join(workspaceRoot, file);
 
 		// TODO: Reuse ConditionalUpdateConfig for parsing
 		const { upgrades } = JSON5.parse(
