@@ -24,6 +24,7 @@ const firmwaresDir = path.join(workspaceRoot, "firmwares");
  */
 async function main(param) {
 	const { github, context, core } = param;
+	if (!context.payload.pull_request) return;
 
 	console.dir(context.payload.pull_request, { depth: Infinity });
 
@@ -34,7 +35,15 @@ async function main(param) {
 	const files = JSON5.parse(indexJson).map((entry) => entry.filename);
 
 	let errors = [];
-	let checksOk = [];
+
+	const { data: prFiles } = await github.rest.pulls.listFiles({
+		...context.repo,
+		pull_number: context.payload.pull_request.number,
+	});
+
+	console.dir(prFiles, { depth: Infinity });
+
+	return;
 
 	for (const file of files) {
 		core.info(" ");

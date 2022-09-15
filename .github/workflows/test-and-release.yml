@@ -50,7 +50,8 @@ jobs:
     - name: Run component tests
       run: yarn run test:ci
 
-    - name: Check file download/integrity
+    - name: Check file download/integrity of changed files
+      if: github.event_name == 'pull_request'
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
