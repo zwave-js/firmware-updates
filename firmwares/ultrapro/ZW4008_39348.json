@@ -18,7 +18,7 @@
 		{
 			"version": "5.54",
 			"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary\n3. Valid Value 1 – Reset Switch to Factory Defaults",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/UltraPro/ZW4008/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_UltraPro_39348-54890-54891_5.54.otz",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a69/zwave/UltraPro/ZW4008/39348%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_UltraPro_39348-54890-54891_5.54.otz",
 			"integrity": "sha256:9ffca3c5f14c0a7565fd6205957a1949047240d26bf2121c8f0c8b08852b987f"
 		}
 	]
