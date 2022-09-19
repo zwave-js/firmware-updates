@@ -11,6 +11,7 @@
 	"upgrades": [
 		{
 			"version": "1.61",
+			"channel": "beta",
 			"changelog": "Fixed - Dimmer sending duplicate reports in certain scenarios while being controlled by certain hubs.",
 			"files": [
 				{
