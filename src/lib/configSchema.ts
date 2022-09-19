@@ -48,6 +48,7 @@ const upgradeBaseSchema = z.object({
 	$if: z.string().min(1).optional(),
 	version: firmwareVersionSchema,
 	changelog: z.string().min(1),
+	channel: z.enum(["stable", "beta"]).optional().default("stable"),
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
@@ -56,15 +57,19 @@ const upgradeSchemaMultiple = upgradeBaseSchema.merge(
 
 const upgradeSchemaSingle = upgradeBaseSchema
 	.merge(fileSchema)
-	.transform(({ $if, version, changelog, target, integrity, url }) => {
-		// Normalize to the same format as the "multiple" variant
-		return {
-			...($if != undefined ? { $if } : {}),
-			version,
-			changelog,
-			files: [{ target, integrity, url }],
-		};
-	});
+	.transform(
+		({ $if, version, changelog, channel, target, integrity, url }) => {
+			// Normalize to the same format as the "multiple" variant
+			return {
+				...($if != undefined ? { $if } : {}),
+				version,
+				changelog,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+				channel: channel as typeof channel,
+				files: [{ target, integrity, url }],
+			};
+		}
+	);
 
 const upgradeSchema = upgradeSchemaSingle.or(upgradeSchemaMultiple);
 

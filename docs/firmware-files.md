@@ -116,6 +116,35 @@ npx @zwave-js/firmware-integrity <file>
 
 and the tool will output the integrity string. More information can be found at https://github.com/zwave-js/firmware-integrity.
 
+### Provide access to betas or pre-releases
+
+The optional `"channel"` field is used to assign an upgrade to a specific release channel:
+
+-   `"stable"`: Production-ready, well-tested firmwares. This is the default if the channel is not specified.
+-   `"beta"`: Beta or pre-release firmwares.
+
+```jsonc
+{
+	"devices": [
+		// ...
+	],
+
+	"upgrades": [
+		{
+			"version": "1.7",
+			"changelog": "* Fixed some bugs\n*Added more bugs",
+
+			"channel": "beta"
+			// ...
+		}
+	]
+}
+```
+
+This allows more experienced users to stay up to date with the latest versions, while others can stick to well-tested firmwares.
+
+**Note:** The `beta` channel is **not** intended to distribute nightly or testing builds. These firmwares MUST be stable enough for a public, potentially wide-spread release.
+
 ### Multiple firmware upgrades
 
 Devices with multiple firmware targets can define multiple downloads in a single entry. The downloads should appear in the order they are meant to be applied.
