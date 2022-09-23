@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE44",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xe004"
+		}
+	],
+
+	"upgrades": [
+		{
+			"version": "1.20",
+			"changelog": "n/a",
+			"url": "https://raw.githubusercontent.com/uberchris2/zooz-firmware/main/ZSE44_V01R20P01.gbl",
+			"integrity": "sha256:dbfd710947cc09d749086e3e483d28a6bcd6ddd908a3c1c1aa0e973ead573c0e"
+		}
+	]
+}

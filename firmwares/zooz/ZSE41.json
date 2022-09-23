@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE41",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xe001"
+		}
+	],
+
+	"upgrades": [
+		{
+			"version": "1.30",
+			"changelog": "US Only",
+			"url": "https://raw.githubusercontent.com/uberchris2/zooz-firmware/main/ZSE41_V01R30P01_US.gbl",
+			"integrity": "sha256:3ccba48a27733442f88eda9b306d2d82b0891fdf1f83a0d730b664e1362ec7ec"
+		}
+	]
+}
