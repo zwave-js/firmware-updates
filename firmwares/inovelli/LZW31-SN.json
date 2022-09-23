@@ -25,6 +25,23 @@
 					"integrity": "sha256:e07cb9972bfe88e143c72c9b6ed88a640b9d969fbf09d6c1a4625f711979b541"
 				}
 			]
+		},
+		{
+			"version": "1.57",
+			"channel": "stable",
+			"changelog": "Fixed - Optimization of Aux mode in neutral setting. – Fixed - The inoperative issue after changing parameter 8 from high value to low value.",
+			"files": [
+				{
+					"target": 1,
+					"url": "https://files.inovelli.com/firmware/LZW31-SN/Beta/1.61/LZW31-SN_1.45.bin",
+					"integrity": "sha256:2a338a5f501746b69c91489efe1cb4b8b3d62a29501779943bf90625582693f1"
+				},
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW31-SN/1.57/LZW31-SN_1.57.otz",
+					"integrity": "sha256:5c1d59906e302018c5c8bcd90040f0d545c8567a9c595a503df0ed27b77d5f33"
+				}
+			]
 		}
 	]
 }
