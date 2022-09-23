@@ -33,7 +33,7 @@
 			"files": [
 				{
 					"target": 1,
-					"url": "https://files.inovelli.com/firmware/LZW31-SN/Beta/1.61/LZW31-SN_1.45.bin",
+					"url": "https://files.inovelli.com/firmware/LZW31-SN/1.57/LZW31-SN_1.45.bin",
 					"integrity": "sha256:2a338a5f501746b69c91489efe1cb4b8b3d62a29501779943bf90625582693f1"
 				},
 				{
