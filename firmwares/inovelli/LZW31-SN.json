@@ -29,7 +29,7 @@
 		{
 			"version": "1.57",
 			"channel": "stable",
-			"changelog": "Fixed - Optimization of Aux mode in neutral setting. – Fixed - The inoperative issue after changing parameter 8 from high value to low value.",
+			"changelog": "Fixed - Optimization of Aux mode in neutral setting.\nFixed - The inoperative issue after changing parameter 8 from high value to low value.",
 			"files": [
 				{
 					"target": 1,
