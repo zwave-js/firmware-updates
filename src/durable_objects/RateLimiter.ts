@@ -20,9 +20,9 @@ export class RateLimiter extends createDurable() {
 		return persistable;
 	}
 
-	private getStorage(): DurableObjectStorage {
-		return (this.state as any).storage;
-	}
+	// private getStorage(): DurableObjectStorage {
+	// 	return (this.state as any).storage;
+	// }
 
 	/**
 	 * Checks if the current request is allowed. If not, returns the rate limit information.
@@ -32,9 +32,9 @@ export class RateLimiter extends createDurable() {
 	): Promise<RateLimit & { limitExceeded: boolean }> {
 		const now = Date.now();
 
-		// Destroy the durable object if it hasn't been used for 2 hours
-		await this.getStorage().deleteAlarm();
-		await this.getStorage().setAlarm(now + 2 * 60 * 60 * 1000);
+		// // Destroy the durable object if it hasn't been used for 2 hours
+		// await this.getStorage().deleteAlarm();
+		// await this.getStorage().setAlarm(now + 2 * 60 * 60 * 1000);
 
 		if (this.resetDate < now) {
 			// Not initialized yet or the rate limit has expired
@@ -93,9 +93,9 @@ export class RateLimiter extends createDurable() {
 		await this.doPersist();
 	}
 
-	public async alarm(): Promise<void> {
-		await this.destroy();
-	}
+	// public async alarm(): Promise<void> {
+	// 	await this.destroy();
+	// }
 }
 
 export type RateLimiterProps = {
