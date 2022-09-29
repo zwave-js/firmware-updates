@@ -16,7 +16,7 @@ export class RateLimiter extends createDurable() {
 
 	// Avoid persisting the values related to throttling the persist calls
 	public getPersistable(): any {
-		const { persistTimeout, lastPersist, ...persistable } = this;
+		const { persistTimeout, ...persistable } = this;
 		return persistable;
 	}
 
@@ -82,8 +82,8 @@ export class RateLimiter extends createDurable() {
 	}
 
 	private async doPersist(): Promise<void> {
-		await this.persist();
 		this.lastPersist = Date.now();
+		await this.persist();
 	}
 
 	/** Refreshes the rate limiter and sets its remaining requests to the given value */
