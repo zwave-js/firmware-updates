@@ -12,8 +12,7 @@ export class RateLimiter extends createDurable() {
 	private remaining: number = 0;
 
 	private lastPersist: number = 0;
-	// TODO: We're not using Node.JS, but somehow its types sneaked in here
-	private persistTimeout: NodeJS.Timeout | undefined;
+	private persistTimeout: number | undefined;
 
 	// Avoid persisting the values related to throttling the persist calls
 	public getPersistable(): any {
@@ -64,7 +63,9 @@ export class RateLimiter extends createDurable() {
 		// This has the risk of data loss if the worker crashes, or the DO gets evicted early, but that's acceptable for this use case.
 
 		// (Re-)schedule a persist for later, so we automatically persist if nothing happens for a while
-		clearTimeout(this.persistTimeout);
+		if (this.persistTimeout) clearTimeout(this.persistTimeout);
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore - For some reason, the Node.JS globals end up in this file
 		this.persistTimeout = setTimeout(
 			() => this.doPersist(),
 			PERSIST_INTERVAL_MS
