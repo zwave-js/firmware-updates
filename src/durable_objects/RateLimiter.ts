@@ -63,13 +63,15 @@ export class RateLimiter extends createDurable() {
 		// This has the risk of data loss if the worker crashes, or the DO gets evicted early, but that's acceptable for this use case.
 
 		// (Re-)schedule a persist for later, so we automatically persist if nothing happens for a while
-		if (this.persistTimeout) clearTimeout(this.persistTimeout);
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore - For some reason, the Node.JS globals end up in this file
-		this.persistTimeout = setTimeout(() => {
-			console.log("throttlePersist: inside setTimeout cb");
-			void this.doPersist();
-		}, PERSIST_INTERVAL_MS);
+		if (this.persistTimeout == undefined) {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore - For some reason, the Node.JS globals end up in this file
+			this.persistTimeout = setTimeout(() => {
+				this.persistTimeout = undefined;
+				console.log("throttlePersist: inside setTimeout cb");
+				void this.doPersist();
+			}, PERSIST_INTERVAL_MS);
+		}
 
 		// Also make sure to persist busy objects at least every PERSIST_INTERVAL_MS
 		const now = Date.now();
