@@ -67,11 +67,19 @@ export class RateLimiter extends createDurable() {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore - For some reason, the Node.JS globals end up in this file
 		this.persistTimeout = setTimeout(() => {
+			console.log("throttlePersist: inside setTimeout cb");
 			void this.doPersist();
 		}, PERSIST_INTERVAL_MS);
 
 		// Also make sure to persist busy objects at least every PERSIST_INTERVAL_MS
+		const now = Date.now();
+		console.log(
+			`throttlePersist: now = ${now}, lastPersist = ${
+				this.lastPersist
+			}, delta = ${now - this.lastPersist}`
+		);
 		if (Date.now() - this.lastPersist > PERSIST_INTERVAL_MS) {
+			console.log("throttlePersist: persisted after time interval");
 			// We haven't persisted in a while, so persist now
 			await this.doPersist();
 		}
