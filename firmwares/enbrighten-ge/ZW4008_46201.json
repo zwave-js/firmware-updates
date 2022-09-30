@@ -9,15 +9,75 @@
 		}
 	],
 	"upgrades": [
+		// This first section defines the available updates for the "official" release firmwares.
+		// Here, 5.x is considered stable, 0.x is considered beta. Users can switch to a firmware with the alternate behavior
+		// by using the beta channel and "downgrading"
 		{
+			"$if": "firmwareVersion >= 5.0",
 			"version": "5.53",
 			"changelog": "1. Original Release Firmware",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Enbrighten-GE_46201_5.53.otz",
 			"integrity": "sha256:3941ffb451fc9eaaa5b9eb82c32aac3b35e7adca80df6ca5f7cdec30da7e53b6"
 		},
 		{
+			"$if": "firmwareVersion >= 5.0",
 			"version": "5.54",
 			"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary Valid Value 1 – Reset Switch to Factory Defaults\n3. Valid Value 1 – Reset Switch to Factory Defaults",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
+			"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
+		},
+		{
+			// 5.53 can switch to 0.53 (considered beta)
+			"$if": "firmwareVersion === 5.53",
+			"version": "0.53",
+			"channel": "beta",
+			"changelog": "ENABLE ALTERNATE BEHAVIOR",
+			// TODO: Update URL and integrity hash
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Enbrighten-GE_46201_5.53.otz",
+			"integrity": "sha256:3941ffb451fc9eaaa5b9eb82c32aac3b35e7adca80df6ca5f7cdec30da7e53b6"
+		},
+		{
+			// 5.54 can switch to 0.54
+			"$if": "firmwareVersion === 5.54",
+			"version": "0.54",
+			"channel": "beta",
+			"changelog": "ENABLE ALTERNATE BEHAVIOR",
+			// TODO: Update URL and integrity hash
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
+			"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
+		},
+
+		// This section defines the available upgrade path for the alternate firmwares (considered stable)
+		{
+			"$if": "firmwareVersion < 1.0",
+			"version": "0.53",
+			"changelog": "(ALTERNATE BEHAVIOR)\n\n1. Original Release Firmware",
+			// TODO: Update URL and integrity hash
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Enbrighten-GE_46201_5.53.otz",
+			"integrity": "sha256:3941ffb451fc9eaaa5b9eb82c32aac3b35e7adca80df6ca5f7cdec30da7e53b6"
+		},
+		{
+			"$if": "firmwareVersion < 1.0",
+			"version": "0.54",
+			"changelog": "(ALTERNATE BEHAVIOR)\n\n1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary Valid Value 1 – Reset Switch to Factory Defaults\n3. Valid Value 1 – Reset Switch to Factory Defaults",
+			// TODO: Update URL and integrity hash
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
+			"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
+		},
+		// 0.x firmwares may switch to the same 5.x variant via the beta channel
+		{
+			"$if": "firmwareVersion === 0.53",
+			"version": "5.53",
+			"channel": "beta",
+			"changelog": "ENABLE ORIGINAL BEHAVIOR",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Enbrighten-GE_46201_5.53.otz",
+			"integrity": "sha256:3941ffb451fc9eaaa5b9eb82c32aac3b35e7adca80df6ca5f7cdec30da7e53b6"
+		},
+		{
+			"$if": "firmwareVersion === 0.54",
+			"version": "5.54",
+			"channel": "beta",
+			"changelog": "ENABLE ORIGINAL BEHAVIOR",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
 			"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
 		}
