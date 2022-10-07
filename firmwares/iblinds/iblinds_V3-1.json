@@ -11,16 +11,9 @@
 	"upgrades": [
 		{
 			"version": "3.12",
-			"changelog": "Current Spike Detection Large/Heavy Blind – In the previous version we added motor protection that stopped the motor when the max current was reached. Added a spike detection to prevent false-positive this keeps large/heavy blinds from stopping before the target location has been reached.\nDuration Interrupt – Corrected duration interrupt problem. If a set command is sent while the blind is still processing a set command with a duration value the motor will now cancel the current duration command and handle the new command.",
-			"url": "https://gist.githubusercontent.com/habhomegit/b9101ec4b3e3b57dde31458f48055bd0/raw/a410973b437ac72d96930bb6faf7732cfbc6c827/iBlinds_V3.12.hex",
-			"integrity": "sha256:f0007bd8e41ebe12f05d06c90c1e0ae15581eb60a88ccd2802f63ac43b62261b"
-		},
-		{
-			"version": "3.14",
-			"changelog": "ALWAYS ON State. **iBlinds must always be plugged in to direct power using this firmware version.** This will turn iblinds from an LSS device to a repeater, iblinds will in turn respond much quicker to commands and be able to relay commands to iblinds devices which are not using this firmware.",
-			"url": "https://gist.githubusercontent.com/habhomegit/614aaa8c4f3ea6336110e2a91b56286e/raw/8d0842f830424fd219f53a798fdff3a32e446ed0/iBlinds_V3.14.hex",
-			"integrity": "sha256:622715f677d16d9065ab2664a012a91c4621d633b1cda00b66525dc8ecd65ec3",
-			"channel": "beta"
+			"changelog": "Current Spike Detection Large/Heavy Blind - In the previous version we added motor protection that stopped the motor when the max current was reached. Added a spike detection to prevent false-positive this keeps large/heavy blinds from stopping before the target location has been reached.\nDuration Interrupt – Corrected duration interrupt problem. If a set command is sent while the blind is still processing a set command with a duration value the motor will now cancel the current duration command and handle the new command.",
+			"url": "https://support.myiblinds.com/wp-content/uploads/2021/09/iBlinds_v3.12_US.gbl",
+			"integrity": "sha256:52206d165bc44f869ec18807a357a0efba15d68548250b2a992f676cade6686e"
 		}
 	]
 }
