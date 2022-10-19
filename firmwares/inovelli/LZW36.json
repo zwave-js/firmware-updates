@@ -1,0 +1,37 @@
+{
+	"devices": [
+		{
+			"brand": "Inovelli",
+			"model": "LZW36",
+			"manufacturerId": "0x031e",
+			"productType": "0x000E",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.36",
+			"channel": "beta",
+			"changelog": "Fixed: Issue of Z-wave switch losing communication with fan module under certain scenarios.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW36/Beta/LZW36_1.36.gbl",
+					"integrity": "sha256:ac9365ebde68a0b58cc8014a08deb1ec801d24ccacd6d405f0b9e3d22c14f22b"
+				}
+			]
+		},
+		{
+			"version": "1.31",
+			"channel": "stable",
+			"changelog": "Initial production release.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW36/LZW36_1.31.gbl",
+					"integrity": "sha256:fea497f987b4694847fef29558d517ef20c79fb0e8bf168bc952a4b53c76ebbc"
+				}
+			]
+		}
+	]
+}
