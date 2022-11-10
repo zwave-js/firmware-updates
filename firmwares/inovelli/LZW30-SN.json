@@ -1,0 +1,37 @@
+{
+	"devices": [
+		{
+			"brand": "Inovelli",
+			"model": "LZW30-SN",
+			"manufacturerId": "0x031e",
+			"productType": "0x0002",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"channel": "beta",
+			"changelog": "Fixed the bug that the V1 version of Protection Set Command would cause RF state of Protection to become enabled. This mostly affected Home Assistant users as it is still using V1 of this command class.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW30-SN/Beta/LZW30-SN_1.22.otz",
+					"integrity": "sha256:8095a0cdf74762c4b556f698106784b4e749d84dc2a2dceb19751a6026c3726b"
+				}
+			]
+		},
+		{
+			"version": "1.20",
+			"channel": "stable",
+			"changelog": "Change that optimizes Z-Wave exclusion during mass production. Intended for quality testing after assembly.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW30-SN/LZW30-SN_1.20.otz",
+					"integrity": "sha256:181fba03fae76da027627b45c47b1157999881c095e4ea13b919c1f6302ef724"
+				}
+			]
+		}
+	]
+}
