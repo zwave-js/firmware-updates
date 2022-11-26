@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Logic Group",
+			"model": "ZDB5100 Matrix",
+			"manufacturerId": "0x0234",
+			"productType": "0x0003",
+			"productId": "0x0121"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.8",
+			"changelog": "Problem med single-channel associeringer er løst (problem med associering til DIMMY version 1.01).\nSynkron blink med baggrundslys.\nSætte niveau for næste gang lyset tændes.",
+			"url": "https://logic-group.com/download/4235/",
+			"integrity": "sha256:d9b302b3bceb8243e7cc74dcb05c4ca504febb693898bbad90bca09c8e84a4bf"
+		}
+	]
+}
