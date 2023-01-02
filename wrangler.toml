@@ -8,7 +8,7 @@ compatibility_date = "2022-08-28"
 main = "build/worker.js"
 
 kv_namespaces = [
-  { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" },
+#   { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" },
   { binding = "API_KEYS", id = "7edd033eda014a5ebdd02aed07f31063" }
 ]
 
@@ -42,6 +42,6 @@ watch = true
 cache_persist = true
 env_path = ".env"
 
-kv_persist = true
+# kv_persist = true
 durable_objects_persist = true
 r2_persist = true
