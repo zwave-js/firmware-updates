@@ -46,11 +46,26 @@ X-API-Key: <Your API Key>
     "manufacturerId": "0x1234",
     "productType": "0xabcd",
     "productId": "0xcafe",
-    "firmwareVersion": "1.6"
+    "firmwareVersion": "1.6",
+    "region": "europe"
 }
 ```
 
 The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When no patch version is provided, it will be assumed to be `0`, so `1.6` is equivalent to `1.6.0`.
+
+The `region` field is optional and may be omitted. If provided, it must be one of the following (case insensitive):
+- `"europe"`
+- `"usa"`
+- `"australia/new zealand"`
+- `"hong kong"`
+- `"india"`
+- `"israel"`
+- `"russia"`
+- `"china"`
+- `"japan"`
+- `"korea"`
+
+Firmware updates that belong to a specific region will only be returned if the `region` field is provided and a match.
 
 **Example response:**
 
