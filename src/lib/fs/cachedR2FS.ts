@@ -1,73 +1,95 @@
+import { CacheOptions, withCache } from "../cache";
 import type { FileSystem } from "./filesystem";
 
-// We cache read results in KV for 24 hours as a compromise between duplicating
-// storage and read performance. Since files are static for each version,
-// outdated files will automatically be deleted.
+// We cache read results for 24 hours to avoid hitting R2 too often.
+// Since files are versioned and the version is included in the cache key,
+// we don't need to purge them when serving a new version.
 const oneDayInSeconds = 24 * 60 * 60;
 
-export async function getFilesVersion(
+const CACHE_KEY_PREFIX = "http://r2-cache/";
+
+async function objectWithCache(
+	key: string,
+	context: ExecutionContext,
 	bucket: R2Bucket,
-	kv: KVNamespace
+	cacheOptions?: Omit<CacheOptions, "context" | "cacheKey">
+): Promise<Response | undefined> {
+	const cacheKey = CACHE_KEY_PREFIX + encodeURIComponent(key);
+	const response = await withCache(
+		{
+			context,
+			cacheKey,
+			...cacheOptions,
+		},
+		async () => {
+			return new Response((await bucket.get(key))?.body);
+		}
+	);
+
+	if (!response.body) return;
+	return response;
+}
+
+function purgeCache(context: ExecutionContext, cacheKeySuffix: string): void {
+	const cache = caches.default;
+	const cacheKey = CACHE_KEY_PREFIX + encodeURIComponent(cacheKeySuffix);
+	context.waitUntil(
+		cache.delete(cacheKey, {
+			ignoreMethod: true,
+		})
+	);
+}
+
+export async function getFilesVersion(
+	context: ExecutionContext,
+	bucket: R2Bucket
 ): Promise<string | undefined> {
-	const cacheKey = "version";
-	const cached = await kv.get(cacheKey, {
-		// cache at the edge for 1 minute
-		cacheTtl: 60,
+	const filename = "version";
+	const file = await objectWithCache(filename, context, bucket, {
+		// cache the current version at the edge for 1 minute
+		sMaxAge: 60,
 	});
-	if (cached) return cached;
+	return file?.text();
+}
 
-	const versionFile = await bucket.get(cacheKey);
-	if (!versionFile) return;
-
-	const version = await versionFile.text();
-
-	// Cache result in KV for 24 hours. This will be purged on upload.
-	await kv.put(cacheKey, version, {
-		expirationTtl: oneDayInSeconds,
-	});
-
-	return version;
+export async function putFilesVersion(
+	context: ExecutionContext,
+	bucket: R2Bucket,
+	version: string
+): Promise<void> {
+	const filename = "version";
+	await bucket.put(filename, version);
+	purgeCache(context, filename);
 }
 
 export function createCachedR2FS(
+	context: ExecutionContext,
 	bucket: R2Bucket,
-	kv: KVNamespace,
 	version: string
 ): FileSystem {
 	const FILE_PREFIX = `${version}:file:`;
-	const FILE_CACHE_KEY = (file: string) => `${FILE_PREFIX}${file}`;
-	const READDIR_CACHE_KEY = (dir: string, recursive: boolean) =>
+	const FILE_OBJ_KEY = (file: string) => `${FILE_PREFIX}${file}`;
+	const READDIR_OBJ_KEY = (dir: string, recursive: boolean) =>
 		`${version}:readdir:${recursive}:${dir}`;
 	const ret: FileSystem = {
 		async writeFile(file, data) {
 			// WARNING: This does not invalidate readdir results!
-			// DO NOT write versioned files after reading them.
-			const cacheKey = FILE_CACHE_KEY(file);
-			await bucket.put(cacheKey, data);
-			await kv.delete(cacheKey);
+			// DO NOT write versioned files after reading a directory.
+			const objKey = FILE_OBJ_KEY(file);
+			await bucket.put(objKey, data);
+			purgeCache(context, objKey);
 		},
 		async readFile(file) {
 			// Try to read from KV first
-			const cacheKey = FILE_CACHE_KEY(file);
-			const cached = await kv.get(cacheKey, {
+			const objKey = FILE_OBJ_KEY(file);
+			const obj = await objectWithCache(objKey, context, bucket, {
 				// cache at the edge for 24 hours
-				cacheTtl: oneDayInSeconds,
+				sMaxAge: oneDayInSeconds,
 			});
-			if (cached) return cached;
-
-			// Not found, read from R2 Bucket
-			const obj = await bucket.get(cacheKey);
 			if (!obj) {
 				throw new Error(`File not found in R2: ${file}`);
 			}
-			const ret = await obj.text();
-
-			// Cache result in KV for 24 hours.
-			await kv.put(cacheKey, ret, {
-				expirationTtl: oneDayInSeconds,
-			});
-
-			return ret;
+			return obj.text();
 		},
 		async readDir(dir, recursive) {
 			let truncated: boolean;
@@ -75,48 +97,51 @@ export function createCachedR2FS(
 
 			if (!dir.endsWith("/")) dir += "/";
 
-			const cacheKey = READDIR_CACHE_KEY(dir, recursive);
-			const cached = await kv.get<string[]>(cacheKey, {
-				type: "json",
-				// cache at the edge for 24 hours
-				cacheTtl: oneDayInSeconds,
-			});
-			if (cached) return cached;
+			const cacheKey =
+				CACHE_KEY_PREFIX +
+				encodeURIComponent(READDIR_OBJ_KEY(dir, recursive));
 
-			const options: R2ListOptions = {
-				prefix: `${FILE_PREFIX}${dir}`,
-			};
-			if (!recursive) {
-				options.delimiter = "/";
-			}
+			const response = await withCache(
+				{
+					context,
+					cacheKey,
+					// Cache list result at the edge for 24 hours
+					sMaxAge: oneDayInSeconds,
+				},
+				async () => {
+					const options: R2ListOptions = {
+						prefix: `${FILE_PREFIX}${dir}`,
+					};
+					if (!recursive) {
+						options.delimiter = "/";
+					}
 
-			const ret: string[] = [];
-			do {
-				const next = await bucket.list({ ...options, cursor });
-				ret.push(
-					...next.objects.map((o) => o.key.slice(FILE_PREFIX.length))
-				);
-				truncated = next.truncated;
-			} while (truncated);
+					const ret: string[] = [];
+					do {
+						const next = await bucket.list({ ...options, cursor });
+						ret.push(
+							...next.objects.map((o) =>
+								o.key.slice(FILE_PREFIX.length)
+							)
+						);
+						truncated = next.truncated;
+					} while (truncated);
 
-			// Cache result in KV for 24 hours.
-			await kv.put(cacheKey, JSON.stringify(ret), {
-				expirationTtl: oneDayInSeconds,
-			});
-			return ret;
+					return new Response(JSON.stringify(ret), {
+						status: 200,
+					});
+				}
+			);
+			return response.json();
 		},
 		async deleteDir(dir) {
 			if (!dir.endsWith("/")) dir += "/";
 
 			const filesInDir = await this.readDir(dir, true);
 			for (const file of filesInDir) {
-				const cacheKey = FILE_CACHE_KEY(file);
-				await bucket.delete(cacheKey);
-				await kv.delete(cacheKey);
+				const objKey = FILE_OBJ_KEY(file);
+				await bucket.delete(objKey);
 			}
-			// purge cache
-			await kv.delete(READDIR_CACHE_KEY(dir, true));
-			await kv.delete(READDIR_CACHE_KEY(dir, false));
 		},
 	};
 	return ret;

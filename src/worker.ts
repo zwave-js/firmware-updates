@@ -9,7 +9,6 @@ export interface CloudflareEnvironment {
 
 	RateLimiter: DurableObjectNamespace;
 
-	R2_CACHE: KVNamespace;
 	API_KEYS: KVNamespace;
 
 	responseHeaders: Record<string, string>;

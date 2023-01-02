@@ -8,7 +8,11 @@ import {
 } from "itty-router-extras";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { encryptAPIKey } from "../lib/apiKeys";
-import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
+import {
+	createCachedR2FS,
+	getFilesVersion,
+	putFilesVersion,
+} from "../lib/fs/cachedR2FS";
 import { hex2array } from "../lib/shared";
 import {
 	clientError,
@@ -79,50 +83,59 @@ export default function register(router: ThrowableRouter): void {
 		"/admin/config/upload",
 		async (
 			req: RequestWithProps<[ContentProps]>,
-			env: CloudflareEnvironment
+			env: CloudflareEnvironment,
+			context: ExecutionContext
 		) => {
-			const result = await uploadSchema.safeParseAsync(req.content);
-			if (!result.success) {
-				return clientError(result.error.format() as any);
-			}
-
-			const newVersion = result.data.version;
-			const fs = createCachedR2FS(
-				env.CONFIG_FILES,
-				env.R2_CACHE,
-				newVersion
-			);
-
-			for (const action of result.data.actions) {
-				if (action.task === "put") {
-					// Upload a file for the current revision/version
-					if (!action.filename.startsWith("/")) {
-						action.filename = "/" + action.filename;
-					}
-
-					await fs.writeFile(action.filename, action.data);
-				} else if (action.task === "enable") {
-					// Enable the current revision, delete all other revisions
-					const oldVersion = await getFilesVersion(
-						env.CONFIG_FILES,
-						env.R2_CACHE
-					);
-					if (oldVersion && oldVersion !== newVersion) {
-						const oldFs = createCachedR2FS(
-							env.CONFIG_FILES,
-							env.R2_CACHE,
-							oldVersion
-						);
-						await oldFs.deleteDir("/");
-					}
-
-					// Update version file and purge cache
-					await env.CONFIG_FILES.put("version", newVersion);
-					await env.R2_CACHE.delete("version");
-
-					// Make sure not to write any extra files after this
-					break;
+			try {
+				const result = await uploadSchema.safeParseAsync(req.content);
+				if (!result.success) {
+					return clientError(result.error.format() as any);
 				}
+
+				const newVersion = result.data.version;
+				const fs = createCachedR2FS(
+					context,
+					env.CONFIG_FILES,
+					newVersion
+				);
+
+				for (const action of result.data.actions) {
+					if (action.task === "put") {
+						// Upload a file for the current revision/version
+						if (!action.filename.startsWith("/")) {
+							action.filename = "/" + action.filename;
+						}
+
+						await fs.writeFile(action.filename, action.data);
+					} else if (action.task === "enable") {
+						// Enable the current revision, delete all other revisions
+						const oldVersion = await getFilesVersion(
+							context,
+							env.CONFIG_FILES
+						);
+						if (oldVersion && oldVersion !== newVersion) {
+							const oldFs = createCachedR2FS(
+								context,
+								env.CONFIG_FILES,
+								oldVersion
+							);
+							await oldFs.deleteDir("/");
+						}
+
+						// Update version file, so new requests will use the new version
+						await putFilesVersion(
+							context,
+							env.CONFIG_FILES,
+							newVersion
+						);
+
+						// Make sure not to write any extra files after this
+						break;
+					}
+				}
+			} catch (e: any) {
+				console.error(e.stack);
+				throw e;
 			}
 
 			return json({ ok: true });
@@ -131,8 +144,12 @@ export default function register(router: ThrowableRouter): void {
 
 	router.get(
 		"/admin/config/version",
-		async (req: Request, env: CloudflareEnvironment) => {
-			const ret = await getFilesVersion(env.CONFIG_FILES, env.R2_CACHE);
+		async (
+			req: Request,
+			env: CloudflareEnvironment,
+			context: ExecutionContext
+		) => {
+			const ret = await getFilesVersion(context, env.CONFIG_FILES);
 			return text(ret || "");
 		}
 	);

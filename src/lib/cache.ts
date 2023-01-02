@@ -1,7 +1,7 @@
 import { array2hex } from "./shared";
 
 export interface CacheOptions {
-	req: Request;
+	req?: RequestInit;
 	context: ExecutionContext;
 	cacheKey: string | Request;
 	maxAge?: number;
@@ -10,7 +10,7 @@ export interface CacheOptions {
 
 export async function withCache(
 	options: CacheOptions,
-	responseFactory: () => Promise<Response>
+	responseFactory: () => Promise<Response | null | undefined>
 ): Promise<Response> {
 	const { req, context, cacheKey, sMaxAge = 600, maxAge = 5 } = options;
 
@@ -19,8 +19,9 @@ export async function withCache(
 	let response = await cache.match(cacheKey);
 	if (response) {
 		if (
-			req.headers.has("if-none-match") &&
-			req.headers.get("if-none-match") === response.headers.get("etag")
+			req?.headers &&
+			"if-none-match" in req.headers &&
+			req.headers["if-none-match"] === response.headers.get("etag")
 		) {
 			return new Response(null, { status: 304 });
 		}
@@ -33,7 +34,7 @@ export async function withCache(
 		});
 	}
 
-	response = await responseFactory();
+	response = (await responseFactory()) ?? new Response(null, { status: 404 });
 
 	if (response.status === 200) {
 		const responseBody = await response.clone().text();
