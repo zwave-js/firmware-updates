@@ -78,6 +78,9 @@
 									"channel": {
 										"$ref": "#/definitions/releaseChannel"
 									},
+									"region": {
+										"$ref": "#/definitions/region"
+									},
 									"target": {
 										"$ref": "#/definitions/firmwareTarget"
 									},
@@ -110,6 +113,9 @@
 									},
 									"channel": {
 										"$ref": "#/definitions/releaseChannel"
+									},
+									"region": {
+										"$ref": "#/definitions/region"
 									},
 									"files": {
 										"type": "array",
@@ -154,6 +160,21 @@
 		"firmwareVersion": {
 			"type": "string",
 			"pattern": "^([0-9]|[1-9][0-9]|[1-2][0-9][0-9])\\.([0-9]|[1-9][0-9]|[1-2][0-9][0-9])$"
+		},
+		"region": {
+			"enum": [
+				"europe",
+				"usa",
+				"australia/new zealand",
+				"hong kong",
+				"india",
+				"israel",
+				"russia",
+				"china",
+				"japan",
+				"korea"
+			],
+			"description": "Which region this update is for"
 		},
 		"integrity": {
 			"type": "string",

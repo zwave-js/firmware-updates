@@ -80,7 +80,12 @@ async function main(param) {
 				file.status === "changed"
 		)
 		.map((file) => file.filename)
-		.filter((filename) => filename.startsWith("firmwares/"));
+		.filter(
+			(filename) =>
+				filename.startsWith("firmwares/") &&
+				filename.endsWith(".json") &&
+				!path.basename(filename).startsWith("_")
+		);
 
 	if (filesToCheck.length === 0) {
 		core.info("No firmware files changed, skipping integrity check");
