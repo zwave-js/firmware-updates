@@ -1013,6 +1013,7 @@ __metadata:
     eslint: ^8.23.1
     eslint-config-prettier: ^8.5.0
     eslint-plugin-prettier: ^4.2.1
+    flareutils: ^0.3.4
     itty-durable: ^1.2.0
     itty-router: ^2.6.1
     itty-router-extras: ^0.4.2
@@ -2676,6 +2677,13 @@ __metadata:
     locate-path: ^7.1.0
     path-exists: ^5.0.0
   checksum: 9a21b7f9244a420e54c6df95b4f6fc3941efd3c3e5476f8274eb452f6a85706e7a6a90de71353ee4f091fcb4593271a6f92810a324ec542650398f928783c280
+  languageName: node
+  linkType: hard
+
+"flareutils@npm:^0.3.4":
+  version: 0.3.4
+  resolution: "flareutils@npm:0.3.4"
+  checksum: ab9e1768c8919e98e9c9e098765506dbea9ef65e27726eb1d67b22ac7be0aff6cee2ea28351be5a196f5006067635f355ccd6a9a0cb763c23ff140bb69ee66a2
   languageName: node
   linkType: hard
 

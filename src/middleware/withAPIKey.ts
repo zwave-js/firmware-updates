@@ -1,3 +1,4 @@
+import { BetterKV } from "flareutils";
 import { error } from "itty-router-extras";
 import { APIKey, decryptAPIKey } from "../lib/apiKeys";
 import { hex2array } from "../lib/shared";
@@ -5,7 +6,8 @@ import type { CloudflareEnvironment } from "../worker";
 
 export async function withAPIKey(
 	req: Request,
-	env: CloudflareEnvironment
+	env: CloudflareEnvironment,
+	context: ExecutionContext
 ): Promise<Response | undefined> {
 	const fail = (message: string, code: number) => {
 		if (env.API_REQUIRE_KEY !== "false") {
@@ -19,7 +21,17 @@ export async function withAPIKey(
 	}
 
 	// If the API key is stored in KV, use that
-	let apiKey = await env.API_KEYS.get<APIKey>(apiKeyHex, "json");
+	const API_KEYS = new BetterKV(
+		env.API_KEYS,
+		context.waitUntil.bind(context),
+		"API_KEYS_v1"
+	);
+	let apiKey = await API_KEYS.get<APIKey>(apiKeyHex, {
+		type: "json",
+		// Cache read API keys for 30 minutes - this should be quick enough if a
+		// key ever changes, and still cut down on KV reads by a lot
+		cacheTtl: 30 * 60,
+	});
 
 	// otherwise, decrypt it
 	if (!apiKey) {
