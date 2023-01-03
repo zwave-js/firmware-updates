@@ -7,6 +7,19 @@ export const firmwareVersionSchema = z
 	.string()
 	.refine(isFirmwareVersion, "Is not a valid firmware version");
 
+export const regionSchema = z.enum([
+	"europe",
+	"usa",
+	"australia/new zealand",
+	"hong kong",
+	"india",
+	"israel",
+	"russia",
+	"china",
+	"japan",
+	"korea",
+]);
+
 const deviceSchema = z.object({
 	brand: z.string().min(1),
 	model: z.string().min(1),
@@ -51,20 +64,7 @@ const upgradeBaseSchema = z.object({
 	version: firmwareVersionSchema,
 	changelog: z.string().min(1),
 	channel: z.enum(["stable", "beta"]).optional().default("stable"),
-	region: z
-		.enum([
-			"europe",
-			"usa",
-			"australia/new zealand",
-			"hong kong",
-			"india",
-			"israel",
-			"russia",
-			"china",
-			"japan",
-			"korea",
-		])
-		.optional(),
+	region: regionSchema.optional(),
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(

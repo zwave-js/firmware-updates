@@ -200,25 +200,29 @@ X-API-Key: <Your API Key>
     "manufacturerId": "0x1234",
     "productType": "0xabcd",
     "productId": "0xcafe",
-    "firmwareVersion": "1.6"
+    "firmwareVersion": "1.6",
+    "region": "europe"
 }
 ```
 
 Changes compared to v2:
 
--   Adds the `region` field to the response, which can be one of these values:
--   `"europe"`
--   `"usa"`
--   `"australia/new zealand"`
--   `"hong kong"`
--   `"india"`
--   `"israel"`
--   `"russia"`
--   `"china"`
--   `"japan"`
--   `"korea"`
+-   Adds the **optional** `region` field to both the request and the response, which can be one of these values:
+    -   `"europe"`
+    -   `"usa"`
+    -   `"australia/new zealand"`
+    -   `"hong kong"`
+    -   `"india"`
+    -   `"israel"`
+    -   `"russia"`
+    -   `"china"`
+    -   `"japan"`
+    -   `"korea"`
 
-The `region` field is optional and may be omitted. If present, applications **must** ensure that the region of the firmware update matches the region of the device. Firmware updates without this field are assumed to be region-agnostic.
+If the `region` field is present in the request, the response will only contain updates for that region, or updates without a specified region (which are assumed to be region-agnostic).
+If no `region` is specified in the request, the response will only contain updates without a specified region.
+
+Previous API versions will ignore the `region` field in the request and will not return updates with a specified region.
 
 **Example response:**
 
@@ -238,21 +242,6 @@ The `region` field is optional and may be omitted. If present, applications **mu
         "downgrade": false,
         "normalizedVersion": "1.7.0",
         "region": "europe"
-    },
-    {
-        "version": "1.7",
-        "changelog": "China Version:\n* Fixed some bugs\n*Added more bugs",
-        "channel": "stable",
-        "files": [
-            {
-                "target": 0,
-                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
-                "url": "https://example.com/firmware/1.7-cn.otz"
-            }
-        ],
-        "downgrade": false,
-        "normalizedVersion": "1.7.0",
-        "region": "china"
     }
 ]
 ```

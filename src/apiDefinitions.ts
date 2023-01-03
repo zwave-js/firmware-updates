@@ -1,9 +1,13 @@
 import { z } from "zod";
-import { firmwareVersionSchema, UpgradeInfo } from "./lib/configSchema";
+import {
+	firmwareVersionSchema,
+	regionSchema,
+	UpgradeInfo,
+} from "./lib/configSchema";
 import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared";
 
-/** The request schema for API versions 1...3 */
-export const APIv1v3_RequestSchema = z.object({
+/** The request schema for API versions 1...2 */
+export const APIv1v2_RequestSchema = z.object({
 	manufacturerId: z.string().regex(hexKeyRegex4Digits, {
 		message: "Must be a hexadecimal number with 4 digits",
 	}),
@@ -15,6 +19,13 @@ export const APIv1v3_RequestSchema = z.object({
 	}),
 	firmwareVersion: firmwareVersionSchema,
 });
+
+/** The request schema for API version 3 */
+export const APIv3_RequestSchema = APIv1v2_RequestSchema.merge(
+	z.object({
+		region: regionSchema.optional(),
+	})
+);
 
 export interface APIv1v3_UpgradeMeta {
 	downgrade: boolean;

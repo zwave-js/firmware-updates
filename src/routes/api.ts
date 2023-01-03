@@ -1,9 +1,11 @@
 import { withDurables } from "itty-durable";
 import { json, type ThrowableRouter } from "itty-router-extras";
+import { compare } from "semver";
 import {
-	APIv1v3_RequestSchema,
+	APIv1v2_RequestSchema,
 	APIv1_Response,
 	APIv2_Response,
+	APIv3_RequestSchema,
 	APIv3_Response,
 } from "../apiDefinitions";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
@@ -27,13 +29,21 @@ function getUpdatesCacheUrl(
 	manufacturerId: string,
 	productType: string,
 	productId: string,
-	firmwareVersion: string
+	firmwareVersion: string,
+	additionalFields: string[] = []
 ): string {
 	if (!requestUrl.endsWith("/")) {
 		requestUrl += "/";
 	}
+	const parts = [
+		manufacturerId,
+		productType,
+		productId,
+		firmwareVersion,
+		...additionalFields,
+	];
 	return new URL(
-		`./${manufacturerId}:${productType}:${productId}:${firmwareVersion}?filesVersion=${filesVersion}`,
+		`./${parts.join(":")}?filesVersion=${filesVersion}`,
 		requestUrl
 	).toString();
 }
@@ -52,9 +62,10 @@ async function handleUpdateRequest(
 	req: RequestWithProps<[ContentProps]>,
 	env: CloudflareEnvironment,
 	context: ExecutionContext,
-	resultTransform: ResultTransform
+	resultTransform: ResultTransform,
+	additionalFieldsForCacheKey: string[] = []
 ) {
-	const result = await APIv1v3_RequestSchema.safeParseAsync(req.content);
+	const result = await APIv1v2_RequestSchema.safeParseAsync(req.content);
 	if (!result.success) {
 		return clientError(result.error.format() as any);
 	}
@@ -74,7 +85,8 @@ async function handleUpdateRequest(
 		manufacturerId,
 		productType,
 		productId,
-		firmwareVersion
+		firmwareVersion,
+		additionalFieldsForCacheKey
 	);
 
 	return withCache(
@@ -221,26 +233,72 @@ export default function register(router: ThrowableRouter): void {
 
 	router.post(
 		"/api/v3/updates",
-		(req: RequestWithProps<[ContentProps]>, env, context) =>
-			handleUpdateRequest(
+		async (
+			req: RequestWithProps<[ContentProps]>,
+			env: CloudflareEnvironment,
+			context: ExecutionContext
+		) => {
+			// We need to filter non-matching regions here
+			const result = await APIv3_RequestSchema.safeParseAsync(
+				req.content
+			);
+			if (!result.success) {
+				return clientError(result.error.format() as any);
+			}
+			const { region } = result.data;
+
+			return handleUpdateRequest(
 				req,
 				env,
 				context,
 				(upgrades, { firmwareVersion }): APIv3_Response => {
-					return upgrades.map((u) => {
-						// Add missing fields to the returned objects
-						const downgrade =
-							compareVersions(u.version, firmwareVersion) < 0;
-						let normalizedVersion = padVersion(u.version);
-						if (u.channel === "beta") normalizedVersion += "-beta";
+					// Rules for filtering updates by region:
+					// - client specified no region -> return only updates without a region
+					// - client specified a region -> return matching updates and updates without a region
+					upgrades = upgrades.filter(
+						(u) => !u.region || u.region === region
+					);
 
-						return {
-							...u,
-							downgrade,
-							normalizedVersion,
-						};
+					let ret: APIv3_Response = upgrades
+						.map((u) => {
+							// Add missing fields to the returned objects
+							const downgrade =
+								compareVersions(u.version, firmwareVersion) < 0;
+							let normalizedVersion = padVersion(u.version);
+							if (u.channel === "beta")
+								normalizedVersion += "-beta";
+
+							return {
+								...u,
+								downgrade,
+								normalizedVersion,
+							};
+						})
+						.sort((a, b) => {
+							// Sort by version ascending...
+							const ret = compare(
+								a.normalizedVersion,
+								b.normalizedVersion
+							);
+							if (ret !== 0) return ret;
+							// ... and put updates for a specific region first
+							return -(a.region ?? "").localeCompare(
+								b.region ?? ""
+							);
+						});
+
+					// If there are multiple updates for the same version, only return the first one
+					// This happens when there are updates for a specific region and a general update for the same version
+					ret = ret.filter((u, i, arr) => {
+						if (i > 0 && u.version === arr[i - 1].version)
+							return false;
+						return true;
 					});
-				}
-			)
+
+					return ret;
+				},
+				region && [region]
+			);
+		}
 	);
 }
