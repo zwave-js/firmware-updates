@@ -25,7 +25,7 @@
     "itty-router": "^2.6.1",
     "itty-router-extras": "^0.4.2",
     "json-logic-js": "^2.0.2",
-    "json5": "^2.2.1",
+    "json5": "^2.2.2",
     "path-browserify": "^1.0.1",
     "semver": "^7.3.7",
     "zod": "^3.19.1"
