@@ -46,26 +46,11 @@ X-API-Key: <Your API Key>
     "manufacturerId": "0x1234",
     "productType": "0xabcd",
     "productId": "0xcafe",
-    "firmwareVersion": "1.6",
-    "region": "europe"
+    "firmwareVersion": "1.6"
 }
 ```
 
 The `firmwareVersion` field may also contain a patch version, e.g. `1.6.1`. When no patch version is provided, it will be assumed to be `0`, so `1.6` is equivalent to `1.6.0`.
-
-The `region` field is optional and may be omitted. If provided, it must be one of the following (case insensitive):
-- `"europe"`
-- `"usa"`
-- `"australia/new zealand"`
-- `"hong kong"`
-- `"india"`
-- `"israel"`
-- `"russia"`
-- `"china"`
-- `"japan"`
-- `"korea"`
-
-Firmware updates that belong to a specific region will only be returned if the `region` field is provided and a match.
 
 **Example response:**
 
@@ -194,6 +179,102 @@ type APIv2_Response = {
     version: string;
     changelog: string;
     channel: "stable" | "beta";
+    files: {
+        target: number;
+        url: string;
+        integrity: string;
+    }[];
+    downgrade: boolean;
+    normalizedVersion: string;
+}[];
+```
+
+### API v3, get updates
+
+```
+POST https://firmware.zwave-js.io/api/v3/updates
+Content-Type: application/json
+X-API-Key: <Your API Key>
+
+{
+    "manufacturerId": "0x1234",
+    "productType": "0xabcd",
+    "productId": "0xcafe",
+    "firmwareVersion": "1.6"
+}
+```
+
+Changes compared to v2:
+
+-   Adds the `region` field to the response, which can be one of these values:
+-   `"europe"`
+-   `"usa"`
+-   `"australia/new zealand"`
+-   `"hong kong"`
+-   `"india"`
+-   `"israel"`
+-   `"russia"`
+-   `"china"`
+-   `"japan"`
+-   `"korea"`
+
+The `region` field is optional and may be omitted. If present, applications **must** ensure that the region of the firmware update matches the region of the device. Firmware updates without this field are assumed to be region-agnostic.
+
+**Example response:**
+
+```json
+[
+    {
+        "version": "1.7",
+        "changelog": "EU Version:\n* Fixed some bugs\n*Added more bugs",
+        "channel": "stable",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                "url": "https://example.com/firmware/1.7-eu.otz"
+            }
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.7.0",
+        "region": "europe"
+    },
+    {
+        "version": "1.7",
+        "changelog": "China Version:\n* Fixed some bugs\n*Added more bugs",
+        "channel": "stable",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                "url": "https://example.com/firmware/1.7-cn.otz"
+            }
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.7.0",
+        "region": "china"
+    }
+]
+```
+
+**Response type definition:**
+
+```ts
+type APIv3_Response = {
+    version: string;
+    changelog: string;
+    channel: "stable" | "beta";
+    region?:
+        | "europe"
+        | "usa"
+        | "australia/new zealand"
+        | "hong kong"
+        | "india"
+        | "israel"
+        | "russia"
+        | "china"
+        | "japan"
+        | "korea";
     files: {
         target: number;
         url: string;

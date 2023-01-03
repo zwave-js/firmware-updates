@@ -11,6 +11,7 @@
 	"upgrades": [
 		{
 			"version": "3.7",
+			"region": "usa",
 			"changelog": "Current Spike Detection Large/Heavy Blind – In the previous version we added motor protection that stopped the motor when the max current was reached. Added a spike detection to prevent false-positive this keeps large/heavy blinds from stopping before the target location has been reached.\nDuration Interrupt – Corrected duration interrupt problem. If a set command is sent while the blind is still processing a set command with a duration value the motor will now cancel the current duration command and handle the new command.",
 			"url": "https://support.myiblinds.com/wp-content/uploads/2021/09/iBlinds_v3.07_US.gbl",
 			"integrity": "sha256:3262c5bfb2c93981fb07ce86aa4f73b073beea94b47f27e0b98dc91766a79849"

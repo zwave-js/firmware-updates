@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared";
 
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+
 export const firmwareVersionSchema = z
 	.string()
 	.refine(isFirmwareVersion, "Is not a valid firmware version");
@@ -49,6 +51,20 @@ const upgradeBaseSchema = z.object({
 	version: firmwareVersionSchema,
 	changelog: z.string().min(1),
 	channel: z.enum(["stable", "beta"]).optional().default("stable"),
+	region: z
+		.enum([
+			"europe",
+			"usa",
+			"australia/new zealand",
+			"hong kong",
+			"india",
+			"israel",
+			"russia",
+			"china",
+			"japan",
+			"korea",
+		])
+		.optional(),
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
@@ -58,14 +74,24 @@ const upgradeSchemaMultiple = upgradeBaseSchema.merge(
 const upgradeSchemaSingle = upgradeBaseSchema
 	.merge(fileSchema)
 	.transform(
-		({ $if, version, changelog, channel, target, integrity, url }) => {
+		({
+			$if,
+			version,
+			changelog,
+			channel,
+			region,
+			target,
+			integrity,
+			url,
+		}) => {
 			// Normalize to the same format as the "multiple" variant
 			return {
 				...($if != undefined ? { $if } : {}),
 				version,
 				changelog,
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+				// The following two casts are necessary to not lose the literal types
 				channel: channel as typeof channel,
+				region: region as typeof region,
 				files: [{ target, integrity, url }],
 			};
 		}

@@ -45,10 +45,6 @@
 								},
 								"required": ["min", "max"],
 								"additionalProperties": false
-							},
-							"region": {
-								"$ref": "#/definitions/region",
-								"description": "Optionally limit the firmware updates to the given region"
 							}
 						},
 						"required": [
@@ -82,6 +78,9 @@
 									"channel": {
 										"$ref": "#/definitions/releaseChannel"
 									},
+									"region": {
+										"$ref": "#/definitions/region"
+									},
 									"target": {
 										"$ref": "#/definitions/firmwareTarget"
 									},
@@ -114,6 +113,9 @@
 									},
 									"channel": {
 										"$ref": "#/definitions/releaseChannel"
+									},
+									"region": {
+										"$ref": "#/definitions/region"
 									},
 									"files": {
 										"type": "array",
@@ -171,7 +173,8 @@
 				"china",
 				"japan",
 				"korea"
-			]
+			],
+			"description": "Which region this update is for"
 		},
 		"integrity": {
 			"type": "string",

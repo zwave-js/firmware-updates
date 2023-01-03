@@ -1,10 +1,11 @@
 import { withDurables } from "itty-durable";
 import { json, type ThrowableRouter } from "itty-router-extras";
 import {
-	APIv1v2_RequestSchema,
+	APIv1v3_RequestSchema,
 	APIv1_Response,
 	APIv2_Response,
-} from "../apiV1V2";
+	APIv3_Response,
+} from "../apiDefinitions";
 import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { withCache } from "../lib/cache";
 import { lookupConfig } from "../lib/config";
@@ -53,7 +54,7 @@ async function handleUpdateRequest(
 	context: ExecutionContext,
 	resultTransform: ResultTransform
 ) {
-	const result = await APIv1v2_RequestSchema.safeParseAsync(req.content);
+	const result = await APIv1v3_RequestSchema.safeParseAsync(req.content);
 	if (!result.success) {
 		return clientError(result.error.format() as any);
 	}
@@ -158,10 +159,12 @@ export default function register(router: ThrowableRouter): void {
 					// API version 1 does not support release channels
 					return (
 						upgrades
-							// Keep only stable releases
+							// Keep only stable releases (channel is v2 only)
 							.filter((u) => u.channel === "stable")
-							// Remove the channel property
-							.map(({ channel, ...u }) => {
+							// Keep only updates without a region (v3 only)
+							.filter((u) => !u.region)
+							// Remove the channel and region property
+							.map(({ channel, region, ...u }) => {
 								// Add missing fields to the returned objects
 								const downgrade =
 									compareVersions(
@@ -189,6 +192,41 @@ export default function register(router: ThrowableRouter): void {
 				env,
 				context,
 				(upgrades, { firmwareVersion }): APIv2_Response => {
+					return (
+						upgrades
+							// Keep only updates without a region (v3 only)
+							.filter((u) => !u.region)
+							// Remove the region property
+							.map(({ region, ...u }) => {
+								// Add missing fields to the returned objects
+								const downgrade =
+									compareVersions(
+										u.version,
+										firmwareVersion
+									) < 0;
+								let normalizedVersion = padVersion(u.version);
+								if (u.channel === "beta")
+									normalizedVersion += "-beta";
+
+								return {
+									...u,
+									downgrade,
+									normalizedVersion,
+								};
+							})
+					);
+				}
+			)
+	);
+
+	router.post(
+		"/api/v3/updates",
+		(req: RequestWithProps<[ContentProps]>, env, context) =>
+			handleUpdateRequest(
+				req,
+				env,
+				context,
+				(upgrades, { firmwareVersion }): APIv3_Response => {
 					return upgrades.map((u) => {
 						// Add missing fields to the returned objects
 						const downgrade =
