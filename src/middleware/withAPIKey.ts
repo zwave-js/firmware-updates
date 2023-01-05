@@ -1,8 +1,10 @@
-import { BetterKV } from "flareutils";
 import { error } from "itty-router-extras";
 import { APIKey, decryptAPIKey } from "../lib/apiKeys";
+import { withCache } from "../lib/cache";
 import { hex2array } from "../lib/shared";
 import type { CloudflareEnvironment } from "../worker";
+
+const CACHE_KEY_PREFIX = "http://kv-cache/";
 
 export async function withAPIKey(
 	req: Request,
@@ -21,17 +23,21 @@ export async function withAPIKey(
 	}
 
 	// If the API key is stored in KV, use that
-	const API_KEYS = new BetterKV(
-		env.API_KEYS,
-		context.waitUntil.bind(context),
-		"API_KEYS_v1"
+	const cacheKey = CACHE_KEY_PREFIX + apiKeyHex;
+	const apiKeyResponse = await withCache(
+		{
+			context,
+			cacheKey,
+			// Cache read API keys for 30 minutes - this should be quick enough if a
+			// key ever changes, and still cut down on KV reads by a lot
+			sMaxAge: 30 * 60,
+		},
+		async () => {
+			console.log("cache miss");
+			return new Response(await env.API_KEYS.get(apiKeyHex));
+		}
 	);
-	let apiKey = await API_KEYS.get<APIKey>(apiKeyHex, {
-		type: "json",
-		// Cache read API keys for 30 minutes - this should be quick enough if a
-		// key ever changes, and still cut down on KV reads by a lot
-		cacheTtl: 30 * 60,
-	});
+	let apiKey = apiKeyResponse.body && (await apiKeyResponse.json<APIKey>());
 
 	// otherwise, decrypt it
 	if (!apiKey) {
