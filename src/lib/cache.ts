@@ -29,12 +29,6 @@ export async function withCache(
 			return new Response(null, { status: 304 });
 		}
 
-		console.log(
-			`withCache HIT. cacheKey = ${
-				typeof cacheKey === "string" ? cacheKey : cacheKey.url
-			}`
-		);
-
 		// Create a new response from the cached one, so we can modify its headers
 		// Just cloning doesn't seem to be enough
 		return new Response(response.body, {
@@ -43,12 +37,6 @@ export async function withCache(
 			headers: response.headers,
 		});
 	}
-
-	console.log(
-		`withCache MISS. cacheKey = ${
-			typeof cacheKey === "string" ? cacheKey : cacheKey.url
-		}`
-	);
 
 	response = (await responseFactory()) ?? new Response(null, { status: 404 });
 
