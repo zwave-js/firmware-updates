@@ -33,7 +33,6 @@ export async function withAPIKey(
 			sMaxAge: 30 * 60,
 		},
 		async () => {
-			console.log("cache miss");
 			return new Response(await env.API_KEYS.get(apiKeyHex));
 		}
 	);
