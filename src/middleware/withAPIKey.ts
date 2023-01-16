@@ -4,7 +4,7 @@ import { withCache } from "../lib/cache";
 import { hex2array } from "../lib/shared";
 import type { CloudflareEnvironment } from "../worker";
 
-const CACHE_KEY_PREFIX = "http://kv-cache/";
+const CACHE_KEY_PREFIX = "kv-cache/";
 
 export async function withAPIKey(
 	req: Request,
@@ -23,7 +23,7 @@ export async function withAPIKey(
 	}
 
 	// If the API key is stored in KV, use that
-	const cacheKey = CACHE_KEY_PREFIX + apiKeyHex;
+	const cacheKey = new URL(CACHE_KEY_PREFIX + apiKeyHex, req.url).toString();
 	const apiKeyResponse = await withCache(
 		{
 			context,
