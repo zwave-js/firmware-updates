@@ -72,7 +72,11 @@ async function handleUpdateRequest(
 	const { manufacturerId, productType, productId, firmwareVersion } =
 		result.data;
 
-	const filesVersion = await getFilesVersion(context, env.CONFIG_FILES);
+	const filesVersion = await getFilesVersion(
+		req.url,
+		context,
+		env.CONFIG_FILES
+	);
 
 	if (!filesVersion) {
 		return serverError("Filesystem empty");
@@ -103,7 +107,12 @@ async function handleUpdateRequest(
 		},
 		async () => {
 			const config = await lookupConfig(
-				createCachedR2FS(context, env.CONFIG_FILES, filesVersion),
+				createCachedR2FS(
+					req.url,
+					context,
+					env.CONFIG_FILES,
+					filesVersion
+				),
 				"/",
 				manufacturerId,
 				productType,

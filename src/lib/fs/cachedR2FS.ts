@@ -6,15 +6,19 @@ import type { FileSystem } from "./filesystem";
 // we don't need to purge them when serving a new version.
 const oneDayInSeconds = 24 * 60 * 60;
 
-const CACHE_KEY_PREFIX = "http://r2-cache/";
+const CACHE_KEY_PREFIX = "/__r2-cache/";
 
 async function objectWithCache(
+	baseURL: string,
 	key: string,
 	context: ExecutionContext,
 	bucket: R2Bucket,
 	cacheOptions?: Omit<CacheOptions, "context" | "cacheKey">
 ): Promise<Response | undefined> {
-	const cacheKey = CACHE_KEY_PREFIX + encodeURIComponent(key);
+	const cacheKey = new URL(
+		CACHE_KEY_PREFIX + encodeURIComponent(key),
+		baseURL
+	).toString();
 	const response = await withCache(
 		{
 			context,
@@ -30,9 +34,16 @@ async function objectWithCache(
 	return response;
 }
 
-function purgeCache(context: ExecutionContext, cacheKeySuffix: string): void {
+function purgeCache(
+	baseURL: string,
+	context: ExecutionContext,
+	cacheKeySuffix: string
+): void {
 	const cache = caches.default;
-	const cacheKey = CACHE_KEY_PREFIX + encodeURIComponent(cacheKeySuffix);
+	const cacheKey = new URL(
+		CACHE_KEY_PREFIX + encodeURIComponent(cacheKeySuffix),
+		baseURL
+	).toString();
 	context.waitUntil(
 		cache.delete(cacheKey, {
 			ignoreMethod: true,
@@ -41,11 +52,12 @@ function purgeCache(context: ExecutionContext, cacheKeySuffix: string): void {
 }
 
 export async function getFilesVersion(
+	baseURL: string,
 	context: ExecutionContext,
 	bucket: R2Bucket
 ): Promise<string | undefined> {
 	const filename = "version";
-	const file = await objectWithCache(filename, context, bucket, {
+	const file = await objectWithCache(baseURL, filename, context, bucket, {
 		// cache the current version at the edge for 1 minute
 		sMaxAge: 60,
 	});
@@ -53,16 +65,18 @@ export async function getFilesVersion(
 }
 
 export async function putFilesVersion(
+	baseURL: string,
 	context: ExecutionContext,
 	bucket: R2Bucket,
 	version: string
 ): Promise<void> {
 	const filename = "version";
 	await bucket.put(filename, version);
-	purgeCache(context, filename);
+	purgeCache(baseURL, context, filename);
 }
 
 export function createCachedR2FS(
+	baseURL: string,
 	context: ExecutionContext,
 	bucket: R2Bucket,
 	version: string
@@ -77,15 +91,21 @@ export function createCachedR2FS(
 			// DO NOT write versioned files after reading a directory.
 			const objKey = FILE_OBJ_KEY(file);
 			await bucket.put(objKey, data);
-			purgeCache(context, objKey);
+			purgeCache(baseURL, context, objKey);
 		},
 		async readFile(file) {
 			// Try to read from KV first
 			const objKey = FILE_OBJ_KEY(file);
-			const obj = await objectWithCache(objKey, context, bucket, {
-				// cache at the edge for 24 hours
-				sMaxAge: oneDayInSeconds,
-			});
+			const obj = await objectWithCache(
+				baseURL,
+				objKey,
+				context,
+				bucket,
+				{
+					// cache at the edge for 24 hours
+					sMaxAge: oneDayInSeconds,
+				}
+			);
 			if (!obj) {
 				throw new Error(`File not found in R2: ${file}`);
 			}

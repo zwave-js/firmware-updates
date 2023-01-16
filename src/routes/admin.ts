@@ -94,6 +94,7 @@ export default function register(router: ThrowableRouter): void {
 
 				const newVersion = result.data.version;
 				const fs = createCachedR2FS(
+					req.url,
 					context,
 					env.CONFIG_FILES,
 					newVersion
@@ -110,11 +111,13 @@ export default function register(router: ThrowableRouter): void {
 					} else if (action.task === "enable") {
 						// Enable the current revision, delete all other revisions
 						const oldVersion = await getFilesVersion(
+							req.url,
 							context,
 							env.CONFIG_FILES
 						);
 						if (oldVersion && oldVersion !== newVersion) {
 							const oldFs = createCachedR2FS(
+								req.url,
 								context,
 								env.CONFIG_FILES,
 								oldVersion
@@ -124,6 +127,7 @@ export default function register(router: ThrowableRouter): void {
 
 						// Update version file, so new requests will use the new version
 						await putFilesVersion(
+							req.url,
 							context,
 							env.CONFIG_FILES,
 							newVersion
@@ -149,7 +153,11 @@ export default function register(router: ThrowableRouter): void {
 			env: CloudflareEnvironment,
 			context: ExecutionContext
 		) => {
-			const ret = await getFilesVersion(context, env.CONFIG_FILES);
+			const ret = await getFilesVersion(
+				req.url,
+				context,
+				env.CONFIG_FILES
+			);
 			return text(ret || "");
 		}
 	);
