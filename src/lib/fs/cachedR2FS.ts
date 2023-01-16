@@ -6,7 +6,7 @@ import type { FileSystem } from "./filesystem";
 // we don't need to purge them when serving a new version.
 const oneDayInSeconds = 24 * 60 * 60;
 
-const CACHE_KEY_PREFIX = "r2-cache/";
+const CACHE_KEY_PREFIX = "/__r2-cache/";
 
 async function objectWithCache(
 	baseURL: string,

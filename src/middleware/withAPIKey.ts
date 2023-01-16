@@ -4,7 +4,7 @@ import { withCache } from "../lib/cache";
 import { hex2array } from "../lib/shared";
 import type { CloudflareEnvironment } from "../worker";
 
-const CACHE_KEY_PREFIX = "kv-cache/";
+const CACHE_KEY_PREFIX = "/__kv-cache/";
 
 export async function withAPIKey(
 	req: Request,
