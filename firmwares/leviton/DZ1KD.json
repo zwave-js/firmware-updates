@@ -3,7 +3,7 @@
         {
 			// https://products.z-wavealliance.org/products/1956?selectedFrequencyId=2
             "brand": "Leviton",
-            "model": "DK1KD",
+            "model": "DZ1KD",
             "manufacturerId": "0x001d",
             "productType": "0x3301",
 			"productId": "0x0001",
