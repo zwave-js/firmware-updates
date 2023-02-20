@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-HT01 Heating Thermostat",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.7",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/HT01_v2_7.ota",
+			"integrity": "sha256:037ad6cf73aaf4168643b525cead7b620b220db8098284a5e450a60fe5f55352"
+		}
+	]
+}

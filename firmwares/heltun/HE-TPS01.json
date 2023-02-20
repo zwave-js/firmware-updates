@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-TPS01 Touch Panel Switch Solo",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0007"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.6",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/TPS01_v2_6.ota",
+			"integrity": "sha256:0b52c80c28278c54417fa25263366c8b94266819ac07f7f9a0ee1e4123348fdd"
+		}
+	]
+}

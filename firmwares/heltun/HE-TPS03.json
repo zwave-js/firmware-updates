@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-TPS03 Touch Panel Switch Solo",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0005"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.6",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/TPS03_v2_6.ota",
+			"integrity": "sha256:3feb4fbb73f2caa707edc5f3d1e82673c75289715b243bc8d05e55141e6ec62a"
+		}
+	]
+}

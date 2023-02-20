@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-FT01 Fan Coil Thermostat",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0002"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.7",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/FT01_v2_7.ota",
+			"integrity": "sha256:8f6adc42d838623211a88501143f7918dc5cae38ab20752c8c4c4fd8317233b0"
+		}
+	]
+}

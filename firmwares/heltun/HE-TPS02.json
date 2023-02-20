@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-TPS02 Touch Panel Switch Duo",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0006"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.6",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/TPS02_v2_6.ota",
+			"integrity": "sha256:f2e8968f9c86387b03f5c8b3f7a1980950f7f4786c4ae0af70453653065f3ad4"
+		}
+	]
+}

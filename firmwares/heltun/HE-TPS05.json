@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-TPS05 Touch Panel Switch Quinto",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0003"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.6",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/TPS05_v2_6.ota",
+			"integrity": "sha256:bff5dc8dfc1486c34db739830c3b701692975b9d2afcdb48c0dc03a1721cb5ad"
+		}
+	]
+}

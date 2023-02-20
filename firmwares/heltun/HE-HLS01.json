@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-HLS01 High Load Switch",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x000a"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.7",
+			"changelog": "MISSING",
+			"url": "http://heltun.us/files/firmwares/HLS01_v1_7.ota",
+			"integrity": "sha256:ae5f17fd32cb38565082e078e83e5fa078891c5de8dc8f82aab72a022693f782"
+		}
+	]
+}
