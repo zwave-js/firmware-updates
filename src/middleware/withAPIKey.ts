@@ -36,7 +36,8 @@ export async function withAPIKey(
 			return new Response(await env.API_KEYS.get(apiKeyHex));
 		}
 	);
-	let apiKey = apiKeyResponse.body && (await apiKeyResponse.json<APIKey>());
+	const apiKeyText = apiKeyResponse.body && (await apiKeyResponse.text());
+	let apiKey = apiKeyText && (JSON.parse(apiKeyText) as APIKey);
 
 	// otherwise, decrypt it
 	if (!apiKey) {
