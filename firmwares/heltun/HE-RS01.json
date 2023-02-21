@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-RS01 Relay Switch Quinto",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0009"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.6.2",
+			"changelog": "Latest stock firmware. For details see https://www.heltun.com/support.",
+			"url": "http://heltun.us/files/firmwares/RS01_v1_6_2.ota",
+			"integrity": "sha256:fee616946b18c904f9f824ccaf49c4e8ad37f868582ca75bb137ad6a67c07965"
+		}
+	]
+}
