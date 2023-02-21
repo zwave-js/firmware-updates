@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "1.6.2",
-			"changelog": "MISSING",
+			"changelog": "Latest stock firmware. For details see https://www.heltun.com/support.",
 			"url": "http://heltun.us/files/firmwares/RS01_v1_6_2.ota",
 			"integrity": "sha256:fee616946b18c904f9f824ccaf49c4e8ad37f868582ca75bb137ad6a67c07965"
 		}

@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "2.7",
-			"changelog": "MISSING",
+			"changelog": "Latest stock firmware. For details see https://www.heltun.com/support.",
 			"url": "http://heltun.us/files/firmwares/FT01_v2_7.ota",
 			"integrity": "sha256:8f6adc42d838623211a88501143f7918dc5cae38ab20752c8c4c4fd8317233b0"
 		}

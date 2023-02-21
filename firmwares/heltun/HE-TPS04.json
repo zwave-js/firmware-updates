@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "2.6",
-			"changelog": "MISSING",
+			"changelog": "Latest stock firmware. For details see https://www.heltun.com/support.",
 			"url": "http://heltun.us/files/firmwares/TPS04_v2_6.ota",
 			"integrity": "sha256:37f612860788381e5b3a04c7436fd0abd6fddc1e62080f0d46d03bc4bf5cf29b"
 		}
