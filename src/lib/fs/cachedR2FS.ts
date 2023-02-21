@@ -117,9 +117,11 @@ export function createCachedR2FS(
 
 			if (!dir.endsWith("/")) dir += "/";
 
-			const cacheKey =
+			const cacheKey = new URL(
 				CACHE_KEY_PREFIX +
-				encodeURIComponent(READDIR_OBJ_KEY(dir, recursive));
+					encodeURIComponent(READDIR_OBJ_KEY(dir, recursive)),
+				baseURL
+			).toString();
 
 			const response = await withCache(
 				{
