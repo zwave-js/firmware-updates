@@ -75,6 +75,17 @@
 					"integrity": "..."
 				}
 			]
+		},
+		{
+			"version": "1.7",
+			"changelog": "Bugfixes for EU only",
+
+			// Updates can be limited to a specific region.
+			// In this case, the application must ensure that the update's region matches the device.
+			"region": "europe",
+
+			"url": "https://example.com/firmware/1.7-eu.otz",
+			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
 		}
 		// ... more firmware updates for the same file
 	]

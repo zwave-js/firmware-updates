@@ -1,11 +1,15 @@
 import { error } from "itty-router-extras";
 import { APIKey, decryptAPIKey } from "../lib/apiKeys";
+import { withCache } from "../lib/cache";
 import { hex2array } from "../lib/shared";
 import type { CloudflareEnvironment } from "../worker";
 
+const CACHE_KEY_PREFIX = "/__kv-cache/";
+
 export async function withAPIKey(
 	req: Request,
-	env: CloudflareEnvironment
+	env: CloudflareEnvironment,
+	context: ExecutionContext
 ): Promise<Response | undefined> {
 	const fail = (message: string, code: number) => {
 		if (env.API_REQUIRE_KEY !== "false") {
@@ -19,7 +23,21 @@ export async function withAPIKey(
 	}
 
 	// If the API key is stored in KV, use that
-	let apiKey = await env.API_KEYS.get<APIKey>(apiKeyHex, "json");
+	const cacheKey = new URL(CACHE_KEY_PREFIX + apiKeyHex, req.url).toString();
+	const apiKeyResponse = await withCache(
+		{
+			context,
+			cacheKey,
+			// Cache read API keys for 30 minutes - this should be quick enough if a
+			// key ever changes, and still cut down on KV reads by a lot
+			sMaxAge: 30 * 60,
+		},
+		async () => {
+			return new Response(await env.API_KEYS.get(apiKeyHex));
+		}
+	);
+	const apiKeyText = apiKeyResponse.body && (await apiKeyResponse.text());
+	let apiKey = apiKeyText && (JSON.parse(apiKeyText) as APIKey);
 
 	// otherwise, decrypt it
 	if (!apiKey) {

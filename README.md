@@ -188,3 +188,88 @@ type APIv2_Response = {
     normalizedVersion: string;
 }[];
 ```
+
+### API v3, get updates
+
+```
+POST https://firmware.zwave-js.io/api/v3/updates
+Content-Type: application/json
+X-API-Key: <Your API Key>
+
+{
+    "manufacturerId": "0x1234",
+    "productType": "0xabcd",
+    "productId": "0xcafe",
+    "firmwareVersion": "1.6",
+    "region": "europe"
+}
+```
+
+Changes compared to v2:
+
+-   Adds the **optional** `region` field to both the request and the response, which can be one of these values:
+    -   `"europe"`
+    -   `"usa"`
+    -   `"australia/new zealand"`
+    -   `"hong kong"`
+    -   `"india"`
+    -   `"israel"`
+    -   `"russia"`
+    -   `"china"`
+    -   `"japan"`
+    -   `"korea"`
+
+If the `region` field is present in the request, the response will only contain updates for that region, or updates without a specified region (which are assumed to be region-agnostic).
+If no `region` is specified in the request, the response will only contain updates without a specified region.
+
+Previous API versions will ignore the `region` field in the request and will not return updates with a specified region.
+
+**Example response:**
+
+```json
+[
+    {
+        "version": "1.7",
+        "changelog": "EU Version:\n* Fixed some bugs\n*Added more bugs",
+        "channel": "stable",
+        "files": [
+            {
+                "target": 0,
+                "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                "url": "https://example.com/firmware/1.7-eu.otz"
+            }
+        ],
+        "downgrade": false,
+        "normalizedVersion": "1.7.0",
+        "region": "europe"
+    }
+]
+```
+
+**Response type definition:**
+
+```ts
+type APIv3_Response = {
+    version: string;
+    changelog: string;
+    channel: "stable" | "beta";
+    region?:
+        | "europe"
+        | "usa"
+        | "australia/new zealand"
+        | "hong kong"
+        | "india"
+        | "israel"
+        | "russia"
+        | "china"
+        | "japan"
+        | "korea";
+    files: {
+        target: number;
+        url: string;
+        integrity: string;
+    }[];
+    downgrade: boolean;
+    normalizedVersion: string;
+}[];
+```
