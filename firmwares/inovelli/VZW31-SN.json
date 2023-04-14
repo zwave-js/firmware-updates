@@ -9,18 +9,18 @@
 		}
 	],
 	"upgrades": [
-		{
-			"version": "1.0",
-			"channel": "beta",
-			"changelog": "Placeholder for future beta release.",
-			"files": [
-				{
-					"target": 0,
-					"url": "https://files.inovelli.com/firmware/VZW31-SN/Production/1.00/VZW31-SN_1.00.gbl",
-					"integrity": "sha256:7f919c339ac374ed2607294f888557009772d8dedecb27e665ff1ae087613ccf"
-				}
-			]
-		},
+		// {
+		// 	"version": "1.0",
+		// 	"channel": "beta",
+		// 	"changelog": "Placeholder for future beta release.",
+		// 	"files": [
+		// 		{
+		// 			"target": 0,
+		// 			"url": "https://files.inovelli.com/firmware/VZW31-SN/Production/1.00/VZW31-SN_1.00.gbl",
+		// 			"integrity": "sha256:7f919c339ac374ed2607294f888557009772d8dedecb27e665ff1ae087613ccf"
+		// 		}
+		// 	]
+		// },
 		{
 			"version": "1.0",
 			"channel": "stable",
