@@ -10,23 +10,6 @@
 	],
 	"upgrades": [
 		{
-			"version": "1.56",
-			"channel": "beta",
-			"changelog": "Fixed - Further optimization of Aux switch support in neutral and non-neutral.",
-			"files": [
-				{
-					"target": 0,
-					"url": "https://files.inovelli.com/firmware/LZW31/Beta/1.56/LZW31_1.56.otz",
-					"integrity": "sha256:4567da33054658cc52d2df43447c74b361813495ece3429d44a8c9bcd3106bb2"
-				},
-				{
-					"target": 1,
-					"url": "https://files.inovelli.com/firmware/LZW31/1.57/LZW31_1.44.bin",
-					"integrity": "sha256:d7257a646f53d88b4f1ce159354b8f8475f9338030641621f9a6861ca172dc23"
-				}
-			]
-		},
-		{
 			"version": "1.52",
 			"channel": "beta",
 			"changelog": "Modified Smart Bulb Mode so that the output can only be turned off by sending a BasicSet(0x00). Fixed: Solve the problem that the power measured by the light is 5W when the load is not connected (caused by inaccurate power measurement at extremely low power consumption). Feature: Added config button scenes and basic scenes. This version only (Not enough storage space going further).",
