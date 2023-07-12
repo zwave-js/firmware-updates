@@ -17,7 +17,7 @@
 				{
 					"target": 0,
 					"url": "https://files.inovelli.com/firmware/LZW31/Beta/1.52/LZW31_1.52.otz",
-					"integrity": "sha256:e52ec035ba3111823fefbd8459b2ac2da19779fb87eeb9536e95e6e6f9a447b2"
+					"integrity": "sha256:1a15dbc0143473b9af8e9bb7a8540e20b67d867362ff90b11e5dd1286f83c741"
 				},
 				{
 					"target": 1,
@@ -34,7 +34,7 @@
 				{
 					"target": 0,
 					"url": "https://files.inovelli.com/firmware/LZW31/1.57/LZW31_1.57.otz",
-					"integrity": "sha256:4567da33054658cc52d2df43447c74b361813495ece3429d44a8c9bcd3106bb2"
+					"integrity": "sha256:a994cb634cd0a69bed095a2586c192cde012343fd99088f26bd7b5d0b94472d7"
 				},
 				{
 					"target": 1,
