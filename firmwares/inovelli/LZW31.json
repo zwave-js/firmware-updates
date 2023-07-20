@@ -12,7 +12,7 @@
 		{
 			"version": "1.52",
 			"channel": "beta",
-			"changelog": "Modified Smart Bulb Mode so that the output can only be turned off by sending a BasicSet(0x00). Fixed: Solve the problem that the power measured by the light is 5W when the load is not connected (caused by inaccurate power measurement at extremely low power consumption). Feature: Added config button scenes and basic scenes. This version only (Not enough storage space going further).",
+			"changelog": "- Modified Smart Bulb Mode so that the output can only be turned off by sending a Basic Set (0x00).\n- Fixed: Solve the problem that the power measured by the light is 5W when the load is not connected (caused by inaccurate power measurement at extremely low power consumption).\n- Feature: Added config button scenes and basic scenes. This version only (Not enough storage space going further).",
 			"files": [
 				{
 					"target": 0,
@@ -29,7 +29,7 @@
 		{
 			"version": "1.57",
 			"channel": "stable",
-			"changelog": "Fixed - Optimization of Aux mode in neutral setting. Fixed - The inoperative issue after changing parameter 8 from high value to low value.",
+			"changelog": "- Fixed - Optimization of Aux mode in neutral setting.\n- Fixed - The inoperative issue after changing parameter 8 from high value to low value.",
 			"files": [
 				{
 					"target": 0,
@@ -39,7 +39,6 @@
 				{
 					"target": 1,
 					"url": "https://files.inovelli.com/firmware/LZW31/1.57/LZW31_1.44.bin",
-
 					"integrity": "sha256:d7257a646f53d88b4f1ce159354b8f8475f9338030641621f9a6861ca172dc23"
 				}
 			]
