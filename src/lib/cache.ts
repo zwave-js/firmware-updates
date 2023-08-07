@@ -20,30 +20,12 @@ export async function withCache(
 		// We serve POST requests which are not cached by default
 		ignoreMethod: true,
 	});
-
-	const isUltraloq =
-		(cacheKey as string).includes("0x0452") &&
-		(cacheKey as string).includes("0x0004") &&
-		(cacheKey as string).includes("0x0001");
-
 	if (response) {
-		try {
-			if (isUltraloq) {
-				const body = await response.clone().text();
-				console.log(`Cache hit for Ultraloq Lock. Response = ${body}`);
-			}
-		} catch (e) {
-			console.error(e);
-		}
-
 		if (
 			req?.headers &&
 			"if-none-match" in req.headers &&
 			req.headers["if-none-match"] === response.headers.get("etag")
 		) {
-			if (isUltraloq) {
-				console.log(`Unchanged response for Ultraloq Lock`);
-			}
 			return new Response(null, { status: 304 });
 		}
 

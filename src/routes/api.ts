@@ -93,16 +93,6 @@ async function handleUpdateRequest(
 		additionalFieldsForCacheKey
 	);
 
-	let isUltraloq = false;
-	if (
-		manufacturerId === "0x0452" &&
-		productType === "0x0004" &&
-		productId === "0x0001"
-	) {
-		isUltraloq = true;
-		console.log(`Got request for Ultraloq Lock. Cache key = ${cacheKey}`);
-	}
-
 	return withCache(
 		{
 			req,
@@ -129,13 +119,6 @@ async function handleUpdateRequest(
 				productId,
 				firmwareVersion
 			);
-			if (isUltraloq) {
-				console.log(
-					`Cache miss for Ultraloq Lock. Result = ${JSON.stringify(
-						config
-					)}`
-				);
-			}
 
 			if (!config) return json([]);
 
