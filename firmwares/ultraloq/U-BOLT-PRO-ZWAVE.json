@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Ultraloq",
+			"model": "U-BOLT-PRO-ZWAVE",
+			"manufacturerId": "0x0452",
+			"productType": "0x0004",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.5",
+			"channel": "beta",
+			"changelog": "Fixed door state issue",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://file.u-tec.com/homekit/U-BOLT-PRO-ZWAVE_V1.5.gbl",
+					"integrity": "sha256:fc0b831cf69dfbf4af7b6c95ee92b349899390b36daedb3413bfa17117eb4bab"
+				}
+			]
+		}
+	]
+}
