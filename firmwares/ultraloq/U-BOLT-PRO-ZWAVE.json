@@ -12,12 +12,12 @@
 		{
 			"version": "1.5",
 			"channel": "beta",
-			"changelog": "-Fixed door state issue",
+			"changelog": "Fixed door state issue",
 			"files": [
 				{
 					"target": 0,
 					"url": "https://file.u-tec.com/homekit/U-BOLT-PRO-ZWAVE_V1.5.gbl",
-					"integrity": "SHA256:51161b4e2dd2607ab246782fd267022c30811fb6a9f233ff451e006d9a07179a"
+					"integrity": "sha256:51161b4e2dd2607ab246782fd267022c30811fb6a9f233ff451e006d9a07179a"
 				}
 			]
 		}
