@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "aeotec",
+			"model": "ZWA024-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102",
+			"productId": "0x0018",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.5"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"&if": "firmwareVersion >= 1.0 && firmwareVersion <1.6 && productId === 0x0018",
+			"version": "1.6",
+			"channel": "stable",
+			"region": "usa",
+			"changelog": "Bug Fixes:\n * Threshold parameters\n * UV sensor calculations\n, * Sensor freeze\n, * Temperature value calculation on USB",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6179822542",
+					"integrity": "sha256:fea497f987b4694847fef29558d517ef20c79fb0e8bf168bc952a4b53c76ebbc"
+				}
+			]
+		}
+	]
+}
