@@ -974,16 +974,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zwave-js/firmware-integrity@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@zwave-js/firmware-integrity@npm:1.0.1"
+"@zwave-js/firmware-integrity@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "@zwave-js/firmware-integrity@npm:1.0.2"
   dependencies:
     "@zwave-js/core": ^9.6.0
     axios: ^0.27.2
     fs-extra: ^10.1.0
   bin:
     firmware-integrity: bin/firmware-integrity.js
-  checksum: d2df75331f0a33239072a704d98e331bc006deadc47f5798320ba4c2b19aa96ee4aa8928ddf5bf843b740bded5917afbf0a4f87f1ed0c30c698a229b99e77e7b
+  checksum: 94ff0d526e985235beb75f5e976ad449f38a37b71d6f2516370ae104d9a9f161e1cef3de8180d65296e13b9d8578ca9d2e83a7e3b12a03bc30491d82654984d2
   languageName: node
   linkType: hard
 
@@ -1005,7 +1005,7 @@ __metadata:
     "@types/source-map-support": ^0.5.6
     "@typescript-eslint/eslint-plugin": ^5.37.0
     "@typescript-eslint/parser": ^5.37.0
-    "@zwave-js/firmware-integrity": ^1.0.1
+    "@zwave-js/firmware-integrity": ^1.0.2
     ava: ^4.3.3
     axios: ^0.27.2
     esbuild: ^0.15.7

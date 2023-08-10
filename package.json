@@ -44,7 +44,7 @@
     "@types/source-map-support": "^0.5.6",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
-    "@zwave-js/firmware-integrity": "^1.0.1",
+    "@zwave-js/firmware-integrity": "^1.0.2",
     "ava": "^4.3.3",
     "axios": "^0.27.2",
     "esbuild": "^0.15.7",
