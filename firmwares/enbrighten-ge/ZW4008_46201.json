@@ -14,12 +14,12 @@
 			"changelog": "1. Original Release Firmware",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.53/ZW4008_Enbrighten-GE_46201_5.53.otz",
 			"integrity": "sha256:3941ffb451fc9eaaa5b9eb82c32aac3b35e7adca80df6ca5f7cdec30da7e53b6"
-		},
-		{
-			"version": "5.54",
-			"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary Valid Value 1 – Reset Switch to Factory Defaults\n3. Valid Value 1 – Reset Switch to Factory Defaults",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
-			"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
 		}
+		// {
+		// 	"version": "5.54",
+		// 	"changelog": "1. Add Parameter 84\n2. Valid Value 0 – No specific behavior necessary Valid Value 1 – Reset Switch to Factory Defaults\n3. Valid Value 1 – Reset Switch to Factory Defaults",
+		// 	"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW4008/46201%20-%20In-Wall%20Smart%20Paddle%20Switch%2C%20Quick-fit%20Simple%20Wire%2C%20500S/5.54/ZW4008_Enbrighten-GE_46201_5.54.otz",
+		// 	"integrity": "sha256:3851c05e54c1787c1b62390af2e5a58a7b52a1994553d6efbcfd395789ce60cb"
+		// }
 	]
 }
