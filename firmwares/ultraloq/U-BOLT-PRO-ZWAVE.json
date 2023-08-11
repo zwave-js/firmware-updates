@@ -11,8 +11,8 @@
 	"upgrades": [
 		{
 			"version": "1.5",
-			"channel": "beta",
-			"changelog": "Fixed door state issue",
+			"channel": "stable",
+			"changelog": "-Fixed door state issue",
 			"files": [
 				{
 					"target": 0,
