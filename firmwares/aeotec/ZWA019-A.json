@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA019-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102",
+			"productId": "0x0013"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
+			"version": "2.3",
+			"channel": "stable",
+			"region": "usa",
+			"changelog": "Bug Fixes:\n* Resolves wakeup report not being sent\n* Resolves issue with temp and humidity reports",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6165656621",
+					"integrity": "sha256:73499eb9e604ef8e7e74d64788c5c57b4d31a55b704eeb4155b3fec097be5d6f"
+				}
+			]
+		}
+	]
+}

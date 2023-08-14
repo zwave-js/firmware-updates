@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA022",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102",
+			"productId": "0x0016"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.5",
+			"version": "1.5",
+			"channel": "stable",
+			"region": "usa",
+			"changelog": "Bug Fixes:\n* Fixes manual factory rest freeze\n* Fixes group association dimming controls via Multilevel Switch V2",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6154751371",
+					"integrity": "sha256:68239ba3daeb16dfe186c322d1749e3bc2cfe5ac7f2fc30b0999b9e476abb441"
+				}
+			]
+		}
+	]
+}

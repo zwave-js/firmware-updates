@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW189-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0104",
+			"productId": "0x00BD"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.5",
+			"version": "1.5",
+			"channel": "stable",
+			"region": "usa",
+			"changelog": "Bug Fixes:\n* Resolves issue with series 300 controllers\n* Resolves Indicator CC command issues\n* Updates SDK to 7.15\n* Resolves issue when re-powered too quickly",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6139036580",
+					"integrity": "sha256:19e805cdaf68f7c6ddaebec81812f7c83e3ff31abdfc010fd0d25ef76652c654"
+				}
+			]
+		}
+	]
+}
