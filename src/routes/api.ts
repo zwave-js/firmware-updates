@@ -36,16 +36,14 @@ function getUpdatesCacheUrl(
 		requestUrl += "/";
 	}
 	const parts = [
+		filesVersion,
 		manufacturerId,
 		productType,
 		productId,
 		firmwareVersion,
 		...additionalFields,
 	];
-	return new URL(
-		`./${parts.join(":")}?filesVersion=${filesVersion}`,
-		requestUrl
-	).toString();
+	return new URL(`./${parts.join("/")}`, requestUrl).toString();
 }
 
 type ResultTransform = (
