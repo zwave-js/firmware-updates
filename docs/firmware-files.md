@@ -143,7 +143,7 @@ The optional `"channel"` field is used to assign an upgrade to a specific releas
 
 This allows more experienced users to stay up to date with the latest versions, while others can stick to well-tested firmwares.
 
-> **Note:**
+> **Note**
 > The `beta` channel is **not** intended to distribute nightly or testing builds. These firmwares MUST be stable enough for a public, potentially wide-spread release.
 
 ### Region-specific firmware upgrades
@@ -193,7 +193,7 @@ Example:
 }
 ```
 
-> **Note:**
+> **Note**
 > These region-specific updates will **only** be offered if the request also contains a matching `region` field, which requires support from both the client software and the user's Z-Wave controller.
 >
 > If devices for different regions can be distinguished otherwise, e.g. through different `productType`s per region, the `region` field should **NOT** be used.
