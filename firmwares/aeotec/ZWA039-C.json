@@ -5,12 +5,16 @@
 			"model": "ZWA039-C",
 			"manufacturerId": "0x0371",
 			"productType": "0x0002", //EU
-			"productId": "0x0009"
+			"productId": "0x0009",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.2"
+			}
 		}
 	],
-	"upgrades": [ //ZWA039 Update ZWA009 to be included in this file later
+	"upgrades": [
 		{
-			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
+			//"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
 			"version": "2.3",
 			"channel": "stable",
 			//"region": "europe",
