@@ -21,11 +21,15 @@ coolioproducts/coolio_z-dim7_1.1-1.6.json
 
 ## File format
 
-When using VSCode, the files will automatically be validated against a JSON Schema. This way you can spot errors directly while working on them:
+We **strongly** recommend using [Visual Studio Code](https://code.visualstudio.com/) to edit these files.
+
+It provides syntax highlighting and will automatically validate the files against a JSON Schema. This way you can spot errors directly while working on them:
 
 <p align="center">
 	<img src="json_schema.png" alt="Example of an error detected by the JSON Schema" />
 </p>
+
+In addition, the built-in graphical `git` client makes working with GitHub easier.
 
 ### Defining which devices a definition file applies to
 
