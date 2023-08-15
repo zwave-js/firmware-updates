@@ -4,7 +4,7 @@
 			"brand": "Aeotec",
 			"model": "ZWA019-C",
 			"manufacturerId": "0x0371",
-			"productType": "0x0002",
+			"productType": "0x0002", //EU
 			"productId": "0x0013"
 		}
 	],
@@ -13,7 +13,7 @@
 			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
 			"version": "2.3",
 			"channel": "stable",
-			"region": "europe",
+			//"region": "europe",
 			"changelog": "Bug Fixes:\n* Resolves wakeup report not being sent\n* Resolves issue with temp and humidity reports",
 			"files": [
 				{

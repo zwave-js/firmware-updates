@@ -4,7 +4,7 @@
 			"brand": "Aeotec",
 			"model": "ZW189-C",
 			"manufacturerId": "0x0371",
-			"productType": "0x0004",
+			"productType": "0x0004", //EU
 			"productId": "0x00bd"
 		}
 	],
@@ -13,7 +13,7 @@
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.5",
 			"version": "1.5",
 			"channel": "stable",
-			"region": "europe",
+			//"region": "europe",
 			"changelog": "Bug Fixes:\n* Resolves issue with series 300 controllers\n* Resolves Indicator CC command issues\n* Updates SDK to 7.15\n* Resolves issue when re-powered too quickly",
 			"files": [
 				{

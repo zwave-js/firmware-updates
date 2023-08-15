@@ -4,7 +4,7 @@
 			"brand": "Aeotec",
 			"model": "ZWA024-A",
 			"manufacturerId": "0x0371",
-			"productType": "0x0102",
+			"productType": "0x0102", //US
 			"productId": "0x0018"
 		}
 	],
@@ -13,7 +13,7 @@
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6",
 			"version": "1.6",
 			"channel": "stable",
-			"region": "usa",
+			//"region": "usa",
 			"changelog": "Bug Fixes:\n* Threshold parameters\n* UV sensor calculations\n* Sensor freeze\n* Temperature value calculation on USB",
 			"files": [
 				{

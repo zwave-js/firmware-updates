@@ -4,7 +4,7 @@
 			"brand": "Aeotec",
 			"model": "ZWA011-A",
 			"manufacturerId": "0x0371",
-			"productType": "0x0102",
+			"productType": "0x0102", //US
 			"productId": "0x000b"
 		}
 	],
@@ -13,7 +13,7 @@
 			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.2",
 			"version": "2.2",
 			"channel": "stable",
-			"region": "usa",
+			//"region": "usa",
 			"changelog": "Bug Fixes:\n* Resolves wakeup report not being sent",
 			"files": [
 				{
