@@ -143,7 +143,60 @@ The optional `"channel"` field is used to assign an upgrade to a specific releas
 
 This allows more experienced users to stay up to date with the latest versions, while others can stick to well-tested firmwares.
 
-**Note:** The `beta` channel is **not** intended to distribute nightly or testing builds. These firmwares MUST be stable enough for a public, potentially wide-spread release.
+> **Note:**
+> The `beta` channel is **not** intended to distribute nightly or testing builds. These firmwares MUST be stable enough for a public, potentially wide-spread release.
+
+### Region-specific firmware upgrades
+
+If there are different region-specific firmwares for the same device, the upgrades can be limited to a region using the `"region"` field, which can have the following values:
+
+-   `"europe"`
+-   `"usa"`
+-   `"australia/new zealand"`
+-   `"hong kong"`
+-   `"india"`
+-   `"israel"`
+-   `"russia"`
+-   `"china"`
+-   `"japan"`
+-   `"korea"`
+
+Example:
+
+```jsonc
+{
+	"devices": [
+		{
+			// All devices share this identification, regardless of region:
+			"manufacturerId": "0x1234",
+			"productType": "0xabcd",
+			"productId": "0xcafe"
+			// ...
+		}
+	],
+
+	"upgrades": [
+		// Upgrades/firmware are limited to a specific region
+		{
+			"version": "1.7",
+			"region": "europe",
+			"changelog": "Comply with EU regulations"
+			// ...
+		},
+		{
+			"version": "1.7",
+			"region": "usa",
+			"changelog": "Comply with US regulations"
+			// ...
+		}
+	]
+}
+```
+
+> **Note:**
+> These region-specific updates will **only** be offered if the request also contains a matching `region` field, which requires support from both the client software and the user's Z-Wave controller.
+>
+> If devices for different regions can be distinguished otherwise, e.g. through different `productType`s per region, the `region` field should **NOT** be used.
 
 ### Multiple firmware upgrades
 
@@ -205,6 +258,15 @@ For example, the following upgrade only applies if the device currently has firm
 	]
 }
 ```
+
+> **Note**
+> This feature should only be used when necessary, for example:
+>
+> -   to limit updates to a subset of the limits imposed by the `devices` entries
+> -   to prevent updates from 1.x to 2.x release lines
+> -   to prevent downgrades on devices that do not support being downgraded
+>
+> Please do not use it to impose unnecessary restrictions.
 
 ### Some more rules
 
