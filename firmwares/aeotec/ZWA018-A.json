@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA018-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102", //US
+			"productId": "0x0012"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
+			"version": "2.3",
+			"channel": "stable",
+			//"region": "usa",
+			"changelog": "Bug Fixes:\n* Resolves wakeup report not being sent",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6172225687",
+					"integrity": "sha256:eece777c2efdfd55a12165370db0ad74bddd93a619972cac7a283a2f732fd587"
+				}
+			]
+		}
+	]
+}
