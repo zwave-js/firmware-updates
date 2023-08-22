@@ -1,0 +1,30 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA009-B",
+			"manufacturerId": "0x0371",
+			"productType": "0x0202", //AU
+			"productId": "0x0009",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "12.1", //customized firmware version for older ZWA009 hardware to increase possible uses with faster thresolds
+			"channel": "stable",
+			//"region": "australia/new zealand",
+			"changelog": "Bug Fixes:\n* Lower parameter 4 minimum value to 30\n* Fix low battery % reporting\n* Change default threshold checks to 4 minutes",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6138025990",
+					"integrity": "sha256:627bf4a83177d1c564c5724a7f9e681b75c7d324761fb14b51cd3a9c755fb900"
+				}
+			]
+		}
+	]
+}

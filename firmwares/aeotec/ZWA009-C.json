@@ -1,0 +1,30 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA009-C",
+			"manufacturerId": "0x0371",
+			"productType": "0x0002", //EU
+			"productId": "0x0009",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "12.1", //customized firmware version for older ZWA009 hardware to increase possible uses with faster thresolds
+			"channel": "stable",
+			//"region": "europe",
+			"changelog": "Bug Fixes:\n* Lower parameter 4 minimum value to 30\n* Fix low battery % reporting\n* Change default threshold checks to 4 minutes",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6138025991",
+					"integrity": "sha256:21f2d94e00eb687e6556c5951bde62b0fd27ee54b4fe7289f3064c0af126422b"
+				}
+			]
+		}
+	]
+}
