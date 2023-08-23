@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW100-A",
+			"manufacturerId": "0x0086",
+			"productType": "0x0102", //US
+			"productId": "0x0064"
+		}
+	],
+	"upgrades": [ //firmware V1.14 to V1.17
+		{
+			"$if": "firmwareVersion >= 1.14 && firmwareVersion < 1.17",
+			"version": "1.17",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Modified firmware for new light sensor chip\n* Fixes issue with older light sensor chip from V1.14",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6182582458",
+					"integrity": "sha256:301b047b71afcb7a10c746d5eee5fd2317e4807cc7eaa6acff2a62727408e522"
+				}
+			]
+		}
+	]
+}
