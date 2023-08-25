@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW164-C", //Siren 6
+			"manufacturerId": "0x0371",
+			"productType": "0x0003", //EU
+			"productId": "0x00a4"
+		}
+	],
+	"upgrades": [ //firmware V1.00 to V1.9
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.9",
+			"version": "1.9",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Optimize Siren 6 internal coding\n* Compatible to older and newer sound chip (compatible to all versions)",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6182798078",
+					"integrity": "sha256:260b3c01d35116f3d48d91ca7010fa7049185c11040b27bab7feda1e7cbfcf9a"
+				}
+			]
+		}
+	]
+}
