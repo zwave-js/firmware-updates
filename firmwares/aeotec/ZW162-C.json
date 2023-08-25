@@ -8,7 +8,7 @@
 			"productId": "0x00a2"
 		}
 	],
-	"upgrades": [ //firmware V1.00 to V1.9
+	"upgrades": [ //firmware V1.0 to V1.9
 		{
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.9",
 			"version": "1.9",
