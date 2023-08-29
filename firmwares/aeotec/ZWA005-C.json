@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA005-C",
+			"manufacturerId": "0x0371",
+			"productType": "0x0002", //EU
+			"productId": "0x0005"
+		}
+	],
+	"upgrades": [ //firmware V2.00 to V2.20
+		{
+			"$if": "firmwareVersion >= 2.00 && firmwareVersion < 2.21",
+			"version": "2.21",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Resolved random white LED flash when re-powering\n* Fixes lux reporting 0\n* Fixes sensor crash\n* Changes Parameter 100 coefficient for calibration\n* Adjusts battery calibration used for factory production",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6182788805",
+					"integrity": "sha256:c5045bf8dcd4ce412c3b553d670d72906102c1c0d27052e903d6a6c461d46a13"
+				}
+			]
+		}
+	]
+}
