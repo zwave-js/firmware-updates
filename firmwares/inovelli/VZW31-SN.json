@@ -10,26 +10,26 @@
 	],
 	"upgrades": [
 		// {
-		// 	"version": "1.0",
+		// 	"version": "1.1",
 		// 	"channel": "beta",
-		// 	"changelog": "Placeholder for future beta release.",
+		// 	"changelog": "Change default dimming type back to leading edge. Added button combo to switch between leading and trailing edge.",
 		// 	"files": [
 		// 		{
 		// 			"target": 0,
-		// 			"url": "https://files.inovelli.com/firmware/VZW31-SN/Production/1.00/VZW31-SN_1.00.gbl",
-		// 			"integrity": "sha256:7f919c339ac374ed2607294f888557009772d8dedecb27e665ff1ae087613ccf"
+		// 			"url": "https://github.com/InovelliUSA/Firmware/raw/main/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/1.01/VZW31-SN_1.01.gbl",
+		// 			"integrity": "sha256:a50bfa9a35597ab4439401487896d0c31990799173861f06094e96a4f741b06f"
 		// 		}
 		// 	]
 		// },
 		{
-			"version": "1.0",
+			"version": "1.2",
 			"channel": "stable",
-			"changelog": "Initial production release.",
+			"changelog": "Change default dimming type back to leading edge. Added button combo to switch between leading and trailing edge. Added temperature monitoring feature.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://files.inovelli.com/firmware/VZW31-SN/Production/1.00/VZW31-SN_1.00.gbl",
-					"integrity": "sha256:7f919c339ac374ed2607294f888557009772d8dedecb27e665ff1ae087613ccf"
+					"url": "https://github.com/InovelliUSA/Firmware/raw/main/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/1.02/VZW31-SN_1.02.gbl",
+					"integrity": "sha256:107871e6de514afd02bb322e52d9c3341c16e1d5bbe4ae15ad1de5ce6356ab0d"
 				}
 			]
 		}
