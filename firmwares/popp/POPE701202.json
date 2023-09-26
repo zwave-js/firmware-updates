@@ -14,7 +14,7 @@
 			"version": "1.2",
 			"channel": "stable",
 			"changelog": "Bug Fixes:\n* Resolves fast battery drain (individual cases)",
-			"files": [ //Needs update of link + integrity
+			"files": [
 				{
 					"target": 0,
 					"url": "https://z-wave.freshdesk.com/helpdesk/attachments/80257130806",
