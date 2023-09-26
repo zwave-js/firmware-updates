@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Popp",
+			"model": "POPE700854", //Popp Solar Outdoor Siren 2
+			"manufacturerId": "0x0154",
+			"productType": "0x0004", //EU
+			"productId": "0x0002"
+		}
+	],
+	"upgrades": [ //firmware V2.0 to V2.6
+		{
+			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.6",
+			"version": "2.6",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Fixes fast battery drain when switching the siren.",
+			"files": [//Needs update of link + integrity
+				{
+					"target": 0,
+					"url": "https://z-wave.freshdesk.com/helpdesk/attachments/80257131396",
+					"integrity": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+				}
+			]
+		}
+	]
+}

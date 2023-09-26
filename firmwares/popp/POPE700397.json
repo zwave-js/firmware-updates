@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Popp",
+			"model": "POPE700397", //Popp Smart Outdoor Plug
+			"manufacturerId": "0x0154",
+			"productType": "0x0003", //EU
+			"productId": "0x000a"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 3.0 && firmwareVersion < 3.15",
+			"version": "3.15",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Fixes S2 report issue", //need changelog for V3.15
+			"files": [
+				{
+					"target": 0,
+					"url": "https://z-wave.freshdesk.com/helpdesk/attachments/80102958024",
+					"integrity": "sha256:fcd535172d3eff379186d5b4e94ec87953240c10f70683fa515e56a741ba2d80"
+				}
+			]
+		}
+	]
+}
