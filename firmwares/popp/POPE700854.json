@@ -14,7 +14,7 @@
 			"version": "2.6",
 			"channel": "stable",
 			"changelog": "Bug Fixes:\n* Fixes fast battery drain when switching the siren.",
-			"files": [//Needs update of link + integrity
+			"files": [
 				{
 					"target": 0,
 					"url": "https://z-wave.freshdesk.com/helpdesk/attachments/80257131396",
