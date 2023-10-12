@@ -1,0 +1,35 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": [
+                {
+                    "$if": "firmwareVersion >= 2.10",
+                    "value": "ZEN04 800LR"
+                },
+                "ZEN04"
+            ],
+			"manufacturerId": "0x027A",
+			"productType": "0x7000",
+			"productId": "0xb002"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V01R20.gbl"
+		},
+		{
+			"version": "1.30",
+			"changelog": "Firmware version > 1.30",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V01R30.gbl"
+		},
+		{
+			"version": "Firmware version2.20",
+			"changelog": "Firmware for long range version 800LR series",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V02R20.gbl"
+		}
+        
+	]
+}
