@@ -2,6 +2,10 @@ import path from "path-browserify";
 import { generateIndex } from "../lib/config";
 import { NodeFS } from "./nodeFS";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const configDir = path.join(__dirname, "../../firmwares");
 
 void (async () => {

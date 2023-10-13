@@ -6,6 +6,10 @@ import type { ConfigIndexEntry } from "../lib/config";
 import type { UploadPayload } from "../lib/uploadSchema";
 import { NodeFS } from "./nodeFS";
 
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const configDir = path.join(__dirname, "../../firmwares");
 const MAX_FILES_PER_REQUEST = 50; // limited by no. of subrequests in Cloudflare Workers
 const baseURL = process.env.BASE_URL;
