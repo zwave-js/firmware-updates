@@ -5,7 +5,11 @@
 			"model": "ZEN04",
 			"manufacturerId": "0x027a",
 			"productType": "0x7000",
-			"productId": "0xb002"
+			"productId": "0xb002",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
 		}
 	],
 	"upgrades": [
