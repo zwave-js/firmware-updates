@@ -16,7 +16,7 @@ const {
  * @typedef {typeof import("@actions/core")} Core
  */
 
-const workspaceRoot = path.join(__dirname, "../..");
+const workspaceRoot = path.resolve(__dirname, "../..");
 
 const COMMENT_TAG = "<!-- integrity-check -->";
 

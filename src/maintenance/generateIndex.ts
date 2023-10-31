@@ -6,7 +6,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const configDir = path.join(__dirname, "../../firmwares");
+const configDir = path.resolve(__dirname, "../../firmwares");
 
 void (async () => {
 	console.log();
