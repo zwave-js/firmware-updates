@@ -14,8 +14,8 @@ export const NodeFS: FileSystem = {
 	// 	return fs.unlink(file);
 	// },
 	async readDir(dir, recursive) {
+		const ret: string[] = [];
 		if (recursive) {
-			const ret: string[] = [];
 			try {
 				const filesAndDirs = await fs.readdir(dir);
 				for (const f of filesAndDirs) {
@@ -35,10 +35,15 @@ export const NodeFS: FileSystem = {
 					)}`
 				);
 			}
-
-			return ret;
 		} else {
-			return fs.readdir(dir);
+			ret.push(...(await fs.readdir(dir)));
+		}
+
+		// Normalize the path separator to "/", so path-browserify can handle the paths
+		if (path.sep !== "/") {
+			return ret.map((p) => p.replaceAll(path.sep, "/"));
+		} else {
+			return ret;
 		}
 	},
 	deleteDir: function (dir: string): Promise<void> {
