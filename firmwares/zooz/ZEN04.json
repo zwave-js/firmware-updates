@@ -1,0 +1,29 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN04",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xb002",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20",
+			"changelog": "* Improved energy reporting: the plug no longer sends excess reports for connected electronics in standby mode",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V01R20.gbl",
+			"integrity": "sha256:e6a37e937a3178e464502a0b20557436301e763a975de6e07cd7b6a32f6520a4"
+		},
+		{
+			"version": "1.30",
+			"changelog": "* Fixed bug: reduced the delay after the plug reports a Wattage change when on and the device connected to the smart plug is suddenly unplugged.\n* Added new parameters to disable energy reporting values (parameters 10 and 11)\n* Added new parameters to set energy reporting frequency (parameters 12 and 13)",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V01R30.gbl",
+			"integrity": "sha256:a0d7cab86a89e19f8f4ef1489833ad39694d49437ad59589c8a1b061aac4a88d"
+		}
+	]
+}
