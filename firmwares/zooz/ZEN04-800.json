@@ -14,7 +14,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "2.20",
+			"version": "2.20.1",
 			"changelog": "* 800 Series Z-Wave chip.\n* Based on 1.30 firmware.\n* Long Range ready.\n * Improved Direct Association for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN04_V02R20.gbl",
 			"integrity": "sha256:c43e5a005247bdbedb8ae39ede2f041eb4727bc98b833f6ff76a12c26e6096ac"
