@@ -27,7 +27,7 @@ See [the documentation](docs/firmware-files.md) for more information on how to a
 All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for non-commercial use** or installations in non-commercial environments. Commercial use will be charged.
 
 > **Note**
-> Home Assistant and official Z-Wave JS projects already have an API key for non-commercial use. Requesting an API key is not necessary for those. 
+> Home Assistant and official Z-Wave JS projects already have an API key for non-commercial use. Requesting an API key is not necessary for those.
 
 To request an API key, please [reach out](mailto:info@zwave-js.io) and provide the following information:
 
@@ -276,3 +276,7 @@ type APIv3_Response = {
     normalizedVersion: string;
 }[];
 ```
+
+## Development and testing locally
+
+See [the documentation](docs/testing-locally.md) for more information on how to test the service locally.
