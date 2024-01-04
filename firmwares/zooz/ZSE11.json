@@ -1,0 +1,25 @@
+{
+    "devices": [
+        {
+            "brand": "Zooz",
+            "model": "ZSE11",
+            "manufacturerId": "0x027a",
+            "productType": "0x0201",
+            "productId": "0x0006"
+        }
+    ],
+    "upgrades": [
+        {
+            "version": "1.11",
+            "changelog": "Fixed a lux reading bug where the sensor would report 0 in very bright settings.",
+            "url": "https://www.getzooz.com/firmware/ZSE11_FW_V1_11.otz",
+            "integrity": "sha256:fd0f4c9587597a971aee07ef190bb14c60a83319d0a0411944f3ff1fada995f2"
+        },
+        {
+            "version": "1.30",
+            "changelog": "Fixed an issue with S2 Authenticated security inclusion.",
+            "url": "https://www.getzooz.com/firmware/ZSE11_FW_V1_30.otz",
+            "integrity": "sha256:77f7bec56e5bb077a13a04bde9b92da91eb7ff2b124e7ee4eee3ffdafa0b0db3"
+        }
+    ]
+}
