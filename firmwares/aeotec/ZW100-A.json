@@ -8,7 +8,7 @@
 			"productId": "0x0064"
 		}
 	],
-	"upgrades": [ //firmware V1.14 to V1.17
+	"upgrades": [
 		{
 			"$if": "firmwareVersion >= 1.14 && firmwareVersion < 1.17",
 			"version": "1.17",
@@ -19,6 +19,19 @@
 					"target": 0,
 					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6182582458",
 					"integrity": "sha256:301b047b71afcb7a10c746d5eee5fd2317e4807cc7eaa6acff2a62727408e522"
+				}
+			]
+		},
+		{
+			"$if": "firmwareVersion >= 1.09 && firmwareVersion < 1.13",
+			"version": "1.13",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Modified the humidity sensor checking. ",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6183346608",
+					"integrity": "sha256:6682e5b7db22471a908dc610b587c2b94a6e522919989b004bcbd091fa1d48c0"
 				}
 			]
 		}
