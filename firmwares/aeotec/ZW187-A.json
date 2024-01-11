@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW187-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102", //US
+			"productId": "0x00bb"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6",
+			"version": "1.6",
+			"channel": "stable",
+			//"region": "usa",
+			"changelog": "Bug Fixes:\n* Update Z-Wave SDK used",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6189341051",
+					"integrity": "sha256:5bd85839f729a870f0f858131468040399ebf7bd9ce08b43bc098c8e1fc16e09"
+				}
+			]
+		}
+	]
+}
