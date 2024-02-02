@@ -12,7 +12,7 @@ When desired, Z-Wave JS will download the update(s) from the provided URL, verif
 
 ## Providing firmware definition files
 
-> **Warning**
+> [!WARNING]
 > We **will not** accept firmware updates hosted by third parties. All updates must come from the respective device manufacturer. We make an exception for firmwares that are publicly hosted by the manufacturer, but those may still require confirmation the manufacturer's confirmation before merging.
 
 We kindly ask you to open a PR for any changes to firmware updates.
@@ -26,7 +26,7 @@ See [the documentation](docs/firmware-files.md) for more information on how to a
 
 All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for non-commercial use** or installations in non-commercial environments. Commercial use will be charged.
 
-> **Note**
+> [!NOTE]
 > Home Assistant and official Z-Wave JS projects already have an API key for non-commercial use. Requesting an API key is not necessary for those.
 
 To request an API key, please [reach out](mailto:info@zwave-js.io) and provide the following information:
@@ -96,7 +96,7 @@ To help applications decide which updates to show and how, additional fields are
     -   version `1.7.0` stays `1.7.0`
     -   version `1.7.2` stays `1.7.2`
 
-> **Note**
+> [!NOTE]
 > API version 1 will only return updates from the `stable` channel. To also get updates from the `beta` channel, use API version 2.
 
 **Response type definition:**
