@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN32",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa008"
+		}
+	],
+
+	"upgrades": [
+		{
+			"version": "10.20",
+			"changelog": "* Added parameter 23 to disable LED indicator flashing during a setting change\n* Fixed LED indicator command class issue: LED indicators no longer default to the white color when the command is used\n* Fixed bug: with parameter 19 set to 2, the device no longer ignores changes made to parameter 1",
+			"url": "https://raw.githubusercontent.com/uberchris2/zooz-firmware/main/ZEN32_V10R20P01.gbl",
+			"integrity": "sha256:5da4c5d64887d3a91fd85d875cc7e5eb06d71ea7a70bd572e7b7fda86c84ac57"
+		}
+	]
+}

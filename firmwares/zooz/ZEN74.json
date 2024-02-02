@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN74",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa004"
+		}
+	],
+
+	"upgrades": [
+		{
+			"version": "10.10",
+			"changelog": "* Separated ramp rate into 4 new settings: on physical (parameter 9), on Z-Wave (parameter 28), off physical (parameter 27), and off Z-Wave (parameter 29)\n* Improved night light mode (it takes 1 second instead of 2 to turn the night on via night light mode)\n* Added a new setting to indicate remote dimming duration when using the ZEN74 in association with other dimmers (parameter 30)",
+			"url": "https://raw.githubusercontent.com/uberchris2/zooz-firmware/main/ZEN74_V10R10P01.gbl",
+			"integrity": "sha256:3bb9d4249dc70d5f357a326214e7a8874ee21ca563f2d2fe1571c4dda7901049"
+		}
+	]
+}
