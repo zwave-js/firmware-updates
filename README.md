@@ -13,7 +13,7 @@ When desired, Z-Wave JS will download the update(s) from the provided URL, verif
 ## Providing firmware definition files
 
 > [!WARNING]
-> We **will not** accept firmware updates hosted by third parties. All updates must come from the respective device manufacturer. We make an exception for firmwares that are publicly hosted by the manufacturer, but those **will** still require confirmation the manufacturer's review before merging.
+> We **will not** accept firmware updates hosted by third parties. All updates must come from the respective device manufacturer. We make an exception for firmwares that are publicly hosted by the manufacturer, but those **will** still require the manufacturer's review before merging.
 
 We kindly ask you to open a PR for any changes to firmware updates.
 This way they can automatically be checked for errors.
