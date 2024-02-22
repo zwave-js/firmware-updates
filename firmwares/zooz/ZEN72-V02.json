@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN-numberhere",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa002",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.20.2",
+			"changelog": "* For use with Hardware V2. Includes Firmware versions: 2.0, 2.10, 2.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 31 to enable scene control from the momentary switch in a 3-way.\n* Added parameter 32 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The dimmer will not lock up if the factory reset is not successful in certain scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZEN72_V02R20.gbl",
+			"integrity": "sha256:063e25a7454d0ae718d4a072c0f070e55ec85c7a375a1fc6cb676cd22ac243d5"
+		}
+	]
+}

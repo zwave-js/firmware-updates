@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN32",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa008",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.30.2",
+			"changelog": "* For use with Hardware V2, 800 Series Z-Wave chip. Includes Firmware versions: 2.10, 2.20, 2.30.",
+			"url": "https://www.getzooz.com/firmware/ZEN32_V02R30.gbl",
+			"integrity": "sha256:a41fab409bb3e3b29fdb2fba4b8f838f17786db00edf0164ec6f05af87731316"
+		}
+	]
+}
