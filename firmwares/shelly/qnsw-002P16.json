@@ -22,8 +22,8 @@
             "files": [
                 {
                     "target": 0,
-                    "integrity": "sha256:1cf4865c47749441f8e165c4aa1c61f19a622235d2b072a9c5b89aaa4114eeb3",
-                    "url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_2PM/EU/QUBINO_Wave2PM_800_EU_20231213_1356_QNSW-002P16EU_%5B10.30%5D_EB201890.gbl"
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_2PM/EU/QUBINO_Wave2PM_800_EU_20231213_1356_QNSW-002P16EU_%5B10.30%5D_EB201890.gbl",
+                    "integrity": "sha256:1cf4865c47749441f8e165c4aa1c61f19a622235d2b072a9c5b89aaa4114eeb3"
                 }
             ]	
 		},
@@ -35,8 +35,8 @@
             "files": [
                 {
                     "target": 0,
-                    "integrity": "sha256:d8ada46967e45358a192f4557b02ec95f99678c6051eaad560b15bdf742b00f4",
-                    "url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_2PM/ANZ/QUBINO_Wave2PM_800_ANZ_20240108_1015_QNSW-002P16AU_%5B10.30%5D_0FE4B35C.gbl"
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_2PM/ANZ/QUBINO_Wave2PM_800_ANZ_20240108_1015_QNSW-002P16AU_%5B10.30%5D_0FE4B35C.gbl",
+                    "integrity": "sha256:d8ada46967e45358a192f4557b02ec95f99678c6051eaad560b15bdf742b00f4"
                 }
             ]	
 		}
