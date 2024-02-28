@@ -14,7 +14,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "1.50",
+			"version": "1.50.1",
 			"changelog": "* Data packets changed to 5-byte to help address inclusion, range or secure inclusion issues\n* Fixed Bug: Issues with battery status display when added using S2 authenticated security on select platforms",
 			"url": "https://www.getzooz.com/firmware/ZSE42_V01R50_US.gbl",
 			"integrity": "sha256:67f6a629a35b212e0156c7cff89a3816a87168adb9da22fd6507e9da7b2799ff"
