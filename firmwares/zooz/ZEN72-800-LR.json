@@ -2,7 +2,7 @@
 	"devices": [
 		{
 			"brand": "Zooz",
-			"model": "ZEN-numberhere",
+			"model": "ZEN72",
 			"manufacturerId": "0x027a",
 			"productType": "0x7000",
 			"productId": "0xa002",
