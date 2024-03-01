@@ -16,7 +16,7 @@
 	"upgrades": [
         {
 			"version": "11.3",
-			"changelog": "- Removed delay from input detection to output response\n- Parameters 120, 201, 202, 203 fixed",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
             "channel": "stable",
             "region": "europe",
             "files": [
@@ -30,7 +30,7 @@
 		},
 		{
 			"version": "11.3",
-			"changelog": "- Removed delay from input detection to output response\n- Parameters 120, 201, 202, 203 fixed",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
             "channel": "stable",
             "region": "australia/new zealand",
             "files": [
