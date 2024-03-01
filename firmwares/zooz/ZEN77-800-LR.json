@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN77",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa007",
+			"firmwareVersion": {
+				"min": "4.0",
+				"max": "4.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.30.0",
+			"changelog": "* For use with Hardware V4, 800 Series Z-Wave chip only. Includes Firmware versions: 4.10, 4.20, 4.30.\n* Improved Direct Association Group 3 for the multilevel set functionality.",
+			"url": "https://www.getzooz.com/firmware/ZEN77_V04R30.gbl",
+			"integrity": "sha256:56547dda70a62ca6f47d8d766ef9646db8b42189efe60d0239eb3c73b59fac8d"
+		}
+	]
+}
