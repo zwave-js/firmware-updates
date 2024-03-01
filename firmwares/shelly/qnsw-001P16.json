@@ -16,7 +16,7 @@
 	"upgrades": [
         {
 			"version": "11.5",
-			"changelog": "- Removed delay from input detection to output response\n- Power measurement optimised for 'true power' measurement\n- Added filter for electrical disturbances to avoid unnecessary reporting\n- Circuit protection system (over current, overheat) detection improved\n- Improved power measurement system\n- Corrected configuration Command Class reports for non\n-existent parameters- Parameter 120 factory reset characteristics changed to size = 1 Byte\n- other minor fixes and improvements",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Power measurement optimised for 'true power' measurement\n- Added filter for electrical disturbances to avoid unnecessary reporting\n- Circuit protection system (over current, overheat) detection improved\n- Improved power measurement system\n- Corrected configuration Command Class reports for non\n-existent parameters- Parameter 120 factory reset characteristics changed to size = 1 Byte\n- other minor fixes and improvements",
             "channel": "stable",
             "region": "europe",
             "files": [

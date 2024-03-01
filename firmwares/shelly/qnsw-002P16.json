@@ -16,7 +16,7 @@
 	"upgrades": [
         {
 			"version": "10.30",
-			"changelog": "- Removed delay from input detection to output response",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
             "channel": "stable",
             "region": "europe",
             "files": [
@@ -29,7 +29,7 @@
 		},
 		{
 			"version": "10.30",
-			"changelog": "- Removed delay from input detection to output response",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
             "channel": "stable",
             "region": "australia/new zealand",
             "files": [
