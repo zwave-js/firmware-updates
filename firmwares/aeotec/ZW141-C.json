@@ -2,7 +2,7 @@
 	"devices": [
 		{
 			"brand": "Aeotec",
-			"model": "ZW141-A",
+			"model": "ZW141-C",
 			"manufacturerId": "0x0371",
 			"productType": "0x0003", //EU
 			"productId": "0x008d"
@@ -18,7 +18,7 @@
 				{
 					"target": 0,
 					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6184337464",
-					"integrity": "sha256:62500CF9607C93D20A3840B59883D91AFAFD26C488A971FC6A13E8870DEC4F26"
+					"integrity": "sha256:695abc97cd44c1018e1afed0a446551439f2756d7ab0f57e56993f5c1ed6a15d"
 				}
 			]
 		}
