@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW141-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0003", //EU
+			"productId": "0x008d"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.6",
+			"version": "3.6",
+			"channel": "stable",
+			"changelog": "Added Parameter #51：Curtain Trip Time for UP (Open) moving. \n Added Parameter #52:  Set whether the Curtain Trip Times for UP and Down are equal.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6184337464",
+					"integrity": "sha256:62500CF9607C93D20A3840B59883D91AFAFD26C488A971FC6A13E8870DEC4F26"
+				}
+			]
+		}
+	]
+}
