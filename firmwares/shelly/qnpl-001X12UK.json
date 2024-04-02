@@ -19,7 +19,7 @@
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/main/Wave_Plug_UK/EU/Wave_PlugUk_800_EU_20240224_1014_QNPL-001X12UK_%5B10.05%5D_0FE4B35C.gbl",
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_Plug_UK/EU/Wave_PlugUk_800_EU_20240224_1014_QNPL-001X12UK_%5B10.05%5D_0FE4B35C.gbl",
 					"integrity": "sha256:7f951160a2c1a106ff51adaddc9d02def3042c4b572f938965230fe49dd9eccc"
 				}
 			]

@@ -19,7 +19,7 @@
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1/EU/QUBINO_1Switch_800_EU_20231212_1546_QNSW-001X16EU_%5B11.03%5D_2144DF1C.gbl",
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1/EU/QUBINO_1Switch_800_EU_20231212_1546_QNSW-001X16EU_%5B11.03%5D_2144DF1C.gbl",
 					"integrity": "sha256:8932688cf81c62c0ee3bc9d573c9055f25200d79baf369804c7695bd256bdcaf"
 				}
 			]
@@ -30,7 +30,7 @@
 			"region": "australia/new zealand",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1/ANZ/QUBINO_1Switch_800_ANZ_20240108_0921_QNSW-001X16AU_%5B11.03%5D_9DD2F96C.gbl",
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1/ANZ/QUBINO_1Switch_800_ANZ_20240108_0921_QNSW-001X16AU_%5B11.03%5D_9DD2F96C.gbl",
 					"integrity": "sha256:824ed1463259da1da197c369913b1303d16f0efa227373dea478e2aee47bfcd8"
 				}
 			]

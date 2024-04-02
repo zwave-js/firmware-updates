@@ -19,7 +19,7 @@
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1PM/EU/QUBINO_Wave_1PM_800_EU_20231116_1316_QNSW-001P16EU_%5B11.05%5D_EB201890.gbl",
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1PM/EU/QUBINO_Wave_1PM_800_EU_20231116_1316_QNSW-001P16EU_%5B11.05%5D_EB201890.gbl",
 					"integrity": "sha256:870b3c8d525300619ed03554c2f51172bd3128d8df006c5106f91470746f4a99"
 				}
 			]
