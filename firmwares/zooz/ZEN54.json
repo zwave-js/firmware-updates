@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN54",
+			"manufacturerId": "0x027a",
+			"productType": "0x0904",
+			"productId": "0x0218",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.30.0",
+			"changelog": "* Added advanced parameters 15 and 16 for the Physical Ramp Rates.\n* Added advanced parameters 17 and 18 for the Z-Wave Ramp Rates.",
+			"url": "https://www.getzooz.com/firmware/ZEN54_V01R30.gbl",
+			"integrity": "sha256:cfcb2f9bfbd4db73c3f8f75c6bc01ed6dee7c618797ecde79e95d2bfa5b72d44"
+		}
+	]
+}
