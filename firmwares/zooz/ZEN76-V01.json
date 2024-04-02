@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "10.20.1",
-			"changelog": "* For use with Hardware V1. Includes Firmware versions: 10.0, 10.10, 10.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 18 to disable LED blinking when a setting is changed. See all settings here.\n* Changed the manual operation for disabling the relay (smart bulb mode).\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
+			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 18 to disable LED blinking when a setting is changed. See all settings here.\n* Changed the manual operation for disabling the relay (smart bulb mode).\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
 			"url": "https://www.getzooz.com/firmware/ZEN76_V10R20.gbl",
 			"integrity": "sha256:4780c7656fe7241810f8868b16e34c363e6e7dd99982dfc497483f2cd4dca06e"
 		}
