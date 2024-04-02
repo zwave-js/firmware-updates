@@ -4,9 +4,8 @@
 			"brand": "Shelly Qubino",
 			"model": "Wave 1",
 			"manufacturerId": "0x0460",
-            "productType": "0x0002",
+			"productType": "0x0002",
 			"productId": "0x0083",
-
 			"firmwareVersion": {
 				"min": "0.0",
 				"max": "255.255"
@@ -14,33 +13,27 @@
 		}
 	],
 	"upgrades": [
-        {
+		{
 			"version": "11.3",
 			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
-            "channel": "stable",
-            "region": "europe",
-            "files": [
-                {
-                    "target": 0,
+			"region": "europe",
+			"files": [
+				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1/EU/QUBINO_1Switch_800_EU_20231212_1546_QNSW-001X16EU_%5B11.03%5D_2144DF1C.gbl",
-                    "integrity": "sha256:8932688cf81c62c0ee3bc9d573c9055f25200d79baf369804c7695bd256bdcaf"
-
-                }
-            ]	
+					"integrity": "sha256:8932688cf81c62c0ee3bc9d573c9055f25200d79baf369804c7695bd256bdcaf"
+				}
+			]
 		},
 		{
 			"version": "11.3",
 			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
-            "channel": "stable",
-            "region": "australia/new zealand",
-            "files": [
-                {
-                    "target": 0,
+			"region": "australia/new zealand",
+			"files": [
+				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1/ANZ/QUBINO_1Switch_800_ANZ_20240108_0921_QNSW-001X16AU_%5B11.03%5D_9DD2F96C.gbl",
-                    "integrity": "sha256:824ed1463259da1da197c369913b1303d16f0efa227373dea478e2aee47bfcd8"
-
-                }
-            ]	
+					"integrity": "sha256:824ed1463259da1da197c369913b1303d16f0efa227373dea478e2aee47bfcd8"
+				}
+			]
 		}
 	]
 }

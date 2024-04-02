@@ -4,9 +4,8 @@
 			"brand": "Shelly Qubino",
 			"model": "Wave 1 PM",
 			"manufacturerId": "0x0460",
-            "productType": "0x0002",
+			"productType": "0x0002",
 			"productId": "0x0084",
-
 			"firmwareVersion": {
 				"min": "0.0",
 				"max": "255.255"
@@ -14,19 +13,16 @@
 		}
 	],
 	"upgrades": [
-        {
+		{
 			"version": "11.5",
 			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Power measurement optimised for 'true power' measurement\n- Added filter for electrical disturbances to avoid unnecessary reporting\n- Circuit protection system (over current, overheat) detection improved\n- Improved power measurement system\n- Corrected configuration Command Class reports for non\n-existent parameters- Parameter 120 factory reset characteristics changed to size = 1 Byte\n- other minor fixes and improvements",
-            "channel": "stable",
-            "region": "europe",
-            "files": [
-                {
-                    "target": 0,
+			"region": "europe",
+			"files": [
+				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_1PM/EU/QUBINO_Wave_1PM_800_EU_20231116_1316_QNSW-001P16EU_%5B11.05%5D_EB201890.gbl",
-                    "integrity": "sha256:870b3c8d525300619ed03554c2f51172bd3128d8df006c5106f91470746f4a99"
-
-                }
-            ]	
+					"integrity": "sha256:870b3c8d525300619ed03554c2f51172bd3128d8df006c5106f91470746f4a99"
+				}
+			]
 		}
 	]
 }
