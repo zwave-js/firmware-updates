@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN72",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa002",
+			"firmwareVersion": {
+				"min": "3.0",
+				"max": "3.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "3.30.0",
+			"changelog": "Includes firmware versions: 3.0, 3.10, 3.20, 3.30.\n* Improved Direct Association Group 3 for the multilevel set functionality.",
+			"url": "https://www.getzooz.com/firmware/ZEN72_V03R30.gbl",
+			"integrity": "sha256:67610e8ba6fff5089b9d1bb42b7ca7515df6079909caf4cdd21889746c318feb"
+		}
+	]
+}

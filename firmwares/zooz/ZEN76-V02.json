@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN76",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa006",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.20.1",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 18 to disable LED blinking when a setting is changed. See all settings here.\n* Changed the manual operation for disabling the relay (smart bulb mode).\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
+			"url": " https://www.getzooz.com/firmware/ZEN76_V02R20.gbl",
+			"integrity": "sha256:d58c3bcdb7bcb1a1e51314c155a205a095e81a9cc0e0bdda0db8e5dcd6bb82c0"
+		}
+	]
+}
