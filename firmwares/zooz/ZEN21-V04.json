@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN21",
+			"manufacturerId": "0x027a",
+			"productType": "0xaa00",
+			"productId": "0xaa01",
+			"firmwareVersion": {
+				"min": "4.0",
+				"max": "4.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.5.1",
+			"changelog": "* Includes firmware versions: 4.0, 4.01, 4.03, 4.05 \n*  Corrected the supervision command class for S2 implementation.\n* Improved the reporting behavior for smart bulb mode with physical and Z-Wave control disabled.\n* Added a setting to change scene control paddle mapping (parameter 16).\n* Added a setting to disable programming from paddles (parameter 17).",
+			"url": "https://www.getzooz.com/firmware/ZEN21-4-05.otz",
+			"integrity": "sha256:2aaac9dbc3cd78727b925e02a62078e2b2b21a288fb68a409a145e7c72f81f8e"
+		}
+	]
+}
