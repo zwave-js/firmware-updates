@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "1.21.0",
-			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.12, 1.13, 1.14, 1.15, 1.19, 1.21 \n*  Fixed the issue of BATTERY_GET returning V1 instead of V2.\n*  Support the Battery Command Class V2 regardless of whether battery backup has been plugged in or not.",
+			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.12, 1.13, 1.14, 1.15, 1.19, 1.21\n* Fixed the issue of BATTERY_GET returning V1 instead of V2.\n* Support the Battery Command Class V2 regardless of whether battery backup has been plugged in or not.",
 			"url": "https://www.getzooz.com/firmware/ZAC36_V01R21.gbl",
 			"integrity": "sha256:e14234a948f3db591b1defed907274f2a48070e233825a4a7376ec0004beb718"
 		}

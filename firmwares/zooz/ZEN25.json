@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "2.10.0",
-			"changelog": "Includes firmware versions: 1.0, 2.0, 2.10,\n*  Addressed issues with reporting when outlets are triggered via physical button when Double Switch is added with S2U security on select platforms.\n*  Addressed issues with secure inclusion that affected the metering reports on select platforms.",
+			"changelog": "Includes firmware versions: 1.0, 2.0, 2.10\n* Addressed issues with reporting when outlets are triggered via physical button when Double Switch is added with S2U security on select platforms.\n* Addressed issues with secure inclusion that affected the metering reports on select platforms.",
 			"url": "https://www.getzooz.com/firmware/ZEN25_V02R10.otz",
 			"integrity": "sha256:185c7f00b2e2d00d4e5843196468f8df160a23f0a0e2de1652ba9f596ed096a4"
 		}
