@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZAC38",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0510",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.30.0",
+			"changelog": "* Includes firmware versions: 1.0, 1.20, 1.30\n* Addressed issues with the range extender occasionally showing offline or becoming unresponsive on select platforms.",
+			"url": "https://www.getzooz.com/firmware/ZAC38_V01R30.gbl",
+			"integrity": "sha256:942d61465d17f7e4d70a2824b89ee2c92aea709c6e07ded17ed682a9cee8c805"
+		}
+	]
+}
