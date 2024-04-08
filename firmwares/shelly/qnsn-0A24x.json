@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave i4",
+			"manufacturerId": "0x0460",
+			"productType": "0x0009",
+			"productId": "0x0081",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.3",
+			"changelog": "- add binary switch support\n- fixed OTA led signalisation\n- other minor fixes and improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/7c81e886ea22cb8723246477ec0cba2db333bd68/Wave_i4/EU/Wave_I4_800_EU_20240329_1311_QNSN-0A24XEU_%5Bv11.03%5D_2144DF1C.gbl",
+					"integrity": "sha256:6a15f4a323795f63d4485e88252171d690b548751e9f83816acc40dff678828c"
+				}
+			]
+		}
+	]
+}
