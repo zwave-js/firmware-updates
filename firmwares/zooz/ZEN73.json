@@ -7,7 +7,7 @@
 			"productType": "0x7000",
 			"productId": "0xa003",
 			"firmwareVersion": {
-				"min": "1.0",
+				"min": "10.0",
 				"max": "10.255"
 			}
 		}

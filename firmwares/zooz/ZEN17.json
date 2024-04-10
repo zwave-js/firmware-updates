@@ -15,7 +15,8 @@
 	"upgrades": [
 		{
 			"version": "1.40.2",
-			"changelog": "* Includes firmware versions: 1.0, 1.01, 1.02, 1.04, 1.10, 1.20, 1.30, 1.40\n* North America Z-Wave region (US/CA/MX) only.\n* Fixed a bug with the auto turn-off timer for R1 and R2 whenever parameters 10 and 11 are changed from value 1 to 0. Parameters 2 and 3 values 0-10 were affected.",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.0, 1.01, 1.02, 1.04, 1.10, 1.20, 1.30, 1.40 \n* Fixed a bug with the auto turn-off timer for R1 and R2 whenever parameters 10 and 11 are changed from value 1 to 0. Parameters 2 and 3 values 0-10 were affected.",
 			"url": "https://www.getzooz.com/firmware/ZEN17_V01R40.gbl",
 			"integrity": "sha256:7082e069b6dfd0dedac2720d7e286ed175ebbcf015a5337c4bb1248edf66dda0"
 		}
