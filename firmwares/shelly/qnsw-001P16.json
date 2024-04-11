@@ -14,13 +14,24 @@
 	],
 	"upgrades": [
 		{
-			"version": "11.5",
-			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Power measurement optimised for 'true power' measurement\n- Added filter for electrical disturbances to avoid unnecessary reporting\n- Circuit protection system (over current, overheat) detection improved\n- Improved power measurement system\n- Corrected configuration Command Class reports for non\n-existent parameters- Parameter 120 factory reset characteristics changed to size = 1 Byte\n- other minor fixes and improvements",
+			"version": "11.10",
+			"changelog": "- Fixed device not working with DC supply\n- Fixed OTA signalisation\n- Optimised temperature conversion table\n- Other minor improvements",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1PM/EU/QUBINO_Wave_1PM_800_EU_20231116_1316_QNSW-001P16EU_%5B11.05%5D_EB201890.gbl",
-					"integrity": "sha256:870b3c8d525300619ed03554c2f51172bd3128d8df006c5106f91470746f4a99"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/f7119fcb03bce348d3f47871485a1441439d536f/Wave_1PM/EU/Wave_1PM_800_EU_20240328_1238_QNSW-001P16EU_%5Bv11.10%5D_EB201890.gbl",
+					"integrity": "sha256:7241bea3d41a8f22caaef5a1753250bfaa84323ad3ab537ee7c7001dc63df5a3"
+				}
+			]
+		},
+		{
+			"version": "11.10",
+			"changelog": "- Fixed device not working with DC supply\n- Fixed OTA signalisation\n- Optimised temperature conversion table\n- Other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/f7119fcb03bce348d3f47871485a1441439d536f/Wave_1PM/ANZ/Wave_1PM_800_ANZ_20240328_1242_QNSW-001P16AU_%5Bv11.10%5D_0FE4B35C.gbl",
+					"integrity": "sha256:f5f4f61c8ade0cff5ac3ba7178954d6bec811e6097455049f74cb31b8e640556"
 				}
 			]
 		}
