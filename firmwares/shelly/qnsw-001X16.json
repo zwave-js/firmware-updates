@@ -25,13 +25,13 @@
 			]
 		},
 		{
-			"version": "11.3",
-			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
+			"version": "11.5",
+			"changelog": "- optimised temperature conversion table",
 			"region": "australia/new zealand",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1/ANZ/QUBINO_1Switch_800_ANZ_20240108_0921_QNSW-001X16AU_%5B11.03%5D_9DD2F96C.gbl",
-					"integrity": "sha256:824ed1463259da1da197c369913b1303d16f0efa227373dea478e2aee47bfcd8"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_1/ANZ/Wave_1_800_ANZ_20240402_1305_QNSW-001X16AU_%5Bv11.05%5D_0FE4B35C.gbl",
+					"integrity": "sha256:18f6d0f0217f54b0772bc37678bd9b3c09605cffc7096e88afc2181de44b8fac"
 				}
 			]
 		}
