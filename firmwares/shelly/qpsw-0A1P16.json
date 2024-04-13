@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave Pro 1PM",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x008b",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.1",
+			"changelog": "- optimised temperature conversion table\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_Pro_1PM/EU/Wave_PRO1PM_800_EU_20240318_1108_QPSW-0A1P16EU_%5Bv11.01%5D_0FE4B35C.gbl",
+					"integrity": "sha256:6d92c8cf2aaac25fd4abe1f7e2026b600205288eadccca09e6f55d04ebc2b2b4"
+				}
+			]
+		}
+	]
+}

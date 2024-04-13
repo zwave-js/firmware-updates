@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave Plug US",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0088",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.11",
+			"changelog": "- optimised temperature conversion table\n- Meter Reset Command fixed\n- other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_Plug_US/US/Wave_Plug%20US_800_US_20240318_1350_QNPL-001X16US_%5Bv10.11%5D_0FE4B35C.gbl",
+					"integrity": "sha256:856fed7fc80cf99a9de7f62b7b2ca864f7c2bc9a204f704a6ba4c54d88051c42"
+				}
+			]
+		}
+	]
+}
