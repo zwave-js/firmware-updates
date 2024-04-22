@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE11",
+			"manufacturerId": "0x027a",
+			"productType": "0x0201",
+			"productId": "0x0006",
+			"firmwareVersion": {
+				"min": "1.10",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.30",
+			"changelog": "Includes firmware versions: 1.10, 1.11, 1.30.\n*  Fixed an issue with S2 Authenticated security inclusion.",
+			"url": "https://www.getzooz.com/firmware/ZSE11_FW_V1_30.otz",
+			"integrity": "sha256:af540aa97c1c32b8fb9dc18562c670424a84909a36c89de80eeda199e7ad917a"
+		}
+	]
+}
