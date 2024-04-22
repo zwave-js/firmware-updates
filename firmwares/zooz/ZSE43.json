@@ -16,21 +16,21 @@
 		{
 			"version": "1.20.1",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 1.10, 1.20,\n* Optimized battery reporting.",
+			"changelog": "* Includes firmware versions: 1.10, 1.20\n* Optimized battery reporting.",
 			"url": "https://www.getzooz.com/firmware/ZSE43_V01R20.gbl",
 			"integrity": "sha256:8f0c0c168b940cbc14a229c738c718f5f8edc83c9f80008847e781c20ce94922"
 		},
 		{
 			"version": "1.20.1",
 			"region": "europe",
-			"changelog": "* Includes firmware versions: 1.10, 1.20,\n* Optimized battery reporting.",
+			"changelog": "* Includes firmware versions: 1.10, 1.20\n* Optimized battery reporting.",
 			"url": "https://www.getzooz.com/firmware/ZSE43_V01R20-EU.gbl",
 			"integrity": "sha256:29fa1fa0eeb123ee46f97516e3e0d8c8b8a0a3f02e5a3c32eb8bdad5d37ed4a2"
 		},
 		{
 			"version": "1.20.1",
 			"region": "australia/new zealand",
-			"changelog": "* Includes firmware versions: 1.10, 1.20,\n* Optimized battery reporting.",
+			"changelog": "* Includes firmware versions: 1.10, 1.20\n* Optimized battery reporting.",
 			"url": "https://www.getzooz.com/firmware/ZSE43_V01R20-AU.gbl",
 			"integrity": "sha256:ceee9c86ca3cb2bc111dd359c31cebc8c9dbed4e35118a3bb7a6794b004ead71"
 		}
