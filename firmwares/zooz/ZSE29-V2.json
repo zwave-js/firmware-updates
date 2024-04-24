@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE29",
+			"manufacturerId": "0x027a",
+			"productType": "0x0001",
+			"productId": "0x0005",
+			"firmwareVersion": {
+				"min": "2.1",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.2",
+			"changelog": "Includes firmware versions: 2.01, 2.2\n*  Improved Supervision Command Class which was affecting changing advanced parameters when the sensor was added with security on select platforms.",
+			"url": "https://www.getzooz.com/firmware/ZSE29_V02R20.otz",
+			"integrity": "sha256:323a74cfb66b5aa3da8e5cf4c6612ac6f9c4fa551dc0b79b7be45bf0a847ed03"
+		}
+	]
+}
