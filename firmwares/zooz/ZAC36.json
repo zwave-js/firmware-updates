@@ -14,10 +14,10 @@
 	],
 	"upgrades": [
 		{
-			"version": "1.21.0",
-			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.12, 1.13, 1.14, 1.15, 1.19, 1.21\n* Fixed the issue of BATTERY_GET returning V1 instead of V2.\n* Support the Battery Command Class V2 regardless of whether battery backup has been plugged in or not.",
-			"url": "https://www.getzooz.com/firmware/ZAC36_V01R21.gbl",
-			"integrity": "sha256:e14234a948f3db591b1defed907274f2a48070e233825a4a7376ec0004beb718"
+			"version": "1.24.0",
+			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.12, 1.13, 1.14, 1.15, 1.19, 1.21, 1.24\n* Fixed the auto-close function when a low battery alert is triggered and the backup battery is connected and charging. The valve will not auto-close anymore.\n* Fixed the battery level report issue not showing 100% when the backup battery is fully charged.\n* Correct the battery status display from 'discharging' to 'maintaining' when the backup battery is fully charged.",
+			"url": "https://www.getzooz.com/firmware/ZAC36_V01R24.gbl",
+			"integrity": "sha256:8ed65c3d74daad06662513d23b36f764cfad3aac8a4eb8be9cf788e1dc45c26f"
 		}
 	]
 }
