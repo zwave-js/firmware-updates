@@ -25,13 +25,13 @@
 			]
 		},
 		{
-			"version": "12.17",
-			"changelog": "- Improved no line alarm detection\n- Filter on power spike reporting\n- two minor improvements",
+			"version": "12.21",
+			"changelog": "- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "usa",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_Shutter/US/Wave_Shutter_800_US_20231115_0925_QNSH-001P10US_%5B12.17%5D_9DD2F96C.gbl",
-					"integrity": "sha256:066c3ea8d382d8078d59238eefb3f7255177f1200cd3b42f20424fc304d5ceef"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_Shutter/US/Wave_Shutter_800_US_20240426_1323_QNSH-001P10US_%5B12.21%5D_0FE4B35C.gbl",
+					"integrity": "sha256:b9f51d0ca0e2050265cb280391318a7cf81170ef27264cb8d2b6486656b65b61"
 				}
 			]
 		},

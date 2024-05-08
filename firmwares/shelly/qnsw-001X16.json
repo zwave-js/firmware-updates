@@ -14,13 +14,13 @@
 	],
 	"upgrades": [
 		{
-			"version": "11.3",
-			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off\n- Parameters 120, 201, 202, 203 fixed",
+			"version": "11.5",
+			"changelog": "- optimised temperature conversion table",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_1/EU/QUBINO_1Switch_800_EU_20231212_1546_QNSW-001X16EU_%5B11.03%5D_2144DF1C.gbl",
-					"integrity": "sha256:8932688cf81c62c0ee3bc9d573c9055f25200d79baf369804c7695bd256bdcaf"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_1/EU/Wave_1_800_EU_20240426_1319_QNSW-001X16EU_%5Bv11.05%5D_EB201890.gbl",
+					"integrity": "sha256:3bb8959ba4217745a1cea4732dbd999e19fc237dc4d1939d129ae9e7f7b64b51"
 				}
 			]
 		},
