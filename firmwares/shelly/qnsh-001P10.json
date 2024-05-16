@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "12.21",
-			"changelog": "- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "europe",
 			"files": [
 				{
@@ -26,7 +26,7 @@
 		},
 		{
 			"version": "12.21",
-			"changelog": "- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "usa",
 			"files": [
 				{
@@ -37,7 +37,7 @@
 		},
 		{
 			"version": "12.21",
-			"changelog": "- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "australia/new zealand",
 			"files": [
 				{
