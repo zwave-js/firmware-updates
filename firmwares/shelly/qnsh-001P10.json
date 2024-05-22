@@ -14,35 +14,35 @@
 	],
 	"upgrades": [
 		{
-			"version": "12.17",
-			"changelog": "- Improved no line alarm detection\n- Filter on power spike reporting\n- two minor improvements",
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_Shutter/EU/Wave_Shutter_800_EU_20231110_1035_QNSH-001P10EU_%5B12.17%5D_2144DF1C.gbl",
-					"integrity": "sha256:9c243f600c0a7d3a8c50a28c5af5378926279ee6ef664d7e1184a093253f4279"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/EU/Wave_Shutter_800_EU_20240426_1328_QNSH-001P10EU_%5B12.21%5D_EB201890.gbl",
+					"integrity": "sha256:a7c3e0b381d9ecb8936406b0040592017dc5bf992059351728f3c48851606e90"
 				}
 			]
 		},
 		{
-			"version": "12.17",
-			"changelog": "- Improved no line alarm detection\n- Filter on power spike reporting\n- two minor improvements",
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "usa",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_Shutter/US/Wave_Shutter_800_US_20231115_0925_QNSH-001P10US_%5B12.17%5D_9DD2F96C.gbl",
-					"integrity": "sha256:066c3ea8d382d8078d59238eefb3f7255177f1200cd3b42f20424fc304d5ceef"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_Shutter/US/Wave_Shutter_800_US_20240426_1323_QNSH-001P10US_%5B12.21%5D_0FE4B35C.gbl",
+					"integrity": "sha256:b9f51d0ca0e2050265cb280391318a7cf81170ef27264cb8d2b6486656b65b61"
 				}
 			]
 		},
 		{
-			"version": "12.17",
-			"changelog": "- Improved no line alarm detection\n- Filter on power spike reporting\n- two minor improvements",
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
 			"region": "australia/new zealand",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_Shutter/ANZ/Wave_Shutter_800_ANZ_20231115_0920_QNSH-001P10AU_%5B12.17%5D_9DD2F96C.gbl",
-					"integrity": "sha256:583bf59dd49d5f50873970f5a0440487f94b8bca10379ea5bd1d185210b858e7"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/ANZ/Wave_Shutter_800_ANZ_20240426_1327_QNSH-001P10AU_%5B12.21%5D_0FE4B35C.gbl",
+					"integrity": "sha256:5e751bafb0e12de365d4ab60e222057461364753bae9b46351f3d3111410c225"
 				}
 			]
 		}

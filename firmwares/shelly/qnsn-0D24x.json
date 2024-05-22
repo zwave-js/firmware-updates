@@ -14,13 +14,13 @@
 	],
 	"upgrades": [
 		{
-			"version": "11.3",
-			"changelog": "- add binary switch support\n- fixed OTA led signalisation\n- other minor fixes and improvements",
+			"version": "11.4",
+			"changelog": "- optimised temperature conversion table",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/7c81e886ea22cb8723246477ec0cba2db333bd68/Wave_i4%20DC/EU/Wave_I4_DC_800_EU_20240328_1535_QNSN-0D24XEU_%5Bv11.03%5D_EB201890.gbl",
-					"integrity": "sha256:eb60141f87ee180eb9ab7d747809209c44aec0436b70012ee9a178ccba8bce0b"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_i4%20DC/EU/Wave_i4_DC_800_EU_20240426_1639_QNSN-0D24XEU_%5B11.04%5D_0FE4B35C.gbl",
+					"integrity": "sha256:df3d94cb35ec7ba0b42e180947448fc78e1db36a2bf5c2b9256ff4c6d25852f5"
 				}
 			]
 		}
