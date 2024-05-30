@@ -15,9 +15,17 @@
 	"upgrades": [
 		{
 			"version": "1.30.0",
+			"region": "usa",
 			"changelog": "* Includes firmware versions: 1.0, 1.20, 1.30\n* Addressed issues with the range extender occasionally showing offline or becoming unresponsive on select platforms.",
 			"url": "https://www.getzooz.com/firmware/ZAC38_V01R30.gbl",
 			"integrity": "sha256:942d61465d17f7e4d70a2824b89ee2c92aea709c6e07ded17ed682a9cee8c805"
+		},
+		{
+			"version": "1.30.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 1.0, 1.20, 1.30\n* Addressed issues with the range extender occasionally showing offline or becoming unresponsive on select platforms.",
+			"url": "https://www.getzooz.com/firmware/ZAC38_V01R30_EU.gbl",
+			"integrity": "sha256:b2b33bec395904ca79b4f4e1ac4f62cd2ffb944d736096a53709ca78810419a7"
 		}
 	]
 }
