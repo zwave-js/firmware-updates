@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Qubino",
+			"model": "Smart Meter",
+			"manufacturerId": "0x0159",
+			"productType": "0x0007",
+			"productId": "0x0052",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "80.1",
+			"changelog": "## [80.01] - [2020-11-09]\n- removed security S0 \n- changed PN from ZMNHTD1 H1S7P1 to ZMNHTD1 H1S8P1\n- other minof fixes and improvements\n## [07.11] - [2020-03-27]\n- fixed device reset locally encapsulation if multichannel association is set\n- fixed unsecure manufacturer specific get when device is included as S0\n- fixed supervison report for basic & configuration command class\n- fixed supervision reports for multichannel association, powerlevel & switch binary\n- other minof fixes and improvements\n## [07.10] - [2019-11-18] \n- fixed OTA update in secure inclusion\n- fixed association group info report for endpoints\n- fixed reporting from invalid endpoints\n- fixed auto on/off to not trigger if no endpoints\n- fixed configuration parameters max and min allowed values\n- fixed Multi channel reporting\n- fixed service button functionality if autoinclusion failed\n- other minof fixes and improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/ab1c512e0c977d06d3b8ce794e442536679948e3/Qubino/Smart_Meter/QUBINO_SmartMeterS2_500_EU_20201109_0900_ZMNHTD1%20H1S8P1_%5Bv80.01%5D_5610F574.otz",
+					"integrity": "sha256:3da7f3258e24ddc6df0dc151fab8e2c9967cf876291d0122da612305c56aa4e8"
+				}
+			]
+		}
+	]
+}
