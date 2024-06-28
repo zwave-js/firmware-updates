@@ -14,7 +14,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "11.8",
+			"version": "10.8",
 			"changelog": "- optimised temperature conversion table\n- other minor improvements",
 			"region": "europe",
 			"files": [

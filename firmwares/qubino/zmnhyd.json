@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Qubino",
+			"model": "Smart Plug 16A",
+			"manufacturerId": "0x0159",
+			"productType": "0x0002",
+			"productId": "0x0054",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "41.11",
+			"changelog": "## [41.11] - [2022/10/12]\n- Fixed bug kWh not reported after meter reset\n## [41.10] - [2021/01/31]\n- Fixed bug causing to stop count at 429 kWh\n- Fixed bug not sending switch binary report after turning off output in connection with conf. param. 73\n- Fixed bug not sending unsolicited notification report after clearing overload detected alarm\n- reworked the logic for calculating, storing and reporting kWh value\n- lower time interval to store kWh value from 30 to 5 minutes\n- updated PN  \n- removed 2 old unused parameters\n- other minor fixes and improvements\n## [40.00] - [2020/10/05]\n- removed S0 command class\n- changed Part Number\n- other minor fixes and improvements\n## [03.00] - [2018/10/15]\n- initial commit",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/ab1c512e0c977d06d3b8ce794e442536679948e3/Qubino/Smart_Plug16A/QUBINO_SmartPlugS2_500_EU_20211012_1210_ZMNHYD1%20H1S4P4_%5B41.11%5D.otz",
+					"integrity": "sha256:8118b2d26e2722dced394c721730b03de51ae6ca16110758f85ad54a5118c68a"
+				}
+			]
+		}
+	]
+}
