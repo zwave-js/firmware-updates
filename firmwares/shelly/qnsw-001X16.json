@@ -1,0 +1,39 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave 1",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0083",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.5",
+			"changelog": "- optimised temperature conversion table",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_1/EU/Wave_1_800_EU_20240426_1319_QNSW-001X16EU_%5Bv11.05%5D_EB201890.gbl",
+					"integrity": "sha256:3bb8959ba4217745a1cea4732dbd999e19fc237dc4d1939d129ae9e7f7b64b51"
+				}
+			]
+		},
+		{
+			"version": "11.5",
+			"changelog": "- optimised temperature conversion table",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_1/ANZ/Wave_1_800_ANZ_20240402_1305_QNSW-001X16AU_%5Bv11.05%5D_0FE4B35C.gbl",
+					"integrity": "sha256:18f6d0f0217f54b0772bc37678bd9b3c09605cffc7096e88afc2181de44b8fac"
+				}
+			]
+		}
+	]
+}

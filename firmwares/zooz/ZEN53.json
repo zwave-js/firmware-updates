@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN53",
+			"manufacturerId": "0x027a",
+			"productType": "0x0904",
+			"productId": "0x0219",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n*  Added Parameter 19: Timer for the motor open-up operation.\n*  Added Parameter 20: Timer for the motor close-down operation.",
+			"url": "https://www.getzooz.com/firmware/ZEN53_V01R40.gbl",
+			"integrity": "sha256:1d81b6e8ed045f308f4c8cf50f14452c4896d2b846558c49e4577d1443a82ae6"
+		},
+		{
+			"version": "1.40.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n*  Added Parameter 19: Timer for the motor open-up operation.\n*  Added Parameter 20: Timer for the motor close-down operation.",
+			"url": "https://www.getzooz.com/firmware/ZEN53_V01R40_EU.gbl",
+			"integrity": "sha256:35c59d94497f2b20bcd61b8983ca5038fb352a8ada69710d82efcf4864657fa2"
+		}
+	]
+}

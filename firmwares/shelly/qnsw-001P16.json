@@ -1,0 +1,39 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave 1 PM",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0084",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.10",
+			"changelog": "- Fixed device not working with DC supply\n- Fixed OTA signalisation\n- Optimised temperature conversion table\n- Other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/f7119fcb03bce348d3f47871485a1441439d536f/Wave_1PM/EU/Wave_1PM_800_EU_20240328_1238_QNSW-001P16EU_%5Bv11.10%5D_EB201890.gbl",
+					"integrity": "sha256:7241bea3d41a8f22caaef5a1753250bfaa84323ad3ab537ee7c7001dc63df5a3"
+				}
+			]
+		},
+		{
+			"version": "11.10",
+			"changelog": "- Fixed device not working with DC supply\n- Fixed OTA signalisation\n- Optimised temperature conversion table\n- Other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/f7119fcb03bce348d3f47871485a1441439d536f/Wave_1PM/ANZ/Wave_1PM_800_ANZ_20240328_1242_QNSW-001P16AU_%5Bv11.10%5D_0FE4B35C.gbl",
+					"integrity": "sha256:f5f4f61c8ade0cff5ac3ba7178954d6bec811e6097455049f74cb31b8e640556"
+				}
+			]
+		}
+	]
+}

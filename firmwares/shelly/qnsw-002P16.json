@@ -1,0 +1,39 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave 2PM",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0081",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.30",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_2PM/EU/QUBINO_Wave2PM_800_EU_20231213_1356_QNSW-002P16EU_%5B10.30%5D_EB201890.gbl",
+					"integrity": "sha256:1cf4865c47749441f8e165c4aa1c61f19a622235d2b072a9c5b89aaa4114eeb3"
+				}
+			]
+		},
+		{
+			"version": "10.35",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_2PM/ANZ/Wave_2PM_800_ANZ_20240328_1149_QNSW-002P16AU_%5Bv10.35%5D_2144DF1C.gbl",
+					"integrity": "sha256:98f48670f3605e3b288ccaef6dda48e3b5dd0858e78a9dece91b9912811383f2"
+				}
+			]
+		}
+	]
+}

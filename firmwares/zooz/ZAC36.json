@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZAC36",
+			"manufacturerId": "0x027a",
+			"productType": "0x0101",
+			"productId": "0x0036",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.24.0",
+			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.12, 1.13, 1.14, 1.15, 1.19, 1.21, 1.24\n* Fixed the auto-close function when a low battery alert is triggered and the backup battery is connected and charging. The valve will not auto-close anymore.\n* Fixed the battery level report issue not showing 100% when the backup battery is fully charged.\n* Correct the battery status display from 'discharging' to 'maintaining' when the backup battery is fully charged.",
+			"url": "https://www.getzooz.com/firmware/ZAC36_V01R24.gbl",
+			"integrity": "sha256:8ed65c3d74daad06662513d23b36f764cfad3aac8a4eb8be9cf788e1dc45c26f"
+		}
+	]
+}

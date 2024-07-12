@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN55",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0110",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.30.0",
+			"changelog": "Addressed issues with the DC Signal Sensor occasionally showing offline or becoming unresponsive on select platforms.",
+			"url": "https://www.getzooz.com/firmware/ZEN55_V01R30.gbl",
+			"integrity": "sha256:502369192227a5ecdae4ef0c382e4a58568b70cc793bc745b992e28ca5d75652"
+		}
+	]
+}

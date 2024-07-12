@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN73",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa003",
+			"firmwareVersion": {
+				"min": "10.0",
+				"max": "10.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.0.1",
+			"changelog": "* Removed manual operation delay with scene control disabled.\n* Fixed smart bulb behavior after a power outage: the actual status of the relay and the reported status of the relay are both restored correctly now.\n* Added the ability to disable programming function from the paddles (parameter 17).",
+			"url": "https://www.getzooz.com/firmware/ZEN73_V10_0.gbl",
+			"integrity": "sha256:f2d64309519a8959a779813a37b9028979845974c0d5f66bc5419f64de837c84"
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN26",
+			"manufacturerId": "0x027a",
+			"productType": "0xa000",
+			"productId": "0xa001",
+			"firmwareVersion": {
+				"min": "3.0",
+				"max": "3.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "3.50.1",
+			"changelog": "Includes firmware versions: 3.0, 3.01, 3.02, 3.04, 3.50\n* Fixed issues with the supervision command class.\n* Added a setting to change scene control paddle mapping (parameter 14).\n* Added a setting to disable programming from paddles (parameter 15).\n* Reduced manual control delay related to scene control functionality.",
+			"url": "https://www.getzooz.com/firmware/ZEN26_V03R50.otz",
+			"integrity": "sha256:0113b00855978aaeee6c770d18040a5e8778ecbd5f014e715201f4b6adebd99e"
+		}
+	]
+}

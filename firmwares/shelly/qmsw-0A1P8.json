@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave 1PM Mini",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x008f",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.3",
+			"changelog": "- optimised temperature conversion table\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_1PM_Mini/EU/Wave_Mini_1PM_800_EU_20240403_1310_QMSW-0A1P8EU_%5Bv11.03%5D_9DD2F96C.gbl",
+					"integrity": "sha256:c625e5802145cf32575975dd76fcb1dceaa63072870861bc88a08735e7fce9f4"
+				}
+			]
+		}
+	]
+}

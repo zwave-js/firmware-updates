@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN71",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa001",
+			"firmwareVersion": {
+				"min": "10.0",
+				"max": "10.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.20.1",
+			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 7 to choose Direct Association reports sent to devices associated with the Z-Wave.\n* Added parameter 18 to enable scene control from the momentary switch in a 3-way.\n* Added parameter 19 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZEN71_V10R20.gbl",
+			"integrity": "sha256:9b99eab7331836c95a646dada528ce3fc3daa06f167c5a5b8c9d674c271b28b6"
+		}
+	]
+}

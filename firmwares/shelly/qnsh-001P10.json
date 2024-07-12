@@ -1,0 +1,50 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave Shutter",
+			"manufacturerId": "0x0460",
+			"productType": "0x0003",
+			"productId": "0x0082",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/EU/Wave_Shutter_800_EU_20240426_1328_QNSH-001P10EU_%5B12.21%5D_EB201890.gbl",
+					"integrity": "sha256:a7c3e0b381d9ecb8936406b0040592017dc5bf992059351728f3c48851606e90"
+				}
+			]
+		},
+		{
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_Shutter/US/Wave_Shutter_800_US_20240426_1323_QNSH-001P10US_%5B12.21%5D_0FE4B35C.gbl",
+					"integrity": "sha256:b9f51d0ca0e2050265cb280391318a7cf81170ef27264cb8d2b6486656b65b61"
+				}
+			]
+		},
+		{
+			"version": "12.21",
+			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/ANZ/Wave_Shutter_800_ANZ_20240426_1327_QNSH-001P10AU_%5B12.21%5D_0FE4B35C.gbl",
+					"integrity": "sha256:5e751bafb0e12de365d4ab60e222057461364753bae9b46351f3d3111410c225"
+				}
+			]
+		}
+	]
+}
