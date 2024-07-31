@@ -14,13 +14,13 @@
 	],
 	"upgrades": [
 		{
-			"version": "10.30",
-			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
+			"version": "12.4",
+			"changelog": "- Fixed Meter reports, Associations and Binary Switch\n- Add root control and reports of endpoints\n- Improved over-current and over-voltage protection\n- Other minor improvements",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_2PM/EU/QUBINO_Wave2PM_800_EU_20231213_1356_QNSW-002P16EU_%5B10.30%5D_EB201890.gbl",
-					"integrity": "sha256:1cf4865c47749441f8e165c4aa1c61f19a622235d2b072a9c5b89aaa4114eeb3"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4c479d56c728c40f341754e7d2659444339545b3/Wave_2PM/EU/Wave_2PM_800_EU_2024060_1306_QNSW-002P16EU_%5B12.04%5D_0FE4B35C.gbl",
+					"integrity": "sha256:cd4007481f3e8acdbce50d3065c3d91ff46754a18a2e1b59755f44f5a97c2e02"
 				}
 			]
 		},
