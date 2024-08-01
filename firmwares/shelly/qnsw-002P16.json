@@ -19,8 +19,8 @@
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4c479d56c728c40f341754e7d2659444339545b3/Wave_2PM/EU/Wave_2PM_800_EU_2024060_1306_QNSW-002P16EU_%5B12.04%5D_0FE4B35C.gbl",
-					"integrity": "sha256:cd4007481f3e8acdbce50d3065c3d91ff46754a18a2e1b59755f44f5a97c2e02"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/af3ae8cb982bb83189c2b2467d7ac1f394bdff3e/Wave_2PM/EU/Wave_2PM_800_EU_20240801_1026_QNSW-002P16EU_%5B12.04%5D_9DD2F96C.gbl",
+					"integrity": "sha256:ee7ab19f4ee00b53c15532e49bc4ffc9e5193e40eada677f859ba5608cc7d348"
 				}
 			]
 		},
