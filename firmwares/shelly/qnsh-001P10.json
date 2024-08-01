@@ -14,35 +14,35 @@
 	],
 	"upgrades": [
 		{
-			"version": "12.21",
-			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"version": "12.23",
+			"changelog": "**Please note: If you're updating from version 12.20 or lower the update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fix parameter system to support the new Z-Wave system",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/EU/Wave_Shutter_800_EU_20240426_1328_QNSH-001P10EU_%5B12.21%5D_EB201890.gbl",
-					"integrity": "sha256:a7c3e0b381d9ecb8936406b0040592017dc5bf992059351728f3c48851606e90"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4c479d56c728c40f341754e7d2659444339545b3/Wave_Shutter/EU/Wave_Shutter_800_EU_20240710_QNSH-001P10EU_%5Bv12.23%5D_0FE4B35C.gbl",
+					"integrity": "sha256:1b081920dfe382f35f3746b09312c4a116ffbf2679ccf54660ac5e409abc0045"
 				}
 			]
 		},
 		{
-			"version": "12.21",
-			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"version": "12.23",
+			"changelog": "**Please note: If you're updating from version 12.20 or lower the update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fix parameter system to support the new Z-Wave system",
 			"region": "usa",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_Shutter/US/Wave_Shutter_800_US_20240426_1323_QNSH-001P10US_%5B12.21%5D_0FE4B35C.gbl",
-					"integrity": "sha256:b9f51d0ca0e2050265cb280391318a7cf81170ef27264cb8d2b6486656b65b61"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4c479d56c728c40f341754e7d2659444339545b3/Wave_Shutter/US/Wave_Shutter_800_US_20240703_1151_QNSH-001P07US_%5Bv12.23%5D_EB201890.gbl",
+					"integrity": "sha256:0a473b5a7abca2badf82646e6acd94ca16b88b8a7e1f18d4d9be3154c08a5a0f"
 				}
 			]
 		},
 		{
-			"version": "12.21",
-			"changelog": "**Please note: This update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fixed switch input and output orientation\n- fixed remote commands compatibility\n- other minor improvements",
+			"version": "12.23",
+			"changelog": "**Please note: If you're updating from version 12.20 or lower the update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fix parameter system to support the new Z-Wave system",
 			"region": "australia/new zealand",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/9715042d3c4a985bd0943f0354255da699402d7d/Wave_Shutter/ANZ/Wave_Shutter_800_ANZ_20240426_1327_QNSH-001P10AU_%5B12.21%5D_0FE4B35C.gbl",
-					"integrity": "sha256:5e751bafb0e12de365d4ab60e222057461364753bae9b46351f3d3111410c225"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4c479d56c728c40f341754e7d2659444339545b3/Wave_Shutter/ANZ/Wave_Shutter_800_ANZ_20240614_1141_QNSH-001P10AU_%5Bv12.23%5D_0FE4B35C.gbl",
+					"integrity": "sha256:70a6f5f90e692a9b1c3cee4a9c0d7d36c45bbf7952e6a15c0b9214f2bb46c95f"
 				}
 			]
 		}

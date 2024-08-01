@@ -14,13 +14,13 @@
 	],
 	"upgrades": [
 		{
-			"version": "11.4",
-			"changelog": "- optimised temperature conversion table",
+			"version": "11.5",
+			"changelog": "- Binary switch report at boot up\n- Parameters 1 - 4 value 1 fixed",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_i4%20DC/EU/Wave_i4_DC_800_EU_20240426_1639_QNSN-0D24XEU_%5B11.04%5D_0FE4B35C.gbl",
-					"integrity": "sha256:df3d94cb35ec7ba0b42e180947448fc78e1db36a2bf5c2b9256ff4c6d25852f5"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d3c93f6c456ab635e40b1c03197060ccb1fcd8ba/Wave_i4_DC/EU/Wave_i4_DC_800_EU_20240523_1558_QNSN-0D24XEU_%5B11.05%5D_9DD2F96C%20(1).gbl",
+					"integrity": "sha256:7376ef6f758e89b68b04d5d6713407eb4bd3e9d6c8b33db6f8b67c7bea37dd92"
 				}
 			]
 		}

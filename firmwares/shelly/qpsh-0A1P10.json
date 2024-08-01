@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave Pro Shutter",
+			"manufacturerId": "0x0460",
+			"productType": "0x0003",
+			"productId": "0x0084",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.8",
+			"changelog": "- optimised temperature conversion table\n- fixed Power Up Shutter Position Report\n- fixed unsolicited Power Report\n- OTA in progress signalisation\n- other minor improvements\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d3c93f6c456ab635e40b1c03197060ccb1fcd8ba/Wave_Pro_Shutter/EU/Wave_PRO_Shutter_800_EU_20240320_1441_QPSH-0A1P10EU_%5B10.08%5D_2144DF1C.gbl",
+					"integrity": "sha256:60b25765f4c2dedfaf8057d7ac929cd85004ea32f6e1b2d3d37d6a37ed047431"
+				}
+			]
+		}
+	]
+}
