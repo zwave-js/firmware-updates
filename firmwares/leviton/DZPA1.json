@@ -1,0 +1,21 @@
+{
+    "devices": [
+        {
+			// https://products.z-wavealliance.org/products/1959?selectedFrequencyId=2
+            "brand": "Leviton",
+            "model": "DZPA1",
+            "manufacturerId": "0x001d",
+            "productType": "0x3601",
+			"productId": "0x0001",
+		}
+    ],
+	"upgrades": [
+		{
+			"version": "1.23",
+			"changelog": "Latest Leviton Firmware",
+			"target": 0,
+			"url": "https://hubconnecteddecorasmart.leviton.com/hc/en-us/article_attachments/7150679340315/DZPA1_v1_23.ota",
+			"integrity": "sha256:04b1d208553ea12a0361e293333835c200cb18e879ec4c4e877b5af7dcf182cc",
+		}
+	]
+}
