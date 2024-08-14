@@ -14,24 +14,24 @@
 	],
 	"upgrades": [
 		{
-			"version": "12.4",
-			"changelog": "- Fixed Meter reports, Associations and Binary Switch\n- Add root control and reports of endpoints\n- Improved over-current and over-voltage protection\n- Other minor improvements",
+			"version": "10.30",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
 			"region": "europe",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/af3ae8cb982bb83189c2b2467d7ac1f394bdff3e/Wave_2PM/EU/Wave_2PM_800_EU_20240801_1026_QNSW-002P16EU_%5B12.04%5D_9DD2F96C.gbl",
-					"integrity": "sha256:ee7ab19f4ee00b53c15532e49bc4ffc9e5193e40eada677f859ba5608cc7d348"
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/01a5da2e65b62dcc10406bdb584ebc9970c03c38/Wave_2PM/EU/QUBINO_Wave2PM_800_EU_20231213_1356_QNSW-002P16EU_%5B10.30%5D_EB201890.gbl",
+					"integrity": "sha256:1cf4865c47749441f8e165c4aa1c61f19a622235d2b072a9c5b89aaa4114eeb3"
 				}
 			]
 		},
 		{
-			"version": "12.4",
-			"changelog": "- Fixed Meter reports, Associations and Binary Switch\n- Add root control and reports of endpoints\n- Improved over-current and over-voltage protection\n- Other minor improvements",
+			"version": "10.35",
+			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
 			"region": "australia/new zealand",
 			"files": [
 				{
-					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d3c93f6c456ab635e40b1c03197060ccb1fcd8ba/Wave_2PM/ANZ/Wave_2PM_800_ANZ_20240614_QNSW-002P16AU_%5B12.04%5D_2144DF1C.gbl",
-					"integrity": "sha256:6cf4df18094fd0b5eb9a8bc88a97a0b8b91d880a4a046c98ce5b0459e7600b95"
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/4a61945a9ded6249d794ae32aeb9d0bd5ccaf035/Wave_2PM/ANZ/Wave_2PM_800_ANZ_20240328_1149_QNSW-002P16AU_%5Bv10.35%5D_2144DF1C.gbl",
+					"integrity": "sha256:98f48670f3605e3b288ccaef6dda48e3b5dd0858e78a9dece91b9912811383f2"
 				}
 			]
 		}
