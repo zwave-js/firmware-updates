@@ -11,11 +11,42 @@ kv_namespaces = [
 tag = "v1" # Should be unique for each entry
 new_classes = ["RateLimiterDurableObject"]
 
-[durable_objects]
-bindings = [
-  {name = "RateLimiter", class_name = "RateLimiterDurableObject"},
-]
+## TODO: Add migration to remove RateLimiterDurableObject
 
 [[r2_buckets]]
 binding = "CONFIG_FILES"
 bucket_name = "zwave-js-firmware-updates--config-files"
+
+[[unsafe.bindings]]
+type = "ratelimit"
+# Free ratelimit bucket - 120 requests per hour
+name = "RL_FREE"
+namespace_id = "1001"
+simple = { limit = 2, period = 60 } # <limit> requests per <period> seconds
+
+[[unsafe.bindings]]
+type = "ratelimit"
+name = "RL_TEST"
+namespace_id = "9999"
+simple = { limit = 1, period = 60 } # <limit> requests per <period> seconds
+
+[[unsafe.bindings]]
+type = "ratelimit"
+# Ratelimit bucket: 1200 requests per hour
+name = "RL_1k"
+namespace_id = "1002"
+simple = { limit = 20, period = 60 } # <limit> requests per <period> seconds
+
+[[unsafe.bindings]]
+type = "ratelimit"
+# Ratelimit bucket: 12000 requests per hour
+name = "RL_10k"
+namespace_id = "1003"
+simple = { limit = 200, period = 60 } # <limit> requests per <period> seconds
+
+[[unsafe.bindings]]
+type = "ratelimit"
+# Ratelimit bucket: 120000 requests per hour
+name = "RL_100k"
+namespace_id = "1004"
+simple = { limit = 2000, period = 60 } # <limit> requests per <period> seconds

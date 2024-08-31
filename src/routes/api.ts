@@ -1,4 +1,4 @@
-import { withDurables } from "itty-durable";
+import type { RateLimit } from "@cloudflare/workers-types/experimental";
 import { json, type ThrowableRouter } from "itty-router-extras";
 import { compare } from "semver";
 import {
@@ -8,7 +8,6 @@ import {
 	APIv3_RequestSchema,
 	APIv3_Response,
 } from "../apiDefinitions";
-import type { RateLimiterProps } from "../durable_objects/RateLimiter";
 import { withCache } from "../lib/cache";
 import { lookupConfig } from "../lib/config";
 import type { UpgradeInfo } from "../lib/configSchema";
@@ -132,35 +131,41 @@ async function handleUpdateRequest(
 	);
 }
 
+function getBucket(rateLimit: number): string {
+	if (rateLimit === 9) return "TEST";
+	if (rateLimit <= 100) return "FREE";
+	if (rateLimit <= 1000) return "1k";
+	if (rateLimit <= 10000) return "10k";
+	if (rateLimit <= 100000) return "100k";
+	return "FREE";
+}
+
 export default function register(router: ThrowableRouter): void {
 	// Check API keys and apply rate limiter
-	router.all("/api/*", withAPIKey, withDurables({ parse: true }), (async (
-		req: RequestWithProps<[APIKeyProps, RateLimiterProps]>,
+	router.all("/api/*", withAPIKey, (async (
+		req: RequestWithProps<[APIKeyProps]>,
 		env: CloudflareEnvironment
 	) => {
-		const objId = env.RateLimiter.idFromName(
-			(req.apiKey?.id ?? 0).toString()
-		);
-		const RateLimiter = req.RateLimiter.get(objId);
+		const bucket =
+			req.apiKey?.bucket ??
+			(req.apiKey?.rateLimit && getBucket(req.apiKey.rateLimit)) ??
+			"FREE";
+		const rateLimiter = ((env as any)[`RL_${bucket}`] ??
+			env.RL_FREE) as RateLimit;
+		const apiKeyId = req.apiKey?.id ?? 0;
 
-		const maxPerHour = req.apiKey?.rateLimit ?? 10000;
-		const result = await RateLimiter.request(maxPerHour);
+		const { success } = await rateLimiter.limit({
+			key: apiKeyId.toString(),
+		});
 
-		env.responseHeaders = {
-			...env.responseHeaders,
-			"x-ratelimit-limit": maxPerHour.toString(),
-			"x-ratelimit-remaining": result.remaining.toString(),
-			"x-ratelimit-reset": Math.ceil(result.resetDate / 1000).toString(),
-		};
-
-		if (result.limitExceeded) {
+		if (!success) {
 			// Rate limit exceeded
+
 			return new Response(undefined, {
 				status: 429,
 				headers: {
-					"retry-after": Math.ceil(
-						(result.resetDate - Date.now()) / 1000
-					).toString(),
+					// Right now we have no way to know when the rate limit will reset
+					"retry-after": "60",
 				},
 			});
 		}

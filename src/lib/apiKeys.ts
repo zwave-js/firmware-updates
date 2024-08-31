@@ -5,8 +5,10 @@ const AUTH_TAG_LEN = 8;
 
 export interface APIKey {
 	id: number;
-	/** The maximum number of requests per hour */
+	/** @deprecated The maximum number of requests per hour */
 	rateLimit: number;
+	/** Which ratelimiting bucket to use */
+	bucket?: string;
 }
 
 // Encoded API key format:
