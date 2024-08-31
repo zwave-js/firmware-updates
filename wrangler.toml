@@ -11,7 +11,9 @@ kv_namespaces = [
 tag = "v1" # Should be unique for each entry
 new_classes = ["RateLimiterDurableObject"]
 
-## TODO: Add migration to remove RateLimiterDurableObject
+[[migrations]]
+tag = "v2"
+deleted_classes = ["RateLimiterDurableObject"]
 
 [[r2_buckets]]
 binding = "CONFIG_FILES"
@@ -23,12 +25,6 @@ type = "ratelimit"
 name = "RL_FREE"
 namespace_id = "1001"
 simple = { limit = 2, period = 60 } # <limit> requests per <period> seconds
-
-[[unsafe.bindings]]
-type = "ratelimit"
-name = "RL_TEST"
-namespace_id = "9999"
-simple = { limit = 1, period = 60 } # <limit> requests per <period> seconds
 
 [[unsafe.bindings]]
 type = "ratelimit"
