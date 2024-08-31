@@ -38,9 +38,6 @@ jobs:
     - name: Check TypeScript code
       run: yarn check
 
-    - name: Compile TypeScript code
-      run: yarn build
-
     - name: Run linter
       run: yarn run lint
     
