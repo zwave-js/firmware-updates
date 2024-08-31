@@ -1,20 +1,11 @@
 name = "zwave-js-firmware-updates"
-usage_model = "bundled"
-# workers_dev = true
+main = "./src/worker.ts"
 compatibility_date = "2022-08-28"
-
-# node_compat = true
-
-main = "build/worker.js"
 
 kv_namespaces = [
 #   { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" },
   { binding = "API_KEYS", id = "7edd033eda014a5ebdd02aed07f31063" }
 ]
-
-[build]
-command = "yarn build"
-watch_dir = "src"
 
 [[migrations]]
 tag = "v1" # Should be unique for each entry
@@ -28,20 +19,3 @@ bindings = [
 [[r2_buckets]]
 binding = "CONFIG_FILES"
 bucket_name = "zwave-js-firmware-updates--config-files"
-
-# ------------------------------------------------------------------------------
-
-# Required for Miniflare:
-[build.upload]
-format = "modules"
-
-[miniflare]
-port = 8787
-watch = true
-
-cache_persist = true
-env_path = ".env"
-
-# kv_persist = true
-durable_objects_persist = true
-r2_persist = true

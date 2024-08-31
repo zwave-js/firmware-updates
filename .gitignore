@@ -19,7 +19,8 @@ node_modules/
 .env
 .dev.vars
 keys.txt
-.mf
+.mf/
+.wrangler/
 test_requests
 
 # Auto-generated firmware index
