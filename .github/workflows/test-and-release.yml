@@ -59,9 +59,9 @@ jobs:
   # ===================
   # Deploys successful builds on the main branch to Cloudflare
   deploy:
-    if: |
-      github.event_name == 'push' &&
-      github.ref == 'refs/heads/main'
+    # if: |
+    #   github.event_name == 'push' &&
+    #   github.ref == 'refs/heads/main'
 
     needs: [test]
 
