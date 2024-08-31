@@ -1,15 +1,11 @@
 name = "zwave-js-firmware-updates"
-main = "build/worker.js"
+main = "./src/worker.ts"
 compatibility_date = "2022-08-28"
 
 kv_namespaces = [
 #   { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" },
   { binding = "API_KEYS", id = "7edd033eda014a5ebdd02aed07f31063" }
 ]
-
-[build]
-command = "yarn build"
-watch_dir = "src"
 
 [[migrations]]
 tag = "v1" # Should be unique for each entry

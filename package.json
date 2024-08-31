@@ -6,14 +6,11 @@
   "author": "Dominic Griesel <dominic.griesel@nabucasa.com>",
   "license": "MIT",
   "type": "module",
-  "module": "build/worker.js",
   "scripts": {
     "check": "tsc -p tsconfig.build.json --noEmit && tsc -p src/maintenance/tsconfig.json --noEmit",
-    "build": "esbuild --bundle --format=esm --platform=browser --sourcemap --outdir=build src/worker.ts",
-    "clean": "rm -rf build",
     "lint": "eslint .",
     "test:ci": "NODE_OPTIONS='--loader=tsx' ava",
-    "test": "yarn test:ci --watch",
+    "test": "yarn test:ci",
     "dev": "wrangler dev --local",
     "build:index": "yarn tsx src/maintenance/generateIndex.ts",
     "upload": "yarn tsx src/maintenance/upload.ts"
