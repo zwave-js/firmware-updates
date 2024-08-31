@@ -93,12 +93,16 @@ export default function register(router: ThrowableRouter): void {
 				}
 
 				const newVersion = result.data.version;
+				console.log("Uploading config files for version", newVersion);
+
+				console.log("Creating FS for version", newVersion);
 				const fs = createCachedR2FS(
 					req.url,
 					context,
 					env.CONFIG_FILES,
 					newVersion
 				);
+				console.log("FS created");
 
 				for (const action of result.data.actions) {
 					if (action.task === "put") {
@@ -107,31 +111,43 @@ export default function register(router: ThrowableRouter): void {
 							action.filename = "/" + action.filename;
 						}
 
+						console.log(`put ${action.filename}`);
 						await fs.writeFile(action.filename, action.data);
+						console.log(`put ${action.filename} DONE`);
 					} else if (action.task === "enable") {
 						// Enable the current revision, delete all other revisions
+						console.log(`enable ${newVersion}`);
+
+						console.log(`get old version`);
 						const oldVersion = await getFilesVersion(
 							req.url,
 							context,
 							env.CONFIG_FILES
 						);
+						console.log(`old version = ${oldVersion}`);
+
 						if (oldVersion && oldVersion !== newVersion) {
+							console.log("Creating FS for version", oldVersion);
 							const oldFs = createCachedR2FS(
 								req.url,
 								context,
 								env.CONFIG_FILES,
 								oldVersion
 							);
+							console.log("DELETE /");
 							await oldFs.deleteDir("/");
+							console.log("DELETE / DONE");
 						}
 
 						// Update version file, so new requests will use the new version
+						console.log("putFilesVersion");
 						await putFilesVersion(
 							req.url,
 							context,
 							env.CONFIG_FILES,
 							newVersion
 						);
+						console.log("putFilesVersion DONE");
 
 						// Make sure not to write any extra files after this
 						break;
