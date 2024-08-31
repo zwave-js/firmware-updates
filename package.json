@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "test:ci": "NODE_OPTIONS='--loader=tsx' ava",
     "test": "yarn test:ci",
-    "dev": "wrangler dev --local",
+    "dev": "wrangler dev",
     "build:index": "yarn tsx src/maintenance/generateIndex.ts",
     "upload": "yarn tsx src/maintenance/upload.ts"
   },
