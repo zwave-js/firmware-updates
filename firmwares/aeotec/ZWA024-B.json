@@ -10,16 +10,16 @@
 	],
 	"upgrades": [
 		{
-			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6",
-			"version": "1.6",
+			//"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6.7",
+			"version": "1.6.7",
 			"channel": "stable",
 			//"region": "australia/new zealand",
-			"changelog": "Bug Fixes:\n* Threshold parameters\n* UV sensor calculations\n* Sensor freeze\n* Temperature value calculation on USB",
+			"changelog": "Resolves issue where motion timeout happens earlier than expected based on retrigger (parameter 2) when on USB power.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6188454160",
-					"integrity": "sha256:cbf548674b5523bd882dbaee28b407bd3b7662832bf30de87ffb1733ed0166aa"
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6193190122",
+					"integrity": "sha256:05ce149ddfc8143a9639a12b3e7a3a0033f588a84c40dabe1a8085c6559e1c03"
 				}
 			]
 		}
