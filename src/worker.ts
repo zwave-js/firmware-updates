@@ -7,16 +7,13 @@ export interface CloudflareEnvironment {
 
 	CONFIG_FILES: R2Bucket;
 
-	RateLimiter: DurableObjectNamespace;
-
 	API_KEYS: KVNamespace;
+	RL_FREE: RateLimit;
 
 	responseHeaders: Record<string, string>;
 }
 
 const router = build();
-
-export { RateLimiter as RateLimiterDurableObject } from "./durable_objects/RateLimiter";
 
 export default {
 	async fetch(

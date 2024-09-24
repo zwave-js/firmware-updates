@@ -72,7 +72,7 @@ void (async () => {
 			})),
 		};
 		console.log(
-			`Uplaoding files ${cursor + 1}...${
+			`Uploading files ${cursor + 1}...${
 				cursor + currentBatch.length
 			} of ${files.length}...`
 		);
