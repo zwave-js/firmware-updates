@@ -10,16 +10,16 @@
 	],
 	"upgrades": [
 		{
-			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6",
-			"version": "1.6",
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6.1",
+			"version": "1.6.1",
 			"channel": "stable",
 			//"region": "europe",
-			"changelog": "Bug Fixes:\n* Updates Z-Wave SDK used",
+			"changelog": "Bug Fixes:\n* Resolves issue where sensor does not go to sleep causing battery drain.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6189341052",
-					"integrity": "sha256:56e832dd3eac4f12c927ad1bbc26b397faf2735f442ddad33b03e8b1e95bc4f5"
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6193170602",
+					"integrity": "sha256:aea2b9ad259e118c0debfa594338c2df28631f576dc7b18799259f82f3b0ffe0"
 				}
 			]
 		}
