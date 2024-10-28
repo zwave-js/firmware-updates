@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN20",
+			"manufacturerId": "0x027a",
+			"productType": "0xa000",
+			"productId": "0xa004",
+			"firmwareVersion": {
+				"min": "4.0",
+				"max": "4.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.20.1",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 4.0, 4.10, 4.20 \n* Fixed a bug: Reports from Meter Command Class might be affected on the selected platforms.\n* Fixed a bug: Parameter 37, the software was reporting incorrect units for Current threshold.\n* The current and power acquisition algorithm has been optimized to reduce the intermediate reporting data.\n* Improved meter reporting when a value changes from non-zero (last reported value) to zero (current value).",
+			"url": "https://www.getzooz.com/firmware/ZEN20_V04R20.gbl",
+			"integrity": "sha256:edf818919c834e6aa70b3dba9a14e7bb0035b114c35ac27116b6319a72d86a80"
+		}
+	]
+}
