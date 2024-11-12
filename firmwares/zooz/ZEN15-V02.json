@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN15",
+			"manufacturerId": "0x027a",
+			"productType": "0x0101",
+			"productId": "0x000d",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.10.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10 \n* Added Notification Command Class. The Power Switch will now report (Over-current detected) when parameter 20 (overload protection) is triggered.\n* Added parameter 175 - Voltage threshold report.\n* Added parameter 176 - Electricity threshold report.\n* dded parameter 36 - Turn the power switch on again after the overload protection is triggered.\n* Modified parameter 20: The overload protection cannot be turned off anymore, and it can be adjusted between 2 - 5 seconds. \n* Fixed a bug when the Power Switch could turn off in edge cases when a large appliance like a dryer was initially starting. The Power Switch will no longer turn off on the initial start up unless overload protection is triggered.",
+			"url": "https://www.getzooz.com/firmware/ZEN15_V02R10.gbl",
+			"integrity": "sha256:124567676cde796107146ad644dd74832227a914bf80114feba525660768b233"
+		}
+	]
+}
