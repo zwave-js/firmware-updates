@@ -16,7 +16,7 @@
 		{
 			"version": "2.10.0",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 2.0, 2.10,\n* Fixed a bug: Temperature reporting frequency is now reporting correctly in minutes intervals set in parameter 45. \n* Hardware 4 \n* 700 Z-Wave Chip.\n* The metal casted transmission fork was changed to the new high-quality plastic (UV proof acetal homopolymer) transmission fork. This new-generation plastic transmission fork can fit lower-profile valves and will not damage the metal valve lever over time. \n*Long Range ready",
+			"changelog": "* Includes firmware versions: 2.0, 2.10,\n* Fixed a bug: Temperature reporting frequency is now reporting correctly in minutes intervals set in parameter 45.",
 			"url": "https://www.getzooz.com/firmware/ZAC36LR_V02R10.gbl",
 			"integrity": "sha256:08afddeee935581be0cfdb277a40c950b348ae1d666ca7798bee991080a68f16"
 		}
