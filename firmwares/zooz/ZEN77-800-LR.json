@@ -14,7 +14,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "4.50.1",
+			"version": "4.50.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50.\n* Fixed the Range Test Tool feature.\n* Added a new parameter 33: Convert the dimmer to a switch.",
 			"url": "https://www.getzooz.com/firmware/ZEN77_V04R50.gbl",
