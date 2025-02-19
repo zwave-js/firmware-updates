@@ -14,8 +14,16 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.40.1",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n* Added advanced parameter 19: Custom brightness level for ON command.",
+			"region": "usa",
+			"url": "https://www.getzooz.com/firmware/ZEN54_V01R40.gbl",
+			"integrity": "sha256:360078bb91f98dab540bb83ef699ce5780feadada9e54372d23e57427d0d2c51"
+		},
+		{
 			"version": "1.30.0",
-			"changelog": "* Added advanced parameters 15 and 16 for the Physical Ramp Rates.\n* Added advanced parameters 17 and 18 for the Z-Wave Ramp Rates.",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30.\n* Added advanced parameters 15 and 16 for the Physical Ramp Rates.\n* Added advanced parameters 17 and 18 for the Z-Wave Ramp Rates.",
+			"region": "usa",
 			"url": "https://www.getzooz.com/firmware/ZEN54_V01R30.gbl",
 			"integrity": "sha256:cfcb2f9bfbd4db73c3f8f75c6bc01ed6dee7c618797ecde79e95d2bfa5b72d44"
 		}

@@ -14,7 +14,15 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40.\n* Fixed the Range Test Tool feature.",
+			"url": "https://www.getzooz.com/firmware/ZEN71_V03R40.gbl",
+			"integrity": "sha256:e35ea14e79ebfc292fbe82805fb9a8cece38e3fc4af8e694fa7d2a7b29b9aa87"
+		},
+		{
 			"version": "3.30.0",
+			"region": "usa",
 			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30.\n* Improved Direct Association Group 2 for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN71_V03R30.gbl",
 			"integrity": "sha256:792a18c55f3e123391807526a8ab1d0681f39f1295f98120a7686140d0e77eaf"
