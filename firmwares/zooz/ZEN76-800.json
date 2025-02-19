@@ -14,7 +14,15 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40.\n* Fixed the Range Test Tool feature.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R40.gbl",
+			"integrity": "sha256:b7f0deeab952b164c629cdd2f416e5bd1fd452991adb8a9cc9da788f2fb7af5a"
+		},
+		{
 			"version": "3.30.0",
+			"region": "usa",
 			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30.\n* Improved Direct Association Group 2 for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN76_V03R30.gbl",
 			"integrity": "sha256:2da835e3246c83036d13e47f8660f5a1b25570bb8c15506b5913c2c0557c4018"
