@@ -14,6 +14,12 @@
 	],
 	"upgrades": [
 		{
+			"version": "10.30.1",
+			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20, 10.30.\n* Improved Direct Association Group 2 for the basic set on/off functionality.",
+			"url": "https://www.getzooz.com/firmware/ZEN71_V10R30.gbl",
+			"integrity": "sha256:ae6868f58d732e3f576056f947c607d6ffa3499305b880810ba43e439a4f6b38"
+		},
+		{
 			"version": "10.20.1",
 			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 7 to choose Direct Association reports sent to devices associated with the Z-Wave.\n* Added parameter 18 to enable scene control from the momentary switch in a 3-way.\n* Added parameter 19 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
 			"url": "https://www.getzooz.com/firmware/ZEN71_V10R20.gbl",
