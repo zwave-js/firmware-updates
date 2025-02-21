@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN30",
+			"manufacturerId": "0x027a",
+			"productType": "0xa000",
+			"productId": "0xa008",
+			"firmwareVersion": {
+				"min": "3.0",
+				"max": "3.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "3.20.2",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 3.0, 3.10, 3.20\n* Separated ramp rate settings into 4 new parameters: ramp rate ON physical (13), ramp rate OFF physical (31), ramp rate ON Z-Wave (32), and ramp rate OFF Z-Wave (33).\n* Adjust Double Tap (parameter 17) and Single Tap (parameter 18) behavior to match ZEN72 and ZEN77 dimmers.\n* Improved the delay for on/off control from the dimmer paddle with scene control disabled.\n* Fixed a bug: When the LED indicator is set to 'on when the load is on' (parameter 1, value 1), the LED stays on as expected now.\n* Fixed a bug: The ZEN30 relay button direct association group 2 for basic on/off commands is working as expected now.\n* Improved Direct Association Group 3 for the multilevel set functionality.\n* Added Advanced Parameter 34: Disable the LED blinking when a setting is changed.",
+			"url": "https://www.getzooz.com/firmware/ZEN30_V03R20.gbl",
+			"integrity": "sha256:947ed34e370fb720ed65c0ec03ee882282300228000a88d3383294fd6bf98aa5"
+		}
+	]
+}
