@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.50.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50.\n* Updated parameter names and short descriptions in the Configuration Command Classe.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R50.gbl",
+			"integrity": "sha256:5567b105b530f146e2642af050468398ee6fdbc2bacf61d6ebba7b760a0a3647"
+		},
+		{
 			"version": "3.40.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40.\n* Fixed the Range Test Tool feature.",
