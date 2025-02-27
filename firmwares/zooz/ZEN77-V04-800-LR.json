@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "4.60.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50, 4.60.\n* Updated parameter names and short descriptions in the Configuration Command Class.\n* Added a new parameter 34: Basic Set Custom Brightness On.",
+			"url": "https://www.getzooz.com/firmware/ZEN77_V04R60.gbl",
+			"integrity": "sha256:b4b91fdc75e3ac08c4c01a53f9d795e3f2d12c11fd6f40678d51134c2c88c342"
+		},
+		{
 			"version": "4.50.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50.\n* Fixed the Range Test Tool feature.\n* Added a new parameter 33: Convert the dimmer to a switch.",
