@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN73",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa003",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30.\n* Updated parameter names and short descriptions in the Configuration Command Class.",
+			"url": "https://www.getzooz.com/firmware/ZEN73_V02R30.gbl",
+			"integrity": "sha256:85ff31cc5f75a2f1b6fb221b00eb56ae601f7c0be2875647fd5e80e0c68da627"
+		}
+	]
+}
