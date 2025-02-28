@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN74",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa004",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30.\n* Updated parameter names and short descriptions in the Configuration Command Class.\n* Added a new parameter 34: Basic Set Custom Brightness On.",
+			"url": "https://www.getzooz.com/firmware/ZEN74_V02R30.gbl",
+			"integrity": "sha256:f46bec696c623ed0f40a3b606c8e5fdc4ea017f371f57b11718e42b2eea761d8"
+		}
+	]
+}
