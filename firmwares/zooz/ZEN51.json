@@ -5,6 +5,19 @@
 			"model": "ZEN51",
 			"manufacturerId": "0x027a",
 			"productType": "0x0904",
+			//Z-Wave Certification Date: 9/8/2023
+			"productId": "0x0201",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		},
+		{
+			"brand": "Zooz",
+			"model": "ZEN51",
+			"manufacturerId": "0x027a",
+			"productType": "0x0104",
+			//Z-Wave Certification Date: 4/4/2022
 			"productId": "0x0201",
 			"firmwareVersion": {
 				"min": "0.0",
