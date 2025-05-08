@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN17",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa00a",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.10.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10\n* Fixed a bug: When parameters 2 and 3 are set to value 11 (garage door mode for the relay/momentary contact and door sensor type for the input), the garage door mode for relays was not working when triggered from Z-Wave UI.\n* Fixed a bug: When parameters 2 and 3 are set to value 3 (garage door momentary mode), the garage door mode for relays was not working when triggered from Z-Wave UI.\n* Fixed a bug: When parameter 3 was set to value 10 (on/off report / dry contact switch/sensor), the child device was not created as expected.",
+			"url": "https://www.getzooz.com/firmware/ZEN17_V02R10.gbl",
+			"integrity": "sha256:7e7e97f9ddc0f038f5d36132ebc3331a7c16a0aa9f3e776da8b2bbeb2d4b445c"
+		}
+	]
+}
