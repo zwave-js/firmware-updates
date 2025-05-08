@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN37",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xF003",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.10.1",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.\n* Updated the SmartStart inclusion via QR code: The ZEN37 arrives in deep sleep mode out of the box.",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R10.gbl",
+			"integrity": "sha256:4ec058ec59257ac2272b6290ee3c1c28dca7f35318b7ab45d37319eb1976985c"
+		}
+	]
+}
