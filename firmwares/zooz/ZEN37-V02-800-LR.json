@@ -5,7 +5,7 @@
 			"model": "ZEN37",
 			"manufacturerId": "0x027a",
 			"productType": "0x7000",
-			"productId": "0xF003",
+			"productId": "0xf003",
 			"firmwareVersion": {
 				"min": "2.0",
 				"max": "2.255"
