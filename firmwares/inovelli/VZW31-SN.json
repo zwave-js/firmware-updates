@@ -20,7 +20,7 @@
 		 			"integrity": "sha256:6cc54dbbc6768678a4f23ead1c00b03ee9334c5836bd01ded9f190d521a3fd6c"
 		 		}
 		 	]
-		 ,
+		},
 		{
 			"version": "1.2",
 			"channel": "stable",
