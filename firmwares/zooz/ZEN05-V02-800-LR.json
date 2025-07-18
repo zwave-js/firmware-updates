@@ -16,7 +16,7 @@
 		{
 			"version": "2.20.1",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20 \n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Adjusted the over-voltage protection threshold in the firmware from 135VAC to 150VAC to minimize false triggers in specific scenarios.",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Adjusted the over-voltage protection threshold in the firmware from 135VAC to 150VAC to minimize false triggers in specific scenarios.",
 			"url": "https://www.getzooz.com/firmware/ZEN05_V02R20.gbl",
 			"integrity": "sha256:07df6ec8dbd73d30034007d469a1a3bd69aebb5caa35098e135a99220ac93c1e"
 		}
