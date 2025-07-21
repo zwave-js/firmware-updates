@@ -16,7 +16,7 @@
 		{
 			"version": "1.40.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency. \n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Updated parameter 5 (Input Trigger) with two new values: 2 - Relay follows Smoke Notification only; 3 - Relay follows CO Notification only.",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.\n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Updated parameter 5 (Input Trigger) with two new values: 2 - Relay follows Smoke Notification only; 3 - Relay follows CO Notification only.",
 			"url": "https://www.getzooz.com/firmware/ZEN55_V01R40.gbl",
 			"integrity": "sha256:fb6228c5684afec51fac682d74e0992c71d0b9355871829d6d0c2f521f3fccc9"
 		},
