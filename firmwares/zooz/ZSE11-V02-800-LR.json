@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "2.10.0",
-			"changelog": "Includes firmware versions: 2.0, 2.10.\n*  Resolved an issue where setting the Humidity Offset to a value below 100 would incorrectly display 0%. For example, entering [95] resulted in a 0% humidity reading.\n*  Fixed a bug that caused the sensor to report negative lux values under certain conditions on specific platforms.\n*  Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.",
+			"changelog": "Includes firmware versions: 2.0, 2.10.\n* Resolved an issue where setting the Humidity Offset to a value below 100 would incorrectly display 0%. For example, entering [95] resulted in a 0% humidity reading.\n* Fixed a bug that caused the sensor to report negative lux values under certain conditions on specific platforms.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.",
 			"url": "https://www.getzooz.com/firmware/ZSE11_V02R10.gbl",
 			"integrity": "sha256:b2d16fe4912085f191ff7e176d16684e8d4be2a095be95b875e29e98d13da42e"
 		}
