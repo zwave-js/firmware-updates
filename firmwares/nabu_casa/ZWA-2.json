@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Nabu Casa",
+			"model": "ZWA-2",
+			"manufacturerId": "0x0466",
+			"productType": "0x0001",
+			"productId": "0x0001",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.1.0",
+			"channel": "beta",
+			"changelog": "* Correct default powerlevels for EU region\n* Remove RGB and dimming functionality from the LED, convert to cold-white on/off light\n* Change tilt indication to fast blinking",
+			"url": "https://github.com/AlCalzone/nc-zwave-controller/releases/download/1.1.0/zwa2_controller_1.1.0.gbl",
+			"integrity": "sha256:5efbfdc621cffb20bbbc400fa3b10f00fc8d53048e8d867c707e4f8174778a2c"
+		},
+		{
+			"version": "1.0.0",
+			"channel": "stable",
+			"changelog": "* Initial version",
+			"url": "https://github.com/AlCalzone/nc-zwave-controller/releases/download/1.0/zwa2_firmware_1.0.gbl",
+			"integrity": "sha256:06bb8544e03d03d16f22278f7fc6d53df4007a47c40376fc4d7c92221e833330"
+		}
+	]
+}
