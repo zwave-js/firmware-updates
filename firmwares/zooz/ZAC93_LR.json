@@ -16,14 +16,14 @@
 		{
 			"version": "2.10",
 			"region": "usa",
-			"changelog": "Based on Z-Wave SDK version 7.23.2 (read full release notes from Silicon Labs here)\nAdded LED indicator feature: Solid Red when powered ON and blinking Red when receiving commands.\nAdded Z-Wave Long Range support for Europe",
+			"changelog": "* Includes firmware versions: 1.0, 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50, 2.00, 2.10.\n* Based on Z-Wave SDK version 7.23.2 (read full release notes from Silicon Labs here)\n* Added LED indicator feature: Solid Red when powered ON and blinking Red when receiving commands.",
 			"url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.23.2_US-LR_V02R10.gbl",
 			"integrity": "sha256:8813d3039682543f1fdb0407814200b4ba1d45e710778c8825197e6963a15dc6"
 		},
 		{
 			"version": "2.10",
 			"region": "europe",
-			"changelog": "Based on Z-Wave SDK version 7.23.2 (read full release notes from Silicon Labs here)\nAdded LED indicator feature: Solid Red when powered ON and blinking Red when receiving commands.\nAdded Z-Wave Long Range support for Europe",
+			"changelog": "* Includes firmware versions: 1.0, 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50, 2.00, 2.10.\n* Based on Z-Wave SDK version 7.23.2 (read full release notes from Silicon Labs here)\n* Added LED indicator feature: Solid Red when powered ON and blinking Red when receiving commands.\n* Added Z-Wave Long Range support for Europe",
 			"url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.23.2_EU-LR_V02R10.gbl",
 			"integrity": "sha256:e71c101f74fc2e49456368520df642713bc40a9fe0fd0bbdd20d9713c45fbe92"
 		}
