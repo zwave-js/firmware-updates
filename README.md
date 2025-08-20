@@ -40,6 +40,9 @@ Once you have your API key, you can use it to make HTTP requests to the API endp
 
 ### API v1, get updates
 
+> [!NOTE]
+> This API endpoint is not recommended anymore. Prefer API v4 for more efficient querying of multiple devices.
+
 ```
 POST https://firmware.zwave-js.io/api/v1/updates
 Content-Type: application/json
@@ -117,6 +120,9 @@ type APIv1_Response = {
 
 ### API v2, get updates
 
+> [!NOTE]
+> This API endpoint is not recommended anymore. Prefer API v4 for more efficient querying of multiple devices.
+
 ```
 POST https://firmware.zwave-js.io/api/v2/updates
 Content-Type: application/json
@@ -193,6 +199,9 @@ type APIv2_Response = {
 ```
 
 ### API v3, get updates
+
+> [!NOTE]
+> This API endpoint is not recommended anymore. Prefer API v4 for more efficient querying of multiple devices.
 
 ```
 POST https://firmware.zwave-js.io/api/v3/updates
@@ -274,6 +283,112 @@ type APIv3_Response = {
     }[];
     downgrade: boolean;
     normalizedVersion: string;
+}[];
+```
+
+### API v4, get updates for multiple devices
+
+```
+POST https://firmware.zwave-js.io/api/v3/updates
+Content-Type: application/json
+X-API-Key: <Your API Key>
+
+{
+    "region": "europe",
+    "devices": [
+        {
+            "manufacturerId": "0x1234",
+            "productType": "0xabcd",
+            "productId": "0xcafe",
+            "firmwareVersion": "1.6"
+        },
+        {
+            "manufacturerId": "0x5678",
+            "productType": "0xdef0",
+            "productId": "0x1234",
+            "firmwareVersion": "2.3"
+        }
+    ]
+}
+```
+
+Changes compared to v3:
+
+-   Moves device information to a `devices` array in the request body to allow for querying multiple devices in a single request.
+
+If the `region` field is present in the request, the response will only contain updates for that region, or updates without a specified region (which are assumed to be region-agnostic).
+If no `region` is specified in the request, the response will only contain updates without a specified region.
+
+**Example response:**
+
+The response contains an array of unique devices from the request. Accidental duplicates are removed. Each device includes the fingerprint to identify it and an array of available updates.
+
+```json
+[
+    {
+        "manufacturerId": "0x1234",
+        "productType": "0xabcd",
+        "productId": "0xcafe",
+        "firmwareVersion": "1.6",
+        "updates": [
+            {
+                "version": "1.7",
+                "changelog": "EU Version:\n* Fixed some bugs\n*Added more bugs",
+                "channel": "stable",
+                "files": [
+                    {
+                        "target": 0,
+                        "integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1",
+                        "url": "https://example.com/firmware/1.7-eu.otz"
+                    }
+                ],
+                "downgrade": false,
+                "normalizedVersion": "1.7.0",
+                "region": "europe"
+            }
+        ]
+    },
+    {
+        "manufacturerId": "0x5678",
+        "productType": "0xdef0",
+        "productId": "0x1234",
+        "firmwareVersion": "2.3",
+        "updates": []
+    }
+]
+```
+
+**Response type definition:**
+
+```ts
+type APIv4_Response = {
+    manufacturerId: string;
+    productType: string;
+    productId: string;
+    firmwareVersion: string;
+    updates: {
+        version: string;
+        changelog: string;
+        channel: "stable" | "beta";
+        region?:
+            | "europe"
+            | "usa"
+            | "australia/new zealand"
+            | "hong kong"
+            | "india"
+            | "israel"
+            | "russia"
+            | "china"
+            | "japan"
+            | "korea";
+        files: {
+            target: number;
+            url: string;
+            integrity: string;
+        }[];
+        downgrade: boolean;
+        normalizedVersion: string;
+    }[];
 }[];
 ```
 
