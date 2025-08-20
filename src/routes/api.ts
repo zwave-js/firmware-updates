@@ -7,12 +7,14 @@ import {
 	APIv2_Response,
 	APIv3_RequestSchema,
 	APIv3_Response,
+	APIv4_RequestSchema,
+	APIv4_Response,
 } from "../apiDefinitions";
 import { withCache } from "../lib/cache";
 import { lookupConfig } from "../lib/config";
 import type { UpgradeInfo } from "../lib/configSchema";
 import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
-import { compareVersions, padVersion } from "../lib/shared";
+import { array2hex, compareVersions, padVersion } from "../lib/shared";
 import {
 	clientError,
 	ContentProps,
@@ -310,6 +312,192 @@ export default function register(router: ThrowableRouter): void {
 					return ret;
 				},
 				region && [region]
+			);
+		}
+	);
+
+	router.post(
+		"/api/v4/updates",
+		async (
+			req: RequestWithProps<[ContentProps]>,
+			env: CloudflareEnvironment,
+			context: ExecutionContext
+		) => {
+			// Parse and validate the v4 request
+			const result = await APIv4_RequestSchema.safeParseAsync(
+				req.content
+			);
+			if (!result.success) {
+				return clientError(result.error.format() as any);
+			}
+			const { region, devices } = result.data;
+
+			const filesVersion = await getFilesVersion(
+				req.url,
+				context,
+				env.CONFIG_FILES
+			);
+
+			if (!filesVersion) {
+				return serverError("Filesystem empty");
+			}
+
+			// Remove duplicates and sort devices for consistent cache key
+			const uniqueDevices = devices
+				.filter(
+					(device, index, array) =>
+						array.findIndex(
+							(d) =>
+								d.manufacturerId === device.manufacturerId &&
+								d.productType === device.productType &&
+								d.productId === device.productId &&
+								d.firmwareVersion === device.firmwareVersion
+						) === index
+				)
+				.sort((a, b) => {
+					// Sort by manufacturerId, productType, productId, firmwareVersion
+					if (a.manufacturerId !== b.manufacturerId) {
+						return a.manufacturerId.localeCompare(b.manufacturerId);
+					}
+					if (a.productType !== b.productType) {
+						return a.productType.localeCompare(b.productType);
+					}
+					if (a.productId !== b.productId) {
+						return a.productId.localeCompare(b.productId);
+					}
+					return a.firmwareVersion.localeCompare(b.firmwareVersion);
+				});
+
+			// Create a unique cache key by hashing device information
+			const encoder = new TextEncoder();
+			const deviceHashes = await Promise.all(
+				uniqueDevices.map(async (device) => {
+					const parts = [
+						filesVersion,
+						device.manufacturerId,
+						device.productType,
+						device.productId,
+						device.firmwareVersion,
+						...(region ? [region] : []),
+					];
+					const hashInput = encoder.encode(parts.join("/"));
+					const hash = new Uint8Array(
+						await crypto.subtle.digest("SHA-256", hashInput)
+					);
+					return array2hex(hash);
+				})
+			);
+
+			const finalHashInput = encoder.encode(deviceHashes.join("/"));
+			const finalHashBuffer = new Uint8Array(
+				await crypto.subtle.digest("SHA-256", finalHashInput)
+			);
+			const finalHash = array2hex(finalHashBuffer);
+
+			let requestUrl = req.url;
+			if (!requestUrl.endsWith("/")) {
+				requestUrl += "/";
+			}
+			const cacheKey = new URL(
+				`./bulk/${finalHash}`,
+				requestUrl
+			).toString();
+
+			return withCache(
+				{
+					req,
+					context,
+					cacheKey,
+					// Cache for 1 hour on the client
+					maxAge: 60 * 60,
+					// Cache for 1 day on the server.
+					// We use the file hash/revision as part of the cache key,
+					// so we can safely cache for a longer time.
+					sMaxAge: 60 * 60 * 24,
+				},
+				async () => {
+					const response: APIv4_Response = [];
+
+					// Create cached R2FS once for all lookups
+					const cachedR2FS = createCachedR2FS(
+						req.url,
+						context,
+						env.CONFIG_FILES,
+						filesVersion
+					);
+
+					// Process each unique device
+					for (const device of uniqueDevices) {
+						const config = await lookupConfig(
+							cachedR2FS,
+							"/",
+							device.manufacturerId,
+							device.productType,
+							device.productId,
+							device.firmwareVersion
+						);
+
+						let updates: APIv3_Response = [];
+
+						if (config) {
+							// Apply the same filtering logic as v3
+							const filteredUpgrades = config.upgrades.filter(
+								(u) => !u.region || u.region === region
+							);
+
+							updates = filteredUpgrades
+								.map((u) => {
+									// Add missing fields to the returned objects
+									const downgrade =
+										compareVersions(
+											u.version,
+											device.firmwareVersion
+										) < 0;
+									let normalizedVersion = padVersion(
+										u.version
+									);
+									if (u.channel === "beta")
+										normalizedVersion += "-beta";
+
+									return {
+										...u,
+										downgrade,
+										normalizedVersion,
+									};
+								})
+								.sort((a, b) => {
+									// Sort by version ascending...
+									const ret = compare(
+										a.normalizedVersion,
+										b.normalizedVersion
+									);
+									if (ret !== 0) return ret;
+									// ... and put updates for a specific region first
+									return -(a.region ?? "").localeCompare(
+										b.region ?? ""
+									);
+								});
+
+							// If there are multiple updates for the same version, only return the first one
+							// This happens when there are updates for a specific region and a general update for the same version
+							updates = updates.filter((u, i, arr) => {
+								if (i > 0 && u.version === arr[i - 1].version)
+									return false;
+								return true;
+							});
+						}
+
+						response.push({
+							manufacturerId: device.manufacturerId,
+							productType: device.productType,
+							productId: device.productId,
+							firmwareVersion: device.firmwareVersion,
+							updates,
+						});
+					}
+
+					return json(response);
+				}
 			);
 		}
 	);
