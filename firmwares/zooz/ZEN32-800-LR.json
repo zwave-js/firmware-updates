@@ -18,6 +18,12 @@
 			"changelog": "Includes firmware versions: 2.10, 2.20, 2.30.\n* Improved LED Indicator Command Class for all five buttons on the ZEN32 Scene Controller\n* Removed the delay when the connected lights are turned on from the physical switch (relay button) when Central Scene Control for the relay button is disabled\n* Fixed bug: changing the LED color on the relay button when parameter 19 is set to value 0 (local control of the relay button disabled/Z-Wave enabled) is now doable.",
 			"url": "https://www.getzooz.com/firmware/ZEN32_V02R30.gbl",
 			"integrity": "sha256:a41fab409bb3e3b29fdb2fba4b8f838f17786db00edf0164ec6f05af87731316"
+		},
+		{
+			"version": "2.40.0",
+			"changelog": "Includes firmware versions: 2.10, 2.20, 2.30, 2.40.\n* Added parameter 27 to disable LED indicator flashing when the scene buttons are pressed.\n* Fixed a bug: LED indicator now turns off as expected when Parameter 19 is set to value 0 (local control of the relay button disabled/Z-Wave enabled) and parameter 1 (LED indicator mode for relay button) is set to value 3 and then changed to value 2.",
+			"url": "https://www.getzooz.com/firmware/ZEN32_V02R40.gbl",
+			"integrity": "sha256:6c7d5aa1fc8e77744c9bb856aa8fd8fe5276b2f45d9c09244875801a5958090b"
 		}
 	]
 }

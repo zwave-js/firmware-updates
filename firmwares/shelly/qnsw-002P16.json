@@ -14,6 +14,17 @@
 	],
 	"upgrades": [
 		{
+			"version": "15.0",
+			"changelog": "- Fix switch binary report when powered with DC\n- Fix Endpoint 2 report state change on single channel association\n- Fix supervision report for root command\n- Removed parameters no. 91, 92, 93, 94 from the FW\n- Other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/252a13274ea5340532d149063933f907c701bee6/Wave_2PM/EU/Wave_2PM_800_EU_20250508_0951_QNSW-002P16EU_%5B15.00%5D_9DD2F96C.gbl",
+					"integrity": "sha256:8d9f12e23f8a385959e26dafdfdd31c7ddc8a1b9a40a38fbbffb59dc7588c921"
+				}
+			]
+		},
+		{
 			"version": "10.30",
 			"changelog": "- Removed delay from input detection to output response\n- Fix Binary Switch report after auto off",
 			"region": "europe",

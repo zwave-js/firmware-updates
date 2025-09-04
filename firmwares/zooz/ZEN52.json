@@ -5,6 +5,19 @@
 			"model": "ZEN52",
 			"manufacturerId": "0x027a",
 			"productType": "0x0904",
+			//Z-Wave Certification Date: 2/2/2023
+			"productId": "0x0202",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		},
+		{
+			"brand": "Zooz",
+			"model": "ZEN52",
+			"manufacturerId": "0x027a",
+			"productType": "0x0104",
+			//Z-Wave Certification Date: 4/4/2022
 			"productId": "0x0202",
 			"firmwareVersion": {
 				"min": "0.0",
@@ -13,6 +26,13 @@
 		}
 	],
 	"upgrades": [
+		// {
+		// 	"version": "1.80.0",
+		// 	"region": "usa",
+		// 	"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80.\n* Fixed a bug: The parent (root) device will update its state correctly now on select platforms.\n* Fixed a bug: Solved an issue with the external switch not triggering the load in some edge cases.\n* Fixed an issue with the connected load flickering on occasion.\n* Added parameter 28: Separate the inputs from the outputs.\n* Added parameter 29: DC Motor Mode.",
+		// 	"url": "https://www.getzooz.com/firmware/ZEN52_V01R80.gbl",
+		// 	"integrity": "sha256:e7c0310b063a3f8144efa5070ec3d94948bd6d7145fd82141d70c6cf14453f23"
+		// },
 		{
 			"version": "1.70.0",
 			"region": "usa",

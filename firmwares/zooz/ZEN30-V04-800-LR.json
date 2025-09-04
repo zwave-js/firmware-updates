@@ -1,0 +1,32 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN30",
+			"manufacturerId": "0x027a",
+			"productType": "0xa000",
+			"productId": "0xa008",
+			"firmwareVersion": {
+				"min": "4.0",
+				"max": "4.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 4.10, 4.20, 4.30\n* Updated SDK from 7.19.3 to 7.23.1\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.",
+			"url": "https://www.getzooz.com/firmware/ZEN30_V04R30.gbl",
+			"integrity": "sha256:60ff312fe0c9b08d90dfc26123a4955287d0701e6a1315cd6091e3bb40ee441c"
+		},
+		{
+			"version": "4.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 4.10, 4.20\n* Fixed a bug: With Parameter 28 set to disabled (Dimmer Scene Control - Off), After turning the lights on with a single click (upper paddle), the single click to turn off lights (lower paddle) didn't work anymore.",
+			"url": "https://www.getzooz.com/firmware/ZEN30_V04R20.gbl",
+			"integrity": "sha256:afe5eb99d6f6c39d525646d9689a45bcdc0f1bc7d2bc44efd7650a77b9f71edb"
+
+		}
+	]
+}
