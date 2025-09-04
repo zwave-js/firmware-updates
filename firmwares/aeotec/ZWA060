@@ -1,0 +1,29 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA060", //Z-Stick10 Pro Z-Wave
+			"manufacturerId": "0x0371",
+			"productType": "0x0004",
+			"productId": "0x003c",
+			"firmwareVersion": {
+				"min": "2.22",
+				"max": "2.23"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.23.2",
+			"channel": "stable",
+			"changelog": "Update ZWave SDK to 2.23.2 used in controller",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6216978877",
+					"integrity": "sha256:3aced098437b4d0c837dd8ac8d9964edf6fd91a2c1696c6ddfefd88ba5a8bb96"
+				}
+			]
+		}
+	]
+}
