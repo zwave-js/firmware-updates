@@ -7,16 +7,16 @@
 			"productType": "0x0004",
 			"productId": "0x003c",
 			"firmwareVersion": {
-				"min": "2.22",
-				"max": "2.23"
+				"min": "7.22.0",
+				"max": "7.23.2"
 			}
 		}
 	],
 	"upgrades": [
 		{
-			"version": "2.23.2",
+			"version": "7.23.2",
 			"channel": "stable",
-			"changelog": "Update ZWave SDK to 2.23.2 used in controller",
+			"changelog": "Update ZWave SDK to 7.23.2 used in controller",
 			"files": [
 				{
 					"target": 0,
