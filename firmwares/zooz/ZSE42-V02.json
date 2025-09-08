@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE42",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xe002",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Updated parameter 5 for Basic Set Commands with Value 3 - Basic Set for On and Value 4 - Basic Set for Off.",
+			"url": "https://www.getzooz.com/firmware/ZSE42_V02R20_US.gbl",
+			"integrity": "sha256:4c6b24c934057fb91977589c504915276fbf773c3ab69cc136592ab3f4a4aefe"
+		},
+		{
+			"version": "2.20.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Updated parameter 5 for Basic Set Commands with Value 3 - Basic Set for On and Value 4 - Basic Set for Off.",
+			"url": "https://www.getzooz.com/firmware/ZSE42_V02R20_EU.gbl",
+			"integrity": "sha256:d3ab95e9114c191ef081bbe133513bda35ce1e2130f867db940b04d301c188df"
+		}
+	]
+}

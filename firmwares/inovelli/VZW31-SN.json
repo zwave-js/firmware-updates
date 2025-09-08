@@ -9,18 +9,18 @@
 		}
 	],
 	"upgrades": [
-		// {
-		// 	"version": "1.1",
-		// 	"channel": "beta",
-		// 	"changelog": "Change default dimming type back to leading edge. Added button combo to switch between leading and trailing edge.",
-		// 	"files": [
-		// 		{
-		// 			"target": 0,
-		// 			"url": "https://github.com/InovelliUSA/Firmware/raw/main/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/1.01/VZW31-SN_1.01.gbl",
-		// 			"integrity": "sha256:a50bfa9a35597ab4439401487896d0c31990799173861f06094e96a4f741b06f"
-		// 		}
-		// 	]
-		// },
+		{
+		 	"version": "1.4",
+		 	"channel": "beta",
+		 	"changelog": "Fixed a situation where a lifeline report was not made when a multicast message was received. Resolved bug in Association Group Behavior. Upgrade Z-Wave SDK.",
+		 	"files": [
+		 		{
+		 			"target": 0,
+		 			"url": "https://github.com/InovelliUSA/Firmware/raw/cc8bf87f9c572e68a1e9b2573b17cf0758f80693/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/1.04/VZW31-SN_1.04.gbl",
+		 			"integrity": "sha256:6cc54dbbc6768678a4f23ead1c00b03ee9334c5836bd01ded9f190d521a3fd6c"
+		 		}
+		 	]
+		},
 		{
 			"version": "1.2",
 			"channel": "stable",

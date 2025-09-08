@@ -1,0 +1,38 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN76",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa006",
+			"firmwareVersion": {
+				"min": "3.0",
+				"max": "3.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "3.50.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50.\n* Updated parameter names and short descriptions in the Configuration Command Class.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R50.gbl",
+			"integrity": "sha256:5567b105b530f146e2642af050468398ee6fdbc2bacf61d6ebba7b760a0a3647"
+		},
+		{
+			"version": "3.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40.\n* Fixed the Range Test Tool feature.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R40.gbl",
+			"integrity": "sha256:b7f0deeab952b164c629cdd2f416e5bd1fd452991adb8a9cc9da788f2fb7af5a"
+		},
+		{
+			"version": "3.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30.\n* Improved Direct Association Group 2 for the basic set on/off functionality.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R30.gbl",
+			"integrity": "sha256:2da835e3246c83036d13e47f8660f5a1b25570bb8c15506b5913c2c0557c4018"
+		}
+	]
+}
