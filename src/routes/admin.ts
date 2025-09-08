@@ -6,7 +6,7 @@ import {
 	type ThrowableRouter,
 } from "itty-router-extras";
 import { encryptAPIKey } from "../lib/apiKeys";
-import { getCurrentVersion, setActiveVersion, insertConfigData, deleteConfigVersion } from "../lib/d1Operations";
+import { getCurrentVersion, createConfigVersion, insertSingleConfigData, enableConfigVersion } from "../lib/d1Operations";
 import { ConditionalUpdateConfig } from "../lib/config";
 import { hex2array } from "../lib/shared";
 import {
@@ -89,10 +89,12 @@ export default function register(router: ThrowableRouter): void {
 				}
 
 				const newVersion = result.data.version;
-				const configData: { devices: any[], upgrades: any[] }[] = [];
 
 				for (const action of result.data.actions) {
-					if (action.task === "put") {
+					if (action.task === "create") {
+						// Create a new config version in the database
+						await createConfigVersion(env.DB, newVersion);
+					} else if (action.task === "put") {
 						// Process config file data for D1 insertion
 						if (action.filename === "index.json") {
 							// Skip index.json as we don't need it anymore
@@ -102,7 +104,9 @@ export default function register(router: ThrowableRouter): void {
 						try {
 							const definition = JSON5.parse(action.data);
 							const config = new ConditionalUpdateConfig(definition);
-							configData.push({
+							
+							// Insert this single config immediately
+							await insertSingleConfigData(env.DB, newVersion, {
 								devices: config.devices,
 								upgrades: config.upgrades
 							});
@@ -112,20 +116,9 @@ export default function register(router: ThrowableRouter): void {
 							continue;
 						}
 					} else if (action.task === "enable") {
-						// Insert all config data into D1
-						if (configData.length > 0) {
-							await insertConfigData(env.DB, newVersion, configData);
-						}
-
-						// Clean up old version data
-						const oldVersion = await getCurrentVersion(env.DB);
-						if (oldVersion && oldVersion !== newVersion) {
-							await deleteConfigVersion(env.DB, oldVersion);
-						}
-
-						// Enable the new version
-						await setActiveVersion(env.DB, newVersion);
-
+						// Enable the new version and clean up old data
+						await enableConfigVersion(env.DB, newVersion);
+						
 						// Make sure not to process any more files after this
 						break;
 					}

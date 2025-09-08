@@ -4,6 +4,11 @@ import { FirmwareVersionRange, DeviceID, formatId, padVersion } from "./shared";
 import { conditionApplies } from "./Logic";
 import semver from "semver";
 
+export interface UpdateConfig {
+	readonly devices: readonly DeviceIdentifier[];
+	readonly upgrades: readonly UpgradeInfo[];
+}
+
 // Types for D1 query results
 interface DeviceRow {
 	id: number;
@@ -19,7 +24,6 @@ interface DeviceRow {
 
 interface UpgradeRow {
 	id: number;
-	device_id: number;
 	version: string;
 	firmware_version: string;
 	changelog: string;
@@ -36,6 +40,13 @@ interface UpgradeFileRow {
 	integrity: string;
 }
 
+export async function createConfigVersion(db: D1Database, version: string): Promise<void> {
+	await db
+		.prepare("INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, FALSE)")
+		.bind(version)
+		.run();
+}
+
 export async function getCurrentVersion(db: D1Database): Promise<string | undefined> {
 	const result = await db
 		.prepare("SELECT version FROM config_versions WHERE active = TRUE LIMIT 1")
@@ -44,12 +55,18 @@ export async function getCurrentVersion(db: D1Database): Promise<string | undefi
 	return result?.version;
 }
 
-export async function setActiveVersion(db: D1Database, version: string): Promise<void> {
-	// Disable all versions first, then enable the new one
-	await db.batch([
+export async function enableConfigVersion(db: D1Database, version: string): Promise<void> {
+	// Disable all versions, enable the new one, then delete old inactive versions - all in one batch
+	const statements: D1PreparedStatement[] = [
+		// Disable all currently active versions
 		db.prepare("UPDATE config_versions SET active = FALSE WHERE active = TRUE"),
-		db.prepare("INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, TRUE)").bind(version)
-	]);
+		// Enable the new version
+		db.prepare("UPDATE config_versions SET active = TRUE WHERE version = ?").bind(version),
+		// Delete all inactive versions (cleanup old data)
+		db.prepare("DELETE FROM config_versions WHERE active = FALSE AND version != ?").bind(version)
+	];
+	
+	await db.batch(statements);
 }
 
 export async function lookupConfigFromD1(
@@ -58,7 +75,7 @@ export async function lookupConfigFromD1(
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string
-): Promise<{ devices: DeviceIdentifier[], upgrades: ConditionalUpgradeInfo[] } | undefined> {
+): Promise<UpdateConfig | undefined> {
 	// Get the current active version
 	const currentVersion = await getCurrentVersion(db);
 	if (!currentVersion) {
@@ -103,15 +120,16 @@ export async function lookupConfigFromD1(
 		return undefined;
 	}
 
-	// Get all upgrades for the matching devices
+	// Get all upgrades for the matching devices via the junction table
 	const deviceIds = matchingDevices.map((d: DeviceRow) => d.id);
 	const placeholders = deviceIds.map(() => '?').join(',');
 	
 	const upgradesQuery = `
 		SELECT u.*, uf.target, uf.url, uf.integrity
-		FROM upgrades u
+		FROM device_upgrades du
+		JOIN upgrades u ON du.upgrade_id = u.id
 		JOIN upgrade_files uf ON u.id = uf.upgrade_id
-		WHERE u.device_id IN (${placeholders})
+		WHERE du.device_id IN (${placeholders})
 		ORDER BY u.id, uf.target
 	`;
 	
@@ -135,7 +153,6 @@ export async function lookupConfigFromD1(
 			upgradeMap.set(row.id, {
 				upgrade: {
 					id: row.id,
-					device_id: row.device_id,
 					version: row.version,
 					firmware_version: row.firmware_version,
 					changelog: row.changelog,
@@ -183,8 +200,8 @@ export async function lookupConfigFromD1(
 		firmwareVersion,
 	};
 
-	// Convert upgrades and apply conditional filtering
-	const upgrades: ConditionalUpgradeInfo[] = Array.from(upgradeMap.values())
+	// Convert upgrades and apply conditional filtering, removing $if field
+	const upgrades: UpgradeInfo[] = Array.from(upgradeMap.values())
 		.map(({ upgrade, files }) => ({
 			...(upgrade.condition && { $if: upgrade.condition }),
 			version: upgrade.firmware_version,
@@ -203,161 +220,101 @@ export async function lookupConfigFromD1(
 				return conditionApplies(upgrade, deviceId);
 			}
 			return true;
-		});
+		})
+		.map(({ $if, ...upgrade }) => upgrade); // Remove $if field from final result
 
 	return { devices: deviceIdentifiers, upgrades };
 }
 
-export async function insertConfigData(
+export async function insertSingleConfigData(
 	db: D1Database,
 	version: string,
-	configData: { devices: DeviceIdentifier[], upgrades: ConditionalUpgradeInfo[] }[]
+	config: { devices: DeviceIdentifier[], upgrades: ConditionalUpgradeInfo[] }
 ): Promise<void> {
-	const statements: D1PreparedStatement[] = [];
-
-	// Insert or update the version record first
-	statements.push(
-		db.prepare("INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, FALSE)").bind(version)
-	);
-
-	// Process each config file's data
-	for (const config of configData) {
-		const { devices, upgrades } = config;
-		
-		// Insert devices first
-		for (const device of devices) {
-			const deviceStmt = db.prepare(`
-				INSERT INTO devices (
-					version, brand, model, manufacturer_id, product_type, product_id,
-					firmware_version_min, firmware_version_max
-				) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-			`).bind(
-				version,
-				device.brand,
-				device.model,
-				device.manufacturerId,
-				device.productType,
-				device.productId,
-				device.firmwareVersion.min,
-				device.firmwareVersion.max
-			);
-			statements.push(deviceStmt);
-		}
-	}
-
-	// Execute all device insertions first
-	await db.batch(statements);
-
-	// Now insert upgrades and files using a more efficient approach
-	const upgradeStatements: D1PreparedStatement[] = [];
-	const fileStatements: D1PreparedStatement[] = [];
+	const { devices, upgrades } = config;
 	
-	for (const config of configData) {
-		const { devices, upgrades } = config;
+	// Insert devices and get their IDs using RETURNING
+	const deviceIds: number[] = [];
+	for (const device of devices) {
+		const result = await db.prepare(`
+			INSERT INTO devices (
+				version, brand, model, manufacturer_id, product_type, product_id,
+				firmware_version_min, firmware_version_max
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+			RETURNING id
+		`).bind(
+			version,
+			device.brand,
+			device.model,
+			device.manufacturerId,
+			device.productType,
+			device.productId,
+			device.firmwareVersion.min,
+			device.firmwareVersion.max
+		).first<{ id: number }>();
 		
-		// For each device in this config, we need to insert its upgrades
-		for (const device of devices) {
-			// Get the device ID we just inserted by querying back
-			const deviceIdResult = await db.prepare(`
-				SELECT id FROM devices 
-				WHERE version = ? AND manufacturer_id = ? AND product_type = ? AND product_id = ?
-				AND firmware_version_min = ? AND firmware_version_max = ?
-				ORDER BY id DESC LIMIT 1
-			`).bind(
-				version,
-				device.manufacturerId,
-				device.productType,
-				device.productId,
-				device.firmwareVersion.min,
-				device.firmwareVersion.max
-			).first<{ id: number }>();
-
-			if (!deviceIdResult) continue;
-			const deviceId = deviceIdResult.id;
-
-			// Insert upgrades for this device
-			for (const upgrade of upgrades) {
-				const upgradeStmt = db.prepare(`
-					INSERT INTO upgrades (
-						device_id, version, firmware_version, changelog, channel, region, condition
-					) VALUES (?, ?, ?, ?, ?, ?, ?)
-				`).bind(
-					deviceId,
-					version,
-					upgrade.version,
-					upgrade.changelog,
-					upgrade.channel,
-					upgrade.region || null,
-					upgrade.$if || null
-				);
-				upgradeStatements.push(upgradeStmt);
-			}
+		if (result) {
+			deviceIds.push(result.id);
 		}
 	}
 
-	// Execute upgrade insertions
-	if (upgradeStatements.length > 0) {
-		await db.batch(upgradeStatements);
-	}
-
-	// Finally insert files for upgrades
-	for (const config of configData) {
-		const { devices, upgrades } = config;
+	// Insert upgrades and get their IDs using RETURNING
+	const upgradeIds: number[] = [];
+	for (const upgrade of upgrades) {
+		const result = await db.prepare(`
+			INSERT INTO upgrades (
+				version, firmware_version, changelog, channel, region, condition
+			) VALUES (?, ?, ?, ?, ?, ?)
+			RETURNING id
+		`).bind(
+			version,
+			upgrade.version,
+			upgrade.changelog,
+			upgrade.channel,
+			upgrade.region || null,
+			upgrade.$if || null
+		).first<{ id: number }>();
 		
-		for (const device of devices) {
-			const deviceIdResult = await db.prepare(`
-				SELECT id FROM devices 
-				WHERE version = ? AND manufacturer_id = ? AND product_type = ? AND product_id = ?
-				AND firmware_version_min = ? AND firmware_version_max = ?
-				ORDER BY id DESC LIMIT 1
-			`).bind(
-				version,
-				device.manufacturerId,
-				device.productType,
-				device.productId,
-				device.firmwareVersion.min,
-				device.firmwareVersion.max
-			).first<{ id: number }>();
-
-			if (!deviceIdResult) continue;
-			const deviceId = deviceIdResult.id;
-
-			for (const upgrade of upgrades) {
-				// Get the upgrade ID
-				const upgradeIdResult = await db.prepare(`
-					SELECT id FROM upgrades 
-					WHERE device_id = ? AND version = ? AND firmware_version = ?
-					ORDER BY id DESC LIMIT 1
-				`).bind(
-					deviceId,
-					version,
-					upgrade.version
-				).first<{ id: number }>();
-
-				if (!upgradeIdResult) continue;
-				const upgradeId = upgradeIdResult.id;
-
-				// Insert files for this upgrade
-				for (const file of upgrade.files) {
-					const fileStmt = db.prepare(`
-						INSERT INTO upgrade_files (upgrade_id, target, url, integrity)
-						VALUES (?, ?, ?, ?)
-					`).bind(upgradeId, file.target, file.url, file.integrity);
-					fileStatements.push(fileStmt);
-				}
-			}
+		if (result) {
+			upgradeIds.push(result.id);
 		}
 	}
 
-	// Execute file insertions
+	// Create device-upgrade relationships in the junction table
+	const junctionStatements: D1PreparedStatement[] = [];
+	for (const deviceId of deviceIds) {
+		for (const upgradeId of upgradeIds) {
+			junctionStatements.push(
+				db.prepare(`
+					INSERT INTO device_upgrades (device_id, upgrade_id) VALUES (?, ?)
+				`).bind(deviceId, upgradeId)
+			);
+		}
+	}
+	
+	if (junctionStatements.length > 0) {
+		await db.batch(junctionStatements);
+	}
+
+	// Insert upgrade files
+	const fileStatements: D1PreparedStatement[] = [];
+	for (let i = 0; i < upgrades.length; i++) {
+		const upgrade = upgrades[i];
+		const upgradeId = upgradeIds[i];
+		
+		for (const file of upgrade.files) {
+			fileStatements.push(
+				db.prepare(`
+					INSERT INTO upgrade_files (upgrade_id, target, url, integrity)
+					VALUES (?, ?, ?, ?)
+				`).bind(upgradeId, file.target, file.url, file.integrity)
+			);
+		}
+	}
+	
 	if (fileStatements.length > 0) {
 		await db.batch(fileStatements);
 	}
-}
-
-export async function deleteConfigVersion(db: D1Database, version: string): Promise<void> {
-	// Delete the version and all related data (cascading deletes will handle the rest)
-	await db.prepare("DELETE FROM config_versions WHERE version = ?").bind(version).run();
 }
 
 export async function listConfigVersions(db: D1Database): Promise<{ version: string, active: boolean, created_at: string }[]> {

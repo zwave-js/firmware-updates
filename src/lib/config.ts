@@ -11,7 +11,6 @@ import {
 	compareVersions,
 	DeviceID,
 } from "./shared";
-import { lookupConfigFromD1 } from "./d1Operations";
 
 export class ConditionalUpdateConfig implements IConfig {
 	public constructor(definition: any) {
@@ -74,30 +73,4 @@ export class ConditionalUpdateConfig implements IConfig {
 export interface UpdateConfig {
 	readonly devices: readonly DeviceIdentifier[];
 	readonly upgrades: readonly UpgradeInfo[];
-}
-
-export async function lookupConfigD1(
-	db: D1Database,
-	manufacturerId: number | string,
-	productType: number | string,
-	productId: number | string,
-	firmwareVersion: string
-): Promise<UpdateConfig | undefined> {
-	const result = await lookupConfigFromD1(
-		db,
-		manufacturerId,
-		productType,
-		productId,
-		firmwareVersion
-	);
-
-	if (!result) return undefined;
-
-	// Convert ConditionalUpgradeInfo to UpgradeInfo by removing $if conditions
-	const upgrades: UpgradeInfo[] = result.upgrades.map(({ $if, ...upgrade }) => upgrade);
-
-	return {
-		devices: result.devices,
-		upgrades
-	};
 }
