@@ -6,6 +6,7 @@ export interface CloudflareEnvironment {
 	ADMIN_SECRET?: string;
 
 	CONFIG_FILES: R2Bucket;
+	DB: D1Database;
 
 	API_KEYS: KVNamespace;
 	RL_FREE: RateLimit;

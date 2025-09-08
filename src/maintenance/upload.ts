@@ -26,18 +26,22 @@ if (!baseURL) {
 }
 
 void (async () => {
-	const indexContent = await NodeFS.readFile(
-		path.join(configDir, "index.json")
+	// Find all config files directly instead of using index.json
+	const configFiles = (await NodeFS.readDir(configDir, true)).filter(
+		(file) =>
+			file.endsWith(".json") &&
+			!file.endsWith("index.json") &&
+			!path.basename(file).startsWith("_") &&
+			!file.includes("/templates/") &&
+			!file.includes("\\templates\\")
 	);
-	const index = JSON5.parse<ConfigIndexEntry[]>(indexContent);
 
-	const files: { filename: string; data: string }[] = [
-		{ filename: "index.json", data: indexContent },
-	];
-	for (const entry of index) {
-		const filenameFull = path.join(configDir, entry.filename);
-		const fileContent = await NodeFS.readFile(filenameFull);
-		files.push({ filename: entry.filename, data: fileContent });
+	const files: { filename: string; data: string }[] = [];
+	
+	for (const filePath of configFiles) {
+		const relativePath = path.relative(configDir, filePath).replace(/\\/g, "/");
+		const fileContent = await NodeFS.readFile(filePath);
+		files.push({ filename: relativePath, data: fileContent });
 	}
 
 	const hasher = crypto.createHash("sha256");

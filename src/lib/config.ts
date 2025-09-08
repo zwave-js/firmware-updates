@@ -1,6 +1,7 @@
 import JSON5 from "json5";
 import path from "path-browserify";
 import semver from "semver";
+import type { D1Database } from "@cloudflare/workers-types";
 import {
 	ConditionalUpgradeInfo,
 	configSchema,
@@ -17,6 +18,7 @@ import {
 	formatId,
 	padVersion,
 } from "./shared";
+import { lookupConfigFromD1 } from "./d1Operations";
 
 let index: ConfigIndexEntry[] | undefined;
 
@@ -236,4 +238,30 @@ export async function lookupConfig(
 		// Ignore and return nothing
 		return;
 	}
+}
+
+export async function lookupConfigD1(
+	db: D1Database,
+	manufacturerId: number | string,
+	productType: number | string,
+	productId: number | string,
+	firmwareVersion: string
+): Promise<UpdateConfig | undefined> {
+	const result = await lookupConfigFromD1(
+		db,
+		manufacturerId,
+		productType,
+		productId,
+		firmwareVersion
+	);
+
+	if (!result) return undefined;
+
+	// Convert ConditionalUpgradeInfo to UpgradeInfo by removing $if conditions
+	const upgrades: UpgradeInfo[] = result.upgrades.map(({ $if, ...upgrade }) => upgrade);
+
+	return {
+		devices: result.devices,
+		upgrades
+	};
 }

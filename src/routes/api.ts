@@ -11,9 +11,10 @@ import {
 	APIv4_Response,
 } from "../apiDefinitions";
 import { withCache } from "../lib/cache";
-import { lookupConfig } from "../lib/config";
+import { lookupConfig, lookupConfigD1 } from "../lib/config";
 import type { UpgradeInfo } from "../lib/configSchema";
 import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
+import { getCurrentVersion } from "../lib/d1Operations";
 import { array2hex, compareVersions, padVersion } from "../lib/shared";
 import {
 	clientError,
@@ -26,7 +27,7 @@ import type { CloudflareEnvironment } from "../worker";
 
 function getUpdatesCacheUrl(
 	requestUrl: string,
-	filesVersion: string,
+	dbVersion: string,
 	manufacturerId: string,
 	productType: string,
 	productId: string,
@@ -37,7 +38,7 @@ function getUpdatesCacheUrl(
 		requestUrl += "/";
 	}
 	const parts = [
-		filesVersion,
+		dbVersion,
 		manufacturerId,
 		productType,
 		productId,
@@ -71,20 +72,16 @@ async function handleUpdateRequest(
 	const { manufacturerId, productType, productId, firmwareVersion } =
 		result.data;
 
-	const filesVersion = await getFilesVersion(
-		req.url,
-		context,
-		env.CONFIG_FILES
-	);
+	const dbVersion = await getCurrentVersion(env.DB);
 
-	if (!filesVersion) {
-		return serverError("Filesystem empty");
+	if (!dbVersion) {
+		return serverError("Database empty");
 	}
 
 	// Figure out if this info is already cached
 	const cacheKey = getUpdatesCacheUrl(
 		req.url,
-		filesVersion,
+		dbVersion,
 		manufacturerId,
 		productType,
 		productId,
@@ -100,19 +97,13 @@ async function handleUpdateRequest(
 			// Cache for 1 hour on the client
 			maxAge: 60 * 60,
 			// Cache for 1 day on the server.
-			// We use the file hash/revision as part of the cache key,
+			// We use the database version as part of the cache key,
 			// so we can safely cache for a longer time.
 			sMaxAge: 60 * 60 * 24,
 		},
 		async () => {
-			const config = await lookupConfig(
-				createCachedR2FS(
-					req.url,
-					context,
-					env.CONFIG_FILES,
-					filesVersion
-				),
-				"/",
+			const config = await lookupConfigD1(
+				env.DB,
 				manufacturerId,
 				productType,
 				productId,
@@ -332,14 +323,10 @@ export default function register(router: ThrowableRouter): void {
 			}
 			const { region, devices } = result.data;
 
-			const filesVersion = await getFilesVersion(
-				req.url,
-				context,
-				env.CONFIG_FILES
-			);
+			const dbVersion = await getCurrentVersion(env.DB);
 
-			if (!filesVersion) {
-				return serverError("Filesystem empty");
+			if (!dbVersion) {
+				return serverError("Database empty");
 			}
 
 			// Remove duplicates and sort devices for consistent cache key
@@ -373,7 +360,7 @@ export default function register(router: ThrowableRouter): void {
 			const deviceHashes = await Promise.all(
 				uniqueDevices.map(async (device) => {
 					const parts = [
-						filesVersion,
+						dbVersion,
 						device.manufacturerId,
 						device.productType,
 						device.productId,
@@ -411,26 +398,17 @@ export default function register(router: ThrowableRouter): void {
 					// Cache for 1 hour on the client
 					maxAge: 60 * 60,
 					// Cache for 1 day on the server.
-					// We use the file hash/revision as part of the cache key,
+					// We use the database version as part of the cache key,
 					// so we can safely cache for a longer time.
 					sMaxAge: 60 * 60 * 24,
 				},
 				async () => {
 					const response: APIv4_Response = [];
 
-					// Create cached R2FS once for all lookups
-					const cachedR2FS = createCachedR2FS(
-						req.url,
-						context,
-						env.CONFIG_FILES,
-						filesVersion
-					);
-
 					// Process each unique device
 					for (const device of uniqueDevices) {
-						const config = await lookupConfig(
-							cachedR2FS,
-							"/",
+						const config = await lookupConfigD1(
+							env.DB,
 							device.manufacturerId,
 							device.productType,
 							device.productId,

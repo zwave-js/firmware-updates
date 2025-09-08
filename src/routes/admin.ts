@@ -11,6 +11,8 @@ import {
 	getFilesVersion,
 	putFilesVersion,
 } from "../lib/fs/cachedR2FS";
+import { getCurrentVersion, setActiveVersion, insertConfigData, deleteConfigVersion } from "../lib/d1Operations";
+import { ConditionalUpdateConfig } from "../lib/config";
 import { hex2array } from "../lib/shared";
 import {
 	clientError,
@@ -20,6 +22,7 @@ import {
 } from "../lib/shared_cloudflare";
 import { uploadSchema } from "../lib/uploadSchema";
 import type { CloudflareEnvironment } from "../worker";
+import JSON5 from "json5";
 
 export default function register(router: ThrowableRouter): void {
 	// Verify the admin token
@@ -91,47 +94,44 @@ export default function register(router: ThrowableRouter): void {
 				}
 
 				const newVersion = result.data.version;
-				const fs = createCachedR2FS(
-					req.url,
-					context,
-					env.CONFIG_FILES,
-					newVersion
-				);
+				const configData: { devices: any[], upgrades: any[] }[] = [];
 
 				for (const action of result.data.actions) {
 					if (action.task === "put") {
-						// Upload a file for the current revision/version
-						if (!action.filename.startsWith("/")) {
-							action.filename = "/" + action.filename;
+						// Process config file data for D1 insertion
+						if (action.filename === "index.json") {
+							// Skip index.json as we don't need it anymore
+							continue;
 						}
 
-						await fs.writeFile(action.filename, action.data);
+						try {
+							const definition = JSON5.parse(action.data);
+							const config = new ConditionalUpdateConfig(definition);
+							configData.push({
+								devices: config.devices,
+								upgrades: config.upgrades
+							});
+						} catch (e) {
+							console.error(`Error parsing config file ${action.filename}:`, e);
+							// Skip invalid files but don't fail the whole upload
+							continue;
+						}
 					} else if (action.task === "enable") {
-						// Enable the current revision, delete all other revisions
-						const oldVersion = await getFilesVersion(
-							req.url,
-							context,
-							env.CONFIG_FILES
-						);
-						if (oldVersion && oldVersion !== newVersion) {
-							const oldFs = createCachedR2FS(
-								req.url,
-								context,
-								env.CONFIG_FILES,
-								oldVersion
-							);
-							await oldFs.deleteDir("/");
+						// Insert all config data into D1
+						if (configData.length > 0) {
+							await insertConfigData(env.DB, newVersion, configData);
 						}
 
-						// Update version file, so new requests will use the new version
-						await putFilesVersion(
-							req.url,
-							context,
-							env.CONFIG_FILES,
-							newVersion
-						);
+						// Clean up old version data
+						const oldVersion = await getCurrentVersion(env.DB);
+						if (oldVersion && oldVersion !== newVersion) {
+							await deleteConfigVersion(env.DB, oldVersion);
+						}
 
-						// Make sure not to write any extra files after this
+						// Enable the new version
+						await setActiveVersion(env.DB, newVersion);
+
+						// Make sure not to process any more files after this
 						break;
 					}
 				}
@@ -151,11 +151,7 @@ export default function register(router: ThrowableRouter): void {
 			env: CloudflareEnvironment,
 			context: ExecutionContext
 		) => {
-			const ret = await getFilesVersion(
-				req.url,
-				context,
-				env.CONFIG_FILES
-			);
+			const ret = await getCurrentVersion(env.DB);
 			return text(ret || "");
 		}
 	);

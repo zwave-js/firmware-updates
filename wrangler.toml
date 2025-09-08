@@ -19,6 +19,12 @@ deleted_classes = ["RateLimiterDurableObject"]
 binding = "CONFIG_FILES"
 bucket_name = "zwave-js-firmware-updates--config-files"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "zwave-js-firmware-updates"
+database_id = "firmware-updates-db"
+migrations_dir = "migrations"
+
 [[unsafe.bindings]]
 type = "ratelimit"
 # Free ratelimit bucket - 120 requests per hour
