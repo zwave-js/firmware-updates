@@ -213,10 +213,9 @@ export async function insertConfigData(
 	version: string,
 	configData: { devices: DeviceIdentifier[], upgrades: ConditionalUpgradeInfo[] }[]
 ): Promise<void> {
-	// Start a transaction-like batch operation
 	const statements: D1PreparedStatement[] = [];
 
-	// Insert or update the version record
+	// Insert or update the version record first
 	statements.push(
 		db.prepare("INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, FALSE)").bind(version)
 	);
@@ -225,7 +224,7 @@ export async function insertConfigData(
 	for (const config of configData) {
 		const { devices, upgrades } = config;
 		
-		// Insert devices
+		// Insert devices first
 		for (const device of devices) {
 			const deviceStmt = db.prepare(`
 				INSERT INTO devices (
@@ -243,30 +242,27 @@ export async function insertConfigData(
 				device.firmwareVersion.max
 			);
 			statements.push(deviceStmt);
-
-			// For each upgrade, we need to associate it with this device
-			// We'll handle this after inserting devices to get the device IDs
 		}
 	}
 
-	// Execute device insertions first
-	const deviceResults = await db.batch(statements);
-	
-	// Now insert upgrades and files - we need to handle this differently since we need device IDs
-	// For now, let's use a simpler approach where we query back the device IDs
+	// Execute all device insertions first
+	await db.batch(statements);
+
+	// Now insert upgrades and files using a more efficient approach
 	const upgradeStatements: D1PreparedStatement[] = [];
+	const fileStatements: D1PreparedStatement[] = [];
 	
 	for (const config of configData) {
 		const { devices, upgrades } = config;
 		
-		// For each device in this config
+		// For each device in this config, we need to insert its upgrades
 		for (const device of devices) {
-			// Find the device ID we just inserted
+			// Get the device ID we just inserted by querying back
 			const deviceIdResult = await db.prepare(`
 				SELECT id FROM devices 
 				WHERE version = ? AND manufacturer_id = ? AND product_type = ? AND product_id = ?
 				AND firmware_version_min = ? AND firmware_version_max = ?
-				LIMIT 1
+				ORDER BY id DESC LIMIT 1
 			`).bind(
 				version,
 				device.manufacturerId,
@@ -300,40 +296,40 @@ export async function insertConfigData(
 	}
 
 	// Execute upgrade insertions
-	const upgradeResults = await db.batch(upgradeStatements);
+	if (upgradeStatements.length > 0) {
+		await db.batch(upgradeStatements);
+	}
 
-	// Finally, insert files for each upgrade
-	const fileStatements: D1PreparedStatement[] = [];
-	let upgradeIndex = 0;
-	
+	// Finally insert files for upgrades
 	for (const config of configData) {
 		const { devices, upgrades } = config;
 		
 		for (const device of devices) {
+			const deviceIdResult = await db.prepare(`
+				SELECT id FROM devices 
+				WHERE version = ? AND manufacturer_id = ? AND product_type = ? AND product_id = ?
+				AND firmware_version_min = ? AND firmware_version_max = ?
+				ORDER BY id DESC LIMIT 1
+			`).bind(
+				version,
+				device.manufacturerId,
+				device.productType,
+				device.productId,
+				device.firmwareVersion.min,
+				device.firmwareVersion.max
+			).first<{ id: number }>();
+
+			if (!deviceIdResult) continue;
+			const deviceId = deviceIdResult.id;
+
 			for (const upgrade of upgrades) {
-				// Get the upgrade ID we just inserted
-				const deviceIdResult = await db.prepare(`
-					SELECT id FROM devices 
-					WHERE version = ? AND manufacturer_id = ? AND product_type = ? AND product_id = ?
-					AND firmware_version_min = ? AND firmware_version_max = ?
-					LIMIT 1
-				`).bind(
-					version,
-					device.manufacturerId,
-					device.productType,
-					device.productId,
-					device.firmwareVersion.min,
-					device.firmwareVersion.max
-				).first<{ id: number }>();
-
-				if (!deviceIdResult) continue;
-
+				// Get the upgrade ID
 				const upgradeIdResult = await db.prepare(`
 					SELECT id FROM upgrades 
 					WHERE device_id = ? AND version = ? AND firmware_version = ?
-					LIMIT 1
+					ORDER BY id DESC LIMIT 1
 				`).bind(
-					deviceIdResult.id,
+					deviceId,
 					version,
 					upgrade.version
 				).first<{ id: number }>();

@@ -11,9 +11,8 @@ import {
 	APIv4_Response,
 } from "../apiDefinitions";
 import { withCache } from "../lib/cache";
-import { lookupConfig, lookupConfigD1 } from "../lib/config";
+import { lookupConfigD1 } from "../lib/config";
 import type { UpgradeInfo } from "../lib/configSchema";
-import { createCachedR2FS, getFilesVersion } from "../lib/fs/cachedR2FS";
 import { getCurrentVersion } from "../lib/d1Operations";
 import { array2hex, compareVersions, padVersion } from "../lib/shared";
 import {

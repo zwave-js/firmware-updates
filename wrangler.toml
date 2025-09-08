@@ -3,7 +3,6 @@ main = "./src/worker.ts"
 compatibility_date = "2022-08-28"
 
 kv_namespaces = [
-#   { binding = "R2_CACHE", id = "a14d0c5671564efda1e3db0e2f98da60" },
   { binding = "API_KEYS", id = "7edd033eda014a5ebdd02aed07f31063" }
 ]
 
@@ -14,10 +13,6 @@ new_classes = ["RateLimiterDurableObject"]
 [[migrations]]
 tag = "v2"
 deleted_classes = ["RateLimiterDurableObject"]
-
-[[r2_buckets]]
-binding = "CONFIG_FILES"
-bucket_name = "zwave-js-firmware-updates--config-files"
 
 [[d1_databases]]
 binding = "DB"

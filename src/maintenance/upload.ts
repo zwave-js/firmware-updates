@@ -2,7 +2,6 @@ import axios from "axios";
 import JSON5 from "json5";
 import crypto from "node:crypto";
 import path from "path-browserify";
-import type { ConfigIndexEntry } from "../lib/config";
 import type { UploadPayload } from "../lib/uploadSchema";
 import { NodeFS } from "./nodeFS";
 

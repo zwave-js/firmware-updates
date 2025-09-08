@@ -6,11 +6,6 @@ import {
 	type ThrowableRouter,
 } from "itty-router-extras";
 import { encryptAPIKey } from "../lib/apiKeys";
-import {
-	createCachedR2FS,
-	getFilesVersion,
-	putFilesVersion,
-} from "../lib/fs/cachedR2FS";
 import { getCurrentVersion, setActiveVersion, insertConfigData, deleteConfigVersion } from "../lib/d1Operations";
 import { ConditionalUpdateConfig } from "../lib/config";
 import { hex2array } from "../lib/shared";

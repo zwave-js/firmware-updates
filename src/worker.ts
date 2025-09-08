@@ -5,7 +5,6 @@ export interface CloudflareEnvironment {
 	API_KEY_ENC_KEY: string;
 	ADMIN_SECRET?: string;
 
-	CONFIG_FILES: R2Bucket;
 	DB: D1Database;
 
 	API_KEYS: KVNamespace;
