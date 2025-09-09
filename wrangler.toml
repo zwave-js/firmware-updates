@@ -15,10 +15,9 @@ tag = "v2"
 deleted_classes = ["RateLimiterDurableObject"]
 
 [[d1_databases]]
-binding = "DB"
-database_name = "zwave-js-firmware-updates"
-database_id = "firmware-updates-db"
-migrations_dir = "migrations"
+binding = "CONFIG_FILES"
+database_name = "zwave-js-firmware-updates--prod"
+database_id = "6d9a21f3-6886-4d53-b7dc-3b03dad70698"
 
 [[unsafe.bindings]]
 type = "ratelimit"

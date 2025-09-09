@@ -85,7 +85,7 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			_context: ExecutionContext
 		) => {
 			try {
 				const result = await uploadSchema.safeParseAsync(req.content);
@@ -98,7 +98,7 @@ export default function register(router: ThrowableRouter): void {
 				for (const action of result.data.actions) {
 					if (action.task === "create") {
 						// Create a new config version in the database
-						await createConfigVersion(env.DB, newVersion);
+						await createConfigVersion(env.CONFIG_FILES, newVersion);
 					} else if (action.task === "put") {
 						// Process config file data for D1 insertion
 						if (action.filename === "index.json") {
@@ -113,10 +113,14 @@ export default function register(router: ThrowableRouter): void {
 							);
 
 							// Insert this single config immediately
-							await insertSingleConfigData(env.DB, newVersion, {
-								devices: config.devices,
-								upgrades: config.upgrades,
-							});
+							await insertSingleConfigData(
+								env.CONFIG_FILES,
+								newVersion,
+								{
+									devices: config.devices,
+									upgrades: config.upgrades,
+								}
+							);
 						} catch (e) {
 							console.error(
 								`Error parsing config file ${action.filename}:`,
@@ -127,7 +131,7 @@ export default function register(router: ThrowableRouter): void {
 						}
 					} else if (action.task === "enable") {
 						// Enable the new version and clean up old data
-						await enableConfigVersion(env.DB, newVersion);
+						await enableConfigVersion(env.CONFIG_FILES, newVersion);
 
 						// Make sure not to process any more files after this
 						break;
@@ -147,9 +151,9 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: Request,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			_context: ExecutionContext
 		) => {
-			const ret = await getCurrentVersion(env.DB);
+			const ret = await getCurrentVersion(env.CONFIG_FILES);
 			return text(ret || "");
 		}
 	);

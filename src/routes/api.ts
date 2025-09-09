@@ -70,7 +70,7 @@ async function handleUpdateRequest(
 	const { manufacturerId, productType, productId, firmwareVersion } =
 		result.data;
 
-	const dbVersion = await getCurrentVersion(env.DB);
+	const dbVersion = await getCurrentVersion(env.CONFIG_FILES);
 
 	if (!dbVersion) {
 		return serverError("Database empty");
@@ -101,7 +101,7 @@ async function handleUpdateRequest(
 		},
 		async () => {
 			const config = await lookupConfig(
-				env.DB,
+				env.CONFIG_FILES,
 				manufacturerId,
 				productType,
 				productId,
@@ -321,7 +321,7 @@ export default function register(router: ThrowableRouter): void {
 			}
 			const { region, devices } = result.data;
 
-			const dbVersion = await getCurrentVersion(env.DB);
+			const dbVersion = await getCurrentVersion(env.CONFIG_FILES);
 
 			if (!dbVersion) {
 				return serverError("Database empty");
@@ -406,7 +406,7 @@ export default function register(router: ThrowableRouter): void {
 					// Process each unique device
 					for (const device of uniqueDevices) {
 						const config = await lookupConfig(
-							env.DB,
+							env.CONFIG_FILES,
 							device.manufacturerId,
 							device.productType,
 							device.productId,
