@@ -70,16 +70,15 @@ async function handleUpdateRequest(
 	const { manufacturerId, productType, productId, firmwareVersion } =
 		result.data;
 
-	const dbVersion = await getCurrentVersion(env.CONFIG_FILES);
-
-	if (!dbVersion) {
+	const filesVersion = await getCurrentVersion(env.CONFIG_FILES);
+	if (!filesVersion) {
 		return serverError("Database empty");
 	}
 
 	// Figure out if this info is already cached
 	const cacheKey = getUpdatesCacheUrl(
 		req.url,
-		dbVersion,
+		filesVersion,
 		manufacturerId,
 		productType,
 		productId,
@@ -102,6 +101,7 @@ async function handleUpdateRequest(
 		async () => {
 			const config = await lookupConfig(
 				env.CONFIG_FILES,
+				filesVersion,
 				manufacturerId,
 				productType,
 				productId,
@@ -321,9 +321,8 @@ export default function register(router: ThrowableRouter): void {
 			}
 			const { region, devices } = result.data;
 
-			const dbVersion = await getCurrentVersion(env.CONFIG_FILES);
-
-			if (!dbVersion) {
+			const filesVersion = await getCurrentVersion(env.CONFIG_FILES);
+			if (!filesVersion) {
 				return serverError("Database empty");
 			}
 
@@ -358,7 +357,7 @@ export default function register(router: ThrowableRouter): void {
 			const deviceHashes = await Promise.all(
 				uniqueDevices.map(async (device) => {
 					const parts = [
-						dbVersion,
+						filesVersion,
 						device.manufacturerId,
 						device.productType,
 						device.productId,
@@ -407,6 +406,7 @@ export default function register(router: ThrowableRouter): void {
 					for (const device of uniqueDevices) {
 						const config = await lookupConfig(
 							env.CONFIG_FILES,
+							filesVersion,
 							device.manufacturerId,
 							device.productType,
 							device.productId,
