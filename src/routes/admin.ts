@@ -5,9 +5,15 @@ import {
 	withParams,
 	type ThrowableRouter,
 } from "itty-router-extras";
+import JSON5 from "json5";
 import { encryptAPIKey } from "../lib/apiKeys";
-import { getCurrentVersion, createConfigVersion, insertSingleConfigData, enableConfigVersion } from "../lib/d1Operations";
 import { ConditionalUpdateConfig } from "../lib/config";
+import {
+	createConfigVersion,
+	enableConfigVersion,
+	getCurrentVersion,
+	insertSingleConfigData,
+} from "../lib/d1Operations";
 import { hex2array } from "../lib/shared";
 import {
 	clientError,
@@ -17,7 +23,6 @@ import {
 } from "../lib/shared_cloudflare";
 import { uploadSchema } from "../lib/uploadSchema";
 import type { CloudflareEnvironment } from "../worker";
-import JSON5 from "json5";
 
 export default function register(router: ThrowableRouter): void {
 	// Verify the admin token
@@ -103,22 +108,27 @@ export default function register(router: ThrowableRouter): void {
 
 						try {
 							const definition = JSON5.parse(action.data);
-							const config = new ConditionalUpdateConfig(definition);
-							
+							const config = new ConditionalUpdateConfig(
+								definition
+							);
+
 							// Insert this single config immediately
 							await insertSingleConfigData(env.DB, newVersion, {
 								devices: config.devices,
-								upgrades: config.upgrades
+								upgrades: config.upgrades,
 							});
 						} catch (e) {
-							console.error(`Error parsing config file ${action.filename}:`, e);
+							console.error(
+								`Error parsing config file ${action.filename}:`,
+								e
+							);
 							// Skip invalid files but don't fail the whole upload
 							continue;
 						}
 					} else if (action.task === "enable") {
 						// Enable the new version and clean up old data
 						await enableConfigVersion(env.DB, newVersion);
-						
+
 						// Make sure not to process any more files after this
 						break;
 					}

@@ -1,5 +1,4 @@
 import axios from "axios";
-import JSON5 from "json5";
 import crypto from "node:crypto";
 import path from "path-browserify";
 import type { UploadPayload } from "../lib/uploadSchema";
@@ -36,9 +35,11 @@ void (async () => {
 	);
 
 	const files: { filename: string; data: string }[] = [];
-	
+
 	for (const filePath of configFiles) {
-		const relativePath = path.relative(configDir, filePath).replace(/\\/g, "/");
+		const relativePath = path
+			.relative(configDir, filePath)
+			.replace(/\\/g, "/");
 		const fileContent = await NodeFS.readFile(filePath);
 		files.push({ filename: relativePath, data: fileContent });
 	}
@@ -58,6 +59,20 @@ void (async () => {
 		console.log("No change in config files, skipping upload...");
 		return;
 	}
+
+	// First, create the new config version
+	console.log("Creating config version...");
+	const createPayload: UploadPayload = {
+		version,
+		actions: [{ task: "create" }],
+	};
+	await axios.post(
+		new URL("/admin/config/upload", baseURL).toString(),
+		createPayload,
+		{
+			headers: { "x-admin-secret": adminSecret },
+		}
+	);
 
 	let cursor = 0;
 

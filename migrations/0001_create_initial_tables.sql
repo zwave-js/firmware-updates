@@ -3,8 +3,7 @@
 -- Track configuration versions
 CREATE TABLE IF NOT EXISTS config_versions (
     version TEXT PRIMARY KEY,
-    active BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- Devices table - stores device information from the JSON configs
@@ -24,13 +23,11 @@ CREATE TABLE IF NOT EXISTS devices (
 -- Upgrades table - stores unique upgrade information
 CREATE TABLE IF NOT EXISTS upgrades (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    version TEXT NOT NULL, -- config version, not firmware version
     firmware_version TEXT NOT NULL, -- target firmware version
     changelog TEXT NOT NULL,
     channel TEXT NOT NULL DEFAULT 'stable',
     region TEXT,
-    condition TEXT, -- the $if condition
-    FOREIGN KEY (version) REFERENCES config_versions(version) ON DELETE CASCADE
+    condition TEXT -- the $if condition
 );
 
 -- Junction table for device-upgrade relationships (N:M)

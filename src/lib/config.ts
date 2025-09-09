@@ -1,4 +1,3 @@
-import type { D1Database } from "@cloudflare/workers-types";
 import {
 	ConditionalUpgradeInfo,
 	configSchema,
@@ -7,10 +6,7 @@ import {
 	UpgradeInfo,
 } from "./configSchema";
 import { conditionApplies } from "./Logic";
-import {
-	compareVersions,
-	DeviceID,
-} from "./shared";
+import { compareVersions, DeviceID } from "./shared";
 
 export class ConditionalUpdateConfig implements IConfig {
 	public constructor(definition: any) {

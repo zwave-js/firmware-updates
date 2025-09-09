@@ -11,9 +11,8 @@ import {
 	APIv4_Response,
 } from "../apiDefinitions";
 import { withCache } from "../lib/cache";
-import { lookupConfigFromD1 } from "../lib/d1Operations";
 import type { UpgradeInfo } from "../lib/configSchema";
-import { getCurrentVersion } from "../lib/d1Operations";
+import { getCurrentVersion, lookupConfig } from "../lib/d1Operations";
 import { array2hex, compareVersions, padVersion } from "../lib/shared";
 import {
 	clientError,
@@ -101,7 +100,7 @@ async function handleUpdateRequest(
 			sMaxAge: 60 * 60 * 24,
 		},
 		async () => {
-			const config = await lookupConfigFromD1(
+			const config = await lookupConfig(
 				env.DB,
 				manufacturerId,
 				productType,
@@ -406,7 +405,7 @@ export default function register(router: ThrowableRouter): void {
 
 					// Process each unique device
 					for (const device of uniqueDevices) {
-						const config = await lookupConfigFromD1(
+						const config = await lookupConfig(
 							env.DB,
 							device.manufacturerId,
 							device.productType,
