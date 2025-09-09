@@ -41,8 +41,8 @@ jobs:
     - name: Run linter
       run: yarn run lint
     
-    - name: Try to generate index file
-      run: yarn build:index
+    - name: Validate config files
+      run: yarn check:configs
 
     - name: Run component tests
       run: yarn run test:ci
@@ -82,9 +82,6 @@ jobs:
 
     - name: Install dependencies
       run: yarn install --immutable
-
-    - name: Generate index file
-      run: yarn build:index
 
     - name: Publish to Cloudflare
       uses: cloudflare/wrangler-action@v3

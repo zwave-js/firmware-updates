@@ -53,7 +53,27 @@ const deviceSchema = z.object({
 
 const fileSchema = z.object({
 	target: z.number().min(0).optional().default(0),
-	url: z.string().url(),
+	url: z.string().refine(
+		(val) => {
+			// Check for leading/trailing whitespace
+			if (val !== val.trim()) {
+				return false;
+			}
+			// Check if it's a valid URL
+			try {
+				new URL(val);
+				return true;
+			} catch {
+				return false;
+			}
+		},
+		(val) => ({
+			message:
+				val !== val.trim()
+					? "URL must not have leading or trailing whitespace"
+					: "Invalid url",
+		})
+	),
 	integrity: z
 		.string()
 		.regex(/^sha256:[a-f0-9A-F]{64}$/, "Is not a supported hash"),
