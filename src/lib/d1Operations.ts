@@ -99,17 +99,12 @@ export async function enableConfigVersion(
 
 export async function lookupConfig(
 	db: D1Database,
+	filesVersion: string,
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string
 ): Promise<UpdateConfig | undefined> {
-	// Get the current active version
-	const currentVersion = await getCurrentVersion(db);
-	if (!currentVersion) {
-		return undefined;
-	}
-
 	// Format IDs for query
 	const formattedManufacturerId = formatId(manufacturerId);
 	const formattedProductType = formatId(productType);
@@ -127,7 +122,7 @@ export async function lookupConfig(
 	const devices = await db
 		.prepare(deviceQuery)
 		.bind(
-			currentVersion,
+			filesVersion,
 			formattedManufacturerId,
 			formattedProductType,
 			formattedProductId
