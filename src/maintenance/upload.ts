@@ -1,8 +1,6 @@
 import axios from "axios";
-import JSON5 from "json5";
 import crypto from "node:crypto";
 import path from "path-browserify";
-import type { ConfigIndexEntry } from "../lib/config";
 import type { UploadPayload } from "../lib/uploadSchema";
 import { NodeFS } from "./nodeFS";
 
@@ -26,18 +24,24 @@ if (!baseURL) {
 }
 
 void (async () => {
-	const indexContent = await NodeFS.readFile(
-		path.join(configDir, "index.json")
+	// Find all config files directly instead of using index.json
+	const configFiles = (await NodeFS.readDir(configDir, true)).filter(
+		(file) =>
+			file.endsWith(".json") &&
+			!file.endsWith("index.json") &&
+			!path.basename(file).startsWith("_") &&
+			!file.includes("/templates/") &&
+			!file.includes("\\templates\\")
 	);
-	const index = JSON5.parse<ConfigIndexEntry[]>(indexContent);
 
-	const files: { filename: string; data: string }[] = [
-		{ filename: "index.json", data: indexContent },
-	];
-	for (const entry of index) {
-		const filenameFull = path.join(configDir, entry.filename);
-		const fileContent = await NodeFS.readFile(filenameFull);
-		files.push({ filename: entry.filename, data: fileContent });
+	const files: { filename: string; data: string }[] = [];
+
+	for (const filePath of configFiles) {
+		const relativePath = path
+			.relative(configDir, filePath)
+			.replace(/\\/g, "/");
+		const fileContent = await NodeFS.readFile(filePath);
+		files.push({ filename: relativePath, data: fileContent });
 	}
 
 	const hasher = crypto.createHash("sha256");
@@ -55,6 +59,20 @@ void (async () => {
 		console.log("No change in config files, skipping upload...");
 		return;
 	}
+
+	// First, create the new config version
+	console.log("Creating config version...");
+	const createPayload: UploadPayload = {
+		version,
+		actions: [{ task: "create" }],
+	};
+	await axios.post(
+		new URL("/admin/config/upload", baseURL).toString(),
+		createPayload,
+		{
+			headers: { "x-admin-secret": adminSecret },
+		}
+	);
 
 	let cursor = 0;
 

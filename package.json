@@ -8,11 +8,11 @@
   "type": "module",
   "scripts": {
     "check": "tsc -p tsconfig.build.json --noEmit && tsc -p src/maintenance/tsconfig.json --noEmit",
+    "check:configs": "yarn tsx src/maintenance/check_configs.ts",
     "lint": "eslint .",
     "test:ci": "NODE_OPTIONS='--loader=tsx' ava",
     "test": "yarn test:ci",
     "dev": "wrangler dev",
-    "build:index": "yarn tsx src/maintenance/generateIndex.ts",
     "upload": "yarn tsx src/maintenance/upload.ts"
   },
   "dependencies": {

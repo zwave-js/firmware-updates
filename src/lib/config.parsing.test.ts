@@ -128,8 +128,7 @@ test("Parse single config with invalid URL", async (t) => {
 		const msg = e.issues;
 		t.deepEqual(msg, [
 			{
-				validation: "url",
-				code: "invalid_string",
+				code: "custom",
 				message: "Invalid url",
 				path: ["upgrades", 0, "url"],
 			},
