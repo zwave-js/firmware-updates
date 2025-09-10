@@ -17,7 +17,7 @@ export interface UpdateConfig {
 }
 
 // Types for D1 query results
-interface DeviceRow {
+export interface DeviceRow {
 	id: number;
 	version: string;
 	brand: string;
@@ -283,8 +283,8 @@ export async function insertSingleConfigData(
 				device.manufacturerId,
 				device.productType,
 				device.productId,
-				device.firmwareVersion.min,
-				device.firmwareVersion.max
+				padVersion(device.firmwareVersion.min),
+				padVersion(device.firmwareVersion.max)
 			)
 			.first<{ id: number }>();
 

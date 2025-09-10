@@ -20,5 +20,21 @@
 			"fileMatch": ["/firmwares/**/*.json"],
 			"url": "/schemas/firmware.json"
 		}
-	]
+	],
+	"chat.tools.terminal.autoApprove": {
+		"yarn check": true,
+		"yarn lint": true,
+		"yarn test": true,
+		"yarn prettier -w": true,
+		"rm": false,
+		"rmdir": false,
+		"del": false,
+		"kill": false,
+		"curl": false,
+		"wget": false,
+		"eval": false,
+		"chmod": false,
+		"chown": false,
+		"/^Remove-Item\\b/i": false
+	}
 }
