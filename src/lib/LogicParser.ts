@@ -168,7 +168,7 @@ export class SyntaxError extends Error {
 		message: string,
 		expected: Expectation[],
 		found: string | null,
-		location: IFileRange
+		location: IFileRange,
 	) {
 		super();
 		this.message = message;
@@ -242,7 +242,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 			["A", "Z"],
 		],
 		false,
-		false
+		false,
 	);
 	const peg$c32 = /^[a-zA-Z0-9]/;
 	const peg$c33 = peg$classExpectation(
@@ -252,7 +252,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 			["0", "9"],
 		],
 		false,
-		false
+		false,
 	);
 	const peg$c34 = function (variable: any): any {
 		return { var: variable[1].join("") };
@@ -275,7 +275,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 			["a", "f"],
 		],
 		false,
-		true
+		true,
 	);
 	const peg$c46 = function (): any {
 		return parseInt(text(), 16);
@@ -314,7 +314,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 	if (options.startRule !== undefined) {
 		if (!(options.startRule in peg$startRuleFunctions)) {
 			throw new Error(
-				"Can't start parsing from rule \"" + options.startRule + '".'
+				"Can't start parsing from rule \"" + options.startRule + '".',
 			);
 		}
 
@@ -338,7 +338,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 		throw peg$buildStructuredError(
 			[peg$otherExpectation(description)],
 			input.substring(peg$savedPos, peg$currPos),
-			location1
+			location1,
 		);
 	}
 
@@ -353,7 +353,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 
 	function peg$literalExpectation(
 		text1: string,
-		ignoreCase: boolean
+		ignoreCase: boolean,
 	): ILiteralExpectation {
 		return { type: "literal", text: text1, ignoreCase: ignoreCase };
 	}
@@ -361,7 +361,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 	function peg$classExpectation(
 		parts: IClassParts,
 		inverted: boolean,
-		ignoreCase: boolean
+		ignoreCase: boolean,
 	): IClassExpectation {
 		return {
 			type: "class",
@@ -456,13 +456,13 @@ function peg$parse(input: string, options?: IParseOptions) {
 	function peg$buildStructuredError(
 		expected1: Expectation[],
 		found: string | null,
-		location1: IFileRange
+		location1: IFileRange,
 	) {
 		return new SyntaxError(
 			SyntaxError.buildMessage(expected1, found),
 			expected1,
 			found,
-			location1
+			location1,
 		);
 	}
 
@@ -1629,7 +1629,7 @@ function peg$parse(input: string, options?: IParseOptions) {
 			peg$maxFailPos < input.length ? input.charAt(peg$maxFailPos) : null,
 			peg$maxFailPos < input.length
 				? peg$computeLocation(peg$maxFailPos, peg$maxFailPos + 1)
-				: peg$computeLocation(peg$maxFailPos, peg$maxFailPos)
+				: peg$computeLocation(peg$maxFailPos, peg$maxFailPos),
 		);
 	}
 }

@@ -1,4 +1,4 @@
-import { array2hex } from "./shared";
+import { array2hex } from "./shared.js";
 
 export interface CacheOptions {
 	req?: RequestInit;
@@ -10,7 +10,7 @@ export interface CacheOptions {
 
 export async function withCache(
 	options: CacheOptions,
-	responseFactory: () => Promise<Response | null | undefined>
+	responseFactory: () => Promise<Response | null | undefined>,
 ): Promise<Response> {
 	const { req, context, cacheKey, sMaxAge = 600, maxAge = 5 } = options;
 
@@ -46,15 +46,15 @@ export async function withCache(
 			new Uint8Array(
 				await crypto.subtle.digest(
 					"SHA-256",
-					new TextEncoder().encode(responseBody)
-				)
-			)
+					new TextEncoder().encode(responseBody),
+				),
+			),
 		);
 
 		// Cache the response for 10 minutes on the server, revalidate after 5 seconds on the client
 		response.headers.append(
 			"Cache-Control",
-			`public, s-maxage=${sMaxAge}, max-age=${maxAge}, stale-while-revalidate`
+			`public, s-maxage=${sMaxAge}, max-age=${maxAge}, stale-while-revalidate`,
 		);
 		response.headers.append("ETag", hash);
 		context.waitUntil(cache.put(cacheKey, response.clone()));

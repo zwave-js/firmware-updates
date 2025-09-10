@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x] # This should be LTS
+        node-version: [22] # This should be LTS
 
     steps:
     - name: Checkout code
@@ -68,7 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x] # This should be LTS
+        node-version: [22] # This should be LTS
 
     steps:
     - name: Checkout code

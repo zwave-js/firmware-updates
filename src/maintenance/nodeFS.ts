@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { FileSystem } from "../lib/fs/filesystem";
-import { getErrorMessage } from "../lib/shared";
+import type { FileSystem } from "../lib/fs/filesystem.js";
+import { getErrorMessage } from "../lib/shared.js";
 
 export const NodeFS: FileSystem = {
 	writeFile: function (file: string, data: string): Promise<void> {
@@ -31,8 +31,8 @@ export const NodeFS: FileSystem = {
 				console.error(
 					`Cannot read directory: "${dir}": ${getErrorMessage(
 						e,
-						true
-					)}`
+						true,
+					)}`,
 				);
 			}
 		} else {

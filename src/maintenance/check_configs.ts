@@ -1,8 +1,8 @@
 import JSON5 from "json5";
 import path from "path-browserify";
-import { ConditionalUpdateConfig } from "../lib/config";
-import { getErrorMessage } from "../lib/shared";
-import { NodeFS } from "./nodeFS";
+import { ConditionalUpdateConfig } from "../lib/config.js";
+import { getErrorMessage } from "../lib/shared.js";
+import { NodeFS } from "./nodeFS.js";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -36,12 +36,12 @@ async function validateConfigFile(filePath: string): Promise<ValidationResult> {
 			) {
 				// This is a zod validation error
 				errors.push(
-					`Schema validation failed: ${getErrorMessage(parseError)}`
+					`Schema validation failed: ${getErrorMessage(parseError)}`,
 				);
 			} else {
 				// This could be JSON5 parsing error or other validation errors
 				errors.push(
-					`Validation failed: ${getErrorMessage(parseError)}`
+					`Validation failed: ${getErrorMessage(parseError)}`,
 				);
 			}
 		}
@@ -66,20 +66,20 @@ void (async () => {
 				!file.endsWith("index.json") &&
 				!path.basename(file).startsWith("_") &&
 				!file.includes("/templates/") &&
-				!file.includes("\\templates\\")
+				!file.includes("\\templates\\"),
 		);
 
 		console.log(`Found ${configFiles.length} config files to validate.`);
 
 		const results = await Promise.all(
-			configFiles.map((filePath) => validateConfigFile(filePath))
+			configFiles.map((filePath) => validateConfigFile(filePath)),
 		);
 
 		const validFiles = results.filter(
-			(result) => result.errors.length === 0
+			(result) => result.errors.length === 0,
 		);
 		const invalidFiles = results.filter(
-			(result) => result.errors.length > 0
+			(result) => result.errors.length > 0,
 		);
 
 		console.log(`\n✅ Valid files: ${validFiles.length}`);
@@ -96,7 +96,7 @@ void (async () => {
 			}
 
 			console.log(
-				`\n💥 Found ${invalidFiles.length} invalid config files.`
+				`\n💥 Found ${invalidFiles.length} invalid config files.`,
 			);
 			process.exit(1);
 		} else {
@@ -106,7 +106,7 @@ void (async () => {
 	} catch (error) {
 		console.error(
 			"💥 Failed to validate config files:",
-			getErrorMessage(error, true)
+			getErrorMessage(error, true),
 		);
 		process.exit(1);
 	}

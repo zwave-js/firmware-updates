@@ -1,30 +1,24 @@
-import {
-	json,
-	missing,
-	text,
-	withParams,
-	type ThrowableRouter,
-} from "itty-router-extras";
+import { json, text, withParams } from "itty-router";
 import JSON5 from "json5";
-import { encryptAPIKey } from "../lib/apiKeys";
-import { ConditionalUpdateConfig } from "../lib/config";
+import { encryptAPIKey } from "../lib/apiKeys.js";
+import { ConditionalUpdateConfig } from "../lib/config.js";
 import {
 	createConfigVersion,
 	enableConfigVersion,
 	getCurrentVersion,
 	insertSingleConfigData,
-} from "../lib/d1Operations";
-import { hex2array } from "../lib/shared";
+} from "../lib/d1Operations.js";
+import { hex2array } from "../lib/shared.js";
 import {
 	clientError,
 	ContentProps,
 	safeCompare,
 	type RequestWithProps,
-} from "../lib/shared_cloudflare";
-import { uploadSchema } from "../lib/uploadSchema";
-import type { CloudflareEnvironment } from "../worker";
+} from "../lib/shared_cloudflare.js";
+import { uploadSchema } from "../lib/uploadSchema.js";
+import type { CloudflareEnvironment } from "../worker.js";
 
-export default function register(router: ThrowableRouter): void {
+export default function register(router: any): void {
 	// Verify the admin token
 	router.post("/admin/*", (req: Request, env: CloudflareEnvironment) => {
 		// Avoid timing attacks, but still do not do unnecessary work
@@ -34,7 +28,7 @@ export default function register(router: ThrowableRouter): void {
 			!env.ADMIN_SECRET ||
 			!safeCompare(env.ADMIN_SECRET, secret)
 		) {
-			return missing();
+			return new Response(undefined, { status: 404 });
 		}
 	});
 
@@ -51,7 +45,7 @@ export default function register(router: ThrowableRouter): void {
 		withParams,
 		async (
 			req: RequestWithProps<[{ params: { id: string; limit: string } }]>,
-			env: CloudflareEnvironment
+			env: CloudflareEnvironment,
 		) => {
 			const id = parseInt(req.params.id);
 			const limit = parseInt(req.params.limit);
@@ -66,7 +60,7 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			const key = hex2array(env.API_KEY_ENC_KEY);
-			const apiKey = await encryptAPIKey(key, {
+			const apiKey = await encryptAPIKey(key.slice().buffer, {
 				id,
 				rateLimit: limit,
 			});
@@ -77,7 +71,7 @@ export default function register(router: ThrowableRouter): void {
 			console.log(" ");
 
 			return json({ ok: true });
-		}
+		},
 	);
 
 	router.post(
@@ -85,7 +79,7 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			_context: ExecutionContext
+			_context: ExecutionContext,
 		) => {
 			try {
 				const result = await uploadSchema.safeParseAsync(req.content);
@@ -109,7 +103,7 @@ export default function register(router: ThrowableRouter): void {
 						try {
 							const definition = JSON5.parse(action.data);
 							const config = new ConditionalUpdateConfig(
-								definition
+								definition,
 							);
 
 							// Insert this single config immediately
@@ -119,12 +113,12 @@ export default function register(router: ThrowableRouter): void {
 								{
 									devices: config.devices,
 									upgrades: config.upgrades,
-								}
+								},
 							);
 						} catch (e) {
 							console.error(
 								`Error parsing config file ${action.filename}:`,
-								e
+								e,
 							);
 							// Skip invalid files but don't fail the whole upload
 							continue;
@@ -143,7 +137,7 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			return json({ ok: true });
-		}
+		},
 	);
 
 	router.get(
@@ -151,10 +145,10 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: Request,
 			env: CloudflareEnvironment,
-			_context: ExecutionContext
+			_context: ExecutionContext,
 		) => {
 			const ret = await getCurrentVersion(env.CONFIG_FILES);
 			return text(ret || "");
-		}
+		},
 	);
 }

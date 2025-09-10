@@ -4,9 +4,9 @@ import {
 	DeviceIdentifier,
 	IConfig,
 	UpgradeInfo,
-} from "./configSchema";
-import { conditionApplies } from "./Logic";
-import { compareVersions, DeviceID } from "./shared";
+} from "./configSchema.js";
+import { conditionApplies } from "./Logic.js";
+import { compareVersions, DeviceID } from "./shared.js";
 
 export class ConditionalUpdateConfig implements IConfig {
 	public constructor(definition: any) {
@@ -21,7 +21,7 @@ export class ConditionalUpdateConfig implements IConfig {
 			for (const file of upgrade.files) {
 				if (targets.has(file.target)) {
 					throw new Error(
-						`Duplicate target ${file.target} in upgrades[${i}]`
+						`Duplicate target ${file.target} in upgrades[${i}]`,
 					);
 				}
 				targets.add(file.target);
@@ -35,7 +35,7 @@ export class ConditionalUpdateConfig implements IConfig {
 			for (const file of upgrade.files) {
 				if (urls.has(file.url)) {
 					throw new Error(
-						`Duplicate URL ${file.url} in upgrades[${i}]`
+						`Duplicate URL ${file.url} in upgrades[${i}]`,
 					);
 				}
 				urls.add(file.url);
@@ -58,8 +58,8 @@ export class ConditionalUpdateConfig implements IConfig {
 						// Only return versions that are either an upgrade or a downgrade
 						compareVersions(
 							upgrade.version,
-							deviceId.firmwareVersion
-						) !== 0 && conditionApplies(upgrade, deviceId)
+							deviceId.firmwareVersion,
+						) !== 0 && conditionApplies(upgrade, deviceId),
 				)
 				.map(({ $if, ...upgrade }) => upgrade),
 		};
