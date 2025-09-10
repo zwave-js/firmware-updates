@@ -44,13 +44,24 @@ export function formatId(id: number | string): string {
 }
 
 /** Pads a firmware version string, so it can be compared with semver */
-export function padVersion(version: string): string {
+export function padVersion(version: string, suffix: string = "0"): string {
 	if (version.split(".").length === 3) return version;
-	return version + ".0";
+	return version + `.${suffix}`;
 }
 
 export function compareVersions(v1: string, v2: string): -1 | 0 | 1 {
 	return semver.compare(padVersion(v1), padVersion(v2));
+}
+
+/**
+ * Normalizes a firmware version string (x.y.z where x,y,z are 0-255) into a single integer for efficient comparison.
+ * This allows direct integer comparison in SQL queries instead of string-based semver comparison.
+ * @param version Version string in format "x.y" or "x.y.z"
+ * @returns Normalized version as integer
+ */
+export function versionToNumber(version: string): number {
+	const parts = version.split(".").map((p) => parseInt(p, 10));
+	return parts[0] * 256 * 256 + parts[1] * 256 + (parts[2] ?? 0);
 }
 
 // expands object types recursively
