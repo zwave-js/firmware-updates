@@ -74,7 +74,7 @@ export async function getD1CachedConfig(
 /**
  * D1-specific wrapper around cacheResponse for device configurations
  */
-export async function cacheD1Config(
+export function cacheD1Config(
 	baseURL: string,
 	context: ExecutionContext,
 	filesVersion: string,
@@ -83,7 +83,7 @@ export async function cacheD1Config(
 	productId: number | string,
 	firmwareVersion: string,
 	config: APIv4_DeviceInfo | null,
-): Promise<void> {
+): void {
 	const cacheKey = getD1CacheKey(
 		baseURL,
 		filesVersion,
@@ -100,7 +100,7 @@ export async function cacheD1Config(
 		},
 	});
 
-	await cacheResponse(cacheKey, context, response);
+	context.waitUntil(cacheResponse(cacheKey, context, response));
 }
 
 /**
@@ -150,7 +150,7 @@ async function cacheResponse(
 		response.headers.set("ETag", hash);
 
 		const cache = caches.default;
-		context.waitUntil(cache.put(cacheKey, response.clone()));
+		await cache.put(cacheKey, response);
 	}
 }
 
@@ -189,7 +189,7 @@ export async function getCurrentVersionCached(
 		});
 
 		// Cache current version at the edge for 1 minute
-		await cacheResponse(cacheKey, context, response, 60, 0);
+		context.waitUntil(cacheResponse(cacheKey, context, response, 60, 0));
 	}
 
 	return version;
