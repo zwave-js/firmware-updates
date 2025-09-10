@@ -11,7 +11,8 @@ export function isFirmwareVersion(val: any): val is string {
 		val
 			.split(".")
 			.map((str) => parseInt(str, 10))
-			.every((num) => num >= 0 && num <= 255)
+			.every((num) => num >= 0 && num <= 255) &&
+		!!semver.valid(padVersion(val))
 	);
 }
 
