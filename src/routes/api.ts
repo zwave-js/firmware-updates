@@ -1,6 +1,6 @@
 import type { RateLimit } from "@cloudflare/workers-types/experimental";
 import { json, type ThrowableRouter } from "itty-router-extras";
-import semver, { compare } from "semver";
+import { compare } from "semver";
 import {
 	APIv1v2_RequestSchema,
 	APIv1_Response,
@@ -18,7 +18,12 @@ import {
 } from "../lib/cachedD1Operations";
 import type { UpgradeInfo } from "../lib/configSchema";
 import { DeviceRow, lookupConfig } from "../lib/d1Operations";
-import { compareVersions, formatId, padVersion } from "../lib/shared";
+import {
+	compareVersions,
+	formatId,
+	padVersion,
+	versionToNumber,
+} from "../lib/shared";
 import {
 	clientError,
 	ContentProps,
@@ -428,12 +433,15 @@ export default function register(router: ThrowableRouter): void {
 							AND manufacturer_id = ? 
 							AND product_type = ? 
 							AND product_id = ?
+							AND ? BETWEEN firmware_version_min_normalized AND firmware_version_max_normalized
+							LIMIT 1
 						`
 					).bind(
 						filesVersion,
 						formatId(device.manufacturerId),
 						formatId(device.productType),
-						formatId(device.productId)
+						formatId(device.productId),
+						versionToNumber(device.firmwareVersion)
 					);
 				});
 
@@ -452,31 +460,12 @@ export default function register(router: ThrowableRouter): void {
 						deviceResult.results &&
 						deviceResult.results.length > 0
 					) {
-						// Find matching device by firmware version using semver
-						const matchingDevice = deviceResult.results.find(
-							(dbDevice) => {
-								return (
-									semver.lte(
-										padVersion(
-											dbDevice.firmware_version_min
-										),
-										padVersion(device.firmwareVersion)
-									) &&
-									semver.gte(
-										padVersion(
-											dbDevice.firmware_version_max
-										),
-										padVersion(device.firmwareVersion)
-									)
-								);
-							}
-						);
+						// Take the first (and should be only) matching device since we filtered in SQL
+						const matchingDevice = deviceResult.results[0]!;
 
-						if (matchingDevice) {
-							// Get upgrades for this device
-							const upgradesResult =
-								await env.CONFIG_FILES.prepare(
-									`
+						// Get upgrades for this device
+						const upgradesResult = await env.CONFIG_FILES.prepare(
+							`
 									SELECT u.*, uf.target, uf.url, uf.integrity
 									FROM device_upgrades du
 									JOIN upgrades u ON du.upgrade_id = u.id
@@ -484,85 +473,79 @@ export default function register(router: ThrowableRouter): void {
 									WHERE du.device_id = ?
 									ORDER BY u.id, uf.target
 								`
-								)
-									.bind((matchingDevice as any).id)
-									.all();
+						)
+							.bind((matchingDevice as any).id)
+							.all();
 
-							if (
-								upgradesResult.success &&
-								upgradesResult.results
-							) {
-								// Group files that belong to a single upgrade
-								const upgradeMap = new Map<number, any>();
+						if (upgradesResult.success && upgradesResult.results) {
+							// Group files that belong to a single upgrade
+							const upgradeMap = new Map<number, any>();
 
-								for (const row of upgradesResult.results) {
-									const rowData = row as any;
-									if (!upgradeMap.has(rowData.id)) {
-										upgradeMap.set(rowData.id, {
-											upgrade: {
-												id: rowData.id,
-												firmware_version:
-													rowData.firmware_version,
-												changelog: rowData.changelog,
-												channel: rowData.channel,
-												region: rowData.region,
-												condition: rowData.condition,
-											},
-											files: [],
-										});
-									}
-									upgradeMap.get(rowData.id)!.files.push({
-										target: rowData.target,
-										url: rowData.url,
-										integrity: rowData.integrity,
+							for (const row of upgradesResult.results) {
+								const rowData = row as any;
+								if (!upgradeMap.has(rowData.id)) {
+									upgradeMap.set(rowData.id, {
+										upgrade: {
+											id: rowData.id,
+											firmware_version:
+												rowData.firmware_version,
+											changelog: rowData.changelog,
+											channel: rowData.channel,
+											region: rowData.region,
+											condition: rowData.condition,
+										},
+										files: [],
 									});
 								}
-
-								// Create device identifiers and upgrades
-								const deviceIdentifiers = [
-									{
-										brand: (matchingDevice as any).brand,
-										model: (matchingDevice as any).model,
-										manufacturerId: (matchingDevice as any)
-											.manufacturer_id,
-										productType: (matchingDevice as any)
-											.product_type,
-										productId: (matchingDevice as any)
-											.product_id,
-										firmwareVersion: {
-											min: (matchingDevice as any)
-												.firmware_version_min,
-											max: (matchingDevice as any)
-												.firmware_version_max,
-										},
-									},
-								];
-
-								// FIXME: THis seems overly complicated for only potentially deleting the region field
-								const upgrades = Array.from(
-									upgradeMap.values()
-								).map(({ upgrade, files }) => ({
-									version: upgrade.firmware_version,
-									changelog: upgrade.changelog,
-									channel: upgrade.channel as
-										| "stable"
-										| "beta",
-									...(upgrade.region && {
-										region: upgrade.region,
-									}),
-									files: files.map((f: any) => ({
-										target: f.target,
-										url: f.url,
-										integrity: f.integrity,
-									})),
-								}));
-
-								const config = {
-									devices: deviceIdentifiers,
-									upgrades,
-								};
-								batchResults.set(deviceKey, config);
+								upgradeMap.get(rowData.id)!.files.push({
+									target: rowData.target,
+									url: rowData.url,
+									integrity: rowData.integrity,
+								});
 							}
+
+							// Create device identifiers and upgrades
+							const deviceIdentifiers = [
+								{
+									brand: (matchingDevice as any).brand,
+									model: (matchingDevice as any).model,
+									manufacturerId: (matchingDevice as any)
+										.manufacturer_id,
+									productType: (matchingDevice as any)
+										.product_type,
+									productId: (matchingDevice as any)
+										.product_id,
+									firmwareVersion: {
+										min: (matchingDevice as any)
+											.firmware_version_min,
+										max: (matchingDevice as any)
+											.firmware_version_max,
+									},
+								},
+							];
+
+							// FIXME: THis seems overly complicated for only potentially deleting the region field
+							const upgrades = Array.from(
+								upgradeMap.values()
+							).map(({ upgrade, files }) => ({
+								version: upgrade.firmware_version,
+								changelog: upgrade.changelog,
+								channel: upgrade.channel as "stable" | "beta",
+								...(upgrade.region && {
+									region: upgrade.region,
+								}),
+								files: files.map((f: any) => ({
+									target: f.target,
+									url: f.url,
+									integrity: f.integrity,
+								})),
+							}));
+
+							const config = {
+								devices: deviceIdentifiers,
+								upgrades,
+							};
+							batchResults.set(deviceKey, config);
 						}
 					}
 

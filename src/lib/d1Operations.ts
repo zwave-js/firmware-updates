@@ -2,14 +2,13 @@ import type {
 	D1Database,
 	D1PreparedStatement,
 } from "@cloudflare/workers-types";
-import semver from "semver";
 import type {
 	ConditionalUpgradeInfo,
 	DeviceIdentifier,
 	UpgradeInfo,
 } from "./configSchema";
 import { conditionApplies } from "./Logic";
-import { DeviceID, formatId, padVersion } from "./shared";
+import { DeviceID, formatId, padVersion, versionToNumber } from "./shared";
 
 export interface UpdateConfig {
 	readonly devices: readonly DeviceIdentifier[];
@@ -27,6 +26,8 @@ export interface DeviceRow {
 	product_id: string;
 	firmware_version_min: string;
 	firmware_version_max: string;
+	firmware_version_min_normalized: number;
+	firmware_version_max_normalized: number;
 }
 
 interface UpgradeRow {
@@ -110,44 +111,32 @@ export async function lookupConfig(
 	const formattedProductType = formatId(productType);
 	const formattedProductId = formatId(productId);
 
-	// Find matching devices
+	// Normalize the firmware version for efficient comparison
+	const normalizedFirmwareVersion = versionToNumber(firmwareVersion);
+
+	// Find matching devices with firmware version filtering using normalized columns
 	const deviceQuery = `
 		SELECT * FROM devices 
 		WHERE version = ? 
 		AND manufacturer_id = ? 
 		AND product_type = ? 
 		AND product_id = ?
+		AND ? BETWEEN firmware_version_min_normalized AND firmware_version_max_normalized
+		LIMIT 1
 	`;
 
-	const devices = await db
+	const deviceResult = await db
 		.prepare(deviceQuery)
 		.bind(
 			filesVersion,
 			formattedManufacturerId,
 			formattedProductType,
-			formattedProductId
+			formattedProductId,
+			normalizedFirmwareVersion
 		)
-		.all<DeviceRow>();
+		.first<DeviceRow>();
 
-	if (!devices.results || devices.results.length === 0) {
-		return undefined;
-	}
-
-	// Filter devices by firmware version using semver - return first matching device only
-	const matchingDevice = devices.results.find((device: DeviceRow) => {
-		return (
-			semver.lte(
-				padVersion(device.firmware_version_min),
-				padVersion(firmwareVersion)
-			) &&
-			semver.gte(
-				padVersion(device.firmware_version_max),
-				padVersion(firmwareVersion)
-			)
-		);
-	});
-
-	if (!matchingDevice) {
+	if (!deviceResult) {
 		return undefined;
 	}
 
@@ -163,7 +152,7 @@ export async function lookupConfig(
 
 	const upgradeResults = await db
 		.prepare(upgradesQuery)
-		.bind(matchingDevice.id)
+		.bind(deviceResult.id)
 		.all<UpgradeRow & UpgradeFileRow>();
 
 	if (!upgradeResults.results) {
@@ -203,14 +192,14 @@ export async function lookupConfig(
 	// Convert to the expected format - single device only
 	const deviceIdentifiers: DeviceIdentifier[] = [
 		{
-			brand: matchingDevice.brand,
-			model: matchingDevice.model,
-			manufacturerId: matchingDevice.manufacturer_id,
-			productType: matchingDevice.product_type,
-			productId: matchingDevice.product_id,
+			brand: deviceResult.brand,
+			model: deviceResult.model,
+			manufacturerId: deviceResult.manufacturer_id,
+			productType: deviceResult.product_type,
+			productId: deviceResult.product_id,
 			firmwareVersion: {
-				min: matchingDevice.firmware_version_min,
-				max: matchingDevice.firmware_version_max,
+				min: deviceResult.firmware_version_min,
+				max: deviceResult.firmware_version_max,
 			},
 		},
 	];
@@ -263,16 +252,25 @@ export async function insertSingleConfigData(
 ): Promise<void> {
 	const { devices, upgrades } = config;
 
-	// Insert devices and get their IDs using RETURNING
+	// Insert devices and get their IDs
 	const deviceIds: number[] = [];
 	for (const device of devices) {
+		const firmwareVersionMin = padVersion(device.firmwareVersion.min, "0");
+		const firmwareVersionMax = padVersion(
+			device.firmwareVersion.max,
+			"255"
+		);
+		const minVersionNormalized = versionToNumber(firmwareVersionMin);
+		const maxVersionNormalized = versionToNumber(firmwareVersionMax);
+
 		const result = await db
 			.prepare(
 				`
 			INSERT INTO devices (
 				version, brand, model, manufacturer_id, product_type, product_id,
-				firmware_version_min, firmware_version_max
-			) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+				firmware_version_min, firmware_version_max,
+				firmware_version_min_normalized, firmware_version_max_normalized
+			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			RETURNING id
 		`
 			)
@@ -283,8 +281,10 @@ export async function insertSingleConfigData(
 				device.manufacturerId,
 				device.productType,
 				device.productId,
-				padVersion(device.firmwareVersion.min),
-				padVersion(device.firmwareVersion.max)
+				firmwareVersionMin,
+				firmwareVersionMax,
+				minVersionNormalized,
+				maxVersionNormalized
 			)
 			.first<{ id: number }>();
 
@@ -293,7 +293,7 @@ export async function insertSingleConfigData(
 		}
 	}
 
-	// Insert upgrades and get their IDs using RETURNING
+	// Insert upgrades and get their IDs
 	const upgradeIds: number[] = [];
 	for (const upgrade of upgrades) {
 		const result = await db
