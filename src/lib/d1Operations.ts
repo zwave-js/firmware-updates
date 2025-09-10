@@ -97,13 +97,17 @@ export interface DeviceLookupRequest {
 	firmwareVersion: string;
 }
 
-export async function lookupConfigsBatch(
+// D1 has a limit of 100 variables per query
+// We use 5 variables per device + 1 for version = max 19 devices per chunk
+const D1_MAX_VARIABLES = 100;
+const VARIABLES_PER_DEVICE = 5;
+const CHUNK_SIZE = Math.floor((D1_MAX_VARIABLES - 1) / VARIABLES_PER_DEVICE); // -1 for version variable
+
+async function lookupConfigsChunk(
 	db: D1Database,
 	filesVersion: string,
 	devices: DeviceLookupRequest[],
-): Promise<APIv4_DeviceInfo[]> {
-	if (devices.length === 0) return [];
-
+): Promise<UpgradesQueryRow[]> {
 	// Build device conditions and bind parameters for the query
 	const bindParams: any[] = [];
 
@@ -164,8 +168,27 @@ export async function lookupConfigsBatch(
 		.bind(...bindParams)
 		.all<UpgradesQueryRow>();
 
+	return queryResults.results;
+}
+
+export async function lookupConfigsBatch(
+	db: D1Database,
+	filesVersion: string,
+	devices: DeviceLookupRequest[],
+): Promise<APIv4_DeviceInfo[]> {
+	if (devices.length === 0) return [];
+
+	// Process devices in chunks to avoid D1's variable limit
+	const allResults: UpgradesQueryRow[] = [];
+	
+	for (let i = 0; i < devices.length; i += CHUNK_SIZE) {
+		const chunk = devices.slice(i, i + CHUNK_SIZE);
+		const chunkResults = await lookupConfigsChunk(db, filesVersion, chunk);
+		allResults.push(...chunkResults);
+	}
+
 	// Group rows by device ID
-	return Map.groupBy(queryResults.results, (row) => row.device_id)
+	return Map.groupBy(allResults, (row) => row.device_id)
 		.values()
 		.map((deviceRows) => {
 			// All rows in each deviceRows array are for the same device. They are essentially an expansion device x upgrades x files

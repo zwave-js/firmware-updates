@@ -427,7 +427,7 @@ export default function register(router: any): void {
 
 				// Cache the results of the batch lookup
 				for (const deviceInfo of batchResults) {
-					await cacheD1Config(
+					cacheD1Config(
 						req.url,
 						context,
 						filesVersion,
@@ -461,7 +461,7 @@ export default function register(router: any): void {
 						const downgrade =
 							compareVersions(u.version, device.firmwareVersion) <
 							0;
-						let normalizedVersion = u.version;
+						let normalizedVersion = padVersion(u.version, "0");
 						if (u.channel === "beta") normalizedVersion += "-beta";
 
 						return {
