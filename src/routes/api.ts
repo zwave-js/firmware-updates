@@ -395,7 +395,7 @@ export default function register(router: any): void {
 
 			// Step 1: Try to find cached responses for each unique device
 			const cacheMisses: DeviceLookupRequest[] = [];
-			const results: (APIv4_DeviceInfo | null)[] = [];
+			const results: APIv4_DeviceInfo[] = [];
 
 			for (const device of uniqueDevices) {
 				// Try to get cached config for this device using D1 cache utilities
@@ -408,12 +408,19 @@ export default function register(router: any): void {
 					device.firmwareVersion,
 				);
 
-				if (cachedConfig !== undefined) {
-					results.push(cachedConfig);
-				} else {
+				if (cachedConfig === undefined) {
 					// Cache miss - add to batch lookup
 					cacheMisses.push(device);
+					continue;
 				}
+
+				if (cachedConfig === null) {
+					// Cached as "not found"
+					continue;
+				}
+
+				// Cache hit - add to results
+				results.push(cachedConfig);
 			}
 
 			// Step 2: Perform single batch request to database for all cache misses
@@ -438,13 +445,10 @@ export default function register(router: any): void {
 						deviceInfo,
 					);
 				}
-				// FIXME: Track which devices were NOT found in the DB and cache them as `null`
 			}
 
 			// Post-process the results to apply region filtering etc.
-			// @ts-expect-error We still need to implement returning `null` for devices not in the DB
 			const response: APIv4_Response = results.map((device) => {
-				if (!device) return null;
 				if (!device.updates) return device;
 				let filteredUpgrades = device.updates
 					// Filter out upgrades for a different region
@@ -492,6 +496,43 @@ export default function register(router: any): void {
 				device.updates = filteredUpgrades;
 				return device;
 			});
+
+			// Track which devices were NOT found in the DB and cache them as `null`
+			const requestedFingerprints = new Set(
+				uniqueDevices.map(
+					(d) =>
+						`${d.manufacturerId}:${d.productType}:${d.productId}:${d.firmwareVersion}`,
+				),
+			);
+			const foundFingerprints = new Set(
+				results.map(
+					(d) =>
+						`${d.manufacturerId}:${d.productType}:${d.productId}:${d.firmwareVersion}`,
+				),
+			);
+			const missingFromDb =
+				requestedFingerprints.difference(foundFingerprints);
+
+			for (const fingerprint of missingFromDb) {
+				const [
+					manufacturerId,
+					productType,
+					productId,
+					firmwareVersion,
+				] = fingerprint.split(":");
+
+				// Cache as "not found"
+				cacheD1Config(
+					req.url,
+					context,
+					filesVersion,
+					manufacturerId,
+					productType,
+					productId,
+					firmwareVersion,
+					null,
+				);
+			}
 
 			return json(response);
 		},
