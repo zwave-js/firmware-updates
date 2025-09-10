@@ -4,6 +4,7 @@ import path from "path-browserify";
 import type { UploadPayload } from "../lib/uploadSchema";
 import { NodeFS } from "./nodeFS";
 
+import { argv } from "node:process";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -55,7 +56,7 @@ void (async () => {
 		}
 	);
 
-	if (onlineVersion === version) {
+	if (onlineVersion === version && !argv.includes("--force")) {
 		console.log("No change in config files, skipping upload...");
 		return;
 	}
