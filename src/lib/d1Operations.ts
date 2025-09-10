@@ -13,7 +13,6 @@ import { formatId, padVersion, versionToNumber } from "./shared.js";
 // Schema for the joined device + upgrade + file query result
 export interface UpgradesQueryRow {
 	// devices table
-	device_id: number;
 	brand: string;
 	model: string;
 	manufacturer_id: string;
@@ -128,7 +127,6 @@ async function lookupConfigsChunk(
 				${devices.map(() => `(?, ?, ?, ?, ?)`).join(",")}
 		)
 		SELECT 
-			d.id as device_id,
 			d.brand,
 			d.model, 
 			d.manufacturer_id,
@@ -180,7 +178,7 @@ export async function lookupConfigsBatch(
 
 	// Process devices in chunks to avoid D1's variable limit
 	const allResults: UpgradesQueryRow[] = [];
-	
+
 	for (let i = 0; i < devices.length; i += CHUNK_SIZE) {
 		const chunk = devices.slice(i, i + CHUNK_SIZE);
 		const chunkResults = await lookupConfigsChunk(db, filesVersion, chunk);
@@ -188,7 +186,11 @@ export async function lookupConfigsBatch(
 	}
 
 	// Group rows by device ID
-	return Map.groupBy(allResults, (row) => row.device_id)
+	return Map.groupBy(
+		allResults,
+		(row) =>
+			`${row.manufacturer_id}:${row.product_type}:${row.product_id}:${row.firmware_version}`,
+	)
 		.values()
 		.map((deviceRows) => {
 			// All rows in each deviceRows array are for the same device. They are essentially an expansion device x upgrades x files
