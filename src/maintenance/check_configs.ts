@@ -6,6 +6,7 @@ import { NodeFS } from "./nodeFS.js";
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import { ZodError } from "zod";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const configDir = path.resolve(__dirname, "../../firmwares");
@@ -38,6 +39,8 @@ async function validateConfigFile(filePath: string): Promise<ValidationResult> {
 				errors.push(
 					`Schema validation failed: ${getErrorMessage(parseError)}`,
 				);
+			} else if (parseError instanceof ZodError) {
+				errors.push(JSON.stringify(parseError.flatten()));
 			} else {
 				// This could be JSON5 parsing error or other validation errors
 				errors.push(

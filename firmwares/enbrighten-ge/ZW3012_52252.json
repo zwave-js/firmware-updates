@@ -10,7 +10,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "7.06",
+			"version": "7.6",
 			"changelog": "1. Original Release Firmware",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/9b5520f5056f7d3fce3fa6adc28bdaf27f8d0a68/zwave/Enbrighten-GE/ZW3012/52252%20-%20In-Wall%20Smart%20Paddle%20Dimmer%2C%20No%20Ntrl%2C%20700S/7.06/ZW3012_Enbrighten-GE_52252_7.06.hex",
 			"integrity": "sha256:40687be8da5b81ae36f022df7bb8dae6901bd514246032a77477fd9078e3bca0"
