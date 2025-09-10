@@ -490,8 +490,12 @@ export default function register(router: ThrowableRouter): void {
 											firmware_version:
 												rowData.firmware_version,
 											changelog: rowData.changelog,
-											channel: rowData.channel,
-											region: rowData.region,
+											channel: rowData.channel as
+												| "stable"
+												| "beta",
+											...(rowData.region && {
+												region: rowData.region,
+											}),
 											condition: rowData.condition,
 										},
 										files: [],
@@ -524,26 +528,9 @@ export default function register(router: ThrowableRouter): void {
 								},
 							];
 
-							// FIXME: THis seems overly complicated for only potentially deleting the region field
-							const upgrades = Array.from(
-								upgradeMap.values()
-							).map(({ upgrade, files }) => ({
-								version: upgrade.firmware_version,
-								changelog: upgrade.changelog,
-								channel: upgrade.channel as "stable" | "beta",
-								...(upgrade.region && {
-									region: upgrade.region,
-								}),
-								files: files.map((f: any) => ({
-									target: f.target,
-									url: f.url,
-									integrity: f.integrity,
-								})),
-							}));
-
 							const config = {
 								devices: deviceIdentifiers,
-								upgrades,
+								upgrades: [...upgradeMap.values()],
 							};
 							batchResults.set(deviceKey, config);
 						}
