@@ -7,31 +7,31 @@ import {
 	APIv2_Response,
 	APIv3_RequestSchema,
 	APIv3_Response,
+	APIv4_DeviceInfo,
 	APIv4_RequestSchema,
 	APIv4_Response,
-} from "../apiDefinitions";
-import { withCache } from "../lib/cache";
+} from "../apiDefinitions.js";
+import { withCache } from "../lib/cache.js";
 import {
 	cacheD1Config,
 	getCurrentVersionCached,
 	getD1CachedConfig,
-} from "../lib/cachedD1Operations";
-import type { UpgradeInfo } from "../lib/configSchema";
-import { DeviceRow, lookupConfig } from "../lib/d1Operations";
+} from "../lib/cachedD1Operations.js";
+import type { UpgradeInfo } from "../lib/configSchema.js";
 import {
-	compareVersions,
-	formatId,
-	padVersion,
-	versionToNumber,
-} from "../lib/shared";
+	DeviceLookupRequest,
+	lookupConfig,
+	lookupConfigsBatch,
+} from "../lib/d1Operations.js";
+import { compareVersions, padVersion } from "../lib/shared.js";
 import {
 	clientError,
 	ContentProps,
 	serverError,
 	type RequestWithProps,
-} from "../lib/shared_cloudflare";
-import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey";
-import type { CloudflareEnvironment } from "../worker";
+} from "../lib/shared_cloudflare.js";
+import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey.js";
+import type { CloudflareEnvironment } from "../worker.js";
 
 function getUpdatesCacheUrl(
 	requestUrl: string,
@@ -113,7 +113,7 @@ async function handleUpdateRequest(
 			sMaxAge: 60 * 60 * 24,
 		},
 		async () => {
-			const config = await lookupConfig(
+			const deviceInfo = await lookupConfig(
 				env.CONFIG_FILES,
 				filesVersion,
 				manufacturerId,
@@ -121,11 +121,11 @@ async function handleUpdateRequest(
 				productId,
 				firmwareVersion
 			);
-
-			if (!config) return json([]);
+			const updates = deviceInfo?.updates;
+			if (!updates) return json([]);
 
 			return json(
-				resultTransform(config.upgrades, {
+				resultTransform(updates, {
 					manufacturerId,
 					productType,
 					productId,
@@ -393,15 +393,11 @@ export default function register(router: ThrowableRouter): void {
 					return a.firmwareVersion.localeCompare(b.firmwareVersion);
 				});
 
-			const response: APIv4_Response = [];
-
 			// Step 1: Try to find cached responses for each unique device
-			const cacheMisses: typeof uniqueDevices = [];
-			const cachedResults = new Map<string, any>();
+			const cacheMisses: DeviceLookupRequest[] = [];
+			const results: (APIv4_DeviceInfo | null)[] = [];
 
 			for (const device of uniqueDevices) {
-				const deviceKey = `${device.manufacturerId}:${device.productType}:${device.productId}:${device.firmwareVersion}`;
-
 				// Try to get cached config for this device using D1 cache utilities
 				const cachedConfig = await getD1CachedConfig(
 					req.url,
@@ -413,7 +409,7 @@ export default function register(router: ThrowableRouter): void {
 				);
 
 				if (cachedConfig !== undefined) {
-					cachedResults.set(deviceKey, cachedConfig);
+					results.push(cachedConfig);
 				} else {
 					// Cache miss - add to batch lookup
 					cacheMisses.push(device);
@@ -421,212 +417,81 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			// Step 2: Perform single batch request to database for all cache misses
-			const batchResults = new Map<string, any>();
-
 			if (cacheMisses.length > 0) {
-				// Use D1 batch to query all devices at once
-				const batchQueries = cacheMisses.map((device) => {
-					return env.CONFIG_FILES.prepare(
-						`
-							SELECT * FROM devices 
-							WHERE version = ? 
-							AND manufacturer_id = ? 
-							AND product_type = ? 
-							AND product_id = ?
-							AND ? BETWEEN firmware_version_min_normalized AND firmware_version_max_normalized
-							LIMIT 1
-						`
-					).bind(
-						filesVersion,
-						formatId(device.manufacturerId),
-						formatId(device.productType),
-						formatId(device.productId),
-						versionToNumber(device.firmwareVersion)
-					);
-				});
+				const batchResults = await lookupConfigsBatch(
+					env.CONFIG_FILES,
+					filesVersion,
+					cacheMisses
+				);
+				results.push(...batchResults);
 
-				// Execute batch query
-				const batchDeviceResults =
-					await env.CONFIG_FILES.batch<DeviceRow>(batchQueries);
-
-				// Process each device result
-				for (let i = 0; i < cacheMisses.length; i++) {
-					const device = cacheMisses[i];
-					const deviceKey = `${device.manufacturerId}:${device.productType}:${device.productId}:${device.firmwareVersion}`;
-					const deviceResult = batchDeviceResults[i];
-
-					if (
-						deviceResult.success &&
-						deviceResult.results &&
-						deviceResult.results.length > 0
-					) {
-						// Take the first (and should be only) matching device since we filtered in SQL
-						const matchingDevice = deviceResult.results[0]!;
-
-						// Get upgrades for this device
-						const upgradesResult = await env.CONFIG_FILES.prepare(
-							`
-									SELECT u.*, uf.target, uf.url, uf.integrity
-									FROM device_upgrades du
-									JOIN upgrades u ON du.upgrade_id = u.id
-									JOIN upgrade_files uf ON u.id = uf.upgrade_id
-									WHERE du.device_id = ?
-									ORDER BY u.id, uf.target
-								`
-						)
-							.bind((matchingDevice as any).id)
-							.all();
-
-						if (upgradesResult.success && upgradesResult.results) {
-							// Group files that belong to a single upgrade
-							const upgradeMap = new Map<number, any>();
-
-							for (const row of upgradesResult.results) {
-								const rowData = row as any;
-								if (!upgradeMap.has(rowData.id)) {
-									upgradeMap.set(rowData.id, {
-										upgrade: {
-											id: rowData.id,
-											firmware_version:
-												rowData.firmware_version,
-											changelog: rowData.changelog,
-											channel: rowData.channel as
-												| "stable"
-												| "beta",
-											...(rowData.region && {
-												region: rowData.region,
-											}),
-											condition: rowData.condition,
-										},
-										files: [],
-									});
-								}
-								upgradeMap.get(rowData.id)!.files.push({
-									target: rowData.target,
-									url: rowData.url,
-									integrity: rowData.integrity,
-								});
-							}
-
-							// Create device identifiers and upgrades
-							const deviceIdentifiers = [
-								{
-									brand: (matchingDevice as any).brand,
-									model: (matchingDevice as any).model,
-									manufacturerId: (matchingDevice as any)
-										.manufacturer_id,
-									productType: (matchingDevice as any)
-										.product_type,
-									productId: (matchingDevice as any)
-										.product_id,
-									firmwareVersion: {
-										min: (matchingDevice as any)
-											.firmware_version_min,
-										max: (matchingDevice as any)
-											.firmware_version_max,
-									},
-								},
-							];
-
-							const config = {
-								devices: deviceIdentifiers,
-								upgrades: [...upgradeMap.values()],
-							};
-							batchResults.set(deviceKey, config);
-						}
-					}
-
-					// If no config found, set null
-					if (!batchResults.has(deviceKey)) {
-						batchResults.set(deviceKey, null);
-					}
-
-					// Step 3: Cache each entry individually using D1 cache utilities
-					// Cache both successful lookups and null results (device not found/no updates)
-					const configToCache = batchResults.get(deviceKey);
+				// Cache the results of the batch lookup
+				for (const deviceInfo of batchResults) {
 					await cacheD1Config(
 						req.url,
 						context,
 						filesVersion,
-						device.manufacturerId,
-						device.productType,
-						device.productId,
-						device.firmwareVersion,
-						configToCache
+						deviceInfo.manufacturerId,
+						deviceInfo.productType,
+						deviceInfo.productId,
+						deviceInfo.firmwareVersion,
+						deviceInfo
 					);
 				}
+				// FIXME: Track which devices were NOT found in the DB and cache them as `null`
 			}
 
-			// Process each unique device using cached and batch results
-			for (const device of uniqueDevices) {
-				const deviceKey = `${device.manufacturerId}:${device.productType}:${device.productId}:${device.firmwareVersion}`;
-				const config =
-					cachedResults.get(deviceKey) || batchResults.get(deviceKey);
+			// Post-process the results to apply region filtering etc.
+			// @ts-expect-error We still need to implement returning `null` for devices not in the DB
+			const response: APIv4_Response = results.map((device) => {
+				if (!device) return null;
+				if (!device.updates) return device;
+				let filteredUpgrades = device.updates
+					// Filter out upgrades for a different region
+					.filter((u) => !u.region || u.region === region)
+					// Filter out the current version
+					.filter(
+						(u) =>
+							padVersion(u.version) !==
+							padVersion(device.firmwareVersion)
+					)
+					// Add missing fields to the returned objects
 
-				let updates: APIv3_Response = [];
+					.map((u: UpgradeInfo) => {
+						const downgrade =
+							compareVersions(u.version, device.firmwareVersion) <
+							0;
+						let normalizedVersion = u.version;
+						if (u.channel === "beta") normalizedVersion += "-beta";
 
-				// null indicates no updates
-				if (config) {
-					const filteredUpgrades = (config.upgrades as UpgradeInfo[])
-						// Filter out upgrades for a different region
-						.filter((u) => !u.region || u.region === region)
-						// Filter out the current version
-						.filter(
-							(u) =>
-								padVersion(u.version) !==
-								padVersion(device.firmwareVersion)
+						return {
+							...u,
+							downgrade,
+							normalizedVersion,
+						};
+					})
+					// Sort by version ascending...
+					.sort((a: any, b: any) => {
+						const ret = compare(
+							a.normalizedVersion,
+							b.normalizedVersion
 						);
-
-					updates = filteredUpgrades
-						.map((u: UpgradeInfo) => {
-							// Add missing fields to the returned objects
-							const downgrade =
-								compareVersions(
-									u.version,
-									device.firmwareVersion
-								) < 0;
-							let normalizedVersion = u.version;
-							if (u.channel === "beta")
-								normalizedVersion += "-beta";
-
-							return {
-								...u,
-								downgrade,
-								normalizedVersion,
-							};
-						})
-						.sort((a: any, b: any) => {
-							// Sort by version ascending...
-							const ret = compare(
-								a.normalizedVersion,
-								b.normalizedVersion
-							);
-							if (ret !== 0) return ret;
-							// ... and put updates for a specific region first
-							return -(a.region ?? "").localeCompare(
-								b.region ?? ""
-							);
-						});
-
-					// If there are multiple updates for the same version, only return the first one
-					// This happens when there are updates for a specific region and a general update for the same version
-					updates = updates.filter(
-						(u: any, i: number, arr: any[]) => {
-							if (i > 0 && u.version === arr[i - 1].version)
-								return false;
-							return true;
-						}
-					);
-				}
-
-				response.push({
-					manufacturerId: device.manufacturerId,
-					productType: device.productType,
-					productId: device.productId,
-					firmwareVersion: device.firmwareVersion,
-					updates,
-				});
-			}
+						if (ret !== 0) return ret;
+						// ... and put updates for a specific region first
+						return -(a.region ?? "").localeCompare(b.region ?? "");
+					});
+				// If there are multiple updates for the same version, only return the first one
+				// This happens when there are updates for a specific region and a general update for the same version
+				filteredUpgrades = filteredUpgrades.filter(
+					(u: any, i: number, arr: any[]) => {
+						if (i > 0 && u.version === arr[i - 1].version)
+							return false;
+						return true;
+					}
+				);
+				device.updates = filteredUpgrades;
+				return device;
+			});
 
 			return json(response);
 		}

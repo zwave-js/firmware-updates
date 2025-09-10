@@ -3,8 +3,8 @@ import {
 	firmwareVersionSchema,
 	regionSchema,
 	UpgradeInfo,
-} from "./lib/configSchema";
-import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared";
+} from "./lib/configSchema.js";
+import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared.js";
 
 /** The request schema for API versions 1...2 */
 export const APIv1v2_RequestSchema = z.object({

@@ -1,8 +1,8 @@
 import axios from "axios";
 import crypto from "node:crypto";
 import path from "path-browserify";
-import type { UploadPayload } from "../lib/uploadSchema";
-import { NodeFS } from "./nodeFS";
+import type { UploadPayload } from "../lib/uploadSchema.js";
+import { NodeFS } from "./nodeFS.js";
 
 import { argv } from "node:process";
 import { dirname } from "path";

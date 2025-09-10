@@ -1,6 +1,7 @@
 import type { D1Database } from "@cloudflare/workers-types";
-import { getCurrentVersion } from "./d1Operations";
-import { array2hex } from "./shared";
+import { APIv4_DeviceInfo } from "../apiDefinitions.js";
+import { getCurrentVersion } from "./d1Operations.js";
+import { array2hex } from "./shared.js";
 
 const CACHE_KEY_PREFIX = "/__d1-cache/";
 
@@ -45,7 +46,7 @@ export async function getD1CachedConfig(
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string
-): Promise<unknown | null | undefined> {
+): Promise<APIv4_DeviceInfo | null | undefined> {
 	// FIXME: Use a tagged union type to make it clearer what null (cache hit, device not in DB) and undefined (cache miss) mean
 	const cacheKey = getD1CacheKey(
 		baseURL,
@@ -81,7 +82,7 @@ export async function cacheD1Config(
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string,
-	config: any
+	config: APIv4_DeviceInfo | null
 ): Promise<void> {
 	const cacheKey = getD1CacheKey(
 		baseURL,

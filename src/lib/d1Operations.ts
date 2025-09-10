@@ -2,46 +2,38 @@ import type {
 	D1Database,
 	D1PreparedStatement,
 } from "@cloudflare/workers-types";
+import { APIv3_UpgradeInfo, APIv4_DeviceInfo } from "../apiDefinitions.js";
 import type {
 	ConditionalUpgradeInfo,
 	DeviceIdentifier,
-	UpgradeInfo,
-} from "./configSchema";
-import { conditionApplies } from "./Logic";
-import { DeviceID, formatId, padVersion, versionToNumber } from "./shared";
+} from "./configSchema.js";
+import { conditionApplies } from "./Logic.js";
+import { formatId, padVersion, versionToNumber } from "./shared.js";
 
-export interface UpdateConfig {
-	readonly devices: readonly DeviceIdentifier[];
-	readonly upgrades: readonly UpgradeInfo[];
-}
-
-// Types for D1 query results
-export interface DeviceRow {
-	id: number;
-	version: string;
+// Schema for the joined device + upgrade + file query result
+export interface UpgradesQueryRow {
+	// devices table
+	device_id: number;
 	brand: string;
 	model: string;
 	manufacturer_id: string;
 	product_type: string;
 	product_id: string;
+	firmware_version: string;
 	firmware_version_min: string;
 	firmware_version_max: string;
 	firmware_version_min_normalized: number;
 	firmware_version_max_normalized: number;
-}
 
-interface UpgradeRow {
-	id: number;
-	firmware_version: string;
+	// upgrades table
+	upgrade_id: number;
+	upgrade_firmware_version: string;
 	changelog: string;
 	channel: string;
-	region?: string;
-	condition?: string;
-}
+	region: string | null;
+	condition: string | null;
 
-interface UpgradeFileRow {
-	id: number;
-	upgrade_id: number;
+	// upgrade_files table
 	target: number;
 	url: string;
 	integrity: string;
@@ -98,6 +90,142 @@ export async function enableConfigVersion(
 	await db.batch(statements);
 }
 
+export interface DeviceLookupRequest {
+	manufacturerId: number | string;
+	productType: number | string;
+	productId: number | string;
+	firmwareVersion: string;
+}
+
+export async function lookupConfigsBatch(
+	db: D1Database,
+	filesVersion: string,
+	devices: DeviceLookupRequest[]
+): Promise<APIv4_DeviceInfo[]> {
+	if (devices.length === 0) return [];
+
+	// Build device conditions and bind parameters for the query
+	const bindParams: any[] = [];
+
+	for (const device of devices) {
+		bindParams.push(
+			formatId(device.manufacturerId),
+			formatId(device.productType),
+			formatId(device.productId),
+			padVersion(device.firmwareVersion, "0"),
+			versionToNumber(device.firmwareVersion)
+		);
+	}
+
+	// Single query to get all devices and their upgrades
+	const query = `
+		WITH fingerprints(manufacturer_id, product_type, product_id, firmware_version, firmware_version_normalized) AS (
+			VALUES
+				${devices.map(() => `(?, ?, ?, ?, ?)`).join(",")}
+		)
+		SELECT 
+			d.id as device_id,
+			d.brand,
+			d.model, 
+			d.manufacturer_id,
+			d.product_type,
+			d.product_id,
+			f.firmware_version,
+			d.firmware_version_min,
+			d.firmware_version_max,
+			d.firmware_version_min_normalized,
+			d.firmware_version_max_normalized,
+			u.id as upgrade_id,
+			u.firmware_version as upgrade_firmware_version,
+			u.changelog,
+			u.channel,
+			u.region,
+			u.condition,
+			uf.target,
+			uf.url,
+			uf.integrity
+		FROM fingerprints f
+		JOIN devices d
+		  ON d.manufacturer_id = f.manufacturer_id
+		  AND d.product_type = f.product_type
+		  AND d.product_id = f.product_id
+		  AND f.firmware_version_normalized BETWEEN d.firmware_version_min_normalized AND d.firmware_version_max_normalized
+		LEFT JOIN device_upgrades du ON d.id = du.device_id
+		LEFT JOIN upgrades u ON du.upgrade_id = u.id  
+		LEFT JOIN upgrade_files uf ON u.id = uf.upgrade_id
+		WHERE d.version = ?
+		ORDER BY d.id, u.id, uf.target
+	`;
+
+	bindParams.push(filesVersion);
+
+	const queryResults = await db
+		.prepare(query)
+		.bind(...bindParams)
+		.all<UpgradesQueryRow>();
+
+	// Group rows by device ID
+	return Map.groupBy(queryResults.results, (row) => row.device_id)
+		.values()
+		.map((deviceRows) => {
+			// All rows in each deviceRows array are for the same device. They are essentially an expansion device x upgrades x files
+			const deviceRow = deviceRows[0];
+			const deviceId = {
+				manufacturerId: parseInt(deviceRow.manufacturer_id, 16),
+				productType: parseInt(deviceRow.product_type, 16),
+				productId: parseInt(deviceRow.product_id, 16),
+				firmwareVersion: deviceRow.firmware_version,
+			};
+
+			const updates = Map.groupBy(deviceRows, (row) => row.upgrade_id)
+				.values()
+				// All rows in each upgradeRows array are for the same upgrade. They are essentially an expansion upgrade x files
+				.filter((upgradeRows) => {
+					const upgrade = upgradeRows[0];
+					// Apply conditional logic if condition exists
+					if (upgrade.condition) {
+						return conditionApplies(
+							{ $if: upgrade.condition, ...upgrade },
+							deviceId
+						);
+					}
+					return true;
+				})
+				.map((upgradeRows) => {
+					const upgradeRow = upgradeRows[0];
+					const upgrade: APIv3_UpgradeInfo = {
+						version: upgradeRow.upgrade_firmware_version,
+						changelog: upgradeRow.changelog,
+						channel: upgradeRow.channel as "stable" | "beta",
+						...(upgradeRow.region
+							? { region: upgradeRow.region as any }
+							: {}),
+						files: upgradeRows.map((file) => ({
+							target: file.target,
+							url: file.url,
+							integrity: file.integrity,
+						})),
+						// These two will be filled in or filtered by the downstream handler
+						downgrade: undefined as any,
+						normalizedVersion: undefined as any,
+					};
+					return upgrade;
+				})
+				.toArray();
+
+			const device: APIv4_DeviceInfo = {
+				manufacturerId: deviceRow.manufacturer_id,
+				productType: deviceRow.product_type,
+				productId: deviceRow.product_id,
+				firmwareVersion: deviceRow.firmware_version,
+				updates,
+			};
+
+			return device;
+		})
+		.toArray();
+}
+
 export async function lookupConfig(
 	db: D1Database,
 	filesVersion: string,
@@ -105,144 +233,16 @@ export async function lookupConfig(
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string
-): Promise<UpdateConfig | undefined> {
-	// Format IDs for query
-	const formattedManufacturerId = formatId(manufacturerId);
-	const formattedProductType = formatId(productType);
-	const formattedProductId = formatId(productId);
-
-	// Normalize the firmware version for efficient comparison
-	const normalizedFirmwareVersion = versionToNumber(firmwareVersion);
-
-	// Find matching devices with firmware version filtering using normalized columns
-	const deviceQuery = `
-		SELECT * FROM devices 
-		WHERE version = ? 
-		AND manufacturer_id = ? 
-		AND product_type = ? 
-		AND product_id = ?
-		AND ? BETWEEN firmware_version_min_normalized AND firmware_version_max_normalized
-		LIMIT 1
-	`;
-
-	const deviceResult = await db
-		.prepare(deviceQuery)
-		.bind(
-			filesVersion,
-			formattedManufacturerId,
-			formattedProductType,
-			formattedProductId,
-			normalizedFirmwareVersion
-		)
-		.first<DeviceRow>();
-
-	if (!deviceResult) {
-		return undefined;
-	}
-
-	// Get upgrades for the matching device via the junction table
-	const upgradesQuery = `
-		SELECT u.*, uf.target, uf.url, uf.integrity
-		FROM device_upgrades du
-		JOIN upgrades u ON du.upgrade_id = u.id
-		JOIN upgrade_files uf ON u.id = uf.upgrade_id
-		WHERE du.device_id = ?
-		ORDER BY u.id, uf.target
-	`;
-
-	const upgradeResults = await db
-		.prepare(upgradesQuery)
-		.bind(deviceResult.id)
-		.all<UpgradeRow & UpgradeFileRow>();
-
-	if (!upgradeResults.results) {
-		return undefined;
-	}
-
-	// Group upgrade files by upgrade ID
-	const upgradeMap = new Map<
-		number,
+): Promise<APIv4_DeviceInfo | undefined> {
+	const results = await lookupConfigsBatch(db, filesVersion, [
 		{
-			upgrade: UpgradeRow;
-			files: { target: number; url: string; integrity: string }[];
-		}
-	>();
-
-	for (const row of upgradeResults.results) {
-		if (!upgradeMap.has(row.id)) {
-			upgradeMap.set(row.id, {
-				upgrade: {
-					id: row.id,
-					firmware_version: row.firmware_version,
-					changelog: row.changelog,
-					channel: row.channel,
-					region: row.region,
-					condition: row.condition,
-				},
-				files: [],
-			});
-		}
-		upgradeMap.get(row.id)!.files.push({
-			target: row.target,
-			url: row.url,
-			integrity: row.integrity,
-		});
-	}
-
-	// Convert to the expected format - single device only
-	const deviceIdentifiers: DeviceIdentifier[] = [
-		{
-			brand: deviceResult.brand,
-			model: deviceResult.model,
-			manufacturerId: deviceResult.manufacturer_id,
-			productType: deviceResult.product_type,
-			productId: deviceResult.product_id,
-			firmwareVersion: {
-				min: deviceResult.firmware_version_min,
-				max: deviceResult.firmware_version_max,
-			},
+			manufacturerId,
+			productType,
+			productId,
+			firmwareVersion,
 		},
-	];
-
-	// Create device ID for condition evaluation
-	const deviceId: DeviceID = {
-		manufacturerId:
-			typeof manufacturerId === "string"
-				? parseInt(manufacturerId, 16)
-				: manufacturerId,
-		productType:
-			typeof productType === "string"
-				? parseInt(productType, 16)
-				: productType,
-		productId:
-			typeof productId === "string" ? parseInt(productId, 16) : productId,
-		firmwareVersion,
-	};
-
-	// Convert upgrades and apply conditional filtering, removing $if field
-	const upgrades: UpgradeInfo[] = Array.from(upgradeMap.values())
-		.map(({ upgrade, files }) => ({
-			...(upgrade.condition && { $if: upgrade.condition }),
-			version: upgrade.firmware_version,
-			changelog: upgrade.changelog,
-			channel: upgrade.channel as "stable" | "beta",
-			...(upgrade.region && { region: upgrade.region as any }),
-			files: files.map((f) => ({
-				target: f.target,
-				url: f.url,
-				integrity: f.integrity,
-			})),
-		}))
-		.filter((upgrade) => {
-			// Apply conditional logic if condition exists
-			if (upgrade.$if) {
-				return conditionApplies(upgrade, deviceId);
-			}
-			return true;
-		})
-		.map(({ $if, ...upgrade }) => upgrade); // Remove $if field from final result
-
-	return { devices: deviceIdentifiers, upgrades };
+	]);
+	return results[0];
 }
 
 export async function insertSingleConfigData(

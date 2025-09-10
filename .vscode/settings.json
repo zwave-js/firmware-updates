@@ -26,6 +26,7 @@
 		"yarn lint": true,
 		"yarn test": true,
 		"yarn prettier -w": true,
+		"yarn tsc --noEmit": true,
 		"rm": false,
 		"rmdir": false,
 		"del": false,
