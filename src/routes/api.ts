@@ -1,9 +1,9 @@
-import type { RateLimit } from "@cloudflare/workers-types/experimental";
-import { json, type ThrowableRouter } from "itty-router-extras";
+import type { RateLimit } from "@cloudflare/workers-types";
+import { json } from "itty-router";
 import { compare } from "semver";
 import {
-	APIv1v2_RequestSchema,
 	APIv1_Response,
+	APIv1v2_RequestSchema,
 	APIv2_Response,
 	APIv3_RequestSchema,
 	APIv3_Response,
@@ -40,7 +40,7 @@ function getUpdatesCacheUrl(
 	productType: string,
 	productId: string,
 	firmwareVersion: string,
-	additionalFields: string[] = []
+	additionalFields: string[] = [],
 ): string {
 	if (!requestUrl.endsWith("/")) {
 		requestUrl += "/";
@@ -63,7 +63,7 @@ type ResultTransform = (
 		productType: string;
 		productId: string;
 		firmwareVersion: string;
-	}
+	},
 ) => any[];
 
 async function handleUpdateRequest(
@@ -71,7 +71,7 @@ async function handleUpdateRequest(
 	env: CloudflareEnvironment,
 	context: ExecutionContext,
 	resultTransform: ResultTransform,
-	additionalFieldsForCacheKey: string[] = []
+	additionalFieldsForCacheKey: string[] = [],
 ) {
 	const result = await APIv1v2_RequestSchema.safeParseAsync(req.content);
 	if (!result.success) {
@@ -83,7 +83,7 @@ async function handleUpdateRequest(
 	const filesVersion = await getCurrentVersionCached(
 		req.url,
 		context,
-		env.CONFIG_FILES
+		env.CONFIG_FILES,
 	);
 	if (!filesVersion) {
 		return serverError("Database empty");
@@ -97,7 +97,7 @@ async function handleUpdateRequest(
 		productType,
 		productId,
 		firmwareVersion,
-		additionalFieldsForCacheKey
+		additionalFieldsForCacheKey,
 	);
 
 	return withCache(
@@ -119,7 +119,7 @@ async function handleUpdateRequest(
 				manufacturerId,
 				productType,
 				productId,
-				firmwareVersion
+				firmwareVersion,
 			);
 			const updates = deviceInfo?.updates;
 			if (!updates) return json([]);
@@ -130,9 +130,9 @@ async function handleUpdateRequest(
 					productType,
 					productId,
 					firmwareVersion,
-				})
+				}),
 			);
-		}
+		},
 	);
 }
 
@@ -145,11 +145,11 @@ function getBucket(rateLimit: number): string {
 	return "FREE";
 }
 
-export default function register(router: ThrowableRouter): void {
+export default function register(router: any): void {
 	// Check API keys and apply rate limiter
 	router.all("/api/*", withAPIKey, (async (
 		req: RequestWithProps<[APIKeyProps]>,
-		env: CloudflareEnvironment
+		env: CloudflareEnvironment,
 	) => {
 		const bucket =
 			req.apiKey?.bucket ??
@@ -179,7 +179,7 @@ export default function register(router: ThrowableRouter): void {
 	// TODO: At some point we should combine the handlers for the v1 and v2 API
 	router.post(
 		"/api/v1/updates",
-		(req: RequestWithProps<[ContentProps]>, env, context) =>
+		(req: RequestWithProps<[ContentProps]>, env: any, context: any) =>
 			handleUpdateRequest(
 				req,
 				env,
@@ -196,7 +196,7 @@ export default function register(router: ThrowableRouter): void {
 							.filter(
 								(u) =>
 									padVersion(u.version) !==
-									padVersion(firmwareVersion)
+									padVersion(firmwareVersion),
 							)
 							// Remove the channel and region property
 							.map(({ channel, region, ...u }) => {
@@ -204,7 +204,7 @@ export default function register(router: ThrowableRouter): void {
 								const downgrade =
 									compareVersions(
 										u.version,
-										firmwareVersion
+										firmwareVersion,
 									) < 0;
 								const normalizedVersion = padVersion(u.version);
 
@@ -215,13 +215,13 @@ export default function register(router: ThrowableRouter): void {
 								};
 							})
 					);
-				}
-			)
+				},
+			),
 	);
 
 	router.post(
 		"/api/v2/updates",
-		(req: RequestWithProps<[ContentProps]>, env, context) =>
+		(req: RequestWithProps<[ContentProps]>, env: any, context: any) =>
 			handleUpdateRequest(
 				req,
 				env,
@@ -235,7 +235,7 @@ export default function register(router: ThrowableRouter): void {
 							.filter(
 								(u) =>
 									padVersion(u.version) !==
-									padVersion(firmwareVersion)
+									padVersion(firmwareVersion),
 							)
 							// Remove the channel and region property
 							// Remove the region property
@@ -244,7 +244,7 @@ export default function register(router: ThrowableRouter): void {
 								const downgrade =
 									compareVersions(
 										u.version,
-										firmwareVersion
+										firmwareVersion,
 									) < 0;
 								let normalizedVersion = padVersion(u.version);
 								if (u.channel === "beta")
@@ -257,8 +257,8 @@ export default function register(router: ThrowableRouter): void {
 								};
 							})
 					);
-				}
-			)
+				},
+			),
 	);
 
 	router.post(
@@ -266,11 +266,11 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			context: ExecutionContext,
 		) => {
 			// We need to filter non-matching regions here
 			const result = await APIv3_RequestSchema.safeParseAsync(
-				req.content
+				req.content,
 			);
 			if (!result.success) {
 				return clientError(result.error.format() as any);
@@ -286,13 +286,13 @@ export default function register(router: ThrowableRouter): void {
 					// - client specified no region -> return only updates without a region
 					// - client specified a region -> return matching updates and updates without a region
 					upgrades = upgrades.filter(
-						(u) => !u.region || u.region === region
+						(u) => !u.region || u.region === region,
 					);
 					// Filter out the current version
 					upgrades = upgrades.filter(
 						(u) =>
 							padVersion(u.version) !==
-							padVersion(firmwareVersion)
+							padVersion(firmwareVersion),
 					);
 
 					let ret: APIv3_Response = upgrades
@@ -314,12 +314,12 @@ export default function register(router: ThrowableRouter): void {
 							// Sort by version ascending...
 							const ret = compare(
 								a.normalizedVersion,
-								b.normalizedVersion
+								b.normalizedVersion,
 							);
 							if (ret !== 0) return ret;
 							// ... and put updates for a specific region first
 							return -(a.region ?? "").localeCompare(
-								b.region ?? ""
+								b.region ?? "",
 							);
 						});
 
@@ -333,9 +333,9 @@ export default function register(router: ThrowableRouter): void {
 
 					return ret;
 				},
-				region && [region]
+				region && [region],
 			);
-		}
+		},
 	);
 
 	router.post(
@@ -343,11 +343,11 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			context: ExecutionContext,
 		) => {
 			// Parse and validate the v4 request
 			const result = await APIv4_RequestSchema.safeParseAsync(
-				req.content
+				req.content,
 			);
 			if (!result.success) {
 				return clientError(result.error.format() as any);
@@ -357,7 +357,7 @@ export default function register(router: ThrowableRouter): void {
 			const filesVersion = await getCurrentVersionCached(
 				req.url,
 				context,
-				env.CONFIG_FILES
+				env.CONFIG_FILES,
 			);
 			if (!filesVersion) {
 				return serverError("Database empty");
@@ -376,8 +376,8 @@ export default function register(router: ThrowableRouter): void {
 								d.manufacturerId === device.manufacturerId &&
 								d.productType === device.productType &&
 								d.productId === device.productId &&
-								d.firmwareVersion === device.firmwareVersion
-						) === index
+								d.firmwareVersion === device.firmwareVersion,
+						) === index,
 				)
 				.sort((a, b) => {
 					// Sort by manufacturerId, productType, productId, firmwareVersion
@@ -405,7 +405,7 @@ export default function register(router: ThrowableRouter): void {
 					device.manufacturerId,
 					device.productType,
 					device.productId,
-					device.firmwareVersion
+					device.firmwareVersion,
 				);
 
 				if (cachedConfig !== undefined) {
@@ -421,7 +421,7 @@ export default function register(router: ThrowableRouter): void {
 				const batchResults = await lookupConfigsBatch(
 					env.CONFIG_FILES,
 					filesVersion,
-					cacheMisses
+					cacheMisses,
 				);
 				results.push(...batchResults);
 
@@ -435,7 +435,7 @@ export default function register(router: ThrowableRouter): void {
 						deviceInfo.productType,
 						deviceInfo.productId,
 						deviceInfo.firmwareVersion,
-						deviceInfo
+						deviceInfo,
 					);
 				}
 				// FIXME: Track which devices were NOT found in the DB and cache them as `null`
@@ -453,7 +453,7 @@ export default function register(router: ThrowableRouter): void {
 					.filter(
 						(u) =>
 							padVersion(u.version) !==
-							padVersion(device.firmwareVersion)
+							padVersion(device.firmwareVersion),
 					)
 					// Add missing fields to the returned objects
 
@@ -474,7 +474,7 @@ export default function register(router: ThrowableRouter): void {
 					.sort((a: any, b: any) => {
 						const ret = compare(
 							a.normalizedVersion,
-							b.normalizedVersion
+							b.normalizedVersion,
 						);
 						if (ret !== 0) return ret;
 						// ... and put updates for a specific region first
@@ -487,13 +487,13 @@ export default function register(router: ThrowableRouter): void {
 						if (i > 0 && u.version === arr[i - 1].version)
 							return false;
 						return true;
-					}
+					},
 				);
 				device.updates = filteredUpgrades;
 				return device;
 			});
 
 			return json(response);
-		}
+		},
 	);
 }

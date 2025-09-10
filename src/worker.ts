@@ -1,4 +1,4 @@
-import { build } from "./app";
+import { build } from "./app.js";
 
 export interface CloudflareEnvironment {
 	API_REQUIRE_KEY: string;
@@ -22,7 +22,7 @@ export default {
 		context: ExecutionContext
 	): Promise<Response> {
 		env = { ...env, responseHeaders: {} };
-		const resp: Response = await router.handle(request, env, context);
+		const resp: Response = await router.fetch(request, env, context);
 		for (const [key, value] of Object.entries(env.responseHeaders)) {
 			resp.headers.set(key, value);
 		}

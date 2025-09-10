@@ -7,7 +7,7 @@ const { add_operation, apply } = jsonLogic;
 
 function tryOr<T extends (...args: any[]) => any>(
 	operation: T,
-	onError: ReturnType<T>
+	onError: ReturnType<T>,
 ): T {
 	return ((...args: any[]) => {
 		try {
@@ -20,23 +20,23 @@ function tryOr<T extends (...args: any[]) => any>(
 
 add_operation(
 	"ver >=",
-	tryOr((a, b) => semver.gte(padVersion(a), padVersion(b)), false)
+	tryOr((a, b) => semver.gte(padVersion(a), padVersion(b)), false),
 );
 add_operation(
 	"ver >",
-	tryOr((a, b) => semver.gt(padVersion(a), padVersion(b)), false)
+	tryOr((a, b) => semver.gt(padVersion(a), padVersion(b)), false),
 );
 add_operation(
 	"ver <=",
-	tryOr((a, b) => semver.lte(padVersion(a), padVersion(b)), false)
+	tryOr((a, b) => semver.lte(padVersion(a), padVersion(b)), false),
 );
 add_operation(
 	"ver <",
-	tryOr((a, b) => semver.lt(padVersion(a), padVersion(b)), false)
+	tryOr((a, b) => semver.lt(padVersion(a), padVersion(b)), false),
 );
 add_operation(
 	"ver ===",
-	tryOr((a, b) => semver.eq(padVersion(a), padVersion(b)), false)
+	tryOr((a, b) => semver.eq(padVersion(a), padVersion(b)), false),
 );
 
 export function parseLogic(logic: string): RulesLogic {
@@ -45,7 +45,7 @@ export function parseLogic(logic: string): RulesLogic {
 
 export function evaluate(
 	logic: string,
-	context: unknown
+	context: unknown,
 ): string | number | boolean {
 	const rules = parseLogic(logic);
 	return apply(rules, context);
@@ -58,7 +58,7 @@ export interface ConditionalItem {
 /** Checks if a given condition applies for the given device ID */
 export function conditionApplies(
 	self: ConditionalItem,
-	deviceId: DeviceID | undefined
+	deviceId: DeviceID | undefined,
 ): boolean {
 	// No condition? Always applies
 	if (!self.$if) return true;
@@ -67,7 +67,7 @@ export function conditionApplies(
 
 	try {
 		return !!evaluate(self.$if, deviceId);
-	} catch (e) {
+	} catch {
 		throw new Error(`Invalid condition "${self.$if}"!`);
 	}
 }

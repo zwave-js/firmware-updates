@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared";
+import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
@@ -72,7 +72,7 @@ const fileSchema = z.object({
 				val !== val.trim()
 					? "URL must not have leading or trailing whitespace"
 					: "Invalid url",
-		})
+		}),
 	),
 	integrity: z
 		.string()
@@ -88,7 +88,7 @@ const upgradeBaseSchema = z.object({
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
-	z.object({ files: z.array(fileSchema) })
+	z.object({ files: z.array(fileSchema) }),
 );
 
 const upgradeSchemaSingle = upgradeBaseSchema
@@ -114,7 +114,7 @@ const upgradeSchemaSingle = upgradeBaseSchema
 				region: region as typeof region,
 				files: [{ target, integrity, url }],
 			};
-		}
+		},
 	);
 
 const upgradeSchema = upgradeSchemaSingle.or(upgradeSchemaMultiple);

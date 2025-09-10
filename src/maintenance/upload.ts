@@ -1,4 +1,4 @@
-import axios from "axios";
+import ky from "ky";
 import crypto from "node:crypto";
 import path from "path-browserify";
 import type { UploadPayload } from "../lib/uploadSchema.js";
@@ -49,12 +49,11 @@ void (async () => {
 	const data = JSON.stringify(files);
 	const version = hasher.update(data, "utf8").digest("hex").slice(0, 8);
 
-	const { data: onlineVersion } = await axios.get<string>(
-		new URL("/admin/config/version", baseURL).toString(),
-		{
+	const onlineVersion = await ky
+		.get(new URL("/admin/config/version", baseURL).toString(), {
 			headers: { "x-admin-secret": adminSecret },
-		}
-	);
+		})
+		.text();
 
 	if (onlineVersion === version && !argv.includes("--force")) {
 		console.log("No change in config files, skipping upload...");
@@ -67,13 +66,10 @@ void (async () => {
 		version,
 		actions: [{ task: "create" }],
 	};
-	await axios.post(
-		new URL("/admin/config/upload", baseURL).toString(),
-		createPayload,
-		{
-			headers: { "x-admin-secret": adminSecret },
-		}
-	);
+	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+		headers: { "x-admin-secret": adminSecret },
+		json: createPayload,
+	});
 
 	let cursor = 0;
 
@@ -95,13 +91,10 @@ void (async () => {
 				cursor + currentBatch.length
 			} of ${files.length}...`
 		);
-		await axios.post(
-			new URL("/admin/config/upload", baseURL).toString(),
-			payload,
-			{
-				headers: { "x-admin-secret": adminSecret },
-			}
-		);
+		await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+			headers: { "x-admin-secret": adminSecret },
+			json: payload,
+		});
 
 		cursor += MAX_FILES_PER_REQUEST;
 	}
@@ -111,12 +104,9 @@ void (async () => {
 		actions: [{ task: "enable" }],
 	};
 	console.log("finalizing...");
-	await axios.post(
-		new URL("/admin/config/upload", baseURL).toString(),
-		finalizePayload,
-		{
-			headers: { "x-admin-secret": adminSecret },
-		}
-	);
+	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+		headers: { "x-admin-secret": adminSecret },
+		json: finalizePayload,
+	});
 	console.log("done!");
 })();

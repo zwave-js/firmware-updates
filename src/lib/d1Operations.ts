@@ -41,22 +41,22 @@ export interface UpgradesQueryRow {
 
 export async function createConfigVersion(
 	db: D1Database,
-	version: string
+	version: string,
 ): Promise<void> {
 	await db
 		.prepare(
-			"INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, FALSE)"
+			"INSERT OR REPLACE INTO config_versions (version, active) VALUES (?, FALSE)",
 		)
 		.bind(version)
 		.run();
 }
 
 export async function getCurrentVersion(
-	db: D1Database
+	db: D1Database,
 ): Promise<string | undefined> {
 	const result = await db
 		.prepare(
-			"SELECT version FROM config_versions WHERE active = TRUE LIMIT 1"
+			"SELECT version FROM config_versions WHERE active = TRUE LIMIT 1",
 		)
 		.first<{ version: string }>();
 
@@ -65,24 +65,24 @@ export async function getCurrentVersion(
 
 export async function enableConfigVersion(
 	db: D1Database,
-	version: string
+	version: string,
 ): Promise<void> {
 	// Disable all versions, enable the new one, then delete old inactive versions - all in one batch
 	const statements: D1PreparedStatement[] = [
 		// Disable all currently active versions
 		db.prepare(
-			"UPDATE config_versions SET active = FALSE WHERE active = TRUE"
+			"UPDATE config_versions SET active = FALSE WHERE active = TRUE",
 		),
 		// Enable the new version
 		db
 			.prepare(
-				"UPDATE config_versions SET active = TRUE WHERE version = ?"
+				"UPDATE config_versions SET active = TRUE WHERE version = ?",
 			)
 			.bind(version),
 		// Delete all inactive versions (cleanup old data)
 		db
 			.prepare(
-				"DELETE FROM config_versions WHERE active = FALSE AND version != ?"
+				"DELETE FROM config_versions WHERE active = FALSE AND version != ?",
 			)
 			.bind(version),
 	];
@@ -100,7 +100,7 @@ export interface DeviceLookupRequest {
 export async function lookupConfigsBatch(
 	db: D1Database,
 	filesVersion: string,
-	devices: DeviceLookupRequest[]
+	devices: DeviceLookupRequest[],
 ): Promise<APIv4_DeviceInfo[]> {
 	if (devices.length === 0) return [];
 
@@ -113,7 +113,7 @@ export async function lookupConfigsBatch(
 			formatId(device.productType),
 			formatId(device.productId),
 			padVersion(device.firmwareVersion, "0"),
-			versionToNumber(device.firmwareVersion)
+			versionToNumber(device.firmwareVersion),
 		);
 	}
 
@@ -186,7 +186,7 @@ export async function lookupConfigsBatch(
 					if (upgrade.condition) {
 						return conditionApplies(
 							{ $if: upgrade.condition, ...upgrade },
-							deviceId
+							deviceId,
 						);
 					}
 					return true;
@@ -232,7 +232,7 @@ export async function lookupConfig(
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
-	firmwareVersion: string
+	firmwareVersion: string,
 ): Promise<APIv4_DeviceInfo | undefined> {
 	const results = await lookupConfigsBatch(db, filesVersion, [
 		{
@@ -248,7 +248,7 @@ export async function lookupConfig(
 export async function insertSingleConfigData(
 	db: D1Database,
 	version: string,
-	config: { devices: DeviceIdentifier[]; upgrades: ConditionalUpgradeInfo[] }
+	config: { devices: DeviceIdentifier[]; upgrades: ConditionalUpgradeInfo[] },
 ): Promise<void> {
 	const { devices, upgrades } = config;
 
@@ -258,7 +258,7 @@ export async function insertSingleConfigData(
 		const firmwareVersionMin = padVersion(device.firmwareVersion.min, "0");
 		const firmwareVersionMax = padVersion(
 			device.firmwareVersion.max,
-			"255"
+			"255",
 		);
 		const minVersionNormalized = versionToNumber(firmwareVersionMin);
 		const maxVersionNormalized = versionToNumber(firmwareVersionMax);
@@ -272,7 +272,7 @@ export async function insertSingleConfigData(
 				firmware_version_min_normalized, firmware_version_max_normalized
 			) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			RETURNING id
-		`
+		`,
 			)
 			.bind(
 				version,
@@ -284,7 +284,7 @@ export async function insertSingleConfigData(
 				firmwareVersionMin,
 				firmwareVersionMax,
 				minVersionNormalized,
-				maxVersionNormalized
+				maxVersionNormalized,
 			)
 			.first<{ id: number }>();
 
@@ -303,14 +303,14 @@ export async function insertSingleConfigData(
 				firmware_version, changelog, channel, region, condition
 			) VALUES (?, ?, ?, ?, ?)
 			RETURNING id
-		`
+		`,
 			)
 			.bind(
 				upgrade.version,
 				upgrade.changelog,
 				upgrade.channel,
 				upgrade.region || null,
-				upgrade.$if || null
+				upgrade.$if || null,
 			)
 			.first<{ id: number }>();
 
@@ -328,9 +328,9 @@ export async function insertSingleConfigData(
 					.prepare(
 						`
 					INSERT INTO device_upgrades (device_id, upgrade_id) VALUES (?, ?)
-				`
+				`,
 					)
-					.bind(deviceId, upgradeId)
+					.bind(deviceId, upgradeId),
 			);
 		}
 	}
@@ -352,9 +352,9 @@ export async function insertSingleConfigData(
 						`
 					INSERT INTO upgrade_files (upgrade_id, target, url, integrity)
 					VALUES (?, ?, ?, ?)
-				`
+				`,
 					)
-					.bind(upgradeId, file.target, file.url, file.integrity)
+					.bind(upgradeId, file.target, file.url, file.integrity),
 			);
 		}
 	}

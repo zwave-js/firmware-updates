@@ -1,4 +1,4 @@
-import { array2hex, hex2array } from "./shared";
+import { array2hex, hex2array } from "./shared.js";
 
 const IV_LEN = 12;
 const AUTH_TAG_LEN = 8;
@@ -53,7 +53,7 @@ export function decodeAPIKey(apiKey: ArrayBuffer): APIKey {
 
 export async function decryptAPIKey(
 	key: ArrayBuffer,
-	apiKeyHex: string
+	apiKeyHex: string,
 ): Promise<APIKey> {
 	// Decrypt API key using AES-256-GCM to check if it is valid.
 	// The API key is encoded as hex with the IV prepended and auth tag appended.
@@ -74,7 +74,7 @@ export async function decryptAPIKey(
 		key,
 		"AES-GCM",
 		false,
-		["decrypt"]
+		["decrypt"],
 	);
 
 	let apiKeyDecoded;
@@ -82,14 +82,14 @@ export async function decryptAPIKey(
 		const plaintext = await crypto.subtle.decrypt(
 			{
 				name: "AES-GCM",
-				iv,
+				iv: iv.slice().buffer,
 				tagLength: AUTH_TAG_LEN * 8,
 			},
 			cryptoKey,
-			ciphertext
+			ciphertext,
 		);
 		apiKeyDecoded = decodeAPIKey(plaintext);
-	} catch (err) {
+	} catch {
 		throw new Error("Invalid API key");
 	}
 
@@ -98,7 +98,7 @@ export async function decryptAPIKey(
 
 export async function encryptAPIKey(
 	key: ArrayBuffer,
-	apiKey: APIKey
+	apiKey: APIKey,
 ): Promise<string> {
 	const iv = new Uint8Array(IV_LEN);
 	crypto.getRandomValues(iv);
@@ -108,19 +108,19 @@ export async function encryptAPIKey(
 		key,
 		"AES-GCM",
 		false,
-		["encrypt"]
+		["encrypt"],
 	);
 
 	const ciphertext = new Uint8Array(
 		await crypto.subtle.encrypt(
 			{
 				name: "AES-GCM",
-				iv,
+				iv: iv.slice().buffer,
 				tagLength: AUTH_TAG_LEN * 8,
 			},
 			cryptoKey,
-			encodeAPIKey(apiKey)
-		)
+			encodeAPIKey(apiKey),
+		),
 	);
 
 	const ret = new Uint8Array(iv.length + ciphertext.length);

@@ -1,15 +1,15 @@
-import { error } from "itty-router-extras";
-import { APIKey, decryptAPIKey } from "../lib/apiKeys";
-import { withCache } from "../lib/cache";
-import { hex2array } from "../lib/shared";
-import type { CloudflareEnvironment } from "../worker";
+import { error } from "itty-router";
+import { APIKey, decryptAPIKey } from "../lib/apiKeys.js";
+import { withCache } from "../lib/cache.js";
+import { hex2array } from "../lib/shared.js";
+import type { CloudflareEnvironment } from "../worker.js";
 
 const CACHE_KEY_PREFIX = "/__kv-cache/";
 
 export async function withAPIKey(
 	req: Request,
 	env: CloudflareEnvironment,
-	context: ExecutionContext
+	context: ExecutionContext,
 ): Promise<Response | undefined> {
 	const fail = (message: string, code: number) => {
 		if (env.API_REQUIRE_KEY !== "false") {
@@ -34,7 +34,7 @@ export async function withAPIKey(
 		},
 		async () => {
 			return new Response(await env.API_KEYS.get(apiKeyHex));
-		}
+		},
 	);
 	const apiKeyText = apiKeyResponse.body && (await apiKeyResponse.text());
 	let apiKey = apiKeyText && (JSON.parse(apiKeyText) as APIKey);
@@ -48,7 +48,7 @@ export async function withAPIKey(
 		const key = hex2array(keyHex); // Buffer.from(keyHex, "hex");
 
 		try {
-			apiKey = await decryptAPIKey(key, apiKeyHex);
+			apiKey = await decryptAPIKey(key.slice().buffer, apiKeyHex);
 		} catch (e: any) {
 			return fail(e.message, 401);
 		}

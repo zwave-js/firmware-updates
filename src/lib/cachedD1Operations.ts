@@ -19,7 +19,7 @@ export function getD1CacheKey(
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
-	firmwareVersion: string
+	firmwareVersion: string,
 ): string {
 	const cacheKeySuffix = [
 		filesVersion,
@@ -31,7 +31,7 @@ export function getD1CacheKey(
 
 	return new URL(
 		CACHE_KEY_PREFIX + encodeURIComponent(cacheKeySuffix),
-		baseURL
+		baseURL,
 	).toString();
 }
 
@@ -45,7 +45,7 @@ export async function getD1CachedConfig(
 	manufacturerId: number | string,
 	productType: number | string,
 	productId: number | string,
-	firmwareVersion: string
+	firmwareVersion: string,
 ): Promise<APIv4_DeviceInfo | null | undefined> {
 	// FIXME: Use a tagged union type to make it clearer what null (cache hit, device not in DB) and undefined (cache miss) mean
 	const cacheKey = getD1CacheKey(
@@ -54,14 +54,14 @@ export async function getD1CachedConfig(
 		manufacturerId,
 		productType,
 		productId,
-		firmwareVersion
+		firmwareVersion,
 	);
 
 	const cachedResponse = await getCachedResponse(cacheKey);
 	if (cachedResponse) {
 		try {
 			return await cachedResponse.json();
-		} catch (error) {
+		} catch {
 			// Cache corruption, return undefined to indicate cache miss
 			return undefined;
 		}
@@ -82,7 +82,7 @@ export async function cacheD1Config(
 	productType: number | string,
 	productId: number | string,
 	firmwareVersion: string,
-	config: APIv4_DeviceInfo | null
+	config: APIv4_DeviceInfo | null,
 ): Promise<void> {
 	const cacheKey = getD1CacheKey(
 		baseURL,
@@ -90,7 +90,7 @@ export async function cacheD1Config(
 		manufacturerId,
 		productType,
 		productId,
-		firmwareVersion
+		firmwareVersion,
 	);
 
 	const response = new Response(JSON.stringify(config), {
@@ -107,7 +107,7 @@ export async function cacheD1Config(
  * Helper function similar to withCache but only returns cached response if available
  */
 async function getCachedResponse(
-	cacheKey: string
+	cacheKey: string,
 ): Promise<Response | undefined> {
 	const cache = caches.default;
 	const cachedResponse = await cache.match(cacheKey, {
@@ -129,7 +129,7 @@ async function cacheResponse(
 	context: ExecutionContext,
 	response: Response,
 	sMaxAge: number = oneDayInSeconds,
-	maxAge: number = 60 * 60
+	maxAge: number = 60 * 60,
 ): Promise<void> {
 	if (response.status === 200) {
 		const responseBody = await response.clone().text();
@@ -137,15 +137,15 @@ async function cacheResponse(
 			new Uint8Array(
 				await crypto.subtle.digest(
 					"SHA-256",
-					new TextEncoder().encode(responseBody)
-				)
-			)
+					new TextEncoder().encode(responseBody),
+				),
+			),
 		);
 
 		// Cache the response
 		response.headers.set(
 			"Cache-Control",
-			`public, s-maxage=${sMaxAge}, max-age=${maxAge}, stale-while-revalidate`
+			`public, s-maxage=${sMaxAge}, max-age=${maxAge}, stale-while-revalidate`,
 		);
 		response.headers.set("ETag", hash);
 
@@ -160,11 +160,11 @@ async function cacheResponse(
 export async function getCurrentVersionCached(
 	baseURL: string,
 	context: ExecutionContext,
-	db: D1Database
+	db: D1Database,
 ): Promise<string | undefined> {
 	const cacheKey = new URL(
 		CACHE_KEY_PREFIX + "current-version",
-		baseURL
+		baseURL,
 	).toString();
 
 	// Try to get from cache first
@@ -172,7 +172,7 @@ export async function getCurrentVersionCached(
 	if (cachedResponse) {
 		try {
 			return await cachedResponse.text();
-		} catch (error) {
+		} catch {
 			// Cache corruption, continue to database lookup
 		}
 	}
