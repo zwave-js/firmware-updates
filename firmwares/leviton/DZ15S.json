@@ -1,0 +1,21 @@
+{
+    "devices": [
+        {
+			// https://products.z-wavealliance.org/products/1957?selectedFrequencyId=2
+            "brand": "Leviton",
+            "model": "DZ15S",
+            "manufacturerId": "0x001d",
+            "productType": "0x3401",
+			"productId": "0x0001",
+		}
+    ],
+	"upgrades": [
+		{
+			"version": "1.23",
+			"changelog": "Latest Leviton Firmware",
+			"target": 0,
+			"url": "https://hubconnecteddecorasmart.leviton.com/hc/en-us/article_attachments/7150678400027/DZ15S_v1_23.ota",
+			"integrity": "sha256:a7be23590211edb1cc264edf2209d355786317d4d6eb04708609425402bff71d",
+		}
+	]
+}
