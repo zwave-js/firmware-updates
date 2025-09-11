@@ -32,7 +32,7 @@ void (async () => {
 			!file.endsWith("index.json") &&
 			!path.basename(file).startsWith("_") &&
 			!file.includes("/templates/") &&
-			!file.includes("\\templates\\")
+			!file.includes("\\templates\\"),
 	);
 
 	const files: { filename: string; data: string }[] = [];
@@ -69,6 +69,7 @@ void (async () => {
 	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
 		headers: { "x-admin-secret": adminSecret },
 		json: createPayload,
+		timeout: false,
 	});
 
 	let cursor = 0;
@@ -76,7 +77,7 @@ void (async () => {
 	while (cursor < files.length) {
 		const currentBatch = files.slice(
 			cursor,
-			cursor + MAX_FILES_PER_REQUEST
+			cursor + MAX_FILES_PER_REQUEST,
 		);
 
 		const payload: UploadPayload = {
@@ -89,11 +90,12 @@ void (async () => {
 		console.log(
 			`Uploading files ${cursor + 1}...${
 				cursor + currentBatch.length
-			} of ${files.length}...`
+			} of ${files.length}...`,
 		);
 		await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
 			headers: { "x-admin-secret": adminSecret },
 			json: payload,
+			timeout: false,
 		});
 
 		cursor += MAX_FILES_PER_REQUEST;
@@ -107,6 +109,7 @@ void (async () => {
 	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
 		headers: { "x-admin-secret": adminSecret },
 		json: finalizePayload,
+		timeout: false,
 	});
 	console.log("done!");
 })();
