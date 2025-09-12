@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.70.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.0, 3.10, 3.20, 3.30, 3.40, 3.50, 3.60, 3.70.\n* Optimized Z-Wave reporting behavior: when Basic Set, Binary Set, and Multilevel set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.",
+			"url": "https://www.getzooz.com/firmware/ZEN72_V03R70.gbl",
+			"integrity": "sha256:f67e622d517b06250577b85ca6adbada1904cb7fe085628d05f168d78883852f"
+		},
+		{
 			"version": "3.50.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 3.0, 3.10, 3.20, 3.30, 3.40, 3.50.\n* Updated parameter names and short descriptions in the Configuration Command Class.\n* Added a new parameter 34: Basic Set Custom Brightness On.",
