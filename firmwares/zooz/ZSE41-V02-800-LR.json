@@ -23,7 +23,7 @@
 		{
 			"version": "2.20.0",
 			"region": "europe",
-			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40\n* Updated SDK from 7.19.3 to 7.23.1.\n* Added Long Range support for Europe.",
+			"changelog": "* Includes firmware versions: 2.00, 2.10, 2.20.\n* Updated SDK from 7.19.3 to 7.23.1.\n* Added Long Range support for Europe.",
 			"url": "https://www.getzooz.com/firmware/ZSE41_V02R20_EU.gbl",
 			"integrity": "sha256:811af8905e1d26eb31c74f2341c3e0ef5f8a0783f6c52bb3ae717c9d6aa8e21f"
 		}
