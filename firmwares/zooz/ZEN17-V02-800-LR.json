@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Updated SDK from 7.19.3 to 7.23.1.\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.\n* Fixed a bug where manual operation (using the button on the ZEN17) in garage door mode now functions as described in the Advanced Settings Article.\n* Fixed reporting behavior after a power outage that previously affected parameter 1 and value 1 for relays and any created child devices. Relays and inputs will now correctly report their status following a power outage.",
+			"url": "https://www.getzooz.com/firmware/ZEN17_V02R20_US.gbl",
+			"integrity": "sha256:f8ff4b272d0ba6ab02dd26b933da464459a2982e0c2cdf463ee028dc23a09902"
+		},
+		{
+			"version": "2.20.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Updated SDK from 7.19.3 to 7.23.1.\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.\n* Fixed a bug where manual operation (using the button on the ZEN17) in garage door mode now functions as described in the Advanced Settings Article.\n* Fixed reporting behavior after a power outage that previously affected parameter 1 and value 1 for relays and any created child devices. Relays and inputs will now correctly report their status following a power outage\n* Added Long Range support for Europe.",
+			"url": "https://www.getzooz.com/firmware/ZEN17_V02R20_EU.gbl",
+			"integrity": "sha256:3e12532b8060a77bb8bf3b91a101b25f0cfeec091e931aafffdc80657de7237f"
+		},
+		{
 			"version": "2.10.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10\n* Fixed a bug: When parameters 2 and 3 are set to value 11 (garage door mode for the relay/momentary contact and door sensor type for the input), the garage door mode for relays was not working when triggered from Z-Wave UI.\n* Fixed a bug: When parameters 2 and 3 are set to value 3 (garage door momentary mode), the garage door mode for relays was not working when triggered from Z-Wave UI.\n* Fixed a bug: When parameter 3 was set to value 10 (on/off report / dry contact switch/sensor), the child device was not created as expected.",
