@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.20.1",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Updated temperature report: When the device cannot retrieve the correct temperature reading, it will now send the last valid value instead of defaulting to 32°F.\n* Updated power calculation algorithm to optimize battery reports.",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R20_US.gbl",
+			"integrity": "sha256:fb38229e76cf9ead671dbc21045af950d1b9a9482b849bb1804ffacc8c9cb34f"
+		},
+		{
+			"version": "2.20.1",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Updated temperature report: When the device cannot retrieve the correct temperature reading, it will now send the last valid value instead of defaulting to 32°F.\n* Updated power calculation algorithm to optimize battery reports.\n *Added Long Range support for Europe",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R20_EU.gbl",
+			"integrity": "sha256:03c7d3a95f16999a4ebc7adc9043ac7bbf1b3821d34bd33506b0bf164abe9a26"
+		},
+		{
 			"version": "2.10.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10\n* Updated SDK from 7.19.3 to 7.22.1\n* Fixed an issue when ZSE44 would not always respond to the initial inclusion mode (3x clicks on the action button). Bug on SDK 7.19.3\n* Fixed an issue where ZSE44 will enter a sleep mode with a high sleep current. This could occasionally drain a battery faster than expected. Bug on SDK 7.19.3\n* Fixed a bug when ZSE44 could enter an automatic sleep mode during the initial interview of the device. The ZSE44 has to be manually woken up to finish an interview. Bug on SDK 7.19.3\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.",
