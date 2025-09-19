@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "4.70.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50, 4.60, 4.70.\n* Added new parameters: 35 - Scene Control Multi-Tap, 36 - Gamma Factor, and 37 - LED Indicator Multi-Color.\n* Optimized Z-Wave reporting behavior: when Basic Set, Binary Set, and Multilevel set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.",
+			"url": "https://www.getzooz.com/firmware/ZEN77_V04R70.gbl",
+			"integrity": "sha256:3665d82947fe45365d37c2ae63c7e05c00b83988e5b746be7f79a4c2e37938f8"
+		},
+		{
 			"version": "4.60.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50, 4.60.\n* Updated parameter names and short descriptions in the Configuration Command Class.\n* Added a new parameter 34: Basic Set Custom Brightness On.",
