@@ -1,0 +1,21 @@
+{
+    "devices": [
+        {
+			// https://products.z-wavealliance.org/products/1958?selectedFrequencyId=2
+            "brand": "Leviton",
+            "model": "DZPD3",
+            "manufacturerId": "0x001d",
+            "productType": "0x3501",
+			"productId": "0x0001",
+		}
+    ],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "Latest Leviton Firmware",
+			"target": 0,
+			"url": "https://hubconnecteddecorasmart.leviton.com/hc/en-us/article_attachments/7150704823963/DZPD3_v1_22.ota",
+			"integrity": "sha256:e8c5537eb92462bfdfa5730bac03ae37f4191ad88a846834ed7f0e078daa932f",
+		}
+	]
+}
