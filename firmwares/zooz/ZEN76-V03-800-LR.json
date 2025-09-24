@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.60.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50, 3.60.\n* Added new parameters: 19 - Scene Control Multi-Tap, 20 - LED Indicator Multi-Color.\n* Improved the delay from the mechanical switch in 3/4-way installations.\n* Optimized Z-Wave reporting behavior: when Basic Set and Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.",
+			"url": "https://www.getzooz.com/firmware/ZEN76_V03R60.gbl",
+			"integrity": "sha256:95cdde4e08bb9892cb4a48aabf44e0dbaa9b3ef6d41c12234962551c41be08ac"
+		},
+		{
 			"version": "3.50.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50.\n* Updated parameter names and short descriptions in the Configuration Command Class.",
