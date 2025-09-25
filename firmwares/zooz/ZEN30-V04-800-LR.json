@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "4.40.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 4.10, 4.20, 4.30, 4.40\n* Added new parameter 38 - Dimmer Gamma Factor.\n* Added new parameters: 39 - Relay Scene Control Multi-Tap and 40 - Dimmer Scene Control Multi-Tap.\n* Added new parameters: 41 - Relay LED Indicator Multi-Color and 42 - Dimmer LED Indicator Multi-Color.\n* Fixed: A bug affecting Home Assistant and Z-Wave JS users, where the dimmer part was not correctly updating. Both target value and current value now report as expected.",
+			"url": "https://www.getzooz.com/firmware/ZEN30_V04R40.gbl",
+			"integrity": "sha256:11efcdd91557e06d203e43b1735d1df46e6eb9bba3d0d12e5940951b85a5cf72"
+		},
+		{
 			"version": "4.30.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 4.10, 4.20, 4.30\n* Updated SDK from 7.19.3 to 7.23.1\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.",
