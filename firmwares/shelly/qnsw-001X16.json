@@ -14,6 +14,17 @@
 	],
 	"upgrades": [
 		{
+			"version": "13.0",
+			"changelog": "Added - Detached mode\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed push button inclusion / exclussion\n -other minor fixes",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d9798b4b69d8adc20f7141f8b07a1843c4b87e5b/Wave_1/EU/Wave_1_800_EU_LR_20250829_1330_QLSW-001X16EU_%5Bv13.00%5D_0FE4B35C.gbl",
+					"integrity": "sha256:5dfaeb91e1d99b89f4415951b366fb7c80675a78d9cd71d5d453a317904b87e6"
+				}
+			]
+		},
+		{
 			"version": "11.5",
 			"changelog": "- optimised temperature conversion table",
 			"region": "europe",

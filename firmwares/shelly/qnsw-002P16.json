@@ -13,6 +13,28 @@
 		}
 	],
 	"upgrades": [
+				{
+			"version": "16.2",
+			"changelog": "- SDK with fixed dead node issue\nAdded detached mode and kWh precision set to 2 decimal points\nParameter 117 (reboot parameter)\nWatt reports when NO/NC parameter is active\nOther minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/cdefca11d5b87b1e4bd19d974ab2d6fced00ff81/Wave_2PM/EU/Wave_2PM_800_EU_LR_20251007_1240_QLSW-002P16EU_%5B16.02%5D_0FE4B35C.gbl",
+					"integrity": "sha256:62427889675268b6a71d5912564ec13c4032063223b4ff0c10ca154cebf12b3f"
+				}
+			]
+		},
+		{
+			"version": "15.0",
+			"changelog": "- Fix switch binary report when powered with DC\n- Fix Endpoint 2 report state change on single channel association\n- Fix supervision report for root command\n- Removed parameters no. 91, 92, 93, 94 from the FW\n- Other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/252a13274ea5340532d149063933f907c701bee6/Wave_2PM/EU/Wave_2PM_800_EU_20250508_0951_QNSW-002P16EU_%5B15.00%5D_9DD2F96C.gbl",
+					"integrity": "sha256:8d9f12e23f8a385959e26dafdfdd31c7ddc8a1b9a40a38fbbffb59dc7588c921"
+				}
+			]
+		},
 		{
 			"version": "15.0",
 			"changelog": "- Fix switch binary report when powered with DC\n- Fix Endpoint 2 report state change on single channel association\n- Fix supervision report for root command\n- Removed parameters no. 91, 92, 93, 94 from the FW\n- Other minor improvements",

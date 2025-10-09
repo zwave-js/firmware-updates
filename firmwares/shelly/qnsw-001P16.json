@@ -14,6 +14,17 @@
 	],
 	"upgrades": [
 		{
+			"version": "13.2",
+			"changelog": "- Added Detached mode\n- Added Energy reporting precision 0,01 kWh\n- Fixed device not working properly connected DC\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed random power cycle (SDK issue)\n- Removed parameters 91 - 94\n- Removed Inclusion / exclussion output signalisation\n- other minor improvements and fixes",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d9798b4b69d8adc20f7141f8b07a1843c4b87e5b/Wave_1PM/EU/Wave_1PM_800_EU_LR_20250908_1614_QLSW-001P16EU_%5Bv13.02%5D_EB201890.gbl",
+					"integrity": "sha256:863536b812ca1e034d0f45c6d66f589b6d65441535fb1e64609cbbd3b4eb0e41"
+				}
+			]
+		},
+		{
 			"version": "11.10",
 			"changelog": "- Fixed device not working with DC supply\n- Fixed OTA signalisation\n- Optimised temperature conversion table\n- Other minor improvements",
 			"region": "europe",
