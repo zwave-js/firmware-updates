@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30\n* Corrected the behavior of parameter 5 for Basic Set Commands with Value 3 - Absence of water, send Basic Set for On, and Value 4 - Presence of water, send Basic Set for Off.",
+			"url": "https://www.getzooz.com/firmware/ZSE42_V02R30_US.gbl",
+			"integrity": "sha256:1639d3d43c7089dfb1f0bbc42091349abf4c073fbe4c80d6fe362abac9bb586c"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Updated parameter 5 for Basic Set Commands with Value 3 - Basic Set for On and Value 4 - Basic Set for Off.",
