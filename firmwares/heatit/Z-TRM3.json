@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Heatit",
+			"model": "Z-TRM3",
+			"manufacturerId": "0x019b",
+			"productType": "0x0003",
+			"productId": "0x0203",
+			"firmwareVersion": {
+				"min": "4.0.33",
+				"max": "4.0.33"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.0.34",
+			"changelog": "No information from manufacturer provided.",
+			"url": "https://media.heatit.com/2562?type=ota",
+			"integrity": "sha256:5df68b91690ef3b624c0296a99b0bb2c8fd701ee6120fe68920915003423dbbb"
+		}
+	]
+}
