@@ -1,0 +1,21 @@
+{
+    "devices": [
+        {
+			// https://products.z-wavealliance.org/products/1956?selectedFrequencyId=2
+            "brand": "Leviton",
+            "model": "DZ1KD",
+            "manufacturerId": "0x001d",
+            "productType": "0x3301",
+			"productId": "0x0001",
+		}
+    ],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "Latest Leviton Firmware",
+			"target": 0,
+			"url": "https://hubconnecteddecorasmart.leviton.com/hc/en-us/article_attachments/7150650664091/DZ1KD_v1_22.ota",
+			"integrity": "sha256:974c4cede0176bc21478faa77394de9e1d1707bed233134dd1eb080f13459f33",
+		}
+	]
+}
