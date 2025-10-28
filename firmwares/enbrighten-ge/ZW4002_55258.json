@@ -18,8 +18,8 @@
 		{
 			"version": "5.51",
 			"changelog": "1. Added parameter 3 (adjustable LED behavior)\n2. Added parameter 84 (factory reset)\n3. Added experimental parameter 40 (fan speed ramp rate)\n4. Update devkit to 6.84.00",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/93cd6e47e554a16d6e6659b60bc9d54cc2a92aa6/zwave/Enbrighten-GE/ZW4002/55258%20-%20In-Wall%20Fan%20Speed%20Control%2C%20500S/5.51/ZW4002_Enbrighten-GE_55258_5.51.otz",
-			"integrity": "sha256:f35c8babf074bbbc79466ba62cc5e6d11552dfa803c818abdc5624ab9f80e553"
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/144f8d0ceeb79fc79a8e0251890267cba8a5f075/zwave/Enbrighten-GE/ZW4002/55258%20-%20In-Wall%20Fan%20Speed%20Control%2C%20500S/5.51/ZW4002_Enbrighten-GE_55258_5.51.otz",
+			"integrity": "sha256:a295850f918746ed9ba743e79a2696f1779b8f129b63455cb7ef3bd6caeed1b9"
 		}
 	]
 }
