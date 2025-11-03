@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.40.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30, 2.40.\n* Improved the delay from the mechanical switch in 3/4-way installations.\n* Added new parameters: 19 - Scene Control Multi-Tap and 20 - LED Indicator Multi-Color.\n* Optimized Z-Wave reporting behavior: when Basic Set, Binary Switch Set, and Multilevel Switch Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.",
+			"url": "https://www.getzooz.com/firmware/ZEN73_V02R40.gbl",
+			"integrity": "sha256:96fd4fa2fb43dcdc81e690acc4b5fd2ac5291de6ddc6123336edbf2765825754"
+		},
+		{
 			"version": "2.30.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30.\n* Updated parameter names and short descriptions in the Configuration Command Class.",
