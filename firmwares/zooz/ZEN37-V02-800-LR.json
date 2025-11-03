@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Resolved charging and battery-related issues: fixed an issue where there was no LED activity after initially connecting the device to the charger.\n* Added new parameters 8 - Battery Reporting Frequency and 9 - Battery Reporting Threshold.",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R20_US.gbl",
+			"integrity": "sha256:f264d6c9c3fe0ccde3f7c09b2a6f557af20a133a0b2bc5c6000da08f0179b176"
+		},
+		{
+			"version": "2.20.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Resolved charging and battery-related issues: fixed an issue where there was no LED activity after initially connecting the device to the charger.\n* Added new parameters 8 - Battery Reporting Frequency and 9 - Battery Reporting Threshold.",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R20_EU.gbl",
+			"integrity": "sha256:f483478325470b1b216e3925b1dc61212256c898e1957357cf50cf553b50cd27"
+		},
+		{
 			"version": "2.10.1",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 2.0, 2.10\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting Article.\n* Updated the SmartStart inclusion via QR code: The ZEN37 arrives in deep sleep mode out of the box.",
