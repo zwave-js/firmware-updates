@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN75",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa005",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.00, 1.10, 1.20.\n* Added new parameters: 20 - Scene Control Multi-Tap, 21 - LED Indicator Multi-Color.",
+			"url": "https://www.getzooz.com/firmware/ZEN75_V01R20.gbl",
+			"integrity": "sha256:94ca5b5c1d0777602716d17c18932c4061a592ae6d7fa95025a8de526f5c977a"
+		}
+	]
+}
