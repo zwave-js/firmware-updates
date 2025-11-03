@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20 \n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting",
+			"url": "https://www.getzooz.com/firmware/ZEN15_V02R20.gbl",
+			"integrity": "sha256:9c53395c19a56c0cc8b18ffb153d460910cc497eea28b71f27b7c9825cf03c4b"
+		},
+		{
 			"version": "2.10.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10 \n* Added Notification Command Class. The Power Switch will now report (Over-current detected) when parameter 20 (overload protection) is triggered.\n* Added parameter 175 - Voltage threshold report.\n* Added parameter 176 - Electricity threshold report.\n* dded parameter 36 - Turn the power switch on again after the overload protection is triggered.\n* Modified parameter 20: The overload protection cannot be turned off anymore, and it can be adjusted between 2 - 5 seconds. \n* Fixed a bug when the Power Switch could turn off in edge cases when a large appliance like a dryer was initially starting. The Power Switch will no longer turn off on the initial start up unless overload protection is triggered.",
