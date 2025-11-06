@@ -7,7 +7,7 @@
 			"productType": "0x0004",
 			"productId": "0x003c",
 			"firmwareVersion": {
-				"min": "7.22.0",
+				"min": "7.22",
 				"max": "7.23.2"
 			}
 		}
