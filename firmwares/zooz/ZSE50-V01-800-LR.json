@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE50",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0369",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.20.\n* Improved Tone File Management: Resolved the tone file ordering issue by introducing fixed, addressable locations for each tone. Adding or removing sound files will no longer alter the sequence of existing tones. This update ensures that scenes remain consistent and unchanged when new files are loaded.",
+			"url": "https://www.getzooz.com/firmware/ZSE50_V01R20.gbl",
+			"integrity": "sha256:6ea886abe766792b4c94e4c26a3a69af6288aa3e3c0db4ed2090626391e5e867"
+		}
+	]
+}
