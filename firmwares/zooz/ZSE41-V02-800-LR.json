@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.00, 2.10, 2.20, 2.30.\n* Fixed: Corrected the LED behavior during the factory reset procedure introduced in firmware version 2.20.",
+			"url": "https://www.getzooz.com/firmware/ZSE41_V02R30_US.gbl",
+			"integrity": "sha256:836acb405ea5087c58497fc91df04098b32e31e05eaf8a5b0081f4de56818c39"
+		},
+		{
+			"version": "2.30.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.00, 2.10, 2.20, 2.30.\n* Fixed: Corrected the LED behavior during the factory reset procedure introduced in firmware version 2.20.",
+			"url": "https://www.getzooz.com/firmware/ZSE41_V02R30_EU.gbl",
+			"integrity": "sha256:9a715509576b0a79c661f17aa796da2d5326e0fd382f18adbc7f6dfa382da5ad"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.00, 2.10, 2.20.\n* Updated SDK from 7.19.3 to 7.23.1.",
