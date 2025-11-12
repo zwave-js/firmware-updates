@@ -14,13 +14,22 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.40.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40\n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Adjusted the over-voltage protection threshold in the firmware from 135VAC to 150VAC to minimize false triggers in specific scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZEN04_V02R40.gbl",
+			"integrity": "sha256:ad325e5630ed205052a3c846817cbbc9c71cde3bbc709a837f105e5c7a9f0255"
+		},
+		{
 			"version": "2.30.0",
+			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30\n* Updated parameters 5, 7, and 8 to extend the W, A, and kWh threshold range.\n* Added the ability for parameters 5, 7, and 8 to disable reporting based on threshold and report based on frequency for W, A, and kWh.\n* Added new parameters 14 (kWh Report Frequency) and 15 (Disable kWh Reports).",
 			"url": "https://www.getzooz.com/firmware/ZEN04_V02R30.gbl",
 			"integrity": "sha256:1bc104a3d5d10c9777ba0a3c3313ec177fc023c302e6774926298b23516200cf"
 		},
 		{
 			"version": "2.20.1",
+			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* 800 Series Z-Wave chip.\n* Based on 1.30 firmware.\n* Long Range ready.\n * Improved Direct Association for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN04_V02R20.gbl",
 			"integrity": "sha256:c43e5a005247bdbedb8ae39ede2f041eb4727bc98b833f6ff76a12c26e6096ac"
