@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.40.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30,2.40.\n* Added new parameters: 35 - Scene Control Multi-Tap, 36 - Gamma Factor, and 37 - LED Indicator Multi-Color.\n* Optimized Z-Wave reporting behavior: when Basic Set, Binary Set, and Multilevel set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Improved the delay from the mechanical switch in 3/4-way installations.",
+			"url": "https://www.getzooz.com/firmware/ZEN74_V02R40.gbl",
+			"integrity": "sha256:1b0ae3c8a563249552bdec30af31797a6c6c5cf722a7256b5719cc0f0476c5a7"
+		},
+		{
 			"version": "2.30.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.10, 2.20, 2.30.\n* Updated parameter names and short descriptions in the Configuration Command Class.\n* Added a new parameter 34: Basic Set Custom Brightness On.",
