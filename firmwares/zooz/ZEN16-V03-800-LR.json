@@ -16,7 +16,7 @@
 		{
 			"version": "3.20.0",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 3.0, 3.10, 3.20. \n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Settings.\n* Fixed a bug where manual operation (using the button on the ZEN16) in garage door mode now functions as described in the Advanced Settings Article.\n* Resolved an issue where parameter values 1 and 2 for parameters 21, 22, and 23 were not functioning properly, causing NC mode to revert to NO mode.\n* When parameters 21, 22, and 23 are set to NC mode, parameters 2, 3, and 4 can now be configured with any value from 0-11 (previously limited to 0-3)",
+			"changelog": "* Includes firmware versions: 3.0, 3.10, 3.20.\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Settings.\n* Fixed a bug where manual operation (using the button on the ZEN16) in garage door mode now functions as described in the Advanced Settings Article.\n* Resolved an issue where parameter values 1 and 2 for parameters 21, 22, and 23 were not functioning properly, causing NC mode to revert to NO mode.\n* When parameters 21, 22, and 23 are set to NC mode, parameters 2, 3, and 4 can now be configured with any value from 0-11 (previously limited to 0-3)",
 			"url": "https://www.getzooz.com/firmware/ZEN16_V03R20.gbl",
 			"integrity": "sha256:e47856690c2939a58d29819e9edd469ed29e6cfd57d1786a8c75b23d7318b56a"
 		}
