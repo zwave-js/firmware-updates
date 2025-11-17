@@ -16,7 +16,7 @@
 		{
 			"version": "2.10.0",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 2.0, 2.10 \n* Added a new value for parameter 24 (DC Motor mode) for the application with 3-speed fans/motors, so that only 1 relay can be turned on at the same time.\n* Fixed setting bug: you can now set any value for parameters 2, 3, and 4 (input type) when parameter 24 (DC motor mode) is set to value 1 or 2 (enabled).\n* Fixed a bug with the auto turn-off timer for R1, R2, and R3 whenever parameters 12, 13, and 14 are changed from value 1 to 0. Parameters 2, 3, and 4 values 0-10 were affected.\n* Added new settings to set input trigger duration (parameters 28, 29, and 30,).\n* Added new setting to assign fixed on or off actions to inputs (parameter 31).",
+			"changelog": "* Includes firmware versions: 2.0, 2.10\n* Added a new value for parameter 24 (DC Motor mode) for the application with 3-speed fans/motors, so that only 1 relay can be turned on at the same time.\n* Fixed setting bug: you can now set any value for parameters 2, 3, and 4 (input type) when parameter 24 (DC motor mode) is set to value 1 or 2 (enabled).\n* Fixed a bug with the auto turn-off timer for R1, R2, and R3 whenever parameters 12, 13, and 14 are changed from value 1 to 0. Parameters 2, 3, and 4 values 0-10 were affected.\n* Added new settings to set input trigger duration (parameters 28, 29, and 30).\n* Added new setting to assign fixed on or off actions to inputs (parameter 31).",
 			"url": "https://www.getzooz.com/firmware/ZEN16_V02R10.gbl",
 			"integrity": "sha256:01c080fcb7cf6082d18d5878824d26b7c3a49d1a6c72ecce5207e2c4892f7272"
 		}

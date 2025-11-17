@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "3.20.2",
-			"changelog": "Includes firmware versions: 3.0, 3.10, 3.20.\n*  Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 32 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
+			"changelog": "Includes firmware versions: 3.0, 3.10, 3.20.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 32 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
 			"url": "https://www.getzooz.com/firmware/ZEN77_V03R20.gbl",
 			"integrity": "sha256:21bae3283a4077a15250237586a0bb60d3ed1f94fe0695026327adfbd4284939"
 		}

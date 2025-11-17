@@ -43,7 +43,7 @@
 		{
 			"version": "1.70.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.0, 1.10, 1.30, 1.40, 1.50, 1.60, 1.70.\n*  Removed the delay when controlling the ZEN51 from the external mechanical switch when parameter 12 is set to value 0.",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.30, 1.40, 1.50, 1.60, 1.70.\n* Removed the delay when controlling the ZEN51 from the external mechanical switch when parameter 12 is set to value 0.",
 			"url": "https://www.getzooz.com/firmware/ZEN51_V01R70.gbl",
 			"integrity": "sha256:78f5ee765b275e9471bef2528e7a0468bfc2a95bc25dc1bd687bbb62874999ae"
 		},
@@ -57,7 +57,7 @@
 		{
 			"version": "1.70.0",
 			"region": "europe",
-			"changelog": "Includes firmware versions: 1.0, 1.10, 1.30, 1.40, 1.50, 1.60, 1.70.\n*  Removed the delay when controlling the ZEN51 from the external mechanical switch when parameter 12 is set to value 0.",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.30, 1.40, 1.50, 1.60, 1.70.\n* Removed the delay when controlling the ZEN51 from the external mechanical switch when parameter 12 is set to value 0.",
 			"url": "https://www.getzooz.com/firmware/ZEN51_V01R70_EU.gbl",
 			"integrity": "sha256:e12c871cc26aff1072868aeeb366367da7e6d8cf95e3d02682e5247bd289d455"
 		}

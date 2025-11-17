@@ -23,7 +23,7 @@
 		{
 			"version": "10.40.2",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20, 10.30, 10.40.\n* Added parameter 25 - Association Reports. \n* Added parameter 26 - Enable the scene control from the momentary switch in a 3-way installation.\n* Added manual button function to enable/disable the relay (smart bulb mode).\n* Added new colors for the LED indicators in parameters 6-10 - magenta, yellow, and cyan.\n* Improved Direct Association for the basic set on/off functionality.",
+			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20, 10.30, 10.40.\n* Added parameter 25 - Association Reports.\n* Added parameter 26 - Enable the scene control from the momentary switch in a 3-way installation.\n* Added manual button function to enable/disable the relay (smart bulb mode).\n* Added new colors for the LED indicators in parameters 6-10 - magenta, yellow, and cyan.\n* Improved Direct Association for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN32_V10R40.gbl",
 			"integrity": "sha256:61ba7ad0472e73655d81b4f540fbd37819a528cf22e0f6dc9284d8a25f655531"
 		}

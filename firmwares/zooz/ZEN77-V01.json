@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "10.40.2",
-			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20, 10.30, 10.40.\n*  Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 32 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
+			"changelog": "Includes firmware versions: 10.0, 10.10, 10.20, 10.30, 10.40.\n* Fixed central scene bug for control of its own load in smart bulb mode.\n* Added parameter 32 to disable LED blinking when a setting is changed.\n* Changed the manual operation for disabling the relay (smart bulb mode): Hold the UPPER paddle for 10 seconds until the LED indicator starts blinking, then within 2 seconds, tap the upper paddle 5 times quickly to change this mode. The LED indicator will stay solid green for 3 seconds to confirm the change.\n* Improved the factory reset procedure: The switch will not lock up if the factory reset is not successful in certain scenarios.",
 			"url": "https://www.getzooz.com/firmware/ZEN77_V10R40.gbl",
 			"integrity": "sha256:dc24a5221273f4ebd8aa8464041b265a677dc01edda3a52ccc8aa8540fc0dccf"
 		}

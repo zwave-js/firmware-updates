@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "13.2",
-			"changelog": "- Added Detached mode\n- Added Energy reporting precision 0,01 kWh\n- Fixed device not working properly connected DC\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed random power cycle (SDK issue)\n- Removed parameters 91 - 94\n- Removed Inclusion / exclussion output signalisation\n- other minor improvements and fixes",
+			"changelog": "- Added Detached mode\n- Added Energy reporting precision 0.01 kWh\n- Fixed device not working properly connected DC\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed random power cycle (SDK issue)\n- Removed parameters 91 - 94\n- Removed Inclusion / exclussion output signalisation\n- other minor improvements and fixes",
 			"region": "europe",
 			"files": [
 				{
