@@ -14,8 +14,15 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Updated SDK from 7.19.3 to 7.24.1 to address issues with the scene controller occasionally showing offline or becoming unresponsive on select platforms",
+			"url": "https://www.getzooz.com/firmware/ZEN35_V01R30.gbl",
+			"integrity": "sha256:07bf258862523072a70409ff579dc12327675cd310d547cdfe00f354c5508cb2"
+		},
+		{
 			"version": "1.20.0",
-			"region":"usa",
+			"region": "usa",
 			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20.\n* Optimized Z-Wave reporting behavior: when Basic Set, Binary Set, and Multilevel set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.",
 			"url": "https://www.getzooz.com/firmware/ZEN35_V01R20.gbl",
 			"integrity": "sha256:0fee1e59628fb00a2af1dabe35a19e0fda0b60a653666cc8ce08be2738c5adde"
