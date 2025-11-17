@@ -15,6 +15,7 @@
 	"upgrades": [
 		{
 			"version": "1.20.1",
+			"region": "usa",
 			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.20\n* Data packets changed to 5-byte to help address inclusion, range, or security inclusion issues.",
 			"url": "https://www.getzooz.com/firmware/ZEN14_V01R20.gbl",
 			"integrity": "sha256:a0d45a702a2a52e978db8d6e7943c5103c34fbef822da477a5ea8c59e5bf26d2"
