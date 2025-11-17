@@ -13,7 +13,7 @@
 		}
 	],
 	"upgrades": [
-				{
+		{
 			"version": "16.2",
 			"changelog": "- SDK with fixed dead node issue\nAdded detached mode and kWh precision set to 2 decimal points\nParameter 117 (reboot parameter)\nWatt reports when NO/NC parameter is active\nOther minor improvements",
 			"region": "europe",

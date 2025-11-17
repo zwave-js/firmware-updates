@@ -33,7 +33,6 @@
 			"changelog": "* Includes firmware versions: 4.10, 4.20\n* Fixed a bug: With Parameter 28 set to disabled (Dimmer Scene Control - Off), After turning the lights on with a single click (upper paddle), the single click to turn off lights (lower paddle) didn't work anymore.",
 			"url": "https://www.getzooz.com/firmware/ZEN30_V04R20.gbl",
 			"integrity": "sha256:afe5eb99d6f6c39d525646d9689a45bcdc0f1bc7d2bc44efd7650a77b9f71edb"
-
 		}
 	]
 }

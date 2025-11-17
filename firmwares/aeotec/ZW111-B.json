@@ -5,10 +5,11 @@
 			"model": "ZW111-B", //Nano Dimmer AU
 			"manufacturerId": "0x0086",
 			"productType": "0x0203", //AU
-			"productId": "0x006f",
+			"productId": "0x006f"
 		}
 	],
-	"upgrades": [ //firmware 2.04
+	"upgrades": [
+		//firmware 2.04
 		{
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 2.4",
 			"version": "2.4",
