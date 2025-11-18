@@ -14,7 +14,7 @@
 			"version": "1.3.2",
 			"channel": "stable",
 			//"region": "usa",
-			"changelog": "Bug Fixes:\n*  Fixes issue with Color CC commands not processing when encapsulated by Supervisor",
+			"changelog": "Bug Fixes:\n* Fixes issue with Color CC commands not processing when encapsulated by Supervisor",
 			"files": [
 				{
 					"target": 0,

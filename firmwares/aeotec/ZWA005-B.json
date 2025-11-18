@@ -8,7 +8,8 @@
 			"productId": "0x0005"
 		}
 	],
-	"upgrades": [ //firmware V2.00 to V2.20
+	"upgrades": [
+		//firmware V2.00 to V2.20
 		{
 			"$if": "firmwareVersion >= 2.00 && firmwareVersion < 2.21",
 			"version": "2.21",

@@ -8,7 +8,8 @@
 			"productId": "0x0064"
 		}
 	],
-	"upgrades": [ //firmware V1.14 to V1.17
+	"upgrades": [
+		//firmware V1.14 to V1.17
 		{
 			"$if": "firmwareVersion >= 1.14 && firmwareVersion < 1.17",
 			"version": "1.17",
