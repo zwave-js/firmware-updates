@@ -1,0 +1,25 @@
+{
+  "devices": [
+    {
+      "brand": "Heatit",
+      "model": "Z-TRM6",
+      "manufacturerId": "0x019b",
+      "productType": "0x0030",
+      "productId": "0x3001"
+    }
+  ],
+  "upgrades": [
+    {
+      "version": "1.0.11",
+      "changelog": "* Fixes issue where device stops working after a while in some cases",
+      "channel": "stable",
+      "files": [
+        {
+          "target": 0,
+          "url": "https://media.heatit.com/4156?type=ota",
+          "integrity": "sha256:faa92e92e577540243fe5b4b181de4dad9df4fa7080658309b79da9e4b409afa"
+        }
+      ]
+    }
+  ]
+}
