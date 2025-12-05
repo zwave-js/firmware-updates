@@ -1,0 +1,25 @@
+{
+	"devices": [
+		{
+			"brand": "Heatit",
+			"model": "Z-Temp3",
+			"manufacturerId": "0x019b",
+			"productType": "0x0031",
+			"productId": "0x3101"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.0.6",
+			"changelog": "* Fixes rare message queuing issue",
+			"channel": "stable",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://media.heatit.com/4724?type=ota",
+					"integrity": "sha256:18605DE8A1F897E572E2870A8261BE8137DFF5A1031E527966D4588CEF9814D4"
+				}
+			]
+		}
+	]
+}
