@@ -1,7 +1,7 @@
 {
 	"devices": [
 		{
-			"brand": "Shelly Qubino",
+			"brand": "Shelly",
 			"model": "Wave Shutter",
 			"manufacturerId": "0x0460",
 			"productType": "0x0003",
@@ -13,6 +13,39 @@
 		}
 	],
 	"upgrades": [
+		{
+			"version": "14.2",
+			"changelog": "- SDK with fixed dead node issue\n- fixed soft reboot from quick queue adding\n - Fixed sometimes the device reports odd power value\n - fixed smart start activates output\n - parameter 79 set minimum to 0\n- fixed singlechannel supervision report\n - other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Shutter/EU/Wave_Shutter_EU_LR_20251128_1031_QLSH-001P10EU%20%5Bv14.02%5D_9DD2F96C.gbl",
+					"integrity": "sha256:6e118fb259a4b0f1b1617964b59419b7f62d606d708b3304f3ec91ac40e18186"
+				}
+			]
+		},
+		{
+			"version": "14.2",
+			"changelog": "- SDK with fixed dead node issue\n- fixed soft reboot from quick queue adding\n - Fixed sometimes the device reports odd power value\n - fixed smart start activates output\n - parameter 79 set minimum to 0\n- fixed singlechannel supervision report\n - other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Shutter/US/Wave_Shutter_US_LR_20251128_1347_QLSH-001P07US_%5Bv14.02%5D_9DD2F96C.gbl",
+					"integrity": "sha256:62d7df06b40da2c8f252519b2fa68e3085c551f9b7b36adae5303e31a493140a"
+				}
+			]
+		},
+		{
+			"version": "14.2",
+			"changelog": "- SDK with fixed dead node issue\n- fixed soft reboot from quick queue adding\n - Fixed sometimes the device reports odd power value\n - fixed smart start activates output\n - parameter 79 set minimum to 0\n- fixed singlechannel supervision report\n - other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Shutter/ANZ/Wave_Shutter_ANZ_20251128_1028_QNSH-001P10AU_%5Bv14.02%5D_2144DF1C.gbl",
+					"integrity": "sha256:413b91f58dc815d61a2bb59691979844eb62488fcf4505b635ae63281887bc3f"
+				}
+			]
+		},
 		{
 			"version": "12.23",
 			"changelog": "**Please note: If you're updating from version 12.20 or lower the update will swap the outputs for devices already installed on the motor. To avoid issues with existing commands or automation, we recommend using Parameter 5: Swap Output to Swapped.**\n- fix parameter system to support the new Z-Wave system",

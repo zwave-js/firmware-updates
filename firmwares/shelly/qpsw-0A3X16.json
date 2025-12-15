@@ -1,0 +1,51 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Pro 3",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0091",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "13.1",
+			"changelog": "- SDK with fixed dead node issue\n- Added detached mode\n- Added par 118\n- Added OTA led signalisation\n- Changed New LED scematic\n- Changed Hardware Test unified version, similar to the other modules\n- Fixed Associations\n- Fixed Power cylce through inputs due to unauthorized memory access\n- Fixed Binary switch on root reporting of all endpoints\n - Fixed manufacturer specific memory access for DSK\n- Fixed Alarm Noitification response, the relays now respond based on parameters 91 - 94\n- Fixed Binary Switch Report now reports at boot up\n- Fixed inclusion by way of inputs\n- Fixed on/off cycle at inclusion for all relays\n- Removed Output indicator for succesfull inclusion/exclusion\n- Removed parameters 91, 92, 93, 94\n- Other minor improvements and fixes",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Pro_3/EU/Wave_PRO_3_800_EU_LR_20251110_1044_QUSW-0A3X16EU_%5B13.02%5D_EB201890.gbl",
+					"integrity": "sha256:74e08075a42f8315a9774fcf2c1603e153964e6aa5c4667707ed60a61ff35161"
+				}
+			]
+		},
+		{
+			"version": "13.1",
+			"changelog": "- SDK with fixed dead node issue\n- Added detached mode\n- Added par 118\n- Added OTA led signalisation\n- Changed New LED scematic\n- Changed Hardware Test unified version, similar to the other modules\n- Fixed Associations\n- Fixed Power cylce through inputs due to unauthorized memory access\n- Fixed Binary switch on root reporting of all endpoints\n - Fixed manufacturer specific memory access for DSK\n- Fixed Alarm Noitification response, the relays now respond based on parameters 91 - 94\n- Fixed Binary Switch Report now reports at boot up\n- Fixed inclusion by way of inputs\n- Fixed on/off cycle at inclusion for all relays\n- Removed Output indicator for succesfull inclusion/exclusion\n- Removed parameters 91, 92, 93, 94\n- Other minor improvements and fixes",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Pro_3/ANZ/Wave_PRO_3_800_ANZ_20251121_0947_QPSW-0A3X16AU_%5B13.02%5D_EB201890.gbl",
+					"integrity": "sha256:218578cee16852f3cea4c029077d183ce8ff489709ae0f9fe247f6c663b6b485"
+				}
+			]
+		},
+		{
+			"version": "13.1",
+			"changelog": "- SDK with fixed dead node issue\n- Added detached mode\n- Added par 118\n- Added OTA led signalisation\n- Changed New LED scematic\n- Changed Hardware Test unified version, similar to the other modules\n- Fixed Associations\n- Fixed Power cylce through inputs due to unauthorized memory access\n- Fixed Binary switch on root reporting of all endpoints\n - Fixed manufacturer specific memory access for DSK\n- Fixed Alarm Noitification response, the relays now respond based on parameters 91 - 94\n- Fixed Binary Switch Report now reports at boot up\n- Fixed inclusion by way of inputs\n- Fixed on/off cycle at inclusion for all relays\n- Removed Output indicator for succesfull inclusion/exclusion\n- Removed parameters 91, 92, 93, 94\n- Other minor improvements and fixes",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Pro_3/US/Wave_PRO_3_800_US_LR_20251121_0946_QUSW-0A3X16US_%5B13.02%5D_0FE4B35C.gbl",
+					"integrity": "sha256:36c5109cd6636b4a40f2f99798cc75ac4a3a46ad39becd0a8a328eb970e96de0"
+				}
+			]
+		}
+
+	]
+}

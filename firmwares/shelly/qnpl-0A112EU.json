@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Plug S",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x0087",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.4",
+			"changelog": "- Added kWh precision 2 decimals\n- Added min value for Par 105 -> 0 - off\n- Added Indicator Command Class\n- Removed Parameters 91 - 94\n- Removed Association group 3\n- Removed voltage & ampere reports\n- Other minor Fixes & Improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Plug_S/EU/Wave_PlugS_800_EU_LR_20250519_1500_QLPL-0A112EU_%5B11.04%5D___9DD2F96C.gbl",
+					"integrity": "sha256:a151da643a215241b657a6a469e4aa0a6ab4ed26ac2efc6873efa42b37906869"
+				}
+			]
+		}
+	]
+}

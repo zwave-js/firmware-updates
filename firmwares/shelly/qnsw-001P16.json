@@ -1,7 +1,7 @@
 {
 	"devices": [
 		{
-			"brand": "Shelly Qubino",
+			"brand": "Shelly",
 			"model": "Wave 1 PM",
 			"manufacturerId": "0x0460",
 			"productType": "0x0002",
@@ -13,6 +13,17 @@
 		}
 	],
 	"upgrades": [
+		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_1PM/EU/Wave_1PM_800_EU_LR_20251202_1400_QLSW-001P16EU_%5Bv14.00%5D_EB201890.gbl",
+					"integrity": "sha256:92e558a2eaeb99d8f8f7f32f7b6ec6c2888f8e4b8b4611930be424991f50d59e"
+				}
+			]
+		},
 		{
 			"version": "13.2",
 			"changelog": "- Added Detached mode\n- Added Energy reporting precision 0.01 kWh\n- Fixed device not working properly connected DC\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed random power cycle (SDK issue)\n- Removed parameters 91 - 94\n- Removed Inclusion / exclussion output signalisation\n- other minor improvements and fixes",
