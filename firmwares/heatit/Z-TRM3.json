@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heatit",
+			"model": "Z-TRM3",
+			"manufacturerId": "0x019b",
+			"productType": "0x0003",
+			"productId": "0x0203"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.0.34",
+			"changelog": "* Reports Binary switch in group 2 on interval to resync associated device.\n* Fixed issue with setpoint precision.",
+			"url": "https://media.heatit.com/2562?type=ota",
+			"integrity": "sha256:5df68b91690ef3b624c0296a99b0bb2c8fd701ee6120fe68920915003423dbbb"
+		}
+	]
+}
