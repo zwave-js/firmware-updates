@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Door Window",
+			"manufacturerId": "0x0460",
+			"productType": "0x0100",
+			"productId": "0x0081",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.9",
+			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements ",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_DoorWindow/EU/Wave_Window_Door_Sensor_800_EU_LR_20251203_1200_QLDW-002CEU_%5Bv11.09%5D_2144DF1C.gbl",
+					"integrity": "sha256:a151da643a215241b657a6a469e4aa0a6ab4ed26ac2efc6873efa42b37906869"
+				}
+			]
+		}
+	]
+}

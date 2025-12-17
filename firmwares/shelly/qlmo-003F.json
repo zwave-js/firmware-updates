@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Motion",
+			"manufacturerId": "0x0460",
+			"productType": "0x0100",
+			"productId": "0x0082",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.10",
+			"changelog": "- Fixed OTA by adding sign and encription keys to post build rules\n- Fixed PIR sensor config\n- Fixed wake up Interval ignored\n- Fixed multilevel sensor read value to endpoint\n- Fixed wakeup intervals\n- Change sensitivity values of pir sensor\n- Change size of 159 parameter\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d16fc6e14f5d556ec218fcfd81fa0f719a8efafb/Wave_Motion/EU/Wave_Motion_800_EU_LR_20251020_1230_QLMO-003FEU_%5Bv11.10%5D_EB201890.gbl",
+					"integrity": "sha256:8e91ec995392ac543682f4769aee6db10f6bfabe3c736d91a402ae7279417ba6"
+				}
+			]
+		}
+	]
+}
