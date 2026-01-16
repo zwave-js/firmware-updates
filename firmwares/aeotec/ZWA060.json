@@ -1,20 +1,25 @@
 {
 	"devices": [
 		{
+			// Z-Stick 10 Pro
 			"brand": "Aeotec",
-			"model": "ZWA060", //Z-Stick10 Pro Z-Wave
+			"model": "ZWA060",
 			"manufacturerId": "0x0371",
 			"productType": "0x0004",
 			"productId": "0x003c",
 			"firmwareVersion": {
 				"min": "7.22",
-				"max": "7.23.2" //reverting change that wasn't requested
+				"max": "7.23.2"
 			}
 		}
 	],
 	"upgrades": [
 		{
-			"version": "7.23",
+			// This is a bit of a hack. We currently use the firmware version
+			// to determine available updates, but that does not include the
+			// patch version part, unlike the SDK version, which we do not
+			// have access to.
+			"version": "7.23", // actually 7.23.2, but we only see 7.23
 			"channel": "stable",
 			"changelog": "Update ZWave SDK to 7.23.2 used in controller",
 			"files": [
