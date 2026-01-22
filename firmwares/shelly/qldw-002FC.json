@@ -14,7 +14,7 @@
 	],
 	"upgrades": [
 		{
-			"version": "10.9",
+			"version": "11.9",
 			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements ",
 			"region": "europe",
 			"files": [
