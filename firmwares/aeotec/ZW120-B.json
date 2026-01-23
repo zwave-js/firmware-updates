@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW112-B", //Door Window Sensor Gen5
+			"manufacturerId": "0x0086",
+			"productType": "0x0202", //AU
+			"productId": "0x0078"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.06
+		{
+			"$if": "firmwareVersion < 1.6",
+			"version": "1.6",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Wakeup optimizations.\n* Parameter 121 support.\n* Update SDK 6.51.10.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW120_DWSG5_AU_V1_06.otz",
+					"integrity": "sha256:d95a2bf314a4d5b9be8e2f61afc6ce09a446f52a601cd7e138806a0eaf7fbe2a"
+				}
+			]
+		}
+	]
+}
