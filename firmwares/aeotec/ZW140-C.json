@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW140-C", //Dual Nano Switch
+			"manufacturerId": "0x0086",
+			"productType": "0x0003", //EU
+			"productId": "0x008c",
+		}
+	],
+	"upgrades": [ 
+		//firmware 3.01
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.1",
+			"version": "3.1",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Add Parameter 122/123 to set different switch types and outputs.\n* External Switch Reliability.\n* Association Framework fix.\n* Improved Binary Switch reporting speed.\n* If updating from V2.XX or earlier, it may factory reset the Nano Switch and will require re-pairing.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW140_DualNanoSwitch_EU_A_V3_01.otz",
+					"integrity": "sha256:093bb80109418fc20e148d2ca2d82bbaed48381781e8ca255a20d1519d21d4b3"
+				}
+			]
+		}
+	]
+}
