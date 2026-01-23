@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW095-A", //Home Energy Meter Gen5 2 Clamp
+			"manufacturerId": "0x0086",
+			"productType": "0x0102", //US
+			"productId": "0x005f"
+		}
+	],
+	"upgrades": [
+		//firmware V1.35 to V1.37 only
+		{
+			"$if": "firmwareVersion >= 1.35 && firmwareVersion < 1.37",
+			"version": "1.37",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Update SDK \n* Group Association fix \n* Threshold Report fix",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW095_HEM_G5_2P_200A_US_V1_37.otz",
+					"integrity": "sha256:36aac4b6741b661501ad0a28da1a0ae3e6d91e2e71f4d551a7ea69c582fa8d39"
+				}
+			]
+		}
+	]
+}
