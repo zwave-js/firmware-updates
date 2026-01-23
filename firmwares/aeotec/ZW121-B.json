@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW098-B", //LED Strip
+			"manufacturerId": "0x0086",
+			"productType": "0x0203", //AU
+			"productId": "0x0079"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.03
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.3",
+			"version": "1.3",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Color Transition Accuracy\n* Colorful Mode Exit Fix.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW121_Led_Strip_AU_A_V1_03.otz",
+					"integrity": "sha256:03706f332ba4ed2331de36123d3477ab1274550c46e059be53a368e8ef732870"
+				}
+			]
+		}
+	]
+}
