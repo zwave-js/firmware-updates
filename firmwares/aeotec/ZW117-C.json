@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW117-A", //Range Extender 7
+			"manufacturerId": "0x0086",
+			"productType": "0x0003", //EU
+			"productId": "0x0075",
+		}
+	],
+	"upgrades": [ 
+		//firmware 1.05
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.5",
+			"version": "1.5",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Explorer Frames Added.\n* LED Feedback fixed.\n* Updated SDK to better support Series 700 controllers.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW117_Range_Extender_6_EU_V1_05.otz",
+					"integrity": "sha256:b9147c0366f80648142ed04ace86cf5453768631abe4d47397c2d22484912a27"
+				}
+			]
+		}
+	]
+}
