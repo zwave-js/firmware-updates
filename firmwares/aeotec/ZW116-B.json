@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW116-B", //Nano Switch with energy
+			"manufacturerId": "0x0086",
+			"productType": "0x0203", //AU
+			"productId": "0x0074",
+		}
+	],
+	"upgrades": [ 
+		//firmware 2.04
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.2",
+			"version": "3.2",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Repower logic fixed.\n* Stablizes hardware upon repower before syncing with hub.\n* If updating from V2.XX or earlier, it may factory reset the Nano Switch and will require re-pairing.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW116_Nano_Switch_AU_V3_02.otz",
+					"integrity": "sha256:6d3a90803426daeba9efdb9fbe3fdacd568102fdcb21c06c09e2ca67d8339cbc"
+				}
+			]
+		}
+	]
+}
