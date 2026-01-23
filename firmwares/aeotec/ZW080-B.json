@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW080-B", //Siren Gen5 AU
+			"manufacturerId": "0x0086",
+			"productType": "0x0204", //AU
+			"productId": "0x0050",
+		}
+	],
+	"upgrades": [ 
+		//firmware 3.28
+		{
+			"$if": "firmwareVersion >= 3.0 && firmwareVersion < 3.28",
+			"version": "3.28",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Parameter 37 refinement",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW080_Siren_Gen5_AU_B_V3_28.otz",
+					"integrity": "sha256:2f6388c3dd4cc69e8692e101cff2a1cf9530105ee7e32b12a184c8c2102e6e5e"
+				}
+			]
+		}
+	]
+}
