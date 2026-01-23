@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW130-B", //WallMote Quad
+			"manufacturerId": "0x0086",
+			"productType": "0x0201", //AU
+			"productId": "0x0082",
+		}
+	],
+	"upgrades": [ 
+		//firmware 2.00 to 2.03
+		{
+			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
+			"version": "2.3",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Update Central Scene CC.\n* Association Framework Fix.\n* Haptic and Visual Sync Accuracy.\n* Improved S0 Security Nonce handling.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW130_WallMoteQuad_AU_A_V2.03.otz",
+					"integrity": "sha256:bc7b9c1f73c098b81f26674d16f47c19933cc3e5b8095c42e5348c707eefd76f"
+				}
+			]
+		}
+	]
+}
