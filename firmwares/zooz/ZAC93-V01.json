@@ -16,16 +16,16 @@
     {
       "version": "1.50.0",
       "region": "usa",
-      "changelog": "Based on Z-Wave SDK Version 7.22.1",
+      "changelog": "* Includes firmware versions: 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50\n* Based on Z-Wave SDK Version 7.22.1",
       "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.22.1_US-LR_V01R50.gbl",
-      "integrity": "sha256:3a9f66aaba187da5f28b46a054368e129ce5a39b2b19c890e36a7c1f2bb9b1a6"
+      "integrity": "sha256:43f0ae779ed2dd465ad5c31ca31c62e85d66932579fc13bf94115793418043db"
     },
     {
       "version": "1.50.0",
       "region": "europe",
-      "changelog": "Based on Z-Wave SDK Version 7.22.1",
-      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.22.1_EU-V01R50.zip",
-      "integrity": "sha256:2097c4bb1cb3f6ed19a5b9ed8c6ae2c631fbb17e54cee6bb145f31cfef32da06"
+      "changelog": "* Includes firmware versions: 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50\n* Based on Z-Wave SDK Version 7.22.1",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.22.1_EU_V01R50.gbl",
+      "integrity": "sha256:36f09431f8160d2769df2523d0fee2bd30c53934e2836b4e9500c5b7ce40386a"
     }
   ]
 }
