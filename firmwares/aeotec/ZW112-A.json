@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW112-A", //Door Window Sensor 6
+			"manufacturerId": "0x0086",
+			"productType": "0x0102", //US
+			"productId": "0x0070"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.03
+		{
+			"$if": "firmwareVersion < 1.03",
+			"version": "1.03",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Update SDK 6.51.10\n* LED Status corrected\n* Update battery reporting logic",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW112_DWS6_US_C_V1_03.otz",
+					"integrity": "sha256:d30abe644b6a607c751a353ec0a437e52b8861093029a4eeb7e630ad7cd801f1"
+				}
+			]
+		}
+	]
+}
