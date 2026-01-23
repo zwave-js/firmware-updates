@@ -5,7 +5,7 @@
 			"model": "ZW122-A", //Water Sensor 6
 			"manufacturerId": "0x0086",
 			"productType": "0x0102", //US
-			"productId": "0x007A"
+			"productId": "0x007a"
 		}
 	],
 	"upgrades": [ 
