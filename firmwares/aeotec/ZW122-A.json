@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW122-A", //Water Sensor 6
+			"manufacturerId": "0x0086",
+			"productType": "0x0102", //US
+			"productId": "0x007A"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.06
+		{
+			"$if": "firmwareVersion < 1.6",
+			"version": "1.6",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Vibration Suppression added.\n* Heat Alarm fixed at low temps.\n* Deep Sleep Optimizations.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW122_Water_Sensor6_US_V1.06.otz",
+					"integrity": "sha256:8582d9abdbaeb2c063369a176bcbeb001bcf28839f9235304bc82269359cc471"
+				}
+			]
+		}
+	]
+}
