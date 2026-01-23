@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW175-C", //Smart Switch 7 Type E/F plug
+			"manufacturerId": "0x0371",
+			"productType": "0x0003", //EU
+			"productId": "0x00af",
+		}
+	],
+	"upgrades": [ 
+		//firmware 1.03
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.3",
+			"version": "1.3",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Threshold Report Fix.\n* LED Mode added Parameter 2.\n* S2 Security Key Management update.\n* Due to security architecture change, you will need to exclude and re-include this switch after firmware update.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW175_Smart_Switch_7__EU_V1.03_new.otz",
+					"integrity": "sha256:e948ea85e536a98cc0ad824fe8c92db9b2de8fe8058a9c44a1fd1a7af6e8c98c"
+				}
+			]
+		}
+	]
+}
