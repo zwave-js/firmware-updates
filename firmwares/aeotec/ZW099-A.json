@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW099-A", //Smart Dimmer 6
+			"manufacturerId": "0x0086",
+			"productType": "0x0103", //US
+			"productId": "0x0063"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.14
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.14",
+			"version": "1.14",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Switch Multilevel V2 added duration variable.\n* LED Indicator fix (V1.03).\n* Improved dimming stability.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW099_Smart_Dimmer_6_US_A_V1_14.otz",
+					"integrity": "sha256:b2dd35888e454699cc36d29dae60a46094e9525a623a2e5fb93fbbf18fddeb40"
+				}
+			]
+		}
+	]
+}

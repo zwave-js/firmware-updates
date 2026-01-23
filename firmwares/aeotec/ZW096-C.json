@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW096-C", //Smart Switch 6 ZW096 and ZW110
+			"manufacturerId": "0x0086",
+			"productType": "0x0003", //EU
+			"productId": "0x0060"
+		}
+	],
+	"upgrades": [ 
+		//firmware V1.04
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.4",
+			"version": "1.4",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Add Color CC for night light mode\n* Improved Meter CC\n* Firmware for both ZW096 and ZW110.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW096_ZW110_Smart_Switch_6_EU_V1_04.otz",
+					"integrity": "sha256:bc36d03d511e349b7907ed1cb09a01fdcdf7822a858a5ea3bc47056e24b9266a"
+				}
+			]
+		}
+	]
+}
