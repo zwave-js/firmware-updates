@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30\n* Fixed kWh Reporting Issue: Resolved an edge-case issue where ZEN15 could report inflated kWh values. The root cause was identified as the power metering chip not being properly cleared after an abnormal device restart.\n* Updated Factory Reset Behavior: Improved the factory reset procedure to ensure kWh data is fully cleared. After holding the button for 20 seconds, ZEN15 will now restore default settings and reset accumulated kWh values.\n* Optimized Power Report Frequency (Parameter 171): Changed the default value of Parameter 171 (Power Report Frequency) from 30 seconds to 300 seconds to reduce unnecessary traffic on the Z-Wave network.\n\t* Devices using the previous default value (30 seconds) will be automatically updated to 300 seconds.\n\t* Devices with a custom value configured will remain unchanged.",
+			"url": "https://www.getzooz.com/firmware/ZEN15_V02R30_US.gbl",
+			"integrity": "sha256:e4bd1bc617106f272fe0c77ed09cbaee096c7981748c697410d45aea48e8d044"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting",
