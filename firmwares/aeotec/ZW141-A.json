@@ -2,16 +2,16 @@
 	"devices": [
 		{
 			"brand": "Aeotec",
-			"model": "ZW141-C", //Nano Shutter
+			"model": "ZW141-A", //Nano Shutter
 			"manufacturerId": "0x0086", //old manufacturer ID
-			"productType": "0x0003", //EU
+			"productType": "0x0103", //US
 			"productId": "0x008d"
 		},
 		{
 			"brand": "Aeotec",
-			"model": "ZW141-C", //Nano Shutter
+			"model": "ZW141-A", //Nano Shutter
 			"manufacturerId": "0x0371", //new manufacturer ID
-			"productType": "0x0003", //EU
+			"productType": "0x0103", //US
 			"productId": "0x008d"
 		}
 	],
@@ -25,8 +25,8 @@
 			"files": [
 				{
 					"target": 0,
-					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW141_Nano_Shutter_EU_V3.07.otz",
-					"integrity": "sha256:ab7f9a903b4318a0376317776339f063ffbc295bc58bad5957d26dfab6f3a3f7"
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW141_Nano_Shutter_US_V3.07.otz",
+					"integrity": "sha256:5241651f8945705ff18b0bf771db5237b642a4e4b4b6b64fa8fe747806c0bc13"
 				}
 			]
 		}
