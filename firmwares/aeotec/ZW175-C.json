@@ -14,7 +14,7 @@
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.3",
 			"version": "1.3",
 			"channel": "stable",
-			"changelog": "Bug Fixes:\n* Threshold Report Fix.\n* LED Mode added Parameter 2.\n* S2 Security Key Management update.\n* Due to security architecture change, you will need to exclude and re-include this switch after firmware update.",
+			"changelog": "Note: Due to security architecture changes, the switch needs to be excluded and re-included after the firmware update.\n\nBug Fixes:\n* Threshold Report Fix.\n* LED Mode added Parameter 2.\n* S2 Security Key Management update.",
 			"files": [
 				{
 					"target": 0,
