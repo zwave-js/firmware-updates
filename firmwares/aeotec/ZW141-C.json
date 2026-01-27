@@ -5,23 +5,23 @@
 			"model": "ZW141-C", //Nano Shutter
 			"manufacturerId": "0x0086", //old manufacturer ID
 			"productType": "0x0003", //EU
-			"productId": "0x008d",
+			"productId": "0x008d"
 		},
 		{
 			"brand": "Aeotec",
 			"model": "ZW141-C", //Nano Shutter
 			"manufacturerId": "0x0371", //new manufacturer ID
 			"productType": "0x0003", //EU
-			"productId": "0x008d",
+			"productId": "0x008d"
 		}
 	],
-	"upgrades": [ 
+	"upgrades": [
 		//firmware 3.07
 		{
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.7",
 			"version": "3.7",
 			"channel": "stable",
-			"changelog": "Bug Fixes:\n* (v3.01) shift manufacturerID from 0x0086 to 0x0371.\n* (v3.04) Introduces ability to calibrate shutter travel time via Parameter 36.\n* (v3.04) Update SDK to use v6.81.03.\n* (v3.05)Resolves hardware freeze or lockup.\n* (v3.06)Adds independent up/down timing via Parameter 51 and 52 for motors with different up/down speeds.\n\n*Note - Due to significant changes from v2.XX to v3.07, you must exclude and re-include the Nano Shutter.",
+			"changelog": "Note: Due to significant changes from v2.XX to v3.07, you must exclude and re-include the Nano Shutter after updating.\n\nBug Fixes:\n* (v3.01) Shift manufacturerID from 0x0086 to 0x0371.\n* (v3.04) Introduces ability to calibrate shutter travel time via Parameter 36.\n* (v3.04) Update SDK to use v6.81.03.\n* (v3.05) Resolves hardware freeze or lockup.\n* (v3.06) Adds independent up/down timing via Parameter 51 and 52 for motors with different up/down speeds.",
 			"files": [
 				{
 					"target": 0,
