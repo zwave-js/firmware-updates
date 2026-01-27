@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW139-A", //Nano Switch
+			"manufacturerId": "0x0086",
+			"productType": "0x0103", //US
+			"productId": "0x008b"
+		}
+	],
+	"upgrades": [
+		//firmware 3.01
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.1",
+			"version": "3.1",
+			"channel": "stable",
+			"changelog": "Note: If updating from V2.XX or earlier, the Nano Switch may be reset to factory settings and require re-pairing.\n\nBug Fixes:\n* (V2.00) External Switch Auto Detection.\n* Switch state report speed.\n* Better WallSwipe IR Filtering.\n* Improved NVM Reliability.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW139_NanoSwitch_US_A_V3_01.otz",
+					"integrity": "sha256:130f3e5474a40d62d0da716cb120ec1c016569dda724fefe4dc6355573f4f0a3"
+				}
+			]
+		}
+	]
+}
