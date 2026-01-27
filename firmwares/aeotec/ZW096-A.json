@@ -11,7 +11,7 @@
 	"upgrades": [ 
 		//firmware V1.07
 		{
-			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.7",
+			"$if": "firmwareVersion >= 1.4 && firmwareVersion < 1.7", //v1.03 and under not compatible
 			"version": "1.7",
 			"channel": "stable",
 			"changelog": "Bug Fixes:\n* Add Color CC for night light mode\n* Improved Meter CC\n* Firmware for both ZW096 and ZW110.",
