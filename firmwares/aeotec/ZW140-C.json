@@ -5,16 +5,16 @@
 			"model": "ZW140-C", //Dual Nano Switch
 			"manufacturerId": "0x0086",
 			"productType": "0x0003", //EU
-			"productId": "0x008c",
+			"productId": "0x008c"
 		}
 	],
-	"upgrades": [ 
+	"upgrades": [
 		//firmware 3.01
 		{
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.1",
 			"version": "3.1",
 			"channel": "stable",
-			"changelog": "Bug Fixes:\n* Add Parameter 122/123 to set different switch types and outputs.\n* External Switch Reliability.\n* Association Framework fix.\n* Improved Binary Switch reporting speed.\n* If updating from V2.XX or earlier, it may factory reset the Nano Switch and will require re-pairing.",
+			"changelog": "Note: If updating from V2.XX or earlier, the Nano Switch may be reset to factory settings and require re-pairing.\n\nBug Fixes:\n* Add Parameter 122/123 to set different switch types and outputs.\n* External Switch Reliability.\n* Association Framework fix.\n* Improved Binary Switch reporting speed.",
 			"files": [
 				{
 					"target": 0,
