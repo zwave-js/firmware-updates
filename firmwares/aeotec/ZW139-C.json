@@ -5,16 +5,16 @@
 			"model": "ZW139-C", //Nano Switch
 			"manufacturerId": "0x0086",
 			"productType": "0x0003", //EU
-			"productId": "0x008b",
+			"productId": "0x008b"
 		}
 	],
-	"upgrades": [ 
+	"upgrades": [
 		//firmware 3.01
 		{
 			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.1",
 			"version": "3.1",
 			"channel": "stable",
-			"changelog": "Bug Fixes:\n* (V2.00) External Switch Auto Detection.\n* Switch state report speed.\n* Better WallSwipe IR Filtering.\n* Improved NVM Reliability.\n* If updating from V2.XX or earlier, it may factory reset the Nano Switch and will require re-pairing.",
+			"changelog": "Note: If updating from V2.XX or earlier, the Nano Switch may be reset to factory settings and require re-pairing.\n\nBug Fixes:\n* (V2.00) External Switch Auto Detection.\n* Switch state report speed.\n* Better WallSwipe IR Filtering.\n* Improved NVM Reliability.",
 			"files": [
 				{
 					"target": 0,
