@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW132-A", //Dual Nano Switch with energy
+			"manufacturerId": "0x0086",
+			"productType": "0x0103", //US
+			"productId": "0x0084"
+		}
+	],
+	"upgrades": [
+		//firmware 3.02
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 3.2",
+			"version": "3.2",
+			"channel": "stable",
+			"changelog": "Note: If updating from V2.XX or earlier, the Nano Switch may be reset to factory settings and require re-pairing.\n\nBug Fixes:\n* Performance boost.\n* Association framework fix.\n* Multichannel Reporting.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://raw.githubusercontent.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/refs/heads/main/Series_500/ZW132_Dual_Nano_Switch_US_A_V3_02.otz",
+					"integrity": "sha256:b7cc7afc4f441cc81ca31fdde30267a1b176734b8cb275dfe86c6bb1ed485b73"
+				}
+			]
+		}
+	]
+}
