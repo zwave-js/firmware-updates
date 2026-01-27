@@ -14,6 +14,39 @@
 	],
 	"upgrades": [
 		{
+			"version": "16.5",
+			"changelog": "- Detached mode SW2 fixed\n- External switches exclusion disabled\n- Fixed Multichannel Association on EP 2",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/c5dd3cabe192c3e6eb39e8df830c4df5e8387090/Wave_2PM/EU/Wave_2PM_800_EU_LR_20260116_1304_QLSW-002P16EU_%5B16.05%5D_2144DF1C.gbl",
+					"integrity": "sha256:24849f9f2863ce782538fbc04d9c83e8a871ea1594d976d5426b9f38191b7df1"
+				}
+			]
+		},
+		{
+			"version": "16.5",
+			"changelog": "- Detached mode SW2 fixed\n- External switches exclusion disabled\n- Fixed Multichannel Association on EP 2",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/c5dd3cabe192c3e6eb39e8df830c4df5e8387090/Wave_2PM/US/Wave_2PM_800_US_LR_20260116_1304_QLSW-002P14US_%5B16.05%5D_9DD2F96C.gbl",
+					"integrity": "sha256:b0a1c3d151b6f18b8530f3bcd141383c67796104351a77898d94aed1722ec12d"
+				}
+			]
+		},
+		{
+			"version": "16.5",
+			"changelog": "- Detached mode SW2 fixed\n- External switches exclusion disabled\n- Fixed Multichannel Association on EP 2",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/c5dd3cabe192c3e6eb39e8df830c4df5e8387090/Wave_2PM/ANZ/Wave_2PM_800_ANZ_20260116_1304_QNSW-002P16AU_%5B16.05%5D_2144DF1C.gbl",
+					"integrity": "sha256:5f1365fc51c7e20e34fa7c9a9a3f3b7ec39ac26dd2d67de0e81723cf025cbf60"
+				}
+			]
+		},
+		{
 			"version": "16.2",
 			"changelog": "- SDK with fixed dead node issue\nAdded detached mode and kWh precision set to 2 decimal points\nParameter 117 (reboot parameter)\nWatt reports when NO/NC parameter is active\nOther minor improvements",
 			"region": "europe",

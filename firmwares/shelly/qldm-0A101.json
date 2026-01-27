@@ -1,0 +1,39 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Dimmer",
+			"manufacturerId": "0x0460",
+			"productType": "0x0001",
+			"productId": "0x0083",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "12.3",
+			"changelog": "- SDK with fixed dead node issue\n- fix Associations not working propely\n- fix Parameter 123 min dimming value\n- fix Meter CC missing on endpoint 1\n- fix double click not working according to specifications\n- Fix Detached mode Binary Switch when SW set to toggle\n- Improved Mosfet PWM\n- Other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/c5dd3cabe192c3e6eb39e8df830c4df5e8387090/Wave_Dimmer/EU/Wave_Dimmer_800_EU_LR_20251219_1342_QLDM-0A101EUL_%5B12.03%5D_9DD2F96C.gbl",
+					"integrity": "sha256:6d073e947be494b9e4b2c01dd3b5435940d27a0ceb8d882ec59607f1fb6e2b38"
+				}
+			]
+		},
+		{
+			"version": "12.3",
+			"changelog": "- SDK with fixed dead node issue\n- fix Associations not working propely\n- fix Parameter 123 min dimming value\n- fix Meter CC missing on endpoint 1\n- fix double click not working according to specifications\n- Fix Detached mode Binary Switch when SW set to toggle\n- Improved Mosfet PWM\n- Other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/c5dd3cabe192c3e6eb39e8df830c4df5e8387090/Wave_Dimmer/US/Wave_Dimmer_800_US_LR_20260108_0951_QLDM-0A101USL_%5B12.03%5D_EB201890.gbl",
+					"integrity": "sha256:91e90717160b12a60d0e9a5fb9f44c58df19fc1ef693928cbc095dd66da317e5"
+				}
+			]
+		}
+	]
+}
