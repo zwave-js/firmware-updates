@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated SDK from 7.19.3 to 7.24.1",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R30_US.gbl",
+			"integrity": "sha256:36cd85a23dea138eefd513d42afd9b95579989be3743f5d7d3050ce37426e313"
+		},
+		{
+			"version": "2.30.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated SDK from 7.19.3 to 7.24.1\n* Added Long Range support for Europe",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R30_EU.gbl",
+			"integrity": "sha256:c173211fc3fe589a7e5d285eccb8438895b4ffce545a8815922c7a54859aad71"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Resolved charging and battery-related issues: fixed an issue where there was no LED activity after initially connecting the device to the charger.\n* Added new parameters 8 - Battery Reporting Frequency and 9 - Battery Reporting Threshold.",
