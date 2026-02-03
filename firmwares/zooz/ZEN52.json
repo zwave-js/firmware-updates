@@ -26,13 +26,20 @@
 		}
 	],
 	"upgrades": [
-		// {
-		// 	"version": "1.80.0",
-		// 	"region": "usa",
-		// 	"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80.\n* Fixed a bug: The parent (root) device will update its state correctly now on select platforms.\n* Fixed a bug: Solved an issue with the external switch not triggering the load in some edge cases.\n* Fixed an issue with the connected load flickering on occasion.\n* Added parameter 28: Separate the inputs from the outputs.\n* Added parameter 29: DC Motor Mode.",
-		// 	"url": "https://www.getzooz.com/firmware/ZEN52_V01R80.gbl",
-		// 	"integrity": "sha256:e7c0310b063a3f8144efa5070ec3d94948bd6d7145fd82141d70c6cf14453f23"
-		// },
+		{
+			"version": "1.90.2",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80, 1.90\n* This firmware version is compatible with hardware version 1.10 or 1.30 and higher. You can check your hardware version on the back of the ZEN52 module.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.\n* Fixed an issue with LED behavior when the ZEN52 is included in a Z-Wave network — the LED now follows Parameter 1 settings as expected.\n* Resolved a mechanical switch issue that occurred when firmware version 1.80 was flashed to hardware version 1.10. The mechanical switch now functions properly on both hardware versions.\n* Bug Fix: Parameter 28 (DC Motor Mode) with value 2 now functions correctly when the ZEN52 is triggered using connected mechanical switches.",
+			"url": "https://www.getzooz.com/firmware/ZEN52_V01R90_US.gbl",
+			"integrity": "sha256:4c8b8f158abf633c928a08dd7554dc949d731a49eb825b28c7d403098ecc788f"
+		},
+		{
+			"version": "1.90.2",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70, 1.80, 1.90\n* This firmware version is compatible with hardware version 1.10 or 1.30 and higher. You can check your hardware version on the back of the ZEN52 module.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.\n* Fixed an issue with LED behavior when the ZEN52 is included in a Z-Wave network — the LED now follows Parameter 1 settings as expected.\n* Resolved a mechanical switch issue that occurred when firmware version 1.80 was flashed to hardware version 1.10. The mechanical switch now functions properly on both hardware versions.\n* Bug Fix: Parameter 28 (DC Motor Mode) with value 2 now functions correctly when the ZEN52 is triggered using connected mechanical switches.",
+			"url": "https://www.getzooz.com/firmware/ZEN52_V01R90_EU.gbl",
+			"integrity": "sha256:a11c173c6619e6722497abd0dc9cba97f4762274c87c0724c56b53d3127e027b"
+		},
 		{
 			"version": "1.70.0",
 			"region": "usa",
