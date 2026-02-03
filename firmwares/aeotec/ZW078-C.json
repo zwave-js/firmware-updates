@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW078-C", //Heavy Duty Smart Switch
+			"manufacturerId": "0x0086",
+			"productType": "0x0003", //EU
+			"productId": "0x004e"
+		}
+	],
+	"upgrades": [ 
+		//firmware V3.28
+		{
+			"$if": "firmwareVersion >= 3.25 && firmwareVersion < 3.28",
+			"version": "3.28",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Minor logic refinement for kWh calculation\n* Threshold Parameter fix",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/raw/refs/heads/main/Series_500/ZW078_HDSSGen5_EU_V3_28.exe",
+					"integrity": "sha256:c1897b0a6e1621721ae33c7d2d0c2c8d1f1922af0b7ee93547df003bd1adb2ab"
+				}
+			]
+		}
+	]
+}
