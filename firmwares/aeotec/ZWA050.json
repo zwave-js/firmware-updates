@@ -14,7 +14,7 @@
 			"$if": "firmwareVersion < 1.0",
 			"version": "1.0",
 			"channel": "stable",
-			"changelog": "Stable update - first release.",
+			"changelog": "Initial release",
 			"files": [
 				{
 					"target": 0,
