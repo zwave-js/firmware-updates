@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA046-A", //Home Energy Meter 8 2 Clamp
+			"manufacturerId": "0x0371",
+			"productType": "0x0103", //US
+			"productId": "0x002e"
+		}
+	],
+	"upgrades": [
+		//firmware V1.6 to V1.7.7 only
+		{
+			"$if": "firmwareVersion >= 1.6 && firmwareVersion < 1.7",
+			"version": "1.7.7",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Update Z-Wave SDK to 7.22.\n* Optimized Antenna configurations.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/raw/refs/heads/main/Series_800/ZWA046_HEM8_2P_US_200A_v1.7.7.gbl",
+					"integrity": "sha256:08faa05c60556ba7e6992946c6f39aab4ab0d4796e0b6b58ad006f7e0431da67"
+				}
+			]
+		}
+	]
+}
