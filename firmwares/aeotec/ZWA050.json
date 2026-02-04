@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA050-C", //SmokeShield
+			"manufacturerId": "0x0371",
+			"productType": "0x0002", //EU
+			"productId": "0x0032"
+		}
+	],
+	"upgrades": [
+		//firmware 1.15
+		{
+			"$if": "firmwareVersion < 1.0",
+			"version": "1.00",
+			"channel": "stable",
+			"changelog": "Stable update - first release.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/raw/refs/heads/main/Series_800/ZWA050_SmokeShield_EU_V1_00.gbl",
+					"integrity": "sha256:68dec9c4ba9975727741a2e7e359c4b09355ffd651684fcc5653229a34c3a5d5"
+				}
+			]
+		}
+	]
+}
