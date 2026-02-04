@@ -9,10 +9,10 @@
 		}
 	],
 	"upgrades": [
-		//firmware 1.15
+		//firmware 1.00
 		{
 			"$if": "firmwareVersion < 1.0",
-			"version": "1.00",
+			"version": "1.0",
 			"channel": "stable",
 			"changelog": "Stable update - first release.",
 			"files": [
