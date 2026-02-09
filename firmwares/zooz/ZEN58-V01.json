@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN58",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0322",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20.1",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n* Updated SDK from 7.18.8 to 7.24.1",
+			"url": "https://www.getzooz.com/firmware/ZEN58_V01R20_US.gbl",
+			"integrity": "ha256:361c34f20b57ce41e268d34fa040da9993ccd4c3aabc732a7aa020f72acb56d1"
+		}
+	]
+}
