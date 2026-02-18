@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.2.0",
+			"channel": "beta",
+			"changelog": "The SDK was updated to Simplicity SDK 2025.12.1, which includes the following fixes, among others:\n* Fixed an issue where the radio layer would stop receiving packet until the next TX radio event\n* Fixed an issue in the Z-Wave LR TX power algorithm causing incorrect transmit powers\n* Fixed an issue where priority routes without repeaters could not be configured",
+			"url": "https://github.com/NabuCasa/zwave-firmware/releases/download/1.2.0/zwa2_controller_1.2.0.gbl",
+			"integrity": "sha256:83cbb9de021ade0a2e75674fdefaccd8b348d72a2845d6bf3cf696f8376f2d3e"
+		},
+		{
 			"version": "1.1.0",
 			"channel": "stable",
 			"changelog": "* Correct default powerlevels for EU region\n* Remove RGB and dimming functionality from the LED, convert to cold-white on/off light\n* Change tilt indication to fast blinking",
