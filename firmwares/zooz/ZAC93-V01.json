@@ -1,0 +1,31 @@
+{
+  "devices": [
+    {
+      "brand": "Zooz",
+      "model": "ZAC93",
+      "manufacturerId": "0x027a",
+      "productType": "0x0004",
+      "productId": "0x0611",
+      "firmwareVersion": {
+        "min": "0.0",
+        "max": "1.255"
+      }
+    }
+  ],
+  "upgrades": [
+    {
+      "version": "1.50.0",
+      "region": "usa",
+      "changelog": "* Includes firmware versions: 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50\n* Based on Z-Wave SDK Version 7.22.1",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.22.1_US-LR_V01R50.gbl",
+      "integrity": "sha256:43f0ae779ed2dd465ad5c31ca31c62e85d66932579fc13bf94115793418043db"
+    },
+    {
+      "version": "1.50.0",
+      "region": "europe",
+      "changelog": "* Includes firmware versions: 1.01, 1.03, 1.04, 1.10, 1.20, 1.30, 1.40, 1.50\n* Based on Z-Wave SDK Version 7.22.1",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.22.1_EU_V01R50.gbl",
+      "integrity": "sha256:36f09431f8160d2769df2523d0fee2bd30c53934e2836b4e9500c5b7ce40386a"
+    }
+  ]
+}
