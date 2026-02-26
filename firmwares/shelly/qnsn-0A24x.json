@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave i4",
+			"manufacturerId": "0x0460",
+			"productType": "0x0009",
+			"productId": "0x0081",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.5",
+			"changelog": "- Binary switch report at boot up\n- Parameters 1 - 4 value 1 fixed\n- optimised temperature conversion table",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/d3c93f6c456ab635e40b1c03197060ccb1fcd8ba/Wave_i4/EU/Wave_i4_800_EU_20240523_1556_QNSN-0A24XEU_%5B11.05%5D_76995FBB%20(2).gbl",
+					"integrity": "sha256:4d756ff47aae468b096025a9ece2ba9b25c7dedf8c2d2a2d1ae56dda908b1eb0"
+				}
+			]
+		}
+	]
+}

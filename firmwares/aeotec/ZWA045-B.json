@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA045-B",
+			"manufacturerId": "0x0371",
+			"productType": "0x0202", //AU
+			"productId": "0x002d"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.8.4",
+			"channel": "stable",
+			//"region": "australia/new zealand",
+			"changelog": "* Added new Parameters Configurations - details can be found in the engineering sheet for those parameter settings.\n    * #5 - enable of disable binary sensor\n    * #26 - enable/disable LED activity\n    * #27 - configure color blink of LED when motion is detected\n    * #28 - temperature offset\n    * #29 - light offset\n* Fixes issue when Parameter 5 is set to 2 causing motion to not report\n* Improves light sensor accuracy by changing brightness coefficient from 0.4 to 1.0",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6210241715",
+					"integrity": "sha256:d0b737eac86b163ebcca0f83d19b5f1bcb18771d421e87bc63a6dd5b100f693b"
+				}
+			]
+		}
+	]
+}

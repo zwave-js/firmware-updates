@@ -1,0 +1,28 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly Qubino",
+			"model": "Wave Pro 2PM",
+			"manufacturerId": "0x0460",
+			"productType": "0x0002",
+			"productId": "0x008d",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "10.8",
+			"changelog": "- optimised temperature conversion table\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/8927d1afb0409a1b741e472c7b513befbb2203a9/Wave_Pro_2PM/EU/Wave_PRO2PM_800_EU_20240325_1344_QPSW-0A2P16EU_%5Bv10.08%5D_9DD2F96C.gbl",
+					"integrity": "sha256:f88fc8ee1a213abf099cae77ba0e5f8e318f34ad55c6dbb8e1c0337f9ddf1c56"
+				}
+			]
+		}
+	]
+}

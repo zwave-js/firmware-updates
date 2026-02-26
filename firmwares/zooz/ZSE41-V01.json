@@ -1,0 +1,38 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE41",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xe001",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.40.1",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40\n* Data packets changed to 5-byte to help address inclusion, range, or security inclusion issues.",
+			"url": "https://www.getzooz.com/firmware/ZSE41_V01R40_US.gbl",
+			"integrity": "sha256:d91320ce9b656910e49f8011bb918d171a732ba6d8e37fb56db94de604db6499"
+		},
+		{
+			"version": "1.40.1",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40\n* Data packets changed to 5-byte to help address inclusion, range, or security inclusion issues.",
+			"url": "https://www.getzooz.com/firmware/ZSE41_V01R40_EU.gbl",
+			"integrity": "sha256:6add570e5432708f9bb6673590564dba44833280abfb79d9889671f071a5970f"
+		},
+		{
+			"version": "1.40.1",
+			"region": "australia/new zealand",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30, 1.40\n* Data packets changed to 5-byte to help address inclusion, range, or security inclusion issues.",
+			"url": "https://www.getzooz.com/firmware/ZSE41_V01R40_AU.gbl",
+			"integrity": "sha256:3889e29948428782d6eb70e452acf6b875271362bf98512f2d2283cdfc11c074"
+		}
+	]
+}

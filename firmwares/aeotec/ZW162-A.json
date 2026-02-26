@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW162-A", //Doorbell 6
+			"manufacturerId": "0x0371",
+			"productType": "0x0103", //US
+			"productId": "0x00a2"
+		}
+	],
+	"upgrades": [ //firmware V1.0 to V1.9
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.9",
+			"version": "1.9",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Optimize Siren 6 internal coding\n* Compatible to older and newer sound chip (compatible to all versions)",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6182798064",
+					"integrity": "sha256:10aeeee72cd935d3d6a1c503f11c97f232591fff9cde6c6ffee28e75ad2bb8ec"
+				}
+			]
+		}
+	]
+}

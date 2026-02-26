@@ -1,12 +1,15 @@
-import axios from "axios";
-import JSON5 from "json5";
+import ky from "ky";
 import crypto from "node:crypto";
 import path from "path-browserify";
-import type { ConfigIndexEntry } from "../lib/config";
-import type { UploadPayload } from "../lib/uploadSchema";
-import { NodeFS } from "./nodeFS";
+import type { UploadPayload } from "../lib/uploadSchema.js";
+import { NodeFS } from "./nodeFS.js";
 
-const configDir = path.join(__dirname, "../../firmwares");
+import { argv } from "node:process";
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const configDir = path.resolve(__dirname, "../../firmwares");
 const MAX_FILES_PER_REQUEST = 50; // limited by no. of subrequests in Cloudflare Workers
 const baseURL = process.env.BASE_URL;
 const adminSecret = process.env.ADMIN_SECRET;
@@ -22,42 +25,59 @@ if (!baseURL) {
 }
 
 void (async () => {
-	const indexContent = await NodeFS.readFile(
-		path.join(configDir, "index.json")
+	// Find all config files directly instead of using index.json
+	const configFiles = (await NodeFS.readDir(configDir, true)).filter(
+		(file) =>
+			file.endsWith(".json") &&
+			!file.endsWith("index.json") &&
+			!path.basename(file).startsWith("_") &&
+			!file.includes("/templates/") &&
+			!file.includes("\\templates\\"),
 	);
-	const index = JSON5.parse<ConfigIndexEntry[]>(indexContent);
 
-	const files: { filename: string; data: string }[] = [
-		{ filename: "index.json", data: indexContent },
-	];
-	for (const entry of index) {
-		const filenameFull = path.join(configDir, entry.filename);
-		const fileContent = await NodeFS.readFile(filenameFull);
-		files.push({ filename: entry.filename, data: fileContent });
+	const files: { filename: string; data: string }[] = [];
+
+	for (const filePath of configFiles) {
+		const relativePath = path
+			.relative(configDir, filePath)
+			.replace(/\\/g, "/");
+		const fileContent = await NodeFS.readFile(filePath);
+		files.push({ filename: relativePath, data: fileContent });
 	}
 
 	const hasher = crypto.createHash("sha256");
 	const data = JSON.stringify(files);
 	const version = hasher.update(data, "utf8").digest("hex").slice(0, 8);
 
-	const { data: onlineVersion } = await axios.get<string>(
-		new URL("/admin/config/version", baseURL).toString(),
-		{
+	const onlineVersion = await ky
+		.get(new URL("/admin/config/version", baseURL).toString(), {
 			headers: { "x-admin-secret": adminSecret },
-		}
-	);
+		})
+		.text();
 
-	if (onlineVersion === version) {
+	if (onlineVersion === version && !argv.includes("--force")) {
 		console.log("No change in config files, skipping upload...");
 		return;
 	}
+
+	// First, create the new config version
+	console.log("Creating config version...");
+	const createPayload: UploadPayload = {
+		version,
+		actions: [{ task: "create" }],
+	};
+	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+		headers: { "x-admin-secret": adminSecret },
+		json: createPayload,
+		timeout: false,
+	});
 
 	let cursor = 0;
 
 	while (cursor < files.length) {
 		const currentBatch = files.slice(
 			cursor,
-			cursor + MAX_FILES_PER_REQUEST
+			cursor + MAX_FILES_PER_REQUEST,
 		);
 
 		const payload: UploadPayload = {
@@ -68,17 +88,15 @@ void (async () => {
 			})),
 		};
 		console.log(
-			`Uplaoding files ${cursor + 1}...${
+			`Uploading files ${cursor + 1}...${
 				cursor + currentBatch.length
-			} of ${files.length}...`
+			} of ${files.length}...`,
 		);
-		await axios.post(
-			new URL("/admin/config/upload", baseURL).toString(),
-			payload,
-			{
-				headers: { "x-admin-secret": adminSecret },
-			}
-		);
+		await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+			headers: { "x-admin-secret": adminSecret },
+			json: payload,
+			timeout: false,
+		});
 
 		cursor += MAX_FILES_PER_REQUEST;
 	}
@@ -88,12 +106,10 @@ void (async () => {
 		actions: [{ task: "enable" }],
 	};
 	console.log("finalizing...");
-	await axios.post(
-		new URL("/admin/config/upload", baseURL).toString(),
-		finalizePayload,
-		{
-			headers: { "x-admin-secret": adminSecret },
-		}
-	);
+	await ky.post(new URL("/admin/config/upload", baseURL).toString(), {
+		headers: { "x-admin-secret": adminSecret },
+		json: finalizePayload,
+		timeout: false,
+	});
 	console.log("done!");
 })();

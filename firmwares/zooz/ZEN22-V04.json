@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN22",
+			"manufacturerId": "0x027a",
+			"productType": "0xb112",
+			"productId": "0x1f1c",
+			"firmwareVersion": {
+				"min": "4.0",
+				"max": "4.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "4.4.1",
+			"changelog": "* Includes firmware versions: 4.0, 4.01, 4.03, 4.04\n* Corrected the supervision command class for S2 implementation.",
+			"url": "https://www.getzooz.com/firmware/ZEN22-4.04.otz",
+			"integrity": "sha256:cf99430860ef62045cb86c372d034c1f061c97fa3524bd9015f746e07925f94d"
+		}
+	]
+}

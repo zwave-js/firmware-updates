@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW187-C",
+			"manufacturerId": "0x0371",
+			"productType": "0x0002", //EU
+			"productId": "0x00bb"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6.1",
+			"version": "1.6.1",
+			"channel": "stable",
+			//"region": "europe",
+			"changelog": "Bug Fixes:\n* Resolves issue where sensor does not go to sleep causing battery drain.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6193170602",
+					"integrity": "sha256:aea2b9ad259e118c0debfa594338c2df28631f576dc7b18799259f82f3b0ffe0"
+				}
+			]
+		}
+	]
+}

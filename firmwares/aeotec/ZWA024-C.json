@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA024-C",
+			"manufacturerId": "0x0371",
+			"productType": "0x0002", //EU
+			"productId": "0x0018"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.6.7",
+			"version": "1.6.7",
+			"channel": "stable",
+			//"region": "europe",
+			"changelog": "Bug Fixes:\n* Threshold parameters\n* UV sensor calculations\n* Sensor freeze\n* Temperature value calculation on USB\n* Resolves issue where motion timeout happens earlier than expected based on retrigger (Parameter 2) when on USB power.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6192841342",
+					"integrity": "sha256:511e214600fa99c426a39f7ce886a6b111793dfe6747d5174939f5a4a7d0b318"
+				}
+			]
+		}
+	]
+}

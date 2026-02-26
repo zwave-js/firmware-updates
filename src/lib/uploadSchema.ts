@@ -5,6 +5,10 @@ const versionSchema = z
 	.length(8)
 	.regex(/[0-9a-f]{8}/);
 
+export const createSchema = z.object({
+	task: z.literal("create"),
+});
+
 export const putSchema = z.object({
 	task: z.literal("put"),
 	filename: z.string().min(1),
@@ -17,7 +21,7 @@ export const enableSchema = z.object({
 
 export const uploadSchema = z.object({
 	version: versionSchema,
-	actions: z.union([putSchema, enableSchema]).array(),
+	actions: z.union([createSchema, putSchema, enableSchema]).array(),
 });
 
 export type UploadPayload = z.infer<typeof uploadSchema>;

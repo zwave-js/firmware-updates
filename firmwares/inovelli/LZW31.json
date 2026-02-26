@@ -1,0 +1,47 @@
+{
+	"devices": [
+		{
+			"brand": "Inovelli",
+			"model": "LZW31",
+			"manufacturerId": "0x031e",
+			"productType": "0x0003",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.52",
+			"channel": "beta",
+			"changelog": "- Modified Smart Bulb Mode so that the output can only be turned off by sending a Basic Set (0x00).\n- Fixed: Solve the problem that the power measured by the light is 5W when the load is not connected (caused by inaccurate power measurement at extremely low power consumption).\n- Feature: Added config button scenes and basic scenes. This version only (Not enough storage space going further).",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW31/Beta/1.52/LZW31_1.52.otz",
+					"integrity": "sha256:1a15dbc0143473b9af8e9bb7a8540e20b67d867362ff90b11e5dd1286f83c741"
+				},
+				{
+					"target": 1,
+					"url": "https://files.inovelli.com/firmware/LZW31/Beta/1.52/LZW31_1.43.bin",
+					"integrity": "sha256:f749d093281ca60459c1f49bcac6d1bfa4745f006f7e3556798e81a7d70e16a5"
+				}
+			]
+		},		
+		{
+			"version": "1.57",
+			"channel": "stable",
+			"changelog": "- Fixed - Optimization of Aux mode in neutral setting.\n- Fixed - The inoperative issue after changing parameter 8 from high value to low value.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/LZW31/1.57/LZW31_1.57.otz",
+					"integrity": "sha256:a994cb634cd0a69bed095a2586c192cde012343fd99088f26bd7b5d0b94472d7"
+				},
+				{
+					"target": 1,
+					"url": "https://files.inovelli.com/firmware/LZW31/1.57/LZW31_1.44.bin",
+					"integrity": "sha256:d7257a646f53d88b4f1ce159354b8f8475f9338030641621f9a6861ca172dc23"
+				}
+			]
+		}
+	]
+}

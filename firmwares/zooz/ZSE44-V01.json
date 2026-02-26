@@ -1,0 +1,38 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE44",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xe004",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.30.1",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30\n* Restored parameter 1 with the following functionality: Values 10-50% with the default value of 20%.\n* Fixed Bug: Fixed temperature and humidity reporting issues for small time intervals which affected selected hubs and scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V01R30_US.gbl",
+			"integrity": "sha256:78812262adff4fc59bfde0e100a10d07009bd5ee8ee0d4a439af0131ded8b3dd"
+		},
+		{
+			"version": "1.30.1",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30\n* Restored parameter 1 with the following functionality: Values 10-50% with the default value of 20%.\n* Fixed Bug: Fixed temperature and humidity reporting issues for small time intervals which affected selected hubs and scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V01R30_EU.gbl",
+			"integrity": "sha256:1c48eebd31bc0d0f550cc9bae55c5097df6869dabb8fcd9893c9766e70b1205c"
+		},
+		{
+			"version": "1.30.1",
+			"region": "australia/new zealand",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30\n* Restored parameter 1 with the following functionality: Values 10-50% with the default value of 20%.\n* Fixed Bug: Fixed temperature and humidity reporting issues for small time intervals which affected selected hubs and scenarios.",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V01R30_AU.gbl",
+			"integrity": "sha256:e655fb9e6c069cf089ba2d9dffabc460478e4915a017d2d768052dcf87617eca"
+		}
+	]
+}

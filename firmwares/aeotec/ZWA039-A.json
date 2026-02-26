@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA039-A",
+			"manufacturerId": "0x0371",
+			"productType": "0x0102", //US
+			"productId": "0x0009",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.2"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			//"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.3",
+			"version": "2.3",
+			"channel": "stable",
+			//"region": "usa",
+			"changelog": "Bug Fixes:\n* Resolves battery report calculation and accuracy",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6173292405",
+					"integrity": "sha256:6a48d7e4fc585e5a96b87f112b8e4eec96c33ed4d0e934f2974657c3eab61b9d"
+				}
+			]
+		}
+	]
+}

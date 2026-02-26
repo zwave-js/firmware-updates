@@ -1,11 +1,11 @@
-import { missing, ThrowableRouter, withContent } from "itty-router-extras";
-import registerAdmin from "./routes/admin";
-import registerAPI from "./routes/api";
+import { error, Router, withContent } from "itty-router";
+import registerAdmin from "./routes/admin.js";
+import registerAPI from "./routes/api.js";
 
-export function build(): ThrowableRouter {
-	// opts: FastifyServerOptions = {},
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function build() {
 	// Initialize router
-	const router = ThrowableRouter();
+	const router = Router();
 
 	router.get("/", (_request) => {
 		return new Response(
@@ -28,13 +28,7 @@ export function build(): ThrowableRouter {
 	registerAPI(router);
 	registerAdmin(router);
 
-	router.all("*", () => missing());
+	router.all("*", () => error(404));
 
 	return router;
-
-	// const app = fastify(opts);
-
-	// await app.register(import("@fastify/helmet"));
-
-	// return app;
 }

@@ -20,14 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x] # This should be LTS
+        node-version: [22] # This should be LTS
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
@@ -38,21 +38,18 @@ jobs:
     - name: Check TypeScript code
       run: yarn check
 
-    - name: Compile TypeScript code
-      run: yarn build
-
     - name: Run linter
       run: yarn run lint
     
-    - name: Try to generate index file
-      run: yarn build:index
+    - name: Validate config files
+      run: yarn check:configs
 
     - name: Run component tests
       run: yarn run test:ci
 
     - name: Check file download/integrity of changed files
       if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
@@ -71,14 +68,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x] # This should be LTS
+        node-version: [22] # This should be LTS
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'yarn'
@@ -86,14 +83,12 @@ jobs:
     - name: Install dependencies
       run: yarn install --immutable
 
-    - name: Generate index file
-      run: yarn build:index
-
     - name: Publish to Cloudflare
-      uses: cloudflare/wrangler-action@2.0.0
+      uses: cloudflare/wrangler-action@v3
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        packageManager: yarn
     
     - name: Upload config files to Cloudflare
       env:

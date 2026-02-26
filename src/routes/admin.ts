@@ -1,29 +1,24 @@
-import { withDurables } from "itty-durable";
+import { json, text, withParams } from "itty-router";
+import JSON5 from "json5";
+import { encryptAPIKey } from "../lib/apiKeys.js";
+import { ConditionalUpdateConfig } from "../lib/config.js";
 import {
-	json,
-	missing,
-	text,
-	withParams,
-	type ThrowableRouter,
-} from "itty-router-extras";
-import type { RateLimiterProps } from "../durable_objects/RateLimiter";
-import { encryptAPIKey } from "../lib/apiKeys";
-import {
-	createCachedR2FS,
-	getFilesVersion,
-	putFilesVersion,
-} from "../lib/fs/cachedR2FS";
-import { hex2array } from "../lib/shared";
+	createConfigVersion,
+	enableConfigVersion,
+	getCurrentVersion,
+	insertSingleConfigData,
+} from "../lib/d1Operations.js";
+import { hex2array } from "../lib/shared.js";
 import {
 	clientError,
 	ContentProps,
 	safeCompare,
 	type RequestWithProps,
-} from "../lib/shared_cloudflare";
-import { uploadSchema } from "../lib/uploadSchema";
-import type { CloudflareEnvironment } from "../worker";
+} from "../lib/shared_cloudflare.js";
+import { uploadSchema } from "../lib/uploadSchema.js";
+import type { CloudflareEnvironment } from "../worker.js";
 
-export default function register(router: ThrowableRouter): void {
+export default function register(router: any): void {
 	// Verify the admin token
 	router.post("/admin/*", (req: Request, env: CloudflareEnvironment) => {
 		// Avoid timing attacks, but still do not do unnecessary work
@@ -33,7 +28,7 @@ export default function register(router: ThrowableRouter): void {
 			!env.ADMIN_SECRET ||
 			!safeCompare(env.ADMIN_SECRET, secret)
 		) {
-			return missing();
+			return new Response(undefined, { status: 404 });
 		}
 	});
 
@@ -50,7 +45,7 @@ export default function register(router: ThrowableRouter): void {
 		withParams,
 		async (
 			req: RequestWithProps<[{ params: { id: string; limit: string } }]>,
-			env: CloudflareEnvironment
+			env: CloudflareEnvironment,
 		) => {
 			const id = parseInt(req.params.id);
 			const limit = parseInt(req.params.limit);
@@ -65,7 +60,7 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			const key = hex2array(env.API_KEY_ENC_KEY);
-			const apiKey = await encryptAPIKey(key, {
+			const apiKey = await encryptAPIKey(key.slice().buffer, {
 				id,
 				rateLimit: limit,
 			});
@@ -76,7 +71,7 @@ export default function register(router: ThrowableRouter): void {
 			console.log(" ");
 
 			return json({ ok: true });
-		}
+		},
 	);
 
 	router.post(
@@ -84,7 +79,7 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			_context: ExecutionContext,
 		) => {
 			try {
 				const result = await uploadSchema.safeParseAsync(req.content);
@@ -93,47 +88,46 @@ export default function register(router: ThrowableRouter): void {
 				}
 
 				const newVersion = result.data.version;
-				const fs = createCachedR2FS(
-					req.url,
-					context,
-					env.CONFIG_FILES,
-					newVersion
-				);
 
 				for (const action of result.data.actions) {
-					if (action.task === "put") {
-						// Upload a file for the current revision/version
-						if (!action.filename.startsWith("/")) {
-							action.filename = "/" + action.filename;
+					if (action.task === "create") {
+						// Create a new config version in the database
+						await createConfigVersion(env.CONFIG_FILES, newVersion);
+					} else if (action.task === "put") {
+						// Process config file data for D1 insertion
+						if (action.filename === "index.json") {
+							// Skip index.json as we don't need it anymore
+							continue;
 						}
 
-						await fs.writeFile(action.filename, action.data);
-					} else if (action.task === "enable") {
-						// Enable the current revision, delete all other revisions
-						const oldVersion = await getFilesVersion(
-							req.url,
-							context,
-							env.CONFIG_FILES
-						);
-						if (oldVersion && oldVersion !== newVersion) {
-							const oldFs = createCachedR2FS(
-								req.url,
-								context,
-								env.CONFIG_FILES,
-								oldVersion
+						try {
+							const definition = JSON5.parse(action.data);
+							const config = new ConditionalUpdateConfig(
+								definition,
 							);
-							await oldFs.deleteDir("/");
+
+							// Insert this single config immediately
+							await insertSingleConfigData(
+								env.CONFIG_FILES,
+								newVersion,
+								{
+									devices: config.devices,
+									upgrades: config.upgrades,
+								},
+							);
+						} catch (e) {
+							console.error(
+								`Error parsing config file ${action.filename}:`,
+								e,
+							);
+							// Skip invalid files but don't fail the whole upload
+							continue;
 						}
+					} else if (action.task === "enable") {
+						// Enable the new version and clean up old data
+						await enableConfigVersion(env.CONFIG_FILES, newVersion);
 
-						// Update version file, so new requests will use the new version
-						await putFilesVersion(
-							req.url,
-							context,
-							env.CONFIG_FILES,
-							newVersion
-						);
-
-						// Make sure not to write any extra files after this
+						// Make sure not to process any more files after this
 						break;
 					}
 				}
@@ -143,7 +137,7 @@ export default function register(router: ThrowableRouter): void {
 			}
 
 			return json({ ok: true });
-		}
+		},
 	);
 
 	router.get(
@@ -151,44 +145,10 @@ export default function register(router: ThrowableRouter): void {
 		async (
 			req: Request,
 			env: CloudflareEnvironment,
-			context: ExecutionContext
+			_context: ExecutionContext,
 		) => {
-			const ret = await getFilesVersion(
-				req.url,
-				context,
-				env.CONFIG_FILES
-			);
+			const ret = await getCurrentVersion(env.CONFIG_FILES);
 			return text(ret || "");
-		}
-	);
-
-	router.post(
-		"/admin/resetRateLimit/:id/:limit",
-		withParams,
-		withDurables({ parse: true }),
-		async (
-			req: RequestWithProps<
-				[{ params: { id: string; limit: string } }, RateLimiterProps]
-			>,
-			env: CloudflareEnvironment
-		) => {
-			const id = parseInt(req.params.id);
-			const limit = parseInt(req.params.limit);
-			if (
-				Number.isNaN(id) ||
-				id < 1 ||
-				Number.isNaN(limit) ||
-				limit < 1
-			) {
-				console.error("Usage: /admin/resetRateLimit/:id/:limit");
-				return clientError("Invalid id or limit");
-			}
-
-			const objId = env.RateLimiter.idFromName(req.params.id);
-			const RateLimiter = req.RateLimiter.get(objId);
-			await RateLimiter.setTo(limit);
-
-			return json({ ok: true });
-		}
+		},
 	);
 }

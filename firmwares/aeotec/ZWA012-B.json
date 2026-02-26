@@ -1,0 +1,27 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA012-B",
+			"manufacturerId": "0x0371",
+			"productType": "0x0202", //AU
+			"productId": "0x000c"
+		}
+	],
+	"upgrades": [
+		{
+			"$if": "firmwareVersion >= 2.0 && firmwareVersion < 2.2",
+			"version": "2.2",
+			"channel": "stable",
+			//"region": "australia/new zealand",
+			"changelog": "Bug Fixes:\n* Resolves wakeup report not being sent",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6161763886",
+					"integrity": "sha256:cf4dd20a99892ca18b33f8a2e3076f86ea9050b8fd70a918677db3da767c99d2"
+				}
+			]
+		}
+	]
+}

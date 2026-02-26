@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZW111-A", //Nano Dimmer US
+			"manufacturerId": "0x0086",
+			"productType": "0x0103", //US
+			"productId": "0x006f",
+		}
+	],
+	"upgrades": [ //firmware 2.04
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 2.4",
+			"version": "2.4",
+			"channel": "stable",
+			"changelog": "When using Action Button to factory reset (long press 20 seconds), all parameters (including parameter 120, 121, 128, 129, 130, 131, 132) will be reset to factory default settings.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://aeotec.freshdesk.com/helpdesk/attachments/6189873104",
+					"integrity": "sha256:6740fe934d9b8843f3167326ae780ab8cc90eddfcd845f31f4add38eb46fb42c"
+				}
+			]
+		}
+	]
+}

@@ -3,8 +3,8 @@ import {
 	firmwareVersionSchema,
 	regionSchema,
 	UpgradeInfo,
-} from "./lib/configSchema";
-import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared";
+} from "./lib/configSchema.js";
+import { ExpandRecursively, hexKeyRegex4Digits } from "./lib/shared.js";
 
 /** The request schema for API versions 1...2 */
 export const APIv1v2_RequestSchema = z.object({
@@ -27,6 +27,12 @@ export const APIv3_RequestSchema = APIv1v2_RequestSchema.merge(
 	})
 );
 
+/** The request schema for API version 4 */
+export const APIv4_RequestSchema = z.object({
+	region: regionSchema.optional(),
+	devices: z.array(APIv1v2_RequestSchema).min(1),
+});
+
 export interface APIv1v3_UpgradeMeta {
 	downgrade: boolean;
 	normalizedVersion: string;
@@ -42,3 +48,12 @@ export type APIv2_Response = ExpandRecursively<APIv2_UpgradeInfo[]>;
 
 export type APIv3_UpgradeInfo = UpgradeInfo & APIv1v3_UpgradeMeta;
 export type APIv3_Response = ExpandRecursively<APIv3_UpgradeInfo[]>;
+
+export type APIv4_DeviceInfo = {
+	manufacturerId: string;
+	productType: string;
+	productId: string;
+	firmwareVersion: string;
+	updates: APIv3_UpgradeInfo[];
+};
+export type APIv4_Response = ExpandRecursively<APIv4_DeviceInfo[]>;

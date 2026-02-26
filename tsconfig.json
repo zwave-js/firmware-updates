@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
 		"noEmit": true,
-		"importsNotUsedAsValues": "error",
 		"pretty": true,
 		"diagnostics": true,
 		"noErrorTruncation": true,
@@ -11,13 +10,18 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 
-		"target": "ESNext",
-		"module": "ES2020",
-		"moduleResolution": "Node",
+		"target": "es2022",
+		"module": "nodenext",
+		"moduleResolution": "node16",
 
 		/* Support for Cloudflare */
 		"types": ["@cloudflare/workers-types"],
-		"lib": ["ESNext"]
+		"lib": [
+			"es2024",
+			"ESNext.Array",
+			"ESNext.Collection",
+			"ESNext.Iterator"
+		]
 	},
 	"include": ["src/**/*.ts", "test/**/*.ts"]
 }

@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZSE18 800LR",
+			"manufacturerId": "0x027a",
+			"productType": "0x0301",
+			"productId": "0x0012",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.00, 2.10, 2.20.\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Setting.",
+			"url": "https://www.getzooz.com/firmware/ZSE18_V02R20.gbl",
+			"integrity": "sha256:3133fe2ea577634555430de83799c47bb09f6962e055f60674daa80c046031d8"
+		}
+	]
+}

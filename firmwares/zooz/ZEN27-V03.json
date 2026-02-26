@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN27",
+			"manufacturerId": "0x027a",
+			"productType": "0xa000",
+			"productId": "0xa002",
+			"firmwareVersion": {
+				"min": "3.0",
+				"max": "3.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "3.40.1",
+			"changelog": "Includes firmware versions: 3.0, 3.01, 3.40\n* Added a setting to change scene control paddle mapping (Parameter 23).\n* Added a setting to disable programming from paddles (Parameter 24).\n* Added basic set reports sent to Group 2 and 3 when the dimmer is operated manually for double tap to full brightness and night light modes.\n* Changed direct association group 2 and 3 behavior (the switch now sends a report whenever a paddle is tapped, regardless of its state.\n* Fixed the instant ramp rate bug (the 3-way switch wouldn't switch the light if ramp rate was set to 0).\n* Fixed the night light bug (it no longer activates at all when disabled).\n* Fixed default brightness level bug (the 3-way switch now also honors the value of this setting instead of turning the light back to the last brightness).\n* Improved power outage behavior in smart bulb mode",
+			"url": "https://www.getzooz.com/firmware/ZEN27-3.40.otz",
+			"integrity": "sha256:348ea4354cec0b46184c5a6f92d0220eedfa5043e9f948be1a63cb30cafd9747"
+		}
+	]
+}

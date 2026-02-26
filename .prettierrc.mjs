@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	semi: true,
 	trailingComma: "all",
 	singleQuote: false,
@@ -7,7 +7,7 @@ module.exports = {
 	tabWidth: 4,
 	endOfLine: "lf",
 
-	plugins: [require("prettier-plugin-organize-imports")],
+	plugins: ["prettier-plugin-organize-imports"],
 
 	overrides: [
 		{

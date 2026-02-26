@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Popp", 
+			"model": "POPE701202", //Popp Mold Detector
+			"manufacturerId": "0x0154",
+			"productType": "0x0004", //EU
+			"productId": "0x0014"
+		}
+	],
+	"upgrades": [ //firmware V1.0 to V1.2
+		{
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion < 1.2",
+			"version": "1.2",
+			"channel": "stable",
+			"changelog": "Bug Fixes:\n* Resolves fast battery drain (individual cases)",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://z-wave.freshdesk.com/helpdesk/attachments/80257130806",
+					"integrity": "sha256:f653271acaf3ed44563dd3bfb6d98cf8bdfe34d5d68d350cf099e95af1e9724b"
+				}
+			]
+		}
+	]
+}

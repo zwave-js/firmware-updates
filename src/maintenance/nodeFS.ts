@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { FileSystem } from "../lib/fs/filesystem";
-import { getErrorMessage } from "../lib/shared";
+import type { FileSystem } from "../lib/fs/filesystem.js";
+import { getErrorMessage } from "../lib/shared.js";
 
 export const NodeFS: FileSystem = {
 	writeFile: function (file: string, data: string): Promise<void> {
@@ -14,8 +14,8 @@ export const NodeFS: FileSystem = {
 	// 	return fs.unlink(file);
 	// },
 	async readDir(dir, recursive) {
+		const ret: string[] = [];
 		if (recursive) {
-			const ret: string[] = [];
 			try {
 				const filesAndDirs = await fs.readdir(dir);
 				for (const f of filesAndDirs) {
@@ -31,14 +31,19 @@ export const NodeFS: FileSystem = {
 				console.error(
 					`Cannot read directory: "${dir}": ${getErrorMessage(
 						e,
-						true
-					)}`
+						true,
+					)}`,
 				);
 			}
-
-			return ret;
 		} else {
-			return fs.readdir(dir);
+			ret.push(...(await fs.readdir(dir)));
+		}
+
+		// Normalize the path separator to "/", so path-browserify can handle the paths
+		if (path.sep !== "/") {
+			return ret.map((p) => p.replaceAll(path.sep, "/"));
+		} else {
+			return ret;
 		}
 	},
 	deleteDir: function (dir: string): Promise<void> {

@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Heltun",
+			"model": "HE-TPS04 Touch Panel Switch Quarto",
+			"manufacturerId": "0x0344",
+			"productType": "0x0004",
+			"productId": "0x0004"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.6",
+			"changelog": "Latest stock firmware. For details see https://www.heltun.com/support.",
+			"url": "http://heltun.us/files/firmwares/TPS04_v2_6.ota",
+			"integrity": "sha256:37f612860788381e5b3a04c7436fd0abd6fddc1e62080f0d46d03bc4bf5cf29b"
+		}
+	]
+}

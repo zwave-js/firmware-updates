@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared";
+import { hexKeyRegex4Digits, isFirmwareVersion } from "./shared.js";
 
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
@@ -53,7 +53,27 @@ const deviceSchema = z.object({
 
 const fileSchema = z.object({
 	target: z.number().min(0).optional().default(0),
-	url: z.string().url(),
+	url: z.string().refine(
+		(val) => {
+			// Check for leading/trailing whitespace
+			if (val !== val.trim()) {
+				return false;
+			}
+			// Check if it's a valid URL
+			try {
+				new URL(val);
+				return true;
+			} catch {
+				return false;
+			}
+		},
+		(val) => ({
+			message:
+				val !== val.trim()
+					? "URL must not have leading or trailing whitespace"
+					: "Invalid url",
+		}),
+	),
 	integrity: z
 		.string()
 		.regex(/^sha256:[a-f0-9A-F]{64}$/, "Is not a supported hash"),
@@ -68,7 +88,7 @@ const upgradeBaseSchema = z.object({
 });
 
 const upgradeSchemaMultiple = upgradeBaseSchema.merge(
-	z.object({ files: z.array(fileSchema) })
+	z.object({ files: z.array(fileSchema) }),
 );
 
 const upgradeSchemaSingle = upgradeBaseSchema
@@ -94,7 +114,7 @@ const upgradeSchemaSingle = upgradeBaseSchema
 				region: region as typeof region,
 				files: [{ target, integrity, url }],
 			};
-		}
+		},
 	);
 
 const upgradeSchema = upgradeSchemaSingle.or(upgradeSchemaMultiple);
