@@ -46,8 +46,10 @@ export function formatId(id: number | string): string {
 
 /** Pads a firmware version string, so it can be compared with semver */
 export function padVersion(version: string, suffix: string = "0"): string {
-	if (version.split(".").length === 3) return version;
-	return version + `.${suffix}`;
+    const parts = version.split(".").map(p => String(parseInt(p, 10)));
+    if (parts.length === 3) return parts.join(".");
+    if (parts.length === 2) return parts.join(".") + `.${suffix}`;
+    return parts.join(".") + `.0.${suffix}`;
 }
 
 export function compareVersions(v1: string, v2: string): -1 | 0 | 1 {
