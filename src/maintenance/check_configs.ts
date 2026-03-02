@@ -77,17 +77,21 @@ async function validateConfigFile(filePath: string): Promise<ValidationResult> {
 			for (let i = 0; i < config.upgrades.length; i++) {
 				const upgrade = config.upgrades[i];
 				if (upgrade.$if) {
+					let logic: unknown;
 					try {
-						const logic = parseLogic(upgrade.$if);
-						const nonSemverVersions =
-							findNonSemverVersionsInLogic(logic);
-						for (const version of nonSemverVersions) {
-							errors.push(
-								`upgrades[${i}].$if contains non-semver version "${version}" (has leading zeros)`,
-							);
-						}
-					} catch {
-						// Parsing errors are already caught by ConditionalUpdateConfig
+						logic = parseLogic(upgrade.$if);
+					} catch (e) {
+						errors.push(
+							`upgrades[${i}].$if is not valid logic: ${getErrorMessage(e)}`,
+						);
+						continue;
+					}
+					const nonSemverVersions =
+						findNonSemverVersionsInLogic(logic);
+					for (const version of nonSemverVersions) {
+						errors.push(
+							`upgrades[${i}].$if contains non-semver version "${version}" (has leading zeros)`,
+						);
 					}
 				}
 			}
