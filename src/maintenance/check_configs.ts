@@ -1,6 +1,7 @@
 import JSON5 from "json5";
 import path from "path-browserify";
 import { ConditionalUpdateConfig } from "../lib/config.js";
+import { parseLogic } from "../lib/Logic.js";
 import { getErrorMessage } from "../lib/shared.js";
 import { NodeFS } from "./nodeFS.js";
 
@@ -10,6 +11,47 @@ import { ZodError } from "zod";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const configDir = path.resolve(__dirname, "../../firmwares");
+
+const VERSION_OPERATORS = new Set([
+	"ver >=",
+	"ver >",
+	"ver <=",
+	"ver <",
+	"ver ===",
+]);
+
+/** Returns true if a version string has a part with a leading zero, e.g. "2.00" */
+function hasLeadingZeroVersionPart(version: string): boolean {
+	return version
+		.split(".")
+		.some((part) => part.length > 1 && part.startsWith("0"));
+}
+
+/** Recursively walks a JSON Logic object and collects version strings that have leading zeros */
+function findNonSemverVersionsInLogic(logic: unknown): string[] {
+	if (!logic || typeof logic !== "object") return [];
+	const results: string[] = [];
+	for (const [key, value] of Object.entries(logic)) {
+		if (VERSION_OPERATORS.has(key)) {
+			if (Array.isArray(value) && value.length >= 2) {
+				const version = value[1];
+				if (
+					typeof version === "string" &&
+					hasLeadingZeroVersionPart(version)
+				) {
+					results.push(version);
+				}
+			}
+		} else if (Array.isArray(value)) {
+			for (const item of value) {
+				results.push(...findNonSemverVersionsInLogic(item));
+			}
+		} else if (typeof value === "object") {
+			results.push(...findNonSemverVersionsInLogic(value));
+		}
+	}
+	return results;
+}
 
 interface ValidationResult {
 	filename: string;
@@ -29,7 +71,26 @@ async function validateConfigFile(filePath: string): Promise<ValidationResult> {
 			const definition = JSON5.parse(fileContent);
 
 			// Create ConditionalUpdateConfig which validates the schema and runs sanity checks
-			new ConditionalUpdateConfig(definition);
+			const config = new ConditionalUpdateConfig(definition);
+
+			// Check $if conditions for non-semver versions (e.g. leading zeros like "2.00")
+			for (let i = 0; i < config.upgrades.length; i++) {
+				const upgrade = config.upgrades[i];
+				if (upgrade.$if) {
+					try {
+						const logic = parseLogic(upgrade.$if);
+						const nonSemverVersions =
+							findNonSemverVersionsInLogic(logic);
+						for (const version of nonSemverVersions) {
+							errors.push(
+								`upgrades[${i}].$if contains non-semver version "${version}" (has leading zeros)`,
+							);
+						}
+					} catch {
+						// Parsing errors are already caught by ConditionalUpdateConfig
+					}
+				}
+			}
 		} catch (parseError) {
 			if (
 				parseError instanceof Error &&
