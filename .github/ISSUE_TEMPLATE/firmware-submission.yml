@@ -1,0 +1,556 @@
+name: Firmware Submission
+description: Submit new firmware update(s) for Z-Wave devices
+labels: ["pending-approval"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to submit firmware updates for Z-Wave devices.
+
+        **Requirements:**
+        - Firmware must be publicly hosted by the device manufacturer
+        - All fields marked as required must be filled in
+        - For more than 3 devices or 4 upgrades in a single file, please submit a PR directly
+
+  - type: markdown
+    attributes:
+      value: "## Device 1"
+
+  - type: input
+    id: brand
+    attributes:
+      label: Brand
+      description: Manufacturer name, e.g. Leviton
+      placeholder: Leviton
+    validations:
+      required: true
+
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: Device model number, e.g. DZ15S
+      placeholder: DZ15S
+    validations:
+      required: true
+
+  - type: input
+    id: manufacturer-id
+    attributes:
+      label: Manufacturer ID
+      description: 4-digit hex, e.g. 0x001d
+      placeholder: "0x001d"
+    validations:
+      required: true
+
+  - type: input
+    id: product-type
+    attributes:
+      label: Product Type
+      description: 4-digit hex, e.g. 0x3401
+      placeholder: "0x3401"
+    validations:
+      required: true
+
+  - type: input
+    id: product-id
+    attributes:
+      label: Product ID
+      description: 4-digit hex, e.g. 0x0001
+      placeholder: "0x0001"
+    validations:
+      required: true
+
+  - type: input
+    id: firmware-version-min
+    attributes:
+      label: Firmware Version (Min)
+      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0
+      placeholder: "1.0"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware-version-max
+    attributes:
+      label: Firmware Version (Max)
+      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.99
+      placeholder: "1.99"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: additional-devices
+    attributes:
+      label: Number of Additional Devices
+      description: How many additional devices share the same firmware updates?
+      options:
+        - "0"
+        - "1"
+        - "2"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Device 2 (fill in if you selected 1 or 2 additional devices)"
+
+  - type: input
+    id: brand-2
+    attributes:
+      label: Brand (Device 2)
+      placeholder: Leviton
+    validations:
+      required: false
+
+  - type: input
+    id: model-2
+    attributes:
+      label: Model (Device 2)
+      placeholder: DZ15S
+    validations:
+      required: false
+
+  - type: input
+    id: manufacturer-id-2
+    attributes:
+      label: Manufacturer ID (Device 2)
+      placeholder: "0x001d"
+    validations:
+      required: false
+
+  - type: input
+    id: product-type-2
+    attributes:
+      label: Product Type (Device 2)
+      placeholder: "0x3401"
+    validations:
+      required: false
+
+  - type: input
+    id: product-id-2
+    attributes:
+      label: Product ID (Device 2)
+      placeholder: "0x0001"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware-version-min-2
+    attributes:
+      label: Firmware Version (Min) (Device 2)
+      placeholder: "1.0"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware-version-max-2
+    attributes:
+      label: Firmware Version (Max) (Device 2)
+      placeholder: "1.99"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Device 3 (fill in if you selected 2 additional devices)"
+
+  - type: input
+    id: brand-3
+    attributes:
+      label: Brand (Device 3)
+      placeholder: Leviton
+    validations:
+      required: false
+
+  - type: input
+    id: model-3
+    attributes:
+      label: Model (Device 3)
+      placeholder: DZ15S
+    validations:
+      required: false
+
+  - type: input
+    id: manufacturer-id-3
+    attributes:
+      label: Manufacturer ID (Device 3)
+      placeholder: "0x001d"
+    validations:
+      required: false
+
+  - type: input
+    id: product-type-3
+    attributes:
+      label: Product Type (Device 3)
+      placeholder: "0x3401"
+    validations:
+      required: false
+
+  - type: input
+    id: product-id-3
+    attributes:
+      label: Product ID (Device 3)
+      placeholder: "0x0001"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware-version-min-3
+    attributes:
+      label: Firmware Version (Min) (Device 3)
+      placeholder: "1.0"
+    validations:
+      required: false
+
+  - type: input
+    id: firmware-version-max-3
+    attributes:
+      label: Firmware Version (Max) (Device 3)
+      placeholder: "1.99"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Upgrade 1"
+
+  - type: input
+    id: version
+    attributes:
+      label: Firmware Version
+      description: Version of the new firmware, e.g. 1.23
+      placeholder: "1.23"
+    validations:
+      required: true
+
+  - type: textarea
+    id: changelog
+    attributes:
+      label: Changelog
+      description: Markdown describing what changed in this version
+      placeholder: "* Fixed some bugs\n* Added new features"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: channel
+    attributes:
+      label: Channel
+      options:
+        - stable
+        - beta
+    validations:
+      required: true
+
+  - type: dropdown
+    id: region
+    attributes:
+      label: Region
+      description: Select a region if this update is region-specific, otherwise leave as "All regions"
+      options:
+        - All regions
+        - europe
+        - usa
+        - "australia/new zealand"
+        - hong kong
+        - india
+        - israel
+        - russia
+        - china
+        - japan
+        - korea
+    validations:
+      required: true
+
+  - type: input
+    id: if-condition
+    attributes:
+      label: "Condition ($if)"
+      description: "Optional condition for when this upgrade is offered, e.g. firmwareVersion >= 1.5 && firmwareVersion < 2.0"
+      placeholder: "firmwareVersion >= 1.5 && firmwareVersion < 2.0"
+    validations:
+      required: false
+
+  - type: input
+    id: url-target-0
+    attributes:
+      label: Firmware URL (Target 0)
+      description: URL to the firmware file for the main chip (target 0)
+      placeholder: "https://example.com/firmware/v1.23.ota"
+    validations:
+      required: true
+
+  - type: input
+    id: url-target-1
+    attributes:
+      label: Firmware URL (Target 1)
+      description: Optional URL for a second chip. If filled, the multi-target format will be used.
+      placeholder: "https://example.com/firmware/v1.23_target1.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-target-2
+    attributes:
+      label: Firmware URL (Target 2)
+      description: Optional URL for a third chip.
+      placeholder: "https://example.com/firmware/v1.23_target2.ota"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: additional-upgrades
+    attributes:
+      label: Number of Additional Upgrades
+      description: How many more upgrade entries should be included in this file?
+      options:
+        - "0"
+        - "1"
+        - "2"
+        - "3"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Upgrade 2 (fill in if you selected 1 or more additional upgrades)"
+
+  - type: input
+    id: version-2
+    attributes:
+      label: Firmware Version (Upgrade 2)
+      placeholder: "1.23"
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog-2
+    attributes:
+      label: Changelog (Upgrade 2)
+      placeholder: "* Fixed some bugs"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: channel-2
+    attributes:
+      label: Channel (Upgrade 2)
+      options:
+        - stable
+        - beta
+    validations:
+      required: false
+
+  - type: dropdown
+    id: region-2
+    attributes:
+      label: Region (Upgrade 2)
+      options:
+        - All regions
+        - europe
+        - usa
+        - "australia/new zealand"
+        - hong kong
+        - india
+        - israel
+        - russia
+        - china
+        - japan
+        - korea
+    validations:
+      required: false
+
+  - type: input
+    id: if-condition-2
+    attributes:
+      label: "Condition ($if) (Upgrade 2)"
+      placeholder: "firmwareVersion >= 1.5 && firmwareVersion < 2.0"
+    validations:
+      required: false
+
+  - type: input
+    id: url-2-target-0
+    attributes:
+      label: Firmware URL (Target 0) (Upgrade 2)
+      placeholder: "https://example.com/firmware/v1.23.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-2-target-1
+    attributes:
+      label: Firmware URL (Target 1) (Upgrade 2)
+      placeholder: "https://example.com/firmware/v1.23_target1.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-2-target-2
+    attributes:
+      label: Firmware URL (Target 2) (Upgrade 2)
+      placeholder: "https://example.com/firmware/v1.23_target2.ota"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Upgrade 3 (fill in if you selected 2 or more additional upgrades)"
+
+  - type: input
+    id: version-3
+    attributes:
+      label: Firmware Version (Upgrade 3)
+      placeholder: "1.23"
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog-3
+    attributes:
+      label: Changelog (Upgrade 3)
+      placeholder: "* Fixed some bugs"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: channel-3
+    attributes:
+      label: Channel (Upgrade 3)
+      options:
+        - stable
+        - beta
+    validations:
+      required: false
+
+  - type: dropdown
+    id: region-3
+    attributes:
+      label: Region (Upgrade 3)
+      options:
+        - All regions
+        - europe
+        - usa
+        - "australia/new zealand"
+        - hong kong
+        - india
+        - israel
+        - russia
+        - china
+        - japan
+        - korea
+    validations:
+      required: false
+
+  - type: input
+    id: if-condition-3
+    attributes:
+      label: "Condition ($if) (Upgrade 3)"
+      placeholder: "firmwareVersion >= 1.5 && firmwareVersion < 2.0"
+    validations:
+      required: false
+
+  - type: input
+    id: url-3-target-0
+    attributes:
+      label: Firmware URL (Target 0) (Upgrade 3)
+      placeholder: "https://example.com/firmware/v1.23.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-3-target-1
+    attributes:
+      label: Firmware URL (Target 1) (Upgrade 3)
+      placeholder: "https://example.com/firmware/v1.23_target1.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-3-target-2
+    attributes:
+      label: Firmware URL (Target 2) (Upgrade 3)
+      placeholder: "https://example.com/firmware/v1.23_target2.ota"
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "## Upgrade 4 (fill in if you selected 3 additional upgrades)"
+
+  - type: input
+    id: version-4
+    attributes:
+      label: Firmware Version (Upgrade 4)
+      placeholder: "1.23"
+    validations:
+      required: false
+
+  - type: textarea
+    id: changelog-4
+    attributes:
+      label: Changelog (Upgrade 4)
+      placeholder: "* Fixed some bugs"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: channel-4
+    attributes:
+      label: Channel (Upgrade 4)
+      options:
+        - stable
+        - beta
+    validations:
+      required: false
+
+  - type: dropdown
+    id: region-4
+    attributes:
+      label: Region (Upgrade 4)
+      options:
+        - All regions
+        - europe
+        - usa
+        - "australia/new zealand"
+        - hong kong
+        - india
+        - israel
+        - russia
+        - china
+        - japan
+        - korea
+    validations:
+      required: false
+
+  - type: input
+    id: if-condition-4
+    attributes:
+      label: "Condition ($if) (Upgrade 4)"
+      placeholder: "firmwareVersion >= 1.5 && firmwareVersion < 2.0"
+    validations:
+      required: false
+
+  - type: input
+    id: url-4-target-0
+    attributes:
+      label: Firmware URL (Target 0) (Upgrade 4)
+      placeholder: "https://example.com/firmware/v1.23.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-4-target-1
+    attributes:
+      label: Firmware URL (Target 1) (Upgrade 4)
+      placeholder: "https://example.com/firmware/v1.23_target1.ota"
+    validations:
+      required: false
+
+  - type: input
+    id: url-4-target-2
+    attributes:
+      label: Firmware URL (Target 2) (Upgrade 4)
+      placeholder: "https://example.com/firmware/v1.23_target2.ota"
+    validations:
+      required: false
