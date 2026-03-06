@@ -14,6 +14,39 @@
 	],
 	"upgrades": [
 		{
+			"version": "12.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Binary Switch reporting in association with NO/NC\n- Added Detached mode\n- Added Parameter 117 for device rebooting\n- Removed Parameters 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_2/ANZ/Wave_PRO_2_800_ANZ_20260223_1441_QPSW-0A2X16AU_%5Bv12.00%5D_0FE4B35C.gbl",
+					"integrity": "sha256:63610d5295c6680c4b27066c9257c12fe306d39f69e96d53446176cafa2c63b4"
+				}
+			]
+		},
+		{
+			"version": "12.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Binary Switch reporting in association with NO/NC\n- Added Detached mode\n- Added Parameter 117 for device rebooting\n- Removed Parameters 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_2/EU/Wave_PRO_2_800_EU_LR_20260218_1524_QUSW-0A2X16EU_%5Bv12.00%5D_0FE4B35C.gbl",
+					"integrity": "sha256:033487e1d5fa2741a43e65cf54515be13c2184de32fa1633cc472cd8f11daeac"
+				}
+			]
+		},
+		{
+			"version": "12.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Binary Switch reporting in association with NO/NC\n- Added Detached mode\n- Added Parameter 117 for device rebooting\n- Removed Parameters 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "united states",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_2/US/Wave_PRO_2_800_US_LR_20260223_1440_QUSW-0A2X25US_%5Bv12.00%5D_EB201890.gbl",
+					"integrity": "sha256:17116c71d3dbead71d70b6f266fd692c257f1cd94170ed6a2e71fc918b071751"
+				}
+			]
+		},
+		{
 			"version": "10.8",
 			"changelog": "- optimised temperature conversion table\n- other minor improvements",
 			"region": "europe",

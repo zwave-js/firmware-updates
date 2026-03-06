@@ -14,6 +14,39 @@
 	],
 	"upgrades": [
 		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1/ANZ/Wave_1_800_ANZ_20260225_1414_QLSW-001X16AU_%5Bv14.00%5D_EB201890.gbl",
+					"integrity": "sha256:0909984c19860cc32e3defdcbc628a2697722a24f60f6f5aa59a0b1d381dab50"
+				}
+			]
+		},
+		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1/EU/Wave_1_800_EU_LR_20260219_1507_QLSW-001X16EU_%5Bv14.00%5D_2144DF1C.gbl",
+					"integrity": "sha256:e7df71c6f42473dc6c7ba330574ab51b3a069613a849391e4beaf771ac1bbf35"
+				}
+			]
+		},
+		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue",
+			"region": "united states",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1/US/Wave_1_800_US_LR_20260225_1413_QLSW-001X15US_%5Bv14.00%5D_0FE4B35C.gbl",
+					"integrity": "sha256:931546a07b0b955e7fabd4d03f92692aa8e49e0c280d42d06b7681d7e7b2bcea"
+				}
+			]
+		},
+		{
 			"version": "13.0",
 			"changelog": "Added - Detached mode\n- Fixed OTA signalisation\n- Fixed Binary report with normally closed\n- Fixed push button inclusion / exclussion\n -other minor fixes",
 			"region": "europe",
