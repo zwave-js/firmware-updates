@@ -38,7 +38,7 @@
 		{
 			"version": "13.2",
 			"changelog": "- SDK with fixed dead node issue\n- added parameters for detached mode\n- added parameter 118 Enable SW exclusion\n- other minor improvements",
-			"region": "united states",
+			"region": "usa",
 			"files": [
 				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/e83d8309c8918718176190c3155485bd3582bc1f/Wave_Pro_3/US/Wave_PRO_3_800_US_LR_20251121_0946_QUSW-0A3X16US_%5B13.02%5D_0FE4B35C.gbl",

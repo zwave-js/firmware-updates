@@ -38,7 +38,7 @@
 		{
 			"version": "14.0",
 			"changelog": "- SDK with fixed dead node issue",
-			"region": "united states",
+			"region": "usa",
 			"files": [
 				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1/US/Wave_1_800_US_LR_20260225_1413_QLSW-001X15US_%5Bv14.00%5D_0FE4B35C.gbl",

@@ -38,7 +38,7 @@
 		{
 			"version": "12.0",
 			"changelog": "- SDK with fixed dead node issue\n- Fixed Binary Switch reporting in association with NO/NC\n- Added Detached mode\n- Added Parameter 117 for device rebooting\n- Removed Parameters 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
-			"region": "united states",
+			"region": "usa",
 			"files": [
 				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_2/US/Wave_PRO_2_800_US_LR_20260223_1440_QUSW-0A2X25US_%5Bv12.00%5D_EB201890.gbl",

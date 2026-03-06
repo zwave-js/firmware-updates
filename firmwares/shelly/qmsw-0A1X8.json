@@ -38,7 +38,7 @@
 		{
 			"version": "14.0",
 			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
-			"region": "united states",
+			"region": "usa",
 			"files": [
 				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1_Mini/US/Wave_1_Mini_800_US_LR_20260226_0842_QTSW-0A1X8US_%5Bv14.00%5D_2144DF1C.gbl",

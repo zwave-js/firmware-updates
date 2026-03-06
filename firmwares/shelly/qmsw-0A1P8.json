@@ -38,7 +38,7 @@
 		{
 			"version": "14.3",
 			"changelog": "- SDK with fixed dead node issue\n- Fixed overvoltage threshold\n- Fixed rapid relay switching when parameter 23 is set to 1\n- Fixed Auto ON/OFF parameter timer. Timer resets at command ON/OFF even if the state doesn't change.\n- Fixed detached mode\n- Fiexd default values for Par 36 & 39\n- Fixed meter unsolicited reports\n- Fixed binary switch unsolicited reports and Basic set\n- Fixed overcurrent alarm\n- Fixed switch binary report with normaly closed\n- Fixed Fix random 0W reports\n- Fixed 60Hz power supply functionality\n- Minor power measurement fix in updating kWh\n- Set correct product part number\n- Added Watt report at boot up\n- Added Precision for Meter CC kWh from 1 decimal to 2\n- Added Parameter 117; Remote Reboot\n- Added kWh precision, 2 decimals\n- Improved Overvoltage alarm\n- Removed Alarm parameterrs 91, 92, 93, 94 and associated code\n- Removed Outputs blink on successful inclusion/exclusion\n- Removed Multilevel Switch Support\n- other minor fixes and improvements",
-			"region": "united states",
+			"region": "usa",
 			"files": [
 				{
 					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1PM_Mini/US/Wave_1PM_Mini_800_US_LR_20260226_0903_QTSW-0A1P8US_%5Bv14.03%5D_9DD2F96C.gbl",
