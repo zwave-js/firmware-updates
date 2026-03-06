@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN57",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0321",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20.1",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20\n* Updated SDK from 7.18.8 to 7.24.1",
+			"url": "https://www.getzooz.com/firmware/ZEN57_V01R20_US.gbl",
+			"integrity": "sha256:47b8e73a9334e2478d988d6ee62fa283bef028778ca0bc9f78a72131611a3298"
+		}
+	]
+}
