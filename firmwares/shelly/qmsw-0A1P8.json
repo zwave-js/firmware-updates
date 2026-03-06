@@ -14,6 +14,39 @@
 	],
 	"upgrades": [
 		{
+			"version": "14.3",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed overvoltage threshold\n- Fixed rapid relay switching when parameter 23 is set to 1\n- Fixed Auto ON/OFF parameter timer. Timer resets at command ON/OFF even if the state doesn't change.\n- Fixed detached mode\n- Fiexd default values for Par 36 & 39\n- Fixed meter unsolicited reports\n- Fixed binary switch unsolicited reports and Basic set\n- Fixed overcurrent alarm\n- Fixed switch binary report with normaly closed\n- Fixed Fix random 0W reports\n- Fixed 60Hz power supply functionality\n- Minor power measurement fix in updating kWh\n- Set correct product part number\n- Added Watt report at boot up\n- Added Precision for Meter CC kWh from 1 decimal to 2\n- Added Parameter 117; Remote Reboot\n- Added kWh precision, 2 decimals\n- Improved Overvoltage alarm\n- Removed Alarm parameterrs 91, 92, 93, 94 and associated code\n- Removed Outputs blink on successful inclusion/exclusion\n- Removed Multilevel Switch Support\n- other minor fixes and improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1PM_Mini/ANZ/Wave_1PM_Mini_800_ANZ_20260226_0858_QMSW-0A1P8AU_%5Bv14.03%5D_9DD2F96C.gbl",
+					"integrity": "sha256:d7e827d91b10ea2e4ddfffd2f002f9b8fdf9f9da6cf5fd35a370cab4e6bfc1fe"
+				}
+			]
+		},
+		{
+			"version": "14.3",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed overvoltage threshold\n- Fixed rapid relay switching when parameter 23 is set to 1\n- Fixed Auto ON/OFF parameter timer. Timer resets at command ON/OFF even if the state doesn't change.\n- Fixed detached mode\n- Fiexd default values for Par 36 & 39\n- Fixed meter unsolicited reports\n- Fixed binary switch unsolicited reports and Basic set\n- Fixed overcurrent alarm\n- Fixed switch binary report with normaly closed\n- Fixed Fix random 0W reports\n- Fixed 60Hz power supply functionality\n- Minor power measurement fix in updating kWh\n- Set correct product part number\n- Added Watt report at boot up\n- Added Precision for Meter CC kWh from 1 decimal to 2\n- Added Parameter 117; Remote Reboot\n- Added kWh precision, 2 decimals\n- Improved Overvoltage alarm\n- Removed Alarm parameterrs 91, 92, 93, 94 and associated code\n- Removed Outputs blink on successful inclusion/exclusion\n- Removed Multilevel Switch Support\n- other minor fixes and improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1PM_Mini/EU/Wave_1PM_Mini_800_EU_LR_20260219_1456_QTSW-0A1P8EU_%5Bv14.03%5D_9DD2F96C.gbl",
+					"integrity": "sha256:7387c6bf00735995310c21ba3a3eb9b5d895008f0b1ecba0b6f83d454c0cb71c"
+				}
+			]
+		},
+		{
+			"version": "14.3",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed overvoltage threshold\n- Fixed rapid relay switching when parameter 23 is set to 1\n- Fixed Auto ON/OFF parameter timer. Timer resets at command ON/OFF even if the state doesn't change.\n- Fixed detached mode\n- Fiexd default values for Par 36 & 39\n- Fixed meter unsolicited reports\n- Fixed binary switch unsolicited reports and Basic set\n- Fixed overcurrent alarm\n- Fixed switch binary report with normaly closed\n- Fixed Fix random 0W reports\n- Fixed 60Hz power supply functionality\n- Minor power measurement fix in updating kWh\n- Set correct product part number\n- Added Watt report at boot up\n- Added Precision for Meter CC kWh from 1 decimal to 2\n- Added Parameter 117; Remote Reboot\n- Added kWh precision, 2 decimals\n- Improved Overvoltage alarm\n- Removed Alarm parameterrs 91, 92, 93, 94 and associated code\n- Removed Outputs blink on successful inclusion/exclusion\n- Removed Multilevel Switch Support\n- other minor fixes and improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1PM_Mini/US/Wave_1PM_Mini_800_US_LR_20260226_0903_QTSW-0A1P8US_%5Bv14.03%5D_9DD2F96C.gbl",
+					"integrity": "sha256:19c130c45a0998abf308567b7e3f938453a3034d9937a2f41ddad4ca1ce95a5d"
+				}
+			]
+		},
+		{
 			"version": "11.3",
 			"changelog": "- optimised temperature conversion table\n- other minor improvements",
 			"region": "europe",

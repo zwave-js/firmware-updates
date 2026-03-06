@@ -14,6 +14,39 @@
 	],
 	"upgrades": [
 		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1_Mini/ANZ/Wave_1_Mini_800_ANZ_20260226_0843_QMSW-0A1X8AU_%5Bv14.00%5D_2144DF1C.gbl",
+					"integrity": "sha256:9c667ab5a3d729ad3263d834929e083a6b1e7532f7ca0a103aa60a032eec74ed"
+				}
+			]
+		},
+		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1_Mini/EU/Wave_1_Mini_800_EU_LR_20260218_1514_QTSW-0A1X8EU_%5Bv14.00%5D_2144DF1C.gbl",
+					"integrity": "sha256:e1ecadb0071e412700ee72767bc11119ac687d96af1d6e940b72a5b7a2dfb482"
+				}
+			]
+		},
+		{
+			"version": "14.0",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_1_Mini/US/Wave_1_Mini_800_US_LR_20260226_0842_QTSW-0A1X8US_%5Bv14.00%5D_2144DF1C.gbl",
+					"integrity": "sha256:c00dea66726faa28df1df65f30f3bb0ff21c2afde4dac6caeb62b6b293747467"
+				}
+			]
+		},
+		{
 			"version": "10.4",
 			"changelog": "- optimised temperature conversion table\n- other minor improvements",
 			"region": "europe",
