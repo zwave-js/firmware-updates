@@ -266,7 +266,7 @@ body:
     attributes:
       label: Upgrade conditions
       description: |
-        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`  
         [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
@@ -360,7 +360,7 @@ body:
     attributes:
       label: Upgrade conditions (Upgrade 2)
       description: |
-        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`  
         [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
@@ -454,7 +454,7 @@ body:
     attributes:
       label: Upgrade conditions (Upgrade 3)
       description: |
-        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`  
         [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
@@ -548,7 +548,7 @@ body:
     attributes:
       label: Upgrade conditions (Upgrade 4)
       description: |
-        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`  
         [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
