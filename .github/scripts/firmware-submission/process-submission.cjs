@@ -344,63 +344,85 @@ async function main() {
 
 	// ── C/D. Parse and validate devices ───────────────────────────────────────
 
-	const additionalDevicesRaw = getField(
-		sections,
-		"Number of Additional Devices",
-		true,
-		errors,
-	);
-	const additionalDevices = additionalDevicesRaw
-		? parseInt(additionalDevicesRaw, 10)
-		: 0;
-	if (
-		isNaN(additionalDevices) ||
-		additionalDevices < 0 ||
-		additionalDevices > 2
-	) {
-		errors.push(
-			`'Number of Additional Devices' must be 0, 1, or 2, got: ${additionalDevicesRaw}`,
-		);
-	}
-	const totalDevices = 1 + (isNaN(additionalDevices) ? 0 : additionalDevices);
-
 	/** @param {string} name @param {number} index */
 	function deviceLabel(name, index) {
 		return index === 1 ? name : `${name} (Device ${index})`;
 	}
 
+	/** @param {(string | null)[]} values */
+	function hasAnyValue(values) {
+		return values.some((value) => value != null);
+	}
+
 	/** @param {number} index */
 	function parseDevice(index) {
-		const required = index <= totalDevices;
+		const started =
+			index === 1 ||
+			hasAnyValue([
+				getField(sections, deviceLabel("Brand", index), false, errors),
+				getField(sections, deviceLabel("Model", index), false, errors),
+				getField(
+					sections,
+					deviceLabel("Manufacturer ID", index),
+					false,
+					errors,
+				),
+				getField(
+					sections,
+					deviceLabel("Product Type", index),
+					false,
+					errors,
+				),
+				getField(
+					sections,
+					deviceLabel("Product ID", index),
+					false,
+					errors,
+				),
+				getField(
+					sections,
+					deviceLabel("Firmware Version (Min)", index),
+					false,
+					errors,
+				),
+				getField(
+					sections,
+					deviceLabel("Firmware Version (Max)", index),
+					false,
+					errors,
+				),
+			]);
+
+		if (!started) return null;
 
 		const brand = getField(
 			sections,
 			deviceLabel("Brand", index),
-			required,
+			true,
 			errors,
 		);
 		const model = getField(
 			sections,
 			deviceLabel("Model", index),
-			required,
+			true,
 			errors,
 		);
 		const manufacturerId = getField(
 			sections,
 			deviceLabel("Manufacturer ID", index),
-			required,
+			true,
 			errors,
 		);
 		const productType = getField(
 			sections,
 			deviceLabel("Product Type", index),
-			required,
+			true,
 			errors,
 		);
 		const productId = getField(
 			sections,
 			deviceLabel("Product ID", index),
-			required,
+			true,
 			errors,
 		);
 		const firmwareVersionMin = getField(
@@ -415,8 +437,6 @@ async function main() {
 			false,
 			errors,
 		);
-
-		if (!required) return null;
 
 		if (brand) validateName(brand, deviceLabel("Brand", index), errors);
 		if (model) validateName(model, deviceLabel("Model", index), errors);
@@ -465,27 +485,6 @@ async function main() {
 
 	// ── Parse and validate upgrades ────────────────────────────────────────────
 
-	const additionalUpgradesRaw = getField(
-		sections,
-		"Number of Additional Upgrades",
-		true,
-		errors,
-	);
-	const additionalUpgrades = additionalUpgradesRaw
-		? parseInt(additionalUpgradesRaw, 10)
-		: 0;
-	if (
-		isNaN(additionalUpgrades) ||
-		additionalUpgrades < 0 ||
-		additionalUpgrades > 3
-	) {
-		errors.push(
-			`'Number of Additional Upgrades' must be 0, 1, 2, or 3, got: ${additionalUpgradesRaw}`,
-		);
-	}
-	const totalUpgrades =
-		1 + (isNaN(additionalUpgrades) ? 0 : additionalUpgrades);
-
 	/** @param {string} name @param {number} index */
 	function upgradeLabel(name, index) {
 		return index === 1 ? name : `${name} (Upgrade ${index})`;
@@ -499,24 +498,47 @@ async function main() {
 
 	const upgradeFormData = [];
 	for (let i = 1; i <= 4; i++) {
-		const required = i <= totalUpgrades;
+		const started =
+			i === 1 ||
+			hasAnyValue([
+				getField(
+					sections,
+					upgradeLabel("Firmware Version", i),
+					false,
+					errors,
+				),
+				getField(sections, upgradeLabel("Changelog", i), false, errors),
+				getField(sections, upgradeLabel("Channel", i), false, errors),
+				getField(sections, upgradeLabel("Region", i), false, errors),
+				getField(
+					sections,
+					upgradeLabel("Condition ($if)", i),
+					false,
+					errors,
+				),
+				getField(sections, urlLabel(0, i), false, errors),
+				getField(sections, urlLabel(1, i), false, errors),
+				getField(sections, urlLabel(2, i), false, errors),
+			]);
+
+		if (!started) continue;
 
 		const version = getField(
 			sections,
 			upgradeLabel("Firmware Version", i),
-			required,
+			true,
 			errors,
 		);
 		const changelog = getField(
 			sections,
 			upgradeLabel("Changelog", i),
-			required,
+			true,
 			errors,
 		);
 		const channelRaw = getField(
 			sections,
 			upgradeLabel("Channel", i),
-			required,
+			true,
 			errors,
 		);
 		const regionRaw = getField(
@@ -531,50 +553,46 @@ async function main() {
 			false,
 			errors,
 		);
-		const urlTarget0 = getField(sections, urlLabel(0, i), required, errors);
+		const urlTarget0 = getField(sections, urlLabel(0, i), true, errors);
 		const urlTarget1 = getField(sections, urlLabel(1, i), false, errors);
 		const urlTarget2 = getField(sections, urlLabel(2, i), false, errors);
 
 		let channel = null;
 		let region = null;
 
-		// Only validate fields within the declared upgrade count
-		if (required) {
-			if (version)
-				validateVersion(
-					version,
-					upgradeLabel("Firmware Version", i),
-					errors,
+		if (version)
+			validateVersion(
+				version,
+				upgradeLabel("Firmware Version", i),
+				errors,
+			);
+
+		if (urlTarget0) validateUrl(urlTarget0, urlLabel(0, i), errors);
+		if (urlTarget1) validateUrl(urlTarget1, urlLabel(1, i), errors);
+		if (urlTarget2) validateUrl(urlTarget2, urlLabel(2, i), errors);
+
+		if (channelRaw) {
+			if (["stable", "beta"].includes(channelRaw)) {
+				channel = channelRaw;
+			} else {
+				errors.push(
+					`'${upgradeLabel("Channel", i)}' must be 'stable' or 'beta', got: ${channelRaw}`,
 				);
-
-			if (urlTarget0) validateUrl(urlTarget0, urlLabel(0, i), errors);
-			if (urlTarget1) validateUrl(urlTarget1, urlLabel(1, i), errors);
-			if (urlTarget2) validateUrl(urlTarget2, urlLabel(2, i), errors);
-
-			if (channelRaw) {
-				if (["stable", "beta"].includes(channelRaw)) {
-					channel = channelRaw;
-				} else {
-					errors.push(
-						`'${upgradeLabel("Channel", i)}' must be 'stable' or 'beta', got: ${channelRaw}`,
-					);
-				}
 			}
+		}
 
-			if (regionRaw && regionRaw !== "All regions") {
-				if (VALID_REGIONS.includes(regionRaw)) {
-					region = regionRaw;
-				} else {
-					errors.push(
-						`'${upgradeLabel("Region", i)}' is not a valid region: ${regionRaw}`,
-					);
-				}
+		if (regionRaw && regionRaw !== "All regions") {
+			if (VALID_REGIONS.includes(regionRaw)) {
+				region = regionRaw;
+			} else {
+				errors.push(
+					`'${upgradeLabel("Region", i)}' is not a valid region: ${regionRaw}`,
+				);
 			}
 		}
 
 		upgradeFormData.push({
 			index: i,
-			required,
 			version,
 			changelog,
 			channel,
@@ -586,8 +604,7 @@ async function main() {
 		});
 	}
 
-	// Only process up to totalUpgrades
-	const activeUpgrades = upgradeFormData.slice(0, totalUpgrades);
+	const activeUpgrades = upgradeFormData;
 
 	// ── Exit early if validation errors ───────────────────────────────────────
 	if (errors.length > 0) {
