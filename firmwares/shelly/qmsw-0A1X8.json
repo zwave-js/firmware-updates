@@ -15,7 +15,7 @@
 	"upgrades": [
 		{
 			"version": "14.0",
-			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normally closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
 			"region": "australia/new zealand",
 			"files": [
 				{
@@ -26,7 +26,7 @@
 		},
 		{
 			"version": "14.0",
-			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normally closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
 			"region": "europe",
 			"files": [
 				{
@@ -37,7 +37,7 @@
 		},
 		{
 			"version": "14.0",
-			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normaly closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Basic on/off, Binary Switch On/Off\n- Fixed switch binary report with normally closed\n- Fixed ota in progress LED indicator\n- Added parameter 117 - remote reboot\n- Removed parameters no. 91, 92, 93, 94\n- Removed Inclusion/exclusion indication (2x ON/OFF output)",
 			"region": "usa",
 			"files": [
 				{
