@@ -29,7 +29,6 @@ body:
     id: model
     attributes:
       label: Model
-      description: Device model number/name
       placeholder: e.g. ZWA-002
     validations:
       required: true
@@ -62,7 +61,7 @@ body:
     id: firmware-version-min
     attributes:
       label: Firmware Version (Min)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '0.0'
     validations:
       required: false
@@ -71,14 +70,16 @@ body:
     id: firmware-version-max
     attributes:
       label: Firmware Version (Max)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '255.255'
     validations:
       required: false
 
   - type: markdown
     attributes:
-      value: '## Device 2 (optional)'
+      value: |
+        <!-- -->
+        ## Device 2 (optional)
 
   - type: input
     id: brand-2
@@ -91,7 +92,6 @@ body:
     id: model-2
     attributes:
       label: Model
-      description: Device model number/name
       placeholder: e.g. ZWA-002
     validations:
       required: false
@@ -124,7 +124,7 @@ body:
     id: firmware-version-min-2
     attributes:
       label: Firmware Version (Min)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '0.0'
     validations:
       required: false
@@ -133,14 +133,16 @@ body:
     id: firmware-version-max-2
     attributes:
       label: Firmware Version (Max)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '255.255'
     validations:
       required: false
 
   - type: markdown
     attributes:
-      value: '## Device 3 (optional)'
+      value: |
+        <!-- -->
+        ## Device 3 (optional)
 
   - type: input
     id: brand-3
@@ -153,7 +155,6 @@ body:
     id: model-3
     attributes:
       label: Model
-      description: Device model number/name
       placeholder: e.g. ZWA-002
     validations:
       required: false
@@ -186,7 +187,7 @@ body:
     id: firmware-version-min-3
     attributes:
       label: Firmware Version (Min)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '0.0'
     validations:
       required: false
@@ -195,7 +196,7 @@ body:
     id: firmware-version-max-3
     attributes:
       label: Firmware Version (Max)
-      description: Only needed when the same model has multiple definition files split by version range. e.g. 1.0-2.255 and 3.0+
+      description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '255.255'
     validations:
       required: false
