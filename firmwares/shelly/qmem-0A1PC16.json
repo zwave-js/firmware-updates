@@ -14,6 +14,17 @@
 	],
 	"upgrades": [
 		{
+			"version": "12.0",
+			"changelog": "- kWh precision set to 2 decimal points\n- Fix random 0W reports\n- Fix OTA color signalisation\n- other minor improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/e3812e45533f874c1030115184b006760c2cd5ab/Wave_PM_Mini/EU/Wave_PM_mini_EU_LR_20250520_1100_QTEM-0A1PC16EU_%5Bv12.00%5D_9DD2F96C.gbl",
+					"integrity": "sha256:4a5d6d5e93432adf5c19c1b7f68969534fdf2d9528217fc988cc774f0e68070e"
+				}
+			]
+		},
+		{
 			"version": "10.6",
 			"changelog": "- optimised temperature conversion table\n- other minor improvements",
 			"region": "europe",
