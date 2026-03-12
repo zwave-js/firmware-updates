@@ -8,11 +8,10 @@ body:
         Use this form to submit firmware updates for Z-Wave devices.
         For details, see the [documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md).
 
-        **Requirements:**
-        - Firmware must be publicly hosted by the device manufacturer
-        - All fields marked as required must be filled in
-        - Leave optional device and upgrade sections blank unless they apply; if you start filling one in, complete its required fields
-        - For more than 3 devices or 4 upgrades in a single file, please submit a PR directly
+        Multiple device entries can be used to match multiple devices/models.
+
+        Multiple upgrades can be used to submit multiple firmwares for the same device at once,
+        either different versions or different region-specific updates.
 
   - type: markdown
     attributes:
@@ -86,14 +85,14 @@ body:
   - type: input
     id: brand-2
     attributes:
-      label: Brand
+      label: Brand (Device 2)
     validations:
       required: false
 
   - type: input
     id: model-2
     attributes:
-      label: Model
+      label: Model (Device 2)
       placeholder: e.g. ZWA-002
     validations:
       required: false
@@ -101,7 +100,7 @@ body:
   - type: input
     id: manufacturer-id-2
     attributes:
-      label: Manufacturer ID
+      label: Manufacturer ID (Device 2)
       description: 4-digit hex, e.g. 0xd3ad
     validations:
       required: false
@@ -109,7 +108,7 @@ body:
   - type: input
     id: product-type-2
     attributes:
-      label: Product Type
+      label: Product Type (Device 2)
       description: 4-digit hex, e.g. 0xb33f
     validations:
       required: false
@@ -117,7 +116,7 @@ body:
   - type: input
     id: product-id-2
     attributes:
-      label: Product ID
+      label: Product ID (Device 2)
       description: 4-digit hex, e.g. 0xc4f3
     validations:
       required: false
@@ -125,7 +124,7 @@ body:
   - type: input
     id: firmware-version-min-2
     attributes:
-      label: Firmware Version (Min)
+      label: Firmware Version (Min) (Device 2)
       description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '0.0'
     validations:
@@ -134,7 +133,7 @@ body:
   - type: input
     id: firmware-version-max-2
     attributes:
-      label: Firmware Version (Max)
+      label: Firmware Version (Max) (Device 2)
       description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '255.255'
     validations:
@@ -151,14 +150,14 @@ body:
   - type: input
     id: brand-3
     attributes:
-      label: Brand
+      label: Brand (Device 3)
     validations:
       required: false
 
   - type: input
     id: model-3
     attributes:
-      label: Model
+      label: Model (Device 3)
       placeholder: e.g. ZWA-002
     validations:
       required: false
@@ -166,7 +165,7 @@ body:
   - type: input
     id: manufacturer-id-3
     attributes:
-      label: Manufacturer ID
+      label: Manufacturer ID (Device 3)
       description: 4-digit hex, e.g. 0xd3ad
     validations:
       required: false
@@ -174,7 +173,7 @@ body:
   - type: input
     id: product-type-3
     attributes:
-      label: Product Type
+      label: Product Type (Device 3)
       description: 4-digit hex, e.g. 0xb33f
     validations:
       required: false
@@ -182,7 +181,7 @@ body:
   - type: input
     id: product-id-3
     attributes:
-      label: Product ID
+      label: Product ID (Device 3)
       description: 4-digit hex, e.g. 0xc4f3
     validations:
       required: false
@@ -190,7 +189,7 @@ body:
   - type: input
     id: firmware-version-min-3
     attributes:
-      label: Firmware Version (Min)
+      label: Firmware Version (Min) (Device 3)
       description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '0.0'
     validations:
@@ -199,11 +198,15 @@ body:
   - type: input
     id: firmware-version-max-3
     attributes:
-      label: Firmware Version (Max)
+      label: Firmware Version (Max) (Device 3)
       description: Only needed when the same model has multiple definition files split by version range, for example 1.0-2.255 and 3.0+
       placeholder: '255.255'
     validations:
       required: false
+
+  - type: markdown
+    attributes:
+      value: '---'
 
   - type: markdown
     attributes:
@@ -297,12 +300,17 @@ body:
 
   - type: markdown
     attributes:
+      value: '---'
+
+  - type: markdown
+    attributes:
       value: '## Upgrade 2 (optional)'
 
   - type: input
     id: version-2
     attributes:
       label: Firmware Version (Upgrade 2)
+      description: Version of the new firmware, e.g. 1.23
       placeholder: '1.23'
     validations:
       required: false
@@ -311,7 +319,8 @@ body:
     id: changelog-2
     attributes:
       label: Changelog (Upgrade 2)
-      placeholder: '* Fixed some bugs'
+      description: This will be shown to users to explain what's new in this firmware update, so be sure to include any important details or bug fixes. Markdown formatting is supported.
+      placeholder: "* Fixed some bugs\n* Added new features\n* Introduced other bugs"
     validations:
       required: false
 
@@ -319,6 +328,7 @@ body:
     id: channel-2
     attributes:
       label: Channel (Upgrade 2)
+      description: Can be used to provide a beta firmware to a subset of users for testing before rolling out to everyone.
       options:
         - stable
         - beta
@@ -329,6 +339,7 @@ body:
     id: region-2
     attributes:
       label: Region (Upgrade 2)
+      description: Select a region if this update is region-specific, otherwise leave as "All regions"
       options:
         - All regions
         - europe
@@ -347,8 +358,10 @@ body:
   - type: input
     id: if-condition-2
     attributes:
-      label: 'Condition ($if) (Upgrade 2)'
-      placeholder: 'firmwareVersion >= 1.5 && firmwareVersion < 2.0'
+      label: Upgrade conditions (Upgrade 2)
+      description: |
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
 
@@ -356,6 +369,7 @@ body:
     id: url-2-target-0
     attributes:
       label: Firmware URL (Target 0) (Upgrade 2)
+      description: URL to the firmware file for the main chip (target 0)
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
@@ -364,6 +378,7 @@ body:
     id: url-2-target-1
     attributes:
       label: Firmware URL (Target 1) (Upgrade 2)
+      description: Optional URL for a second chip. If filled, the multi-target format will be used.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
     validations:
       required: false
@@ -372,9 +387,14 @@ body:
     id: url-2-target-2
     attributes:
       label: Firmware URL (Target 2) (Upgrade 2)
+      description: Optional URL for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
+
+  - type: markdown
+    attributes:
+      value: '---'
 
   - type: markdown
     attributes:
@@ -384,6 +404,7 @@ body:
     id: version-3
     attributes:
       label: Firmware Version (Upgrade 3)
+      description: Version of the new firmware, e.g. 1.23
       placeholder: '1.23'
     validations:
       required: false
@@ -392,7 +413,8 @@ body:
     id: changelog-3
     attributes:
       label: Changelog (Upgrade 3)
-      placeholder: '* Fixed some bugs'
+      description: This will be shown to users to explain what's new in this firmware update, so be sure to include any important details or bug fixes. Markdown formatting is supported.
+      placeholder: "* Fixed some bugs\n* Added new features\n* Introduced other bugs"
     validations:
       required: false
 
@@ -400,6 +422,7 @@ body:
     id: channel-3
     attributes:
       label: Channel (Upgrade 3)
+      description: Can be used to provide a beta firmware to a subset of users for testing before rolling out to everyone.
       options:
         - stable
         - beta
@@ -410,6 +433,7 @@ body:
     id: region-3
     attributes:
       label: Region (Upgrade 3)
+      description: Select a region if this update is region-specific, otherwise leave as "All regions"
       options:
         - All regions
         - europe
@@ -428,8 +452,10 @@ body:
   - type: input
     id: if-condition-3
     attributes:
-      label: 'Condition ($if) (Upgrade 3)'
-      placeholder: 'firmwareVersion >= 1.5 && firmwareVersion < 2.0'
+      label: Upgrade conditions (Upgrade 3)
+      description: |
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
 
@@ -437,6 +463,7 @@ body:
     id: url-3-target-0
     attributes:
       label: Firmware URL (Target 0) (Upgrade 3)
+      description: URL to the firmware file for the main chip (target 0)
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
@@ -445,6 +472,7 @@ body:
     id: url-3-target-1
     attributes:
       label: Firmware URL (Target 1) (Upgrade 3)
+      description: Optional URL for a second chip. If filled, the multi-target format will be used.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
     validations:
       required: false
@@ -453,9 +481,14 @@ body:
     id: url-3-target-2
     attributes:
       label: Firmware URL (Target 2) (Upgrade 3)
+      description: Optional URL for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
+
+  - type: markdown
+    attributes:
+      value: '---'
 
   - type: markdown
     attributes:
@@ -465,6 +498,7 @@ body:
     id: version-4
     attributes:
       label: Firmware Version (Upgrade 4)
+      description: Version of the new firmware, e.g. 1.23
       placeholder: '1.23'
     validations:
       required: false
@@ -473,7 +507,8 @@ body:
     id: changelog-4
     attributes:
       label: Changelog (Upgrade 4)
-      placeholder: '* Fixed some bugs'
+      description: This will be shown to users to explain what's new in this firmware update, so be sure to include any important details or bug fixes. Markdown formatting is supported.
+      placeholder: "* Fixed some bugs\n* Added new features\n* Introduced other bugs"
     validations:
       required: false
 
@@ -481,6 +516,7 @@ body:
     id: channel-4
     attributes:
       label: Channel (Upgrade 4)
+      description: Can be used to provide a beta firmware to a subset of users for testing before rolling out to everyone.
       options:
         - stable
         - beta
@@ -491,6 +527,7 @@ body:
     id: region-4
     attributes:
       label: Region (Upgrade 4)
+      description: Select a region if this update is region-specific, otherwise leave as "All regions"
       options:
         - All regions
         - europe
@@ -509,8 +546,10 @@ body:
   - type: input
     id: if-condition-4
     attributes:
-      label: 'Condition ($if) (Upgrade 4)'
-      placeholder: 'firmwareVersion >= 1.5 && firmwareVersion < 2.0'
+      label: Upgrade conditions (Upgrade 4)
+      description: |
+        Can be used to limit upgrade paths to this firmware, e.g. `firmwareVersion >= 1.5 && firmwareVersion < 2.0`
+        [Documentation](https://github.com/zwave-js/firmware-updates/blob/main/docs/firmware-files.md#offer-upgrades-conditionally)
     validations:
       required: false
 
@@ -518,6 +557,7 @@ body:
     id: url-4-target-0
     attributes:
       label: Firmware URL (Target 0) (Upgrade 4)
+      description: URL to the firmware file for the main chip (target 0)
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
@@ -526,6 +566,7 @@ body:
     id: url-4-target-1
     attributes:
       label: Firmware URL (Target 1) (Upgrade 4)
+      description: Optional URL for a second chip. If filled, the multi-target format will be used.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
     validations:
       required: false
@@ -534,6 +575,7 @@ body:
     id: url-4-target-2
     attributes:
       label: Firmware URL (Target 2) (Upgrade 4)
+      description: Optional URL for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false

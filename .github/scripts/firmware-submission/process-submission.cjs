@@ -512,7 +512,7 @@ async function main() {
 				getField(sections, upgradeLabel("Region", i), false, errors),
 				getField(
 					sections,
-					upgradeLabel("Condition ($if)", i),
+					upgradeLabel("Upgrade conditions", i),
 					false,
 					errors,
 				),
@@ -549,7 +549,7 @@ async function main() {
 		);
 		const ifCondition = getField(
 			sections,
-			upgradeLabel("Condition ($if)", i),
+			upgradeLabel("Upgrade conditions", i),
 			false,
 			errors,
 		);
