@@ -77,9 +77,11 @@ body:
 
   - type: markdown
     attributes:
-      value: |
-        <!-- -->
-        ## Device 2 (optional)
+      value: '---'
+
+  - type: markdown
+    attributes:
+      value: '## Device 2 (optional)'
 
   - type: input
     id: brand-2
@@ -140,9 +142,11 @@ body:
 
   - type: markdown
     attributes:
-      value: |
-        <!-- -->
-        ## Device 3 (optional)
+      value: '---'
+
+  - type: markdown
+    attributes:
+      value: '## Device 3 (optional)'
 
   - type: input
     id: brand-3
