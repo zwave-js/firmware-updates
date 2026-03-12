@@ -11,6 +11,7 @@ const {
 	downloadFirmware,
 	generateHash,
 } = require("@zwave-js/firmware-integrity");
+const { createSubmissionPRBody } = require("./submission-pr.cjs");
 
 const COMMENT_TAG = "<!-- firmware-submission-status -->";
 const VALID_REGIONS = [
@@ -28,7 +29,11 @@ const VALID_REGIONS = [
 
 const GITHUB_TOKEN = /** @type {string} */ (process.env.GITHUB_TOKEN);
 const BOT_TOKEN = /** @type {string} */ (process.env.BOT_TOKEN);
-const ISSUE_NUMBER = parseInt(/** @type {string} */ (process.env.ISSUE_NUMBER), 10);
+const GITHUB_EVENT_PATH = /** @type {string} */ (process.env.GITHUB_EVENT_PATH);
+const ISSUE_NUMBER = parseInt(
+	/** @type {string} */ (process.env.ISSUE_NUMBER),
+	10,
+);
 const REPO_OWNER = /** @type {string} */ (process.env.REPO_OWNER);
 const REPO_NAME = /** @type {string} */ (process.env.REPO_NAME);
 
@@ -142,6 +147,41 @@ async function failWithErrors(errors) {
 	process.exit(1);
 }
 
+async function failBecauseIssueChangedAfterApproval() {
+	await removeLabel("processing");
+	await addLabel("checks-failed");
+
+	await postStatusComment(
+		"This submission was edited after it was approved, so processing was skipped. Please ask a maintainer to review the updated issue body and re-apply the `approved` label before processing again.",
+	);
+
+	process.exit(1);
+}
+
+function loadApprovedIssueSnapshot() {
+	if (!GITHUB_EVENT_PATH) {
+		throw new Error("GITHUB_EVENT_PATH is not set.");
+	}
+
+	/** @type {any} */
+	let payload;
+	try {
+		payload = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH, "utf-8"));
+	} catch (error) {
+		throw new Error(
+			`Could not read workflow event payload: ${/** @type {Error} */ (error).message}`,
+		);
+	}
+
+	if (payload?.issue?.number !== ISSUE_NUMBER) {
+		throw new Error(
+			"Workflow event payload does not match the submission issue.",
+		);
+	}
+
+	return payload.issue;
+}
+
 // ─── Issue body parser ────────────────────────────────────────────────────────
 
 /**
@@ -161,7 +201,8 @@ function parseIssueBody(body) {
 		if (!match) continue;
 		const heading = match[1].trim();
 		const value = match[2].trim();
-		sections[heading] = value === "_No response_" || value === "" ? null : value;
+		sections[heading] =
+			value === "_No response_" || value === "" ? null : value;
 	}
 	return sections;
 }
@@ -218,9 +259,7 @@ function validateHex(value, fieldName, errors) {
  */
 function validateName(value, fieldName, errors) {
 	if (/\.\./.test(value) || value.includes("\\")) {
-		errors.push(
-			`'${fieldName}' contains invalid characters.`,
-		);
+		errors.push(`'${fieldName}' contains invalid characters.`);
 		return false;
 	}
 	return true;
@@ -281,18 +320,25 @@ function validateVersion(value, fieldName, errors) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-	// A. Mark as processing immediately
-	await addLabel("processing");
+	const approvedIssue = loadApprovedIssueSnapshot();
+	const approvedBody = approvedIssue.body ?? "";
 
-	// B. Fetch issue body via API (avoids shell-escaping issues)
+	// Reject if the issue body changed after approval.
 	const { data: issue } = await octokit.rest.issues.get({
 		owner: REPO_OWNER,
 		repo: REPO_NAME,
 		issue_number: ISSUE_NUMBER,
 	});
+	if ((issue.body ?? "") !== approvedBody) {
+		await failBecauseIssueChangedAfterApproval();
+		return;
+	}
 
-	const body = issue.body ?? "";
-	const sections = parseIssueBody(body);
+	// A. Mark as processing once the approved snapshot is validated.
+	await addLabel("processing");
+
+	// B. Parse the issue body captured by the approval event.
+	const sections = parseIssueBody(approvedBody);
 
 	const errors = [];
 
@@ -327,8 +373,18 @@ async function main() {
 	function parseDevice(index) {
 		const required = index <= totalDevices;
 
-		const brand = getField(sections, deviceLabel("Brand", index), required, errors);
-		const model = getField(sections, deviceLabel("Model", index), required, errors);
+		const brand = getField(
+			sections,
+			deviceLabel("Brand", index),
+			required,
+			errors,
+		);
+		const model = getField(
+			sections,
+			deviceLabel("Model", index),
+			required,
+			errors,
+		);
 		const manufacturerId = getField(
 			sections,
 			deviceLabel("Manufacturer ID", index),
@@ -364,13 +420,32 @@ async function main() {
 
 		if (brand) validateName(brand, deviceLabel("Brand", index), errors);
 		if (model) validateName(model, deviceLabel("Model", index), errors);
-		if (manufacturerId) validateHex(manufacturerId, deviceLabel("Manufacturer ID", index), errors);
-		if (productType) validateHex(productType, deviceLabel("Product Type", index), errors);
-		if (productId) validateHex(productId, deviceLabel("Product ID", index), errors);
+		if (manufacturerId)
+			validateHex(
+				manufacturerId,
+				deviceLabel("Manufacturer ID", index),
+				errors,
+			);
+		if (productType)
+			validateHex(
+				productType,
+				deviceLabel("Product Type", index),
+				errors,
+			);
+		if (productId)
+			validateHex(productId, deviceLabel("Product ID", index), errors);
 		if (firmwareVersionMin)
-			validateVersion(firmwareVersionMin, deviceLabel("Firmware Version (Min)", index), errors);
+			validateVersion(
+				firmwareVersionMin,
+				deviceLabel("Firmware Version (Min)", index),
+				errors,
+			);
 		if (firmwareVersionMax)
-			validateVersion(firmwareVersionMax, deviceLabel("Firmware Version (Max)", index), errors);
+			validateVersion(
+				firmwareVersionMax,
+				deviceLabel("Firmware Version (Max)", index),
+				errors,
+			);
 
 		/** @type {Record<string, any>} */
 		const device = { brand, model, manufacturerId, productType, productId };
@@ -383,9 +458,10 @@ async function main() {
 		return device;
 	}
 
-	const devices = /** @type {NonNullable<ReturnType<typeof parseDevice>>[]} */ (
-		[parseDevice(1), parseDevice(2), parseDevice(3)].filter(Boolean)
-	);
+	const devices =
+		/** @type {NonNullable<ReturnType<typeof parseDevice>>[]} */ (
+			[parseDevice(1), parseDevice(2), parseDevice(3)].filter(Boolean)
+		);
 
 	// ── Parse and validate upgrades ────────────────────────────────────────────
 
@@ -407,7 +483,8 @@ async function main() {
 			`'Number of Additional Upgrades' must be 0, 1, 2, or 3, got: ${additionalUpgradesRaw}`,
 		);
 	}
-	const totalUpgrades = 1 + (isNaN(additionalUpgrades) ? 0 : additionalUpgrades);
+	const totalUpgrades =
+		1 + (isNaN(additionalUpgrades) ? 0 : additionalUpgrades);
 
 	/** @param {string} name @param {number} index */
 	function upgradeLabel(name, index) {
@@ -463,7 +540,12 @@ async function main() {
 
 		// Only validate fields within the declared upgrade count
 		if (required) {
-			if (version) validateVersion(version, upgradeLabel("Firmware Version", i), errors);
+			if (version)
+				validateVersion(
+					version,
+					upgradeLabel("Firmware Version", i),
+					errors,
+				);
 
 			if (urlTarget0) validateUrl(urlTarget0, urlLabel(0, i), errors);
 			if (urlTarget1) validateUrl(urlTarget1, urlLabel(1, i), errors);
@@ -519,7 +601,9 @@ async function main() {
 	const upgradeHashes = [];
 	for (const upgrade of activeUpgrades) {
 		const urls = /** @type {string[]} */ (
-			[upgrade.urlTarget0, upgrade.urlTarget1, upgrade.urlTarget2].filter(Boolean)
+			[upgrade.urlTarget0, upgrade.urlTarget1, upgrade.urlTarget2].filter(
+				Boolean,
+			)
 		);
 		/** @type {{ url: string, integrity: string }[]} */
 		const hashes = [];
@@ -578,7 +662,9 @@ async function main() {
 
 	const brand = devices[0].brand;
 	const model = devices[0].model;
-	const brandDir = sanitizePathComponent(brand).toLowerCase().replace(/\s+/g, "-");
+	const brandDir = sanitizePathComponent(brand)
+		.toLowerCase()
+		.replace(/\s+/g, "-");
 	const safeModel = sanitizePathComponent(model);
 
 	const firmwareVersionMin = devices[0].firmwareVersion?.min;
@@ -603,7 +689,8 @@ async function main() {
 	const newUpgrades = activeUpgrades.map((upgrade, idx) => {
 		const hashes = upgradeHashes[idx];
 		const changelog = formattedChangelogs[idx];
-		const hasMultipleTargets = upgrade.urlTarget1 != null || upgrade.urlTarget2 != null;
+		const hasMultipleTargets =
+			upgrade.urlTarget1 != null || upgrade.urlTarget2 != null;
 
 		/** @type {Record<string, any>} */
 		const entry = {};
@@ -632,7 +719,9 @@ async function main() {
 	// Check for duplicate versions in existing config
 	if (existingConfig) {
 		const existingVersions = new Set(
-			(existingConfig.upgrades ?? []).map((/** @type {any} */ u) => u.version),
+			(existingConfig.upgrades ?? []).map(
+				(/** @type {any} */ u) => u.version,
+			),
 		);
 		const duplicates = newUpgrades
 			.filter((u) => existingVersions.has(u.version))
@@ -661,7 +750,8 @@ async function main() {
 						productType: d.productType,
 						productId: d.productId,
 					};
-					if (d.firmwareVersion) entry.firmwareVersion = d.firmwareVersion;
+					if (d.firmwareVersion)
+						entry.firmwareVersion = d.firmwareVersion;
 					return entry;
 				}),
 				upgrades: newUpgrades,
@@ -739,7 +829,7 @@ async function main() {
 			title: prTitle,
 			head: branchName,
 			base: "main",
-			body: `Closes #${ISSUE_NUMBER}\n\nAuto-generated from issue #${ISSUE_NUMBER}.`,
+			body: createSubmissionPRBody(ISSUE_NUMBER),
 		});
 		prUrl = newPR.html_url;
 	}

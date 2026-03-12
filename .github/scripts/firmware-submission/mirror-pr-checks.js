@@ -4,6 +4,7 @@
 
 const COMMENT_TAG = "<!-- firmware-submission-status -->";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
+const { getSubmissionIssueNumberFromPR } = require("./submission-pr.cjs");
 
 /**
  * @param {{github: Github, context: Context}} param
@@ -38,13 +39,12 @@ async function main({ github, context }) {
 		repo,
 		pull_number: prNumber,
 	});
-	const issueMatch = (pr.body || "").match(/Closes #(\d+)/);
-	if (!issueMatch) {
-		console.log("PR body does not reference a submission issue, skipping");
+
+	const issueNumber = getSubmissionIssueNumberFromPR(pr, owner, repo);
+	if (issueNumber == null) {
+		console.log("PR is not a bot-managed submission PR, skipping");
 		return;
 	}
-
-	const issueNumber = parseInt(issueMatch[1], 10);
 
 	// Verify this is a bot-managed submission issue
 	const { data: issue } = await github.rest.issues.get({
@@ -53,7 +53,7 @@ async function main({ github, context }) {
 		issue_number: issueNumber,
 	});
 	const labelNames = issue.labels.map((l) =>
-		typeof l === "string" ? l : l.name ?? "",
+		typeof l === "string" ? l : (l.name ?? ""),
 	);
 	if (!SUBMISSION_LABELS.some((l) => labelNames.includes(l))) {
 		console.log("Issue does not have a submission label, skipping");
@@ -81,10 +81,15 @@ async function main({ github, context }) {
 						repo,
 						job_id: job.id,
 					});
-				const logText = await fetch(logResponse.url).then((r) => r.text());
+				const logText = await fetch(logResponse.url).then((r) =>
+					r.text(),
+				);
 				const clean = logText
 					.replace(/\x1B\[[0-9;]*m/g, "")
-					.replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /gm, "");
+					.replace(
+						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /gm,
+						"",
+					);
 				const lines = clean
 					.split("\n")
 					.filter(
@@ -110,7 +115,8 @@ async function main({ github, context }) {
 		{ owner, repo, issue_number: issueNumber },
 	);
 	const existing = existingComments.find(
-		(c) => c.body?.endsWith(COMMENT_TAG) && c.user?.login === "zwave-js-bot",
+		(c) =>
+			c.body?.endsWith(COMMENT_TAG) && c.user?.login === "zwave-js-bot",
 	);
 	if (existing) {
 		try {
