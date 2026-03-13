@@ -668,13 +668,14 @@ export default async function main({
 
 		const upgradeFormData: UpgradeFormData[] = [];
 		for (let i = 1; i <= 4; i++) {
+			// Only check free text fields to determine if an upgrade was started.
+			// Dropdown fields (Channel, Region) always have a default value in
+			// GitHub issue forms, so they must not be used for this check.
 			const started =
 				i === 1 ||
 				hasAnyValue([
 					getField(sections, upgradeLabel("Firmware Version", i), false, errors),
 					getField(sections, upgradeLabel("Changelog", i), false, errors),
-					getField(sections, upgradeLabel("Channel", i), false, errors),
-					getField(sections, upgradeLabel("Region", i), false, errors),
 					getField(
 						sections,
 						upgradeLabel("Upgrade conditions", i),
