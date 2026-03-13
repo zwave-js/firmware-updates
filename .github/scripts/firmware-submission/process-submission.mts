@@ -807,6 +807,16 @@ export default async function main({
 		console.log(`Setting up branch ${branchName}...`);
 		git("config", "user.name", "zwave-js-bot");
 		git("config", "user.email", "zwave-js-bot@users.noreply.github.com");
+		// Use BOT_TOKEN for git operations so pushes are attributed to
+		// zwave-js-bot and trigger workflows. The default GITHUB_TOKEN
+		// credentials set up by actions/checkout do not trigger workflows.
+		const botToken = getRequiredEnv("BOT_TOKEN");
+		git(
+			"remote",
+			"set-url",
+			"origin",
+			`https://x-access-token:${botToken}@github.com/${owner}/${repo}.git`,
+		);
 		git("fetch", "origin", "main");
 		git("checkout", "-B", branchName, "origin/main");
 
