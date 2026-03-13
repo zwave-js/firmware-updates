@@ -86,15 +86,15 @@ export default async function main({
 		for (const job of failedJobs) {
 			let errorLines = "";
 			try {
+				// downloadJobLogsForWorkflowRun follows the redirect and
+				// returns the plain-text job log directly in `data`.
 				const logResponse =
 					await github.rest.actions.downloadJobLogsForWorkflowRun({
 						owner,
 						repo,
 						job_id: job.id,
 					});
-				const logText = await fetch(logResponse.url).then((response) =>
-					response.text(),
-				);
+				const logText = logResponse.data as unknown as string;
 				const clean = logText
 					.replace(/\x1B\[[0-9;]*m/g, "")
 					.replace(
@@ -105,9 +105,14 @@ export default async function main({
 					(line) =>
 						line.includes("##[error]") ||
 						line.startsWith("Error:") ||
-						line.startsWith("error "),
+						line.startsWith("error ") ||
+						line.includes("❌"),
 				);
-				errorLines = lines.slice(0, 50).join("\n");
+				errorLines = lines
+					.map((line) => line.replace("##[error]", "").trim())
+					.filter((line) => line !== "Process completed with exit code 1.")
+					.slice(0, 50)
+					.join("\n");
 			} catch (error) {
 				errorLines = `(Could not retrieve logs: ${getErrorMessage(error)})`;
 			}
