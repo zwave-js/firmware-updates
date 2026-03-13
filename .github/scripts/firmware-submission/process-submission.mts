@@ -205,13 +205,35 @@ function loadFirmwareConfigs(): FirmwareConfigFile[] {
 function chooseExistingDirectory(
 	candidates: string[],
 	preferredDirectory: string,
+	brand: string,
+	firmwareConfigs: FirmwareConfigFile[],
 	subject: string,
-): string {
+): string | null {
 	if (candidates.length === 1) {
 		return candidates[0]!;
 	}
 	if (candidates.includes(preferredDirectory)) {
 		return preferredDirectory;
+	}
+	// The submitted brand name may not produce the same directory slug as
+	// the existing directory (e.g. "Enbrighten GE" → "enbrighten_ge" vs
+	// existing "enbrighten-ge"). Fall back to checking whether the brand
+	// in the existing config files matches the submitted brand.
+	const brandMatches = candidates.filter((dir) =>
+		firmwareConfigs
+			.filter((file) => file.directory === dir)
+			.some((file) =>
+				file.devices.some(
+					(d) => d.brand.toLowerCase() === brand.toLowerCase(),
+				),
+			),
+	);
+	if (brandMatches.length === 1) {
+		return brandMatches[0]!;
+	}
+	if (brandMatches.length === 0) {
+		// No existing directory has files with this brand — treat as a new brand.
+		return null;
 	}
 	throw new SubmissionValidationError(
 		`${subject} maps to multiple existing firmware directories (${candidates.join(", ")}). Please split the submission or open a PR directly.`,
@@ -235,11 +257,14 @@ function findPreferredDirectoryForDevice(
 		),
 	];
 	if (baseMatchDirectories.length > 0) {
-		return chooseExistingDirectory(
+		const dir = chooseExistingDirectory(
 			baseMatchDirectories,
 			preferredDirectory,
+			device.brand,
+			firmwareConfigs,
 			`Device ${device.brand} ${device.model}`,
 		);
+		if (dir != null) return dir;
 	}
 
 	const manufacturerDirectories = [
@@ -255,11 +280,14 @@ function findPreferredDirectoryForDevice(
 		),
 	];
 	if (manufacturerDirectories.length > 0) {
-		return chooseExistingDirectory(
+		const dir = chooseExistingDirectory(
 			manufacturerDirectories,
 			preferredDirectory,
+			device.brand,
+			firmwareConfigs,
 			`Manufacturer ${device.manufacturerId}`,
 		);
+		if (dir != null) return dir;
 	}
 
 	return null;
