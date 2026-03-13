@@ -1,0 +1,46 @@
+name: 'Z-Wave Bot: Firmware submission — process approved submission'
+
+on:
+  issues:
+    types: [labeled]
+
+concurrency:
+  group: firmware-submission-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  process:
+    if: github.event.label.name == 'approved'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Allow using the bot token for git operations
+          persist-credentials: false
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Process firmware submission
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/process-submission.mts`
+            );
+            await action({ github, context });
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}

@@ -1,0 +1,25 @@
+name: 'Z-Wave Bot: Firmware submission — clean up labels on PR close'
+
+on:
+  pull_request_target:
+    types: [closed]
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Remove submission labels from linked issue
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/cleanup-labels.mts`
+            );
+            await action({github, context});

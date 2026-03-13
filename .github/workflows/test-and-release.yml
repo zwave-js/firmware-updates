@@ -50,11 +50,13 @@ jobs:
 
     - name: Check file download/integrity of changed files
       if: github.event_name == 'pull_request'
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
-          const script = require(`${process.env.GITHUB_WORKSPACE}/.github/scripts/check-integrity.cjs`);
+          const { default: script } = await import(
+            `${process.env.GITHUB_WORKSPACE}/.github/scripts/check-integrity.cjs`
+          );
           return script({github, context, core});
 
   # ===================

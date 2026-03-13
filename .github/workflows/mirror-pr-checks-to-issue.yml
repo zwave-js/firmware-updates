@@ -1,0 +1,28 @@
+name: 'Z-Wave Bot: Mirror PR check results to issue'
+
+on:
+  workflow_run:
+    workflows: ['Test and Release']
+    types: [completed]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      actions: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Mirror results to submission issue
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/mirror-pr-checks.mts`
+            );
+            await action({github, context});

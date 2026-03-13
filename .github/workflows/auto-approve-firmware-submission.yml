@@ -1,0 +1,106 @@
+name: 'Z-Wave Bot: Firmware submission — auto-approve trusted submitters'
+
+on:
+  issues:
+    types: [opened, labeled, edited]
+  pull_request:
+    types: [synchronize, reopened]
+  pull_request_review:
+    types: [submitted, edited]
+
+jobs:
+  # When a firmware submission issue is labeled pending-approval, auto-approve
+  # trusted manufacturer accounts or post a "waiting for review" comment.
+  auto-approve:
+    if: >-
+      github.event_name == 'issues' &&
+      (github.event.action == 'opened' ||
+      github.event.label.name == 'pending-approval')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check if submitter is trusted and approve or comment
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/auto-approve.mts`
+            );
+            await action({github, context});
+
+  # When a submission issue is edited after approval, reset labels back to
+  # pending-approval. This triggers the auto-approve job above, which will
+  # re-approve trusted submitters or ask a maintainer to review.
+  reset-on-edit:
+    if: >-
+      github.event.action == 'edited' &&
+      contains(github.event.issue.labels.*.name, 'approved')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Reset submission labels
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/reset-on-edit.mts`
+            );
+            await action({github, context});
+
+  # Label PRs opened by a known manufacturer account as official.
+  label-official:
+    # Don't run in forks, don't run for drafts
+    if: |
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/bot_label-official-prs.js`
+            );
+            await action({github, context});
+
+  # Label PRs reviewed by a known manufacturer account as official.
+  label-official-reviews:
+    # Don't run in forks, don't run for drafts
+    if: |
+      github.event_name == 'pull_request_review' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/bot_label-official-reviews.js`
+            );
+            await action({github, context});
