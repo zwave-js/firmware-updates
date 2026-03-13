@@ -114,7 +114,7 @@ function git(...args: string[]): string {
 }
 
 function formatBrandDirectory(brand: string): string {
-	return sanitizePathComponent(brand).toLowerCase().replace(/\s+/g, "-");
+	return sanitizePathComponent(brand.replace(/\s+/g, "-")).toLowerCase();
 }
 
 function normalizeDevice(device: SubmissionDevice): NormalizedDevice {

@@ -2,7 +2,7 @@ name: 'Z-Wave Bot: Firmware submission — auto-approve trusted submitters'
 
 on:
   issues:
-    types: [labeled, edited]
+    types: [opened, labeled, edited]
   pull_request:
     types: [synchronize, reopened]
   pull_request_review:
@@ -14,7 +14,8 @@ jobs:
   auto-approve:
     if: >-
       github.event_name == 'issues' &&
-      github.event.label.name == 'pending-approval'
+      (github.event.action == 'opened' ||
+      github.event.label.name == 'pending-approval')
     runs-on: ubuntu-latest
     permissions:
       issues: write
