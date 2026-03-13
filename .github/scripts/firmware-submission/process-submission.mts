@@ -7,11 +7,13 @@ import { downloadFirmware, generateHash } from "@zwave-js/firmware-integrity";
 import JSON5 from "json5";
 import prettier from "prettier";
 import type { GitHubScriptContext } from "../types.mts";
-import { createSubmissionPRBody } from "./submission-pr.mts";
+import {
+	SUBMISSION_COMMENT_TAG,
+	createSubmissionPRBody,
+} from "./submission-pr.mts";
 
 const { getOctokit } = githubActions;
 
-const COMMENT_TAG = "<!-- firmware-submission-status -->";
 const VALID_REGIONS = [
 	"europe",
 	"usa",
@@ -457,7 +459,7 @@ export default async function main({
 
 		const statusComments = comments.filter(
 			(comment) =>
-				comment.body?.endsWith(COMMENT_TAG) &&
+				comment.body?.endsWith(SUBMISSION_COMMENT_TAG) &&
 				comment.user?.login === "zwave-js-bot",
 		);
 
@@ -485,7 +487,7 @@ export default async function main({
 			owner,
 			repo,
 			issue_number: issueNumber,
-			body: `${body}\n${COMMENT_TAG}`,
+			body: `${body}\n${SUBMISSION_COMMENT_TAG}`,
 		});
 	};
 

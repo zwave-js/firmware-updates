@@ -1,5 +1,6 @@
 import { manufacturerAccounts } from "../definitions.js";
 import type { GitHubScriptContext } from "../types.mts";
+import { SUBMISSION_COMMENT_TAG } from "./submission-pr.mts";
 
 export default async function main({
 	github,
@@ -27,6 +28,6 @@ export default async function main({
 		owner,
 		repo,
 		issue_number: issueNumber,
-		body: "Thanks for your submission! A maintainer will review it and start processing when ready.",
+		body: `Thanks for your submission! A maintainer will review it and start processing when ready.\n${SUBMISSION_COMMENT_TAG}`,
 	});
 }

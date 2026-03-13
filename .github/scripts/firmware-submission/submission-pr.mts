@@ -1,6 +1,7 @@
 const SUBMISSION_PR_BRANCH_REGEX = /^firmware-submission\/issue-(\d+)$/;
 
 export const SUBMISSION_PR_MARKER = "<!-- firmware-submission-pr -->";
+export const SUBMISSION_COMMENT_TAG = "<!-- firmware-submission-status -->";
 export const SUBMISSION_PR_AUTHOR = "zwave-js-bot";
 
 export interface SubmissionPRLike {

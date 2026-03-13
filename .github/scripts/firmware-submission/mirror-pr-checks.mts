@@ -1,7 +1,8 @@
 import type { GitHubScriptContext } from "../types.mts";
-import { getSubmissionIssueNumberFromPR } from "./submission-pr.mts";
-
-const COMMENT_TAG = "<!-- firmware-submission-status -->";
+import {
+	SUBMISSION_COMMENT_TAG,
+	getSubmissionIssueNumberFromPR,
+} from "./submission-pr.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
 
 function getErrorMessage(error: unknown): string {
@@ -123,7 +124,7 @@ export default async function main({
 	);
 	const statusComments = existingComments.filter(
 		(comment) =>
-			comment.body?.endsWith(COMMENT_TAG) &&
+			comment.body?.endsWith(SUBMISSION_COMMENT_TAG) &&
 			comment.user?.login === "zwave-js-bot",
 	);
 	for (const comment of statusComments) {
@@ -148,7 +149,7 @@ export default async function main({
 		owner,
 		repo,
 		issue_number: issueNumber,
-		body: `${commentBody}\n${COMMENT_TAG}`,
+		body: `${commentBody}\n${SUBMISSION_COMMENT_TAG}`,
 	});
 
 	const addLabel = async (label: string): Promise<void> => {
