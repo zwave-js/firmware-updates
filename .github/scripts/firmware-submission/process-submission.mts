@@ -1009,16 +1009,6 @@ export default async function main({
 			return entry;
 		});
 
-		const submittedVersions = newUpgrades.map((upgrade) => upgrade.version);
-		const duplicateSubmitted = submittedVersions.filter(
-			(version, index) => submittedVersions.indexOf(version) !== index,
-		);
-		if (duplicateSubmitted.length > 0) {
-			await failWithErrors([
-				`Version(s) ${[...new Set(duplicateSubmitted)].join(", ")} appear multiple times in this submission. Each upgrade must have a unique version.`,
-			]);
-		}
-
 		if (existingConfig) {
 			const existingVersions = new Set(
 				(existingConfig.upgrades ?? [])
