@@ -43,7 +43,8 @@ export function getSubmissionIssueNumberFromPR(
 		return null;
 	}
 
-	const generatedMatch = body.match(/Auto-generated from issue #(\d+)\./);
+	const generatedMatch = body.match(/Auto-generated from issue #(\d+)\./)
+		?? body.match(/<!-- Auto-generated from issue #(\d+)\. -->/);
 	if (
 		generatedMatch &&
 		Number.parseInt(generatedMatch[1]!, 10) !== issueNumber
@@ -55,5 +56,5 @@ export function getSubmissionIssueNumberFromPR(
 }
 
 export function createSubmissionPRBody(issueNumber: number): string {
-	return `Closes #${issueNumber}\n\nAuto-generated from issue #${issueNumber}.\n\n${SUBMISSION_PR_MARKER}`;
+	return `Closes #${issueNumber}\n\n<!-- Auto-generated from issue #${issueNumber}. -->\n${SUBMISSION_PR_MARKER}`;
 }

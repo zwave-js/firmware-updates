@@ -1033,7 +1033,7 @@ export default async function main({
 
 		git("add", relativeFilePath);
 		const lastVersion = upgradeFormData[upgradeFormData.length - 1]!.version;
-		const commitMessage = `Add ${brand} ${model} firmware v${lastVersion} (#${issueNumber})`;
+		const commitMessage = `Add ${brand} ${model} firmware v${lastVersion}`;
 		console.log(`Committing: ${commitMessage}`);
 		git("commit", "-m", commitMessage);
 		console.log(`Pushing to origin/${branchName}...`);
