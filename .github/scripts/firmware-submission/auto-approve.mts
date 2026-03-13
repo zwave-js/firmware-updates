@@ -24,6 +24,19 @@ export default async function main({
 		return;
 	}
 
+	// Check current labels — a maintainer may have already approved.
+	const { data: currentIssue } = await github.rest.issues.get({
+		owner,
+		repo,
+		issue_number: issueNumber,
+	});
+	const labelNames = currentIssue.labels.map((label) =>
+		typeof label === "string" ? label : (label.name ?? ""),
+	);
+	if (labelNames.includes("approved")) {
+		return;
+	}
+
 	await github.rest.issues.createComment({
 		owner,
 		repo,
