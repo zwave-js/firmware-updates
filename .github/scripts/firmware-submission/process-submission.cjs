@@ -41,6 +41,56 @@ const octokit = getOctokit(GITHUB_TOKEN);
 const botOctokit = getOctokit(BOT_TOKEN);
 
 const workspaceRoot = path.resolve(__dirname, "../../..");
+const firmwareRoot = path.join(workspaceRoot, "firmwares");
+
+/**
+ * @typedef {{
+ *   brand: string,
+ *   model: string,
+ *   manufacturerId: string,
+ *   productType: string,
+ *   productId: string,
+ *   firmwareVersion?: {
+ *     min: string,
+ *     max: string,
+ *   },
+ * }} SubmissionDevice
+ */
+
+/**
+ * @typedef {{
+ *   brand: string,
+ *   model: string,
+ *   manufacturerId: string,
+ *   productType: string,
+ *   productId: string,
+ *   firmwareVersion: {
+ *     min: string,
+ *     max: string,
+ *   },
+ * }} NormalizedDevice
+ */
+
+/**
+ * @typedef {{
+ *   relativePath: string,
+ *   absolutePath: string,
+ *   directory: string,
+ *   config: Record<string, any>,
+ *   devices: NormalizedDevice[],
+ * }} FirmwareConfigFile
+ */
+
+/**
+ * @typedef {{
+ *   issue?: {
+ *     number?: number,
+ *     body?: string | null,
+ *   },
+ * }} IssuesLabeledEventPayload
+ */
+
+class SubmissionValidationError extends Error {}
 
 // ─── Git helper (avoids shell injection) ─────────────────────────────────────
 
@@ -57,6 +107,214 @@ function git(...args) {
 		);
 	}
 	return result.stdout.trim();
+}
+
+/**
+ * @param {string} brand
+ * @returns {string}
+ */
+function formatBrandDirectory(brand) {
+	return sanitizePathComponent(brand).toLowerCase().replace(/\s+/g, "-");
+}
+
+/**
+ * @param {SubmissionDevice} device
+ * @returns {NormalizedDevice}
+ */
+function normalizeDevice(device) {
+	return {
+		brand: device.brand,
+		model: device.model,
+		manufacturerId: device.manufacturerId,
+		productType: device.productType,
+		productId: device.productId,
+		firmwareVersion: device.firmwareVersion ?? {
+			min: "0.0",
+			max: "255.255",
+		},
+	};
+}
+
+/**
+ * @param {NormalizedDevice} left
+ * @param {NormalizedDevice} right
+ * @returns {boolean}
+ */
+function sameExactDevice(left, right) {
+	return (
+		left.manufacturerId === right.manufacturerId &&
+		left.productType === right.productType &&
+		left.productId === right.productId &&
+		left.firmwareVersion.min === right.firmwareVersion.min &&
+		left.firmwareVersion.max === right.firmwareVersion.max
+	);
+}
+
+/**
+ * @param {NormalizedDevice} left
+ * @param {NormalizedDevice} right
+ * @returns {boolean}
+ */
+function sameBaseDevice(left, right) {
+	return (
+		left.manufacturerId === right.manufacturerId &&
+		left.productType === right.productType &&
+		left.productId === right.productId
+	);
+}
+
+/**
+ * @param {string} filePath
+ * @returns {boolean}
+ */
+function isFirmwareConfigFile(filePath) {
+	const normalizedPath = filePath.replace(/\\/g, "/");
+	return (
+		filePath.endsWith(".json") &&
+		!filePath.endsWith("index.json") &&
+		!path.basename(filePath).startsWith("_") &&
+		!normalizedPath.includes("/templates/")
+	);
+}
+
+/**
+ * @param {string} dir
+ * @returns {string[]}
+ */
+function listFirmwareConfigPaths(dir) {
+	/** @type {string[]} */
+	const results = [];
+	for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+		const fullPath = path.join(dir, entry.name);
+		if (entry.isDirectory()) {
+			results.push(...listFirmwareConfigPaths(fullPath));
+		} else if (entry.isFile() && isFirmwareConfigFile(fullPath)) {
+			results.push(fullPath);
+		}
+	}
+	return results.sort((left, right) => left.localeCompare(right));
+}
+
+/**
+ * @returns {FirmwareConfigFile[]}
+ */
+function loadFirmwareConfigs() {
+	return listFirmwareConfigPaths(firmwareRoot).map((absolutePath) => {
+		const config = JSON5.parse(fs.readFileSync(absolutePath, "utf-8"));
+		if (!Array.isArray(config?.devices)) {
+			throw new Error(
+				`Firmware config ${absolutePath} does not contain a devices array.`,
+			);
+		}
+
+		const relativeWithinFirmwares = path
+			.relative(firmwareRoot, absolutePath)
+			.replace(/\\/g, "/");
+
+		return {
+			relativePath: path.posix.join("firmwares", relativeWithinFirmwares),
+			absolutePath,
+			directory: path.posix.dirname(relativeWithinFirmwares),
+			config,
+			devices: config.devices.map((device) =>
+				normalizeDevice(/** @type {SubmissionDevice} */ (device)),
+			),
+		};
+	});
+}
+
+/**
+ * @param {string[]} candidates
+ * @param {string} preferredDirectory
+ * @param {string} subject
+ * @returns {string}
+ */
+function chooseExistingDirectory(candidates, preferredDirectory, subject) {
+	if (candidates.length === 1) {
+		return candidates[0];
+	}
+	if (candidates.includes(preferredDirectory)) {
+		return preferredDirectory;
+	}
+	throw new SubmissionValidationError(
+		`${subject} maps to multiple existing firmware directories (${candidates.join(", ")}). Please split the submission or open a PR directly.`,
+	);
+}
+
+/**
+ * @param {NormalizedDevice} device
+ * @param {FirmwareConfigFile[]} firmwareConfigs
+ * @returns {string | null}
+ */
+function findPreferredDirectoryForDevice(device, firmwareConfigs) {
+	const preferredDirectory = formatBrandDirectory(device.brand);
+	const baseMatchDirectories = [
+		...new Set(
+			firmwareConfigs
+				.filter((file) =>
+					file.devices.some((existingDevice) =>
+						sameBaseDevice(existingDevice, device),
+					),
+				)
+				.map((file) => file.directory),
+		),
+	];
+	if (baseMatchDirectories.length > 0) {
+		return chooseExistingDirectory(
+			baseMatchDirectories,
+			preferredDirectory,
+			`Device ${device.brand} ${device.model}`,
+		);
+	}
+
+	const manufacturerDirectories = [
+		...new Set(
+			firmwareConfigs
+				.filter((file) =>
+					file.devices.some(
+						(existingDevice) =>
+							existingDevice.manufacturerId ===
+							device.manufacturerId,
+					),
+				)
+				.map((file) => file.directory),
+		),
+	];
+	if (manufacturerDirectories.length > 0) {
+		return chooseExistingDirectory(
+			manufacturerDirectories,
+			preferredDirectory,
+			`Manufacturer ${device.manufacturerId}`,
+		);
+	}
+
+	return null;
+}
+
+/**
+ * @param {NormalizedDevice[]} submittedDevices
+ * @param {FirmwareConfigFile[]} firmwareConfigs
+ * @returns {string}
+ */
+function determineNewFileDirectory(submittedDevices, firmwareConfigs) {
+	const resolvedDirectories = [
+		...new Set(
+			submittedDevices
+				.map((device) =>
+					findPreferredDirectoryForDevice(device, firmwareConfigs),
+				)
+				.filter(Boolean),
+		),
+	];
+	if (resolvedDirectories.length > 1) {
+		throw new SubmissionValidationError(
+			`The submitted devices map to multiple existing firmware directories (${resolvedDirectories.join(", ")}). Please split the submission or open a PR directly.`,
+		);
+	}
+	if (resolvedDirectories.length === 1) {
+		return resolvedDirectories[0];
+	}
+	return formatBrandDirectory(submittedDevices[0].brand);
 }
 
 // ─── Label helpers ────────────────────────────────────────────────────────────
@@ -163,7 +421,7 @@ function loadApprovedIssueSnapshot() {
 		throw new Error("GITHUB_EVENT_PATH is not set.");
 	}
 
-	/** @type {any} */
+	/** @type {IssuesLabeledEventPayload} */
 	let payload;
 	try {
 		payload = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH, "utf-8"));
@@ -266,11 +524,11 @@ function validateName(value, fieldName, errors) {
 }
 
 /**
- * Sanitize a value for use in file/directory names (strip path separators).
+ * Sanitize a value for use in file/directory names.
  * @param {string} value
  */
 function sanitizePathComponent(value) {
-	return value.replace(/[/\\]/g, "_");
+	return value.replace(/[^a-zA-Z0-9-_]/g, "_");
 }
 
 /**
@@ -612,6 +870,97 @@ async function main() {
 		return;
 	}
 
+	const branchName = `firmware-submission/issue-${ISSUE_NUMBER}`;
+
+	// Configure git identity
+	git("config", "user.name", "zwave-js-bot");
+	git("config", "user.email", "zwave-js-bot@users.noreply.github.com");
+
+	// Always resolve against the latest main branch, then rebuild the
+	// submission branch from there so resubmissions replace the PR with one commit.
+	git("fetch", "origin", "main");
+	git("checkout", "-B", branchName, "origin/main");
+
+	const brand = devices[0].brand;
+	const model = devices[0].model;
+	const safeModel = sanitizePathComponent(model);
+	const firmwareVersionMin = devices[0].firmwareVersion?.min;
+	const firmwareVersionMax = devices[0].firmwareVersion?.max;
+	const versionRangeSuffix =
+		firmwareVersionMin || firmwareVersionMax
+			? `_${firmwareVersionMin ?? "0.0"}-${firmwareVersionMax ?? "255.255"}`
+			: "";
+	const fileName = `${safeModel}${versionRangeSuffix}.json`;
+	const submittedDevices = devices.map((device) => normalizeDevice(device));
+
+	/** @type {FirmwareConfigFile | null} */
+	let matchedExistingFile = null;
+	/** @type {string} */
+	let relativeFilePath;
+	/** @type {string} */
+	let absoluteFilePath;
+
+	try {
+		const firmwareConfigs = loadFirmwareConfigs();
+		// Collect exact file matches for each submitted device.
+		const exactMatches = submittedDevices.map((device) =>
+			firmwareConfigs.filter((file) =>
+				file.devices.some((existingDevice) =>
+					sameExactDevice(existingDevice, device),
+				),
+			),
+		);
+
+		const matchedExistingFiles = [...new Set(exactMatches.flat())];
+		// One submission must resolve to exactly one existing file.
+		if (matchedExistingFiles.length > 1) {
+			throw new SubmissionValidationError(
+				`This submission matches devices in multiple existing firmware files (${matchedExistingFiles.map((file) => file.relativePath).join(", ")}). We cannot determine which file to update. Please split the submission or open a PR directly.`,
+			);
+		}
+
+		if (matchedExistingFiles.length === 1) {
+			matchedExistingFile = matchedExistingFiles[0];
+			// Reject partial overlap instead of expanding an existing file's device list.
+			const matchingDeviceCount = submittedDevices.filter((device) =>
+				matchedExistingFile.devices.some((existingDevice) =>
+					sameExactDevice(existingDevice, device),
+				),
+			).length;
+			if (matchingDeviceCount !== submittedDevices.length) {
+				throw new SubmissionValidationError(
+					`This multi-device submission only partially matches the devices in ${matchedExistingFile.relativePath}. Adding the remaining device identifiers to that file could introduce unwanted upgrade paths. Please split the submission or open a PR directly.`,
+				);
+			}
+
+			relativeFilePath = matchedExistingFile.relativePath;
+			absoluteFilePath = matchedExistingFile.absolutePath;
+		} else {
+			// No exact match: create one new file in the best matching directory.
+			const brandDir = determineNewFileDirectory(
+				submittedDevices,
+				firmwareConfigs,
+			);
+			relativeFilePath = path.posix.join("firmwares", brandDir, fileName);
+			absoluteFilePath = path.join(workspaceRoot, relativeFilePath);
+
+			if (fs.existsSync(absoluteFilePath)) {
+				throw new SubmissionValidationError(
+					`A firmware config already exists at ${relativeFilePath}, but it does not match the submitted device identifiers. Please open a PR directly.`,
+				);
+			}
+		}
+	} catch (error) {
+		if (error instanceof SubmissionValidationError) {
+			await failWithErrors([error.message]);
+			return;
+		}
+		throw error;
+	}
+
+	/** @type {Record<string, any> | null} */
+	const existingConfig = matchedExistingFile?.config ?? null;
+
 	// ── E. Download firmware and compute integrity hashes ──────────────────────
 
 	/** @type {Array<Array<{url: string, integrity: string}>>} */
@@ -675,34 +1024,8 @@ async function main() {
 		formattedChangelogs.push(formatted.trim());
 	}
 
-	// ── G. Determine file path and build config object ────────────────────────
+	// ── G. Build config object ────────────────────────────────────────────────
 
-	const brand = devices[0].brand;
-	const model = devices[0].model;
-	const brandDir = sanitizePathComponent(brand)
-		.toLowerCase()
-		.replace(/\s+/g, "-");
-	const safeModel = sanitizePathComponent(model);
-
-	const firmwareVersionMin = devices[0].firmwareVersion?.min;
-	const firmwareVersionMax = devices[0].firmwareVersion?.max;
-	const versionRangeSuffix =
-		firmwareVersionMin || firmwareVersionMax
-			? `_${firmwareVersionMin ?? "0.0"}-${firmwareVersionMax ?? "255.255"}`
-			: "";
-
-	const fileName = `${safeModel}${versionRangeSuffix}.json`;
-	const relativeFilePath = `firmwares/${brandDir}/${fileName}`;
-	const absoluteFilePath = path.join(workspaceRoot, relativeFilePath);
-
-	// Read existing file if present
-	let existingConfig = null;
-	if (fs.existsSync(absoluteFilePath)) {
-		const existingText = fs.readFileSync(absoluteFilePath, "utf-8");
-		existingConfig = JSON5.parse(existingText);
-	}
-
-	// Build upgrade entries
 	const newUpgrades = activeUpgrades.map((upgrade, idx) => {
 		const hashes = upgradeHashes[idx];
 		const changelog = formattedChangelogs[idx];
@@ -733,16 +1056,19 @@ async function main() {
 		return entry;
 	});
 
-	// Check for duplicate versions in existing config
 	if (existingConfig) {
 		const existingVersions = new Set(
-			(existingConfig.upgrades ?? []).map(
-				(/** @type {any} */ u) => u.version,
-			),
+			(existingConfig.upgrades ?? [])
+				.map((upgrade) =>
+					typeof upgrade?.version === "string"
+						? upgrade.version
+						: null,
+				)
+				.filter(Boolean),
 		);
 		const duplicates = newUpgrades
-			.filter((u) => existingVersions.has(u.version))
-			.map((u) => u.version);
+			.filter((upgrade) => existingVersions.has(upgrade.version))
+			.map((upgrade) => upgrade.version);
 		if (duplicates.length > 0) {
 			await failWithErrors([
 				`Version(s) ${duplicates.join(", ")} already exist in ${relativeFilePath}. To update an existing entry, please submit a PR directly.`,
@@ -751,24 +1077,24 @@ async function main() {
 		}
 	}
 
-	// Build final config
 	const config = existingConfig
 		? {
 				...existingConfig,
 				upgrades: [...(existingConfig.upgrades ?? []), ...newUpgrades],
 			}
 		: {
-				devices: devices.map((d) => {
+				devices: devices.map((device) => {
 					/** @type {Record<string, any>} */
 					const entry = {
-						brand: d.brand,
-						model: d.model,
-						manufacturerId: d.manufacturerId,
-						productType: d.productType,
-						productId: d.productId,
+						brand: device.brand,
+						model: device.model,
+						manufacturerId: device.manufacturerId,
+						productType: device.productType,
+						productId: device.productId,
 					};
-					if (d.firmwareVersion)
-						entry.firmwareVersion = d.firmwareVersion;
+					if (device.firmwareVersion) {
+						entry.firmwareVersion = device.firmwareVersion;
+					}
 					return entry;
 				}),
 				upgrades: newUpgrades,
@@ -776,56 +1102,19 @@ async function main() {
 
 	// ── H. Write file, commit, and push ───────────────────────────────────────
 
-	const branchName = `firmware-submission/issue-${ISSUE_NUMBER}`;
-
-	// Configure git identity
-	git("config", "user.name", "zwave-js-bot");
-	git("config", "user.email", "zwave-js-bot@users.noreply.github.com");
-
-	// Check if branch exists on remote
-	let branchExists = false;
-	try {
-		await octokit.rest.git.getRef({
-			owner: REPO_OWNER,
-			repo: REPO_NAME,
-			ref: `heads/${branchName}`,
-		});
-		branchExists = true;
-	} catch {
-		// Branch doesn't exist yet
-	}
-
-	// Create or checkout branch
-	if (branchExists) {
-		git("fetch", "origin", branchName);
-		git("checkout", branchName);
-	} else {
-		git("checkout", "-b", branchName);
-	}
-
-	// Write the firmware JSON file
-	const brandDirPath = path.join(workspaceRoot, "firmwares", brandDir);
-	if (!fs.existsSync(brandDirPath)) {
-		fs.mkdirSync(brandDirPath, { recursive: true });
-	}
+	fs.mkdirSync(path.dirname(absoluteFilePath), { recursive: true });
 	fs.writeFileSync(
 		absoluteFilePath,
 		JSON.stringify(config, null, "\t") + "\n",
 		"utf-8",
 	);
 
-	// Stage and commit
 	git("add", relativeFilePath);
 	const lastVersion = activeUpgrades[activeUpgrades.length - 1].version;
 	const commitMessage = `Add ${brand} ${model} firmware v${lastVersion} (#${ISSUE_NUMBER})`;
 	git("commit", "-m", commitMessage);
 
-	// Push (force on resubmission)
-	if (branchExists) {
-		git("push", "--force", "origin", branchName);
-	} else {
-		git("push", "origin", branchName);
-	}
+	git("push", "--force", "origin", branchName);
 
 	// Check if PR already exists for this branch
 	const { data: existingPRs } = await botOctokit.rest.pulls.list({

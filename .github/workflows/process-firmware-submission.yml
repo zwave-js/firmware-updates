@@ -31,7 +31,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Process firmware submission
-        run: node .github/scripts/process-firmware-submission.cjs
+        run: node .github/scripts/firmware-submission/process-submission.cjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
