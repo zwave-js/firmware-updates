@@ -858,6 +858,13 @@ export default async function main({
 			`AUTHORIZATION: basic ${Buffer.from(`x-access-token:${botToken}`).toString("base64")}`,
 		);
 		git("fetch", "origin", "main");
+		// Fetch the submission branch too (if it exists) so that
+		// --force-with-lease has a reference point for the remote state.
+		try {
+			git("fetch", "origin", branchName);
+		} catch {
+			// Branch may not exist yet on the remote.
+		}
 		git("checkout", "-B", branchName, "origin/main");
 
 		const primaryDevice = devices[0]!;
