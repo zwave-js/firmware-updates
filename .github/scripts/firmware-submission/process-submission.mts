@@ -646,9 +646,9 @@ export default async function main({
 			const device: SubmissionDevice = {
 				brand,
 				model,
-				manufacturerId,
-				productType,
-				productId,
+				manufacturerId: manufacturerId.toLowerCase(),
+				productType: productType.toLowerCase(),
+				productId: productId.toLowerCase(),
 			};
 			if (firmwareVersionMin || firmwareVersionMax) {
 				device.firmwareVersion = {

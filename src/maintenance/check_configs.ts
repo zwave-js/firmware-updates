@@ -94,6 +94,7 @@ void (async () => {
 				console.log(`📁 ${result.filename}:`);
 				for (const error of result.errors) {
 					console.log(`   ❌ ${error}`);
+					console.log(`::error file=firmwares/${result.filename}::${error}`);
 				}
 				console.log();
 			}
