@@ -405,6 +405,10 @@ function sanitizePathComponent(value: string): string {
 	return value.replace(/[^a-zA-Z0-9-_]/g, "_");
 }
 
+function sanitizeForMessage(value: string): string {
+	return value.replace(/[\r\n]+/g, " ").trim().slice(0, 100);
+}
+
 function validateUrl(value: string, fieldName: string, errors: string[]): boolean {
 	let parsed: URL;
 	try {
@@ -559,6 +563,7 @@ export default async function main({
 		}
 
 		// Reset to a consistent label state before processing.
+		await removeLabel("pending-approval");
 		await removeLabel("submitted");
 		await removeLabel("checks-failed");
 		await addLabel("processing");
@@ -838,12 +843,19 @@ export default async function main({
 		// Use BOT_TOKEN for git operations so pushes are attributed to
 		// zwave-js-bot and trigger workflows. The default GITHUB_TOKEN
 		// credentials set up by actions/checkout do not trigger workflows.
+		// Set the token via http.extraHeader to avoid leaking it in URLs
+		// that git may print in error messages.
 		const botToken = getRequiredEnv("BOT_TOKEN");
 		git(
 			"remote",
 			"set-url",
 			"origin",
-			`https://x-access-token:${botToken}@github.com/${owner}/${repo}.git`,
+			`https://github.com/${owner}/${repo}.git`,
+		);
+		git(
+			"config",
+			"http.https://github.com/.extraheader",
+			`AUTHORIZATION: basic ${Buffer.from(`x-access-token:${botToken}`).toString("base64")}`,
 		);
 		git("fetch", "origin", "main");
 		git("checkout", "-B", branchName, "origin/main");
@@ -1061,11 +1073,13 @@ export default async function main({
 
 		git("add", relativeFilePath);
 		const lastVersion = upgradeFormData[upgradeFormData.length - 1]!.version;
-		const commitMessage = `Add ${brand} ${model} firmware v${lastVersion}`;
+		const safeBrand = sanitizeForMessage(brand);
+		const safeModelName = sanitizeForMessage(model);
+		const commitMessage = `Add ${safeBrand} ${safeModelName} firmware v${lastVersion}`;
 		console.log(`Committing: ${commitMessage}`);
 		git("commit", "-m", commitMessage);
 		console.log(`Pushing to origin/${branchName}...`);
-		git("push", "--force", "origin", branchName);
+		git("push", "--force-with-lease", "origin", branchName);
 
 		const { data: existingPRs } = await botOctokit.rest.pulls.list({
 			owner,
@@ -1079,7 +1093,7 @@ export default async function main({
 			prUrl = existingPRs[0]!.html_url;
 			console.log(`Existing PR found: ${prUrl}`);
 		} else {
-			const prTitle = `Add ${brand} ${model} firmware v${lastVersion}`;
+			const prTitle = `Add ${safeBrand} ${safeModelName} firmware v${lastVersion}`;
 			const { data: newPR } = await botOctokit.rest.pulls.create({
 				owner,
 				repo,

@@ -1,3 +1,4 @@
+import * as core from "@actions/core";
 import JSON5 from "json5";
 import path from "path-browserify";
 import { ConditionalUpdateConfig } from "../lib/config.js";
@@ -94,7 +95,7 @@ void (async () => {
 				console.log(`📁 ${result.filename}:`);
 				for (const error of result.errors) {
 					console.log(`   ❌ ${error}`);
-					console.log(`::error file=firmwares/${result.filename}::${error}`);
+					core.error(error, { file: `firmwares/${result.filename}` });
 				}
 				console.log();
 			}

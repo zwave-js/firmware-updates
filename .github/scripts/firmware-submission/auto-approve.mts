@@ -21,6 +21,16 @@ export default async function main({
 			issue_number: issueNumber,
 			labels: ["approved"],
 		});
+		try {
+			await github.rest.issues.removeLabel({
+				owner,
+				repo,
+				issue_number: issueNumber,
+				name: "pending-approval",
+			});
+		} catch {
+			// Label may not be present.
+		}
 		return;
 	}
 
