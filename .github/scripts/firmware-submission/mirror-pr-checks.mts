@@ -42,6 +42,15 @@ export default async function main({
 		pull_number: prNumber,
 	});
 
+	// If the branch was force-pushed (e.g. after an issue edit triggered
+	// re-processing), ignore results from the now-stale workflow run.
+	if (pr.head.sha !== run.head_sha) {
+		console.log(
+			`Workflow run SHA (${run.head_sha}) does not match PR head (${pr.head.sha}), skipping`,
+		);
+		return;
+	}
+
 	const issueNumber = getSubmissionIssueNumberFromPR(pr, owner, repo);
 	if (issueNumber == null) {
 		console.log("PR is not a bot-managed submission PR, skipping");
@@ -112,12 +121,12 @@ export default async function main({
 		github.rest.issues.listComments,
 		{ owner, repo, issue_number: issueNumber },
 	);
-	const existing = existingComments.find(
+	const statusComments = existingComments.filter(
 		(comment) =>
 			comment.body?.endsWith(COMMENT_TAG) &&
 			comment.user?.login === "zwave-js-bot",
 	);
-	if (existing) {
+	for (const comment of statusComments) {
 		try {
 			await github.graphql(
 				`mutation($id: ID!) {
@@ -125,7 +134,7 @@ export default async function main({
 						minimizedComment { isMinimized }
 					}
 				}`,
-				{ id: existing.node_id },
+				{ id: comment.node_id },
 			);
 		} catch (error) {
 			console.log(
@@ -169,6 +178,7 @@ export default async function main({
 
 	await removeLabel("processing");
 	if (failedJobs.length === 0) {
+		await removeLabel("checks-failed");
 		await addLabel("submitted");
 		return;
 	}

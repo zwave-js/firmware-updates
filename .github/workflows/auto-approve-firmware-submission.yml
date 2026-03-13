@@ -2,7 +2,7 @@ name: 'Z-Wave Bot: Firmware submission — auto-approve trusted submitters'
 
 on:
   issues:
-    types: [labeled]
+    types: [labeled, edited]
   pull_request:
     types: [synchronize, reopened]
   pull_request_review:
@@ -12,7 +12,7 @@ jobs:
   # When a firmware submission issue is labeled pending-approval, auto-approve
   # trusted manufacturer accounts or post a "waiting for review" comment.
   auto-approve:
-    if: |
+    if: >-
       github.event_name == 'issues' &&
       github.event.label.name == 'pending-approval'
     runs-on: ubuntu-latest
@@ -30,6 +30,31 @@ jobs:
           script: |
             const { default: action } = await import(
               `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/auto-approve.mts`
+            );
+            await action({github, context});
+
+  # When a submission issue is edited after approval, reset labels back to
+  # pending-approval. This triggers the auto-approve job above, which will
+  # re-approve trusted submitters or ask a maintainer to review.
+  reset-on-edit:
+    if: >-
+      github.event.action == 'edited' &&
+      contains(github.event.issue.labels.*.name, 'approved')
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Reset submission labels
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/reset-on-edit.mts`
             );
             await action({github, context});
 

@@ -448,40 +448,39 @@ export default async function main({
 		}
 	};
 
-	const minimizeExistingStatusComment = async (): Promise<void> => {
+	const minimizeExistingStatusComments = async (): Promise<void> => {
 		const comments = await botOctokit.paginate(botOctokit.rest.issues.listComments, {
 			owner,
 			repo,
 			issue_number: issueNumber,
 		});
 
-		const existing = comments.find(
+		const statusComments = comments.filter(
 			(comment) =>
 				comment.body?.endsWith(COMMENT_TAG) &&
 				comment.user?.login === "zwave-js-bot",
 		);
-		if (!existing) {
-			return;
-		}
 
-		try {
-			await botOctokit.graphql(
-				`
-				mutation($id: ID!) {
-					minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) {
-						minimizedComment { isMinimized }
+		for (const comment of statusComments) {
+			try {
+				await botOctokit.graphql(
+					`
+					mutation($id: ID!) {
+						minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) {
+							minimizedComment { isMinimized }
+						}
 					}
-				}
-			`,
-				{ id: existing.node_id },
-			);
-		} catch {
-			// Best effort only.
+				`,
+					{ id: comment.node_id },
+				);
+			} catch {
+				// Best effort only.
+			}
 		}
 	};
 
 	const postStatusComment = async (body: string): Promise<void> => {
-		await minimizeExistingStatusComment();
+		await minimizeExistingStatusComments();
 		await botOctokit.rest.issues.createComment({
 			owner,
 			repo,
@@ -514,9 +513,12 @@ export default async function main({
 	};
 
 	try {
+		console.log(`Processing firmware submission issue #${issueNumber}`);
+
 		const approvedIssue = loadApprovedIssueSnapshot(issueNumber);
 		const approvedBody = approvedIssue?.body ?? "";
 
+		console.log("Checking if issue body was modified after approval...");
 		const { data: issue } = await github.rest.issues.get({
 			owner,
 			repo,
@@ -526,8 +528,11 @@ export default async function main({
 			await failBecauseIssueChangedAfterApproval();
 		}
 
+		// Reset to a consistent label state before processing.
+		await removeLabel("submitted");
+		await removeLabel("checks-failed");
 		await addLabel("processing");
-
+		console.log("Parsing issue body...");
 		const sections = parseIssueBody(approvedBody);
 		const errors: string[] = [];
 
@@ -655,6 +660,9 @@ export default async function main({
 		const devices = [parseDevice(1), parseDevice(2), parseDevice(3)].filter(
 			(device): device is SubmissionDevice => device != null,
 		);
+		console.log(`Parsed ${devices.length} device(s):`,
+			devices.map((d) => `${d.brand} ${d.model} (${d.manufacturerId}/${d.productType}/${d.productId})`).join(", "),
+		);
 
 		const upgradeLabel = (name: string, index: number): string =>
 			index === 1 ? name : `${name} (Upgrade ${index})`;
@@ -778,6 +786,10 @@ export default async function main({
 			});
 		}
 
+		console.log(`Parsed ${upgradeFormData.length} upgrade(s):`,
+			upgradeFormData.map((u) => `v${u.version} (${u.channel ?? "stable"})`).join(", "),
+		);
+
 		if (devices.length === 0) {
 			errors.push("At least one device must be provided.");
 		}
@@ -790,6 +802,7 @@ export default async function main({
 
 		const branchName = `firmware-submission/issue-${issueNumber}`;
 
+		console.log(`Setting up branch ${branchName}...`);
 		git("config", "user.name", "zwave-js-bot");
 		git("config", "user.email", "zwave-js-bot@users.noreply.github.com");
 		git("fetch", "origin", "main");
@@ -813,7 +826,9 @@ export default async function main({
 		let absoluteFilePath = "";
 
 		try {
+			console.log("Loading existing firmware configs...");
 			const firmwareConfigs = loadFirmwareConfigs();
+			console.log(`Found ${firmwareConfigs.length} existing config files`);
 			const exactMatches = submittedDevices.map((device) =>
 				firmwareConfigs.filter((file) =>
 					file.devices.some((existingDevice) =>
@@ -831,6 +846,7 @@ export default async function main({
 
 			if (matchedExistingFiles.length === 1) {
 				matchedExistingFile = matchedExistingFiles[0]!;
+				console.log(`Exact device match found: ${matchedExistingFile.relativePath}`);
 				const matchingDeviceCount = submittedDevices.filter((device) =>
 					matchedExistingFile!.devices.some((existingDevice) =>
 						sameExactDevice(existingDevice, device),
@@ -845,6 +861,7 @@ export default async function main({
 				relativeFilePath = matchedExistingFile.relativePath;
 				absoluteFilePath = matchedExistingFile.absolutePath;
 			} else {
+				console.log("No exact device match, creating new file");
 				const brandDir = determineNewFileDirectory(
 					submittedDevices,
 					firmwareConfigs,
@@ -867,6 +884,7 @@ export default async function main({
 
 		const existingConfig = matchedExistingFile?.config ?? null;
 
+		console.log("Downloading firmware files and computing hashes...");
 		const upgradeHashes: FirmwareHash[][] = [];
 		for (const upgrade of upgradeFormData) {
 			const urls = [
@@ -877,6 +895,7 @@ export default async function main({
 			const hashes: FirmwareHash[] = [];
 
 			for (const url of urls) {
+				console.log(`  Downloading ${url}...`);
 				let filename: string;
 				let rawData: Uint8Array | Buffer;
 				try {
@@ -992,6 +1011,7 @@ export default async function main({
 					upgrades: newUpgrades,
 				};
 
+		console.log(`Writing config to ${relativeFilePath}...`);
 		fs.mkdirSync(path.dirname(absoluteFilePath), { recursive: true });
 		fs.writeFileSync(
 			absoluteFilePath,
@@ -1002,7 +1022,9 @@ export default async function main({
 		git("add", relativeFilePath);
 		const lastVersion = upgradeFormData[upgradeFormData.length - 1]!.version;
 		const commitMessage = `Add ${brand} ${model} firmware v${lastVersion} (#${issueNumber})`;
+		console.log(`Committing: ${commitMessage}`);
 		git("commit", "-m", commitMessage);
+		console.log(`Pushing to origin/${branchName}...`);
 		git("push", "--force", "origin", branchName);
 
 		const { data: existingPRs } = await botOctokit.rest.pulls.list({
@@ -1015,6 +1037,7 @@ export default async function main({
 		let prUrl: string;
 		if (existingPRs.length > 0) {
 			prUrl = existingPRs[0]!.html_url;
+			console.log(`Existing PR found: ${prUrl}`);
 		} else {
 			const prTitle = `Add ${brand} ${model} firmware v${lastVersion}`;
 			const { data: newPR } = await botOctokit.rest.pulls.create({
@@ -1026,11 +1049,14 @@ export default async function main({
 				body: createSubmissionPRBody(issueNumber),
 			});
 			prUrl = newPR.html_url;
+			console.log(`Created PR: ${prUrl}`);
 		}
 
+		console.log("Posting status comment...");
 		await postStatusComment(
 			`Your submission has been processed and a [pull request](${prUrl}) has been created. I'll post the CI check results here once they complete.`,
 		);
+		console.log("Done!");
 	} catch (error) {
 		if (error instanceof SubmissionHandledError) {
 			throw error;
