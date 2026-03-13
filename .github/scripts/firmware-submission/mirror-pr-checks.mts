@@ -1,25 +1,27 @@
-// @ts-check
-
-/// <reference path="../types.d.ts" />
+import type { GitHubScriptContext } from "../types.mts";
+import { getSubmissionIssueNumberFromPR } from "./submission-pr.mts";
 
 const COMMENT_TAG = "<!-- firmware-submission-status -->";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
-const { getSubmissionIssueNumberFromPR } = require("./submission-pr.cjs");
 
-/**
- * @param {{github: Github, context: Context}} param
- */
-async function main({ github, context }) {
+function getErrorMessage(error: unknown): string {
+	return error instanceof Error ? error.message : String(error);
+}
+
+export default async function main({
+	github,
+	context,
+}: GitHubScriptContext): Promise<void> {
 	const run = context.payload.workflow_run;
+	if (!run) return;
+
 	const owner = context.repo.owner;
 	const repo = context.repo.repo;
 
-	// Find the PR linked to this workflow run
-	let prNumber;
+	let prNumber: number;
 	if (run.pull_requests && run.pull_requests.length > 0) {
 		prNumber = run.pull_requests[0].number;
 	} else {
-		// Fall back to searching by head SHA
 		const { data: prs } = await github.rest.pulls.list({
 			owner,
 			repo,
@@ -46,32 +48,31 @@ async function main({ github, context }) {
 		return;
 	}
 
-	// Verify this is a bot-managed submission issue
 	const { data: issue } = await github.rest.issues.get({
 		owner,
 		repo,
 		issue_number: issueNumber,
 	});
-	const labelNames = issue.labels.map((l) =>
-		typeof l === "string" ? l : (l.name ?? ""),
+	const labelNames = issue.labels.map((label) =>
+		typeof label === "string" ? label : (label.name ?? ""),
 	);
-	if (!SUBMISSION_LABELS.some((l) => labelNames.includes(l))) {
+	if (!SUBMISSION_LABELS.some((label) => labelNames.includes(label))) {
 		console.log("Issue does not have a submission label, skipping");
 		return;
 	}
 
-	// List jobs for this workflow run
-	const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun(
-		{ owner, repo, run_id: run.id },
-	);
-	const failedJobs = jobsData.jobs.filter((j) => j.conclusion === "failure");
+	const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun({
+		owner,
+		repo,
+		run_id: run.id,
+	});
+	const failedJobs = jobsData.jobs.filter((job) => job.conclusion === "failure");
 
-	// Build comment content
-	let commentBody;
+	let commentBody: string;
 	if (failedJobs.length === 0) {
-		commentBody = `✅ All checks passed on the [pull request](${pr.html_url}). A maintainer will review and merge.`;
+		commentBody = `All checks passed on the [pull request](${pr.html_url}). A maintainer will review and merge.`;
 	} else {
-		const sections = [];
+		const sections: string[] = [];
 		for (const job of failedJobs) {
 			let errorLines = "";
 			try {
@@ -81,8 +82,8 @@ async function main({ github, context }) {
 						repo,
 						job_id: job.id,
 					});
-				const logText = await fetch(logResponse.url).then((r) =>
-					r.text(),
+				const logText = await fetch(logResponse.url).then((response) =>
+					response.text(),
 				);
 				const clean = logText
 					.replace(/\x1B\[[0-9;]*m/g, "")
@@ -90,33 +91,31 @@ async function main({ github, context }) {
 						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /gm,
 						"",
 					);
-				const lines = clean
-					.split("\n")
-					.filter(
-						(line) =>
-							line.includes("##[error]") ||
-							line.startsWith("Error:") ||
-							line.startsWith("error "),
-					);
+				const lines = clean.split("\n").filter(
+					(line) =>
+						line.includes("##[error]") ||
+						line.startsWith("Error:") ||
+						line.startsWith("error "),
+				);
 				errorLines = lines.slice(0, 50).join("\n");
-			} catch (e) {
-				errorLines = `(Could not retrieve logs: ${e.message})`;
+			} catch (error) {
+				errorLines = `(Could not retrieve logs: ${getErrorMessage(error)})`;
 			}
 			sections.push(
 				`**Job: \`${job.name}\`**\n\`\`\`\n${errorLines || "(No error output found)"}\n\`\`\``,
 			);
 		}
-		commentBody = `❌ The following checks failed on the [pull request](${pr.html_url}):\n\n${sections.join("\n\n")}`;
+		commentBody = `The following checks failed on the [pull request](${pr.html_url}):\n\n${sections.join("\n\n")}`;
 	}
 
-	// Minimize existing bot status comment
 	const existingComments = await github.paginate(
 		github.rest.issues.listComments,
 		{ owner, repo, issue_number: issueNumber },
 	);
 	const existing = existingComments.find(
-		(c) =>
-			c.body?.endsWith(COMMENT_TAG) && c.user?.login === "zwave-js-bot",
+		(comment) =>
+			comment.body?.endsWith(COMMENT_TAG) &&
+			comment.user?.login === "zwave-js-bot",
 	);
 	if (existing) {
 		try {
@@ -128,22 +127,22 @@ async function main({ github, context }) {
 				}`,
 				{ id: existing.node_id },
 			);
-		} catch (e) {
-			console.log("Could not minimize existing comment:", e.message);
+		} catch (error) {
+			console.log(
+				"Could not minimize existing comment:",
+				getErrorMessage(error),
+			);
 		}
 	}
 
-	// Post new comment
 	await github.rest.issues.createComment({
 		owner,
 		repo,
 		issue_number: issueNumber,
-		body: commentBody + "\n" + COMMENT_TAG,
+		body: `${commentBody}\n${COMMENT_TAG}`,
 	});
 
-	// Update labels
-	/** @param {string} label */
-	const addLabel = async (label) => {
+	const addLabel = async (label: string): Promise<void> => {
 		try {
 			await github.rest.issues.addLabels({
 				owner,
@@ -153,27 +152,27 @@ async function main({ github, context }) {
 			});
 		} catch {}
 	};
-	/** @param {string} label */
-	const removeLabel = async (label) => {
-		if (labelNames.includes(label)) {
-			try {
-				await github.rest.issues.removeLabel({
-					owner,
-					repo,
-					issue_number: issueNumber,
-					name: label,
-				});
-			} catch {}
+
+	const removeLabel = async (label: string): Promise<void> => {
+		if (!labelNames.includes(label)) {
+			return;
 		}
+		try {
+			await github.rest.issues.removeLabel({
+				owner,
+				repo,
+				issue_number: issueNumber,
+				name: label,
+			});
+		} catch {}
 	};
 
 	await removeLabel("processing");
 	if (failedJobs.length === 0) {
 		await addLabel("submitted");
-	} else {
-		await removeLabel("submitted");
-		await addLabel("checks-failed");
+		return;
 	}
-}
 
-module.exports = main;
+	await removeLabel("submitted");
+	await addLabel("checks-failed");
+}

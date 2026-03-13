@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "check": "tsc -p tsconfig.build.json --noEmit && tsc -p src/maintenance/tsconfig.json --noEmit",
+    "check": "tsc -p tsconfig.build.json --noEmit && tsc -p src/maintenance/tsconfig.json --noEmit && tsc -p .github/scripts/tsconfig.json --noEmit",
     "check:configs": "yarn tsx src/maintenance/check_configs.ts",
     "lint": "eslint .",
     "test:ci": "NODE_OPTIONS='--loader=tsx' ava",
