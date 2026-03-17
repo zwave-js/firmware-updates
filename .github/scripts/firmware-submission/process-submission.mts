@@ -216,8 +216,8 @@ function chooseExistingDirectory(
 		return preferredDirectory;
 	}
 	// The submitted brand name may not produce the same directory slug as
-	// the existing directory (e.g. "Enbrighten GE" → "enbrighten_ge" vs
-	// existing "enbrighten-ge"). Fall back to checking whether the brand
+	// the existing directory (e.g. "Enbrighten/GE" → "enbrighten-ge" vs
+	// existing "enbrighten_ge"). Fall back to checking whether the brand
 	// in the existing config files matches the submitted brand.
 	const brandMatches = candidates.filter((dir) =>
 		firmwareConfigs
@@ -402,7 +402,10 @@ function validateName(value: string, fieldName: string, errors: string[]): boole
 }
 
 function sanitizePathComponent(value: string): string {
-	return value.replace(/[^a-zA-Z0-9-_]/g, "_");
+	return value
+		.replace(/[^a-zA-Z0-9_-]/g, "-")
+		.replace(/[_-]{2,}/g, "-")
+		.replace(/^[_-]+|[_-]+$/g, "");
 }
 
 function sanitizeForMessage(value: string): string {
