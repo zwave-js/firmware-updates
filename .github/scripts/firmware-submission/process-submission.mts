@@ -409,6 +409,14 @@ function sanitizeForMessage(value: string): string {
 	return value.replace(/[\r\n]+/g, " ").trim().slice(0, 100);
 }
 
+function isIpAddress(hostname: string): boolean {
+	// IPv4
+	if (/^\d{1,3}(\.\d{1,3}){3}$/.test(hostname)) return true;
+	// IPv6 (bracketed form is stripped by URL parser)
+	if (hostname.includes(":")) return true;
+	return false;
+}
+
 function validateUrl(value: string, fieldName: string, errors: string[]): boolean {
 	let parsed: URL;
 	try {
@@ -420,6 +428,18 @@ function validateUrl(value: string, fieldName: string, errors: string[]): boolea
 	if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
 		errors.push(
 			`'${fieldName}' must use HTTP or HTTPS, got: ${parsed.protocol}`,
+		);
+		return false;
+	}
+	if (parsed.username || parsed.password) {
+		errors.push(
+			`'${fieldName}' must not contain credentials.`,
+		);
+		return false;
+	}
+	if (isIpAddress(parsed.hostname)) {
+		errors.push(
+			`'${fieldName}' must use a domain name, not an IP address.`,
 		);
 		return false;
 	}
