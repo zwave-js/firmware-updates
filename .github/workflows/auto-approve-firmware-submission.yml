@@ -14,8 +14,9 @@ jobs:
   auto-approve:
     if: >-
       github.event_name == 'issues' &&
-      (github.event.action == 'opened' ||
-      github.event.label.name == 'pending-approval')
+      (github.event.label.name == 'pending-approval' ||
+      (github.event.action == 'opened' &&
+      contains(github.event.issue.labels.*.name, 'pending-approval')))
     runs-on: ubuntu-latest
     permissions:
       issues: write

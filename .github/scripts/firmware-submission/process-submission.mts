@@ -6,6 +6,7 @@ import * as githubActions from "@actions/github";
 import { downloadFirmware, generateHash } from "@zwave-js/firmware-integrity";
 import JSON5 from "json5";
 import prettier from "prettier";
+import semver from "semver";
 import type { GitHubScriptContext } from "../types.mts";
 import {
 	SUBMISSION_COMMENT_TAG,
@@ -150,6 +151,18 @@ function sameBaseDevice(left: NormalizedDevice, right: NormalizedDevice): boolea
 		left.productType === right.productType &&
 		left.productId === right.productId
 	);
+}
+
+function padVersion(version: string): string {
+	return version.split(".").length === 3 ? version : `${version}.0`;
+}
+
+function rangesOverlap(
+	a: FirmwareVersionRange,
+	b: FirmwareVersionRange,
+): boolean {
+	return semver.compare(padVersion(a.min), padVersion(b.max)) <= 0
+		&& semver.compare(padVersion(b.min), padVersion(a.max)) <= 0;
 }
 
 function isFirmwareConfigFile(filePath: string): boolean {
@@ -706,10 +719,20 @@ export default async function main({
 				productType: productType.toLowerCase(),
 				productId: productId.toLowerCase(),
 			};
-			if (firmwareVersionMin || firmwareVersionMax) {
+			// Normalize: "0.0" for min and "255.255" for max are the same
+			// as leaving the field blank (= applies to all versions).
+			const effectiveMin =
+				firmwareVersionMin && firmwareVersionMin !== "0.0"
+					? firmwareVersionMin
+					: null;
+			const effectiveMax =
+				firmwareVersionMax && firmwareVersionMax !== "255.255"
+					? firmwareVersionMax
+					: null;
+			if (effectiveMin || effectiveMax) {
 				device.firmwareVersion = {
-					min: firmwareVersionMin ?? "0.0",
-					max: firmwareVersionMax ?? "255.255",
+					min: effectiveMin ?? "0.0",
+					max: effectiveMax ?? "255.255",
 				};
 			}
 			return device;
@@ -943,6 +966,32 @@ export default async function main({
 				relativeFilePath = matchedExistingFile.relativePath;
 				absoluteFilePath = matchedExistingFile.absolutePath;
 			} else {
+				// No exact match — check if existing files have the same
+				// base device IDs with an overlapping firmware version range.
+				// This catches the case where a submitter leaves min/max blank
+				// (defaulting to 0.0–255.255) but an existing config has a
+				// specific range like 2.0–7.0.
+				const overlappingFiles = firmwareConfigs.filter((file) =>
+					submittedDevices.some((device) =>
+						file.devices.some(
+							(existing) =>
+								sameBaseDevice(existing, device) &&
+								rangesOverlap(
+									existing.firmwareVersion,
+									device.firmwareVersion,
+								),
+						),
+					),
+				);
+				if (overlappingFiles.length > 0) {
+					const fileList = overlappingFiles
+						.map((f) => f.relativePath)
+						.join(", ");
+					throw new SubmissionValidationError(
+						`The submitted device identifiers match existing firmware file(s) (${fileList}), but with a different firmware version range. Please adjust the firmware version range to match exactly, or open a PR directly.`,
+					);
+				}
+
 				console.log("No exact device match, creating new file");
 				const brandDir = determineNewFileDirectory(
 					submittedDevices,
