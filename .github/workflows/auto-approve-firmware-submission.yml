@@ -19,6 +19,7 @@ jobs:
       contains(github.event.issue.labels.*.name, 'pending-approval')))
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
 
     steps:
@@ -45,6 +46,7 @@ jobs:
       contains(github.event.issue.labels.*.name, 'approved')
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       issues: write
 
     steps:
