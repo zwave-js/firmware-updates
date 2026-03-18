@@ -275,6 +275,7 @@ body:
     id: url
     attributes:
       label: Firmware URL
+      description: This form assumes chip/target `0`.
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: true
@@ -350,6 +351,7 @@ body:
     id: url-2
     attributes:
       label: Firmware URL (Upgrade 2)
+      description: This form assumes chip/target `0`.
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
@@ -425,6 +427,7 @@ body:
     id: url-3
     attributes:
       label: Firmware URL (Upgrade 3)
+      description: This form assumes chip/target `0`.
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
@@ -500,6 +503,7 @@ body:
     id: url-4
     attributes:
       label: Firmware URL (Upgrade 4)
+      description: This form assumes chip/target `0`.
       placeholder: 'https://example.com/firmware/v1.23.ota'
     validations:
       required: false
