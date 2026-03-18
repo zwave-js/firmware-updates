@@ -2,7 +2,8 @@ import type { GitHubScriptContext } from "../types.mts";
 import { getSubmissionIssueNumberFromPR } from "./submission-pr.mts";
 
 const SUBMISSION_LABELS = [
-	// Keep "pending-approval" around when closing a PR to indicate that it was not approved
+	// Clear any post-approval state. Unmerged closes are reset to
+	// "pending-approval" after these labels are removed.
 	"approved",
 	"processing",
 	"submitted",
@@ -13,10 +14,11 @@ export default async function main({
 	github,
 	context,
 }: GitHubScriptContext): Promise<void> {
+	const pr = context.payload.pull_request;
 	const owner = context.repo.owner;
 	const repo = context.repo.repo;
 	const issueNumber = getSubmissionIssueNumberFromPR(
-		context.payload.pull_request,
+		pr,
 		owner,
 		repo,
 	);
@@ -50,4 +52,17 @@ export default async function main({
 			})
 			.catch(() => {});
 	}
+
+	if (pr?.merged || currentLabels.includes("pending-approval")) {
+		return;
+	}
+
+	await github.rest.issues
+		.addLabels({
+			owner,
+			repo,
+			issue_number: issueNumber,
+			labels: ["pending-approval"],
+		})
+		.catch(() => {});
 }

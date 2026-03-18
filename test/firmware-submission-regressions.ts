@@ -287,9 +287,8 @@ test("reset-on-edit ignores non-body edits", async (t) => {
 	t.deepEqual(addLabelsCalls, []);
 });
 
-test("cleanup-labels preserves pending-approval on stale submission PR close", async (t) => {
-	const { issues, removeLabelCalls } = createIssuesMock([
-		"pending-approval",
+test("cleanup-labels restores pending-approval on unmerged submission PR close", async (t) => {
+	const { issues, removeLabelCalls, addLabelsCalls } = createIssuesMock([
 		"approved",
 		"submitted",
 	]);
@@ -316,6 +315,7 @@ test("cleanup-labels preserves pending-approval on stale submission PR close", a
 					user: {
 						login: "zwave-js-bot",
 					},
+					merged: false,
 					body: "Closes #123\n\n<!-- Auto-generated from issue #123. -->",
 				},
 			},
@@ -323,6 +323,46 @@ test("cleanup-labels preserves pending-approval on stale submission PR close", a
 	});
 
 	t.deepEqual(removeLabelCalls, ["approved", "submitted"]);
+	t.deepEqual(addLabelsCalls, [["pending-approval"]]);
+});
+
+test("cleanup-labels does not restore pending-approval for merged submission PR close", async (t) => {
+	const { issues, removeLabelCalls, addLabelsCalls } = createIssuesMock([
+		"approved",
+		"submitted",
+	]);
+
+	await cleanupLabels({
+		github: {
+			rest: {
+				issues,
+			},
+		} as any,
+		context: {
+			repo: {
+				owner: "zwave-js",
+				repo: "firmware-updates",
+			},
+			payload: {
+				pull_request: {
+					head: {
+						repo: {
+							full_name: "zwave-js/firmware-updates",
+						},
+						ref: "firmware-submission/issue-123",
+					},
+					user: {
+						login: "zwave-js-bot",
+					},
+					merged: true,
+					body: "Closes #123\n\n<!-- Auto-generated from issue #123. -->",
+				},
+			},
+		} as any,
+	});
+
+	t.deepEqual(removeLabelCalls, ["approved", "submitted"]);
+	t.deepEqual(addLabelsCalls, []);
 });
 
 test("auto-approve workflow only resets on issue body edits", async (t) => {
@@ -332,6 +372,15 @@ test("auto-approve workflow only resets on issue body edits", async (t) => {
 	);
 
 	t.regex(workflow, /reset-on-edit:[\s\S]*github\.event\.changes\.body != null/);
+});
+
+test("cleanup workflow uses GITHUB_TOKEN so pending-approval restore does not auto-trigger reapproval", async (t) => {
+	const workflow = await readFile(
+		new URL("../.github/workflows/cleanup-firmware-submission-labels.yml", import.meta.url),
+		"utf8",
+	);
+
+	t.regex(workflow, /github-token:\s*\$\{\{\s*secrets\.GITHUB_TOKEN\s*\}\}/);
 });
 
 test("findDuplicateUpgradeVariants allows region variants but blocks exact and cross-channel duplicates", (t) => {
