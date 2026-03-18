@@ -1005,6 +1005,7 @@ export function parseUpgradeFilesFromSections({
 	errors: string[];
 }): UpgradeFileFormData[] {
 	const files: UpgradeFileFormData[] = [];
+	const singleTargetUrlLabel = getSingleTargetUrlFieldLabel(upgradeIndex);
 	for (const descriptor of getUpgradeFileFieldDescriptors(upgradeIndex)) {
 		const { label: urlLabel, value: url } = getFieldWithAliases({
 			sections,
@@ -1027,8 +1028,16 @@ export function parseUpgradeFilesFromSections({
 					? getSingleTargetTargetNumberFieldLabel(upgradeIndex)
 					: descriptor.targetLabels[0],
 		});
-		const target =
+		if (
+			urlLabel === singleTargetUrlLabel &&
 			targetRaw != null
+		) {
+			errors.push(
+				`'${targetLabel}' is not supported in the single-target submission form. That form always uses target number 0. Use the 'Firmware Submission' form instead.`,
+			);
+		}
+		const target =
+			targetRaw != null && urlLabel !== singleTargetUrlLabel
 				? (validateTargetNumber(
 						targetRaw,
 						targetLabel,
