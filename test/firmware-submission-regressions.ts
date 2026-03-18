@@ -1,12 +1,19 @@
 import test from "ava";
+import { readFile } from "node:fs/promises";
 
 const processSubmissionModulePath =
 	"../.github/scripts/firmware-submission/process-submission.mts";
 const mirrorPrChecksModulePath =
 	"../.github/scripts/firmware-submission/mirror-pr-checks.mts";
+const resetOnEditModulePath =
+	"../.github/scripts/firmware-submission/reset-on-edit.mts";
+const cleanupLabelsModulePath =
+	"../.github/scripts/firmware-submission/cleanup-labels.mts";
 
 const processSubmissionModule = await import(processSubmissionModulePath);
 const mirrorPrChecksModule = await import(mirrorPrChecksModulePath);
+const resetOnEditModule = await import(resetOnEditModulePath);
+const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
 const {
 	createUpgradeEntry,
@@ -18,6 +25,8 @@ const {
 	sameExactDeviceSet,
 } = processSubmissionModule;
 const { workflowRunPassed } = mirrorPrChecksModule;
+const resetOnEdit = resetOnEditModule.default;
+const cleanupLabels = cleanupLabelsModule.default;
 
 type Device = {
 	brand: string;
@@ -43,6 +52,30 @@ function createDevice(overrides: Partial<Device> = {}): Device {
 			max: "255.255",
 		},
 		...overrides,
+	};
+}
+
+function createIssuesMock(labels: string[] = []) {
+	const removeLabelCalls: string[] = [];
+	const addLabelsCalls: string[][] = [];
+	const issues = {
+		removeLabel: async ({ name }: { name: string }) => {
+			removeLabelCalls.push(name);
+		},
+		addLabels: async ({ labels }: { labels: string[] }) => {
+			addLabelsCalls.push(labels);
+		},
+		get: async () => ({
+			data: {
+				labels: labels.map((name) => ({ name })),
+			},
+		}),
+	};
+
+	return {
+		issues,
+		removeLabelCalls,
+		addLabelsCalls,
 	};
 }
 
@@ -221,6 +254,84 @@ test("getApprovalInvalidReason rejects body or label changes after approval", (t
 		}),
 		null,
 	);
+});
+
+test("reset-on-edit ignores non-body edits", async (t) => {
+	const { issues, removeLabelCalls, addLabelsCalls } = createIssuesMock();
+
+	await resetOnEdit({
+		github: {
+			rest: {
+				issues,
+			},
+		} as any,
+		context: {
+			repo: {
+				owner: "zwave-js",
+				repo: "firmware-updates",
+			},
+			payload: {
+				issue: {
+					number: 123,
+				},
+				changes: {
+					title: {
+						from: "Old title",
+					},
+				},
+			},
+		} as any,
+	});
+
+	t.deepEqual(removeLabelCalls, []);
+	t.deepEqual(addLabelsCalls, []);
+});
+
+test("cleanup-labels preserves pending-approval on stale submission PR close", async (t) => {
+	const { issues, removeLabelCalls } = createIssuesMock([
+		"pending-approval",
+		"approved",
+		"submitted",
+	]);
+
+	await cleanupLabels({
+		github: {
+			rest: {
+				issues,
+			},
+		} as any,
+		context: {
+			repo: {
+				owner: "zwave-js",
+				repo: "firmware-updates",
+			},
+			payload: {
+				pull_request: {
+					head: {
+						repo: {
+							full_name: "zwave-js/firmware-updates",
+						},
+						ref: "firmware-submission/issue-123",
+					},
+					user: {
+						login: "zwave-js-bot",
+					},
+					body: "Closes #123\n\n<!-- Auto-generated from issue #123. -->",
+				},
+			},
+		} as any,
+	});
+
+	t.deepEqual(removeLabelCalls, ["approved", "submitted"]);
+});
+
+test("auto-approve workflow only resets on issue body edits", async (t) => {
+	const workflow = await readFile(
+		new URL("../.github/workflows/auto-approve-firmware-submission.yml", import.meta.url),
+		"utf8",
+	);
+
+	t.regex(workflow, /reset-on-edit:[\s\S]*github\.event\.changes\.body != null/);
 });
 
 test("findDuplicateUpgradeVariants allows region variants but blocks exact and cross-channel duplicates", (t) => {

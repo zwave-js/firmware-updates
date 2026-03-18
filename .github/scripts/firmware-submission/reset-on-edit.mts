@@ -13,6 +13,7 @@ export default async function main({
 }: GitHubScriptContext): Promise<void> {
 	const issue = context.payload.issue;
 	if (!issue) return;
+	if (!context.payload.changes?.body) return;
 
 	const issueNumber = issue.number;
 	const owner = context.repo.owner;

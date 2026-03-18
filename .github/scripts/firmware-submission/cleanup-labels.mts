@@ -2,7 +2,7 @@ import type { GitHubScriptContext } from "../types.mts";
 import { getSubmissionIssueNumberFromPR } from "./submission-pr.mts";
 
 const SUBMISSION_LABELS = [
-	"pending-approval",
+	// Keep "pending-approval" around when closing a PR to indicate that it was not approved
 	"approved",
 	"processing",
 	"submitted",

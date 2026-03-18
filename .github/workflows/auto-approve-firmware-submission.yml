@@ -40,9 +40,11 @@ jobs:
   # pending-approval. This triggers the auto-approve job above, which will
   # re-approve trusted submitters or ask a maintainer to review.
   reset-on-edit:
+    # Only trigger when the body of an approved issue is changed
     if: >-
       github.event_name == 'issues' &&
       github.event.action == 'edited' &&
+      github.event.changes.body != null &&
       contains(github.event.issue.labels.*.name, 'approved')
     runs-on: ubuntu-latest
     permissions:
