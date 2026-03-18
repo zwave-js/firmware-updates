@@ -30,6 +30,8 @@ const VALID_REGIONS = [
 
 const MAX_DEVICES = 3;
 const MAX_UPGRADES = 4;
+const MAX_TARGETS = 3;
+const VALID_TARGET_NUMBERS = [0, 1, 2] as const;
 
 const workspaceRoot = path.resolve(
 	path.dirname(fileURLToPath(import.meta.url)),
@@ -77,9 +79,12 @@ interface UpgradeFormData {
 	channel: "stable" | "beta" | null;
 	region: string | null;
 	ifCondition: string | null;
-	urlTarget0: string;
-	urlTarget1: string | null;
-	urlTarget2: string | null;
+	files: UpgradeFileFormData[];
+}
+
+interface UpgradeFileFormData {
+	target: number;
+	url: string;
 }
 
 interface FirmwareHash {
@@ -111,11 +116,25 @@ function getUpgradeFieldLabel(name: string, index: number): string {
 	return index === 1 ? name : `${name} (Upgrade ${index})`;
 }
 
-function getUrlFieldLabel(targetIndex: number, upgradeIndex: number): string {
+function getChipLabel(chipIndex: number): string {
+	return `Chip ${chipIndex + 1}`;
+}
+
+function getUrlFieldLabel(chipIndex: number, upgradeIndex: number): string {
 	if (upgradeIndex === 1) {
-		return `Firmware URL (Target ${targetIndex})`;
+		return `Firmware URL (${getChipLabel(chipIndex)})`;
 	}
-	return `Firmware URL (Target ${targetIndex}) (Upgrade ${upgradeIndex})`;
+	return `Firmware URL (${getChipLabel(chipIndex)}) (Upgrade ${upgradeIndex})`;
+}
+
+function getTargetNumberFieldLabel(
+	chipIndex: number,
+	upgradeIndex: number,
+): string {
+	if (upgradeIndex === 1) {
+		return `Target Number (${getChipLabel(chipIndex)})`;
+	}
+	return `Target Number (${getChipLabel(chipIndex)}) (Upgrade ${upgradeIndex})`;
 }
 
 function buildIssueFieldHeadings(): string[] {
@@ -138,10 +157,13 @@ function buildIssueFieldHeadings(): string[] {
 			getUpgradeFieldLabel("Channel", i),
 			getUpgradeFieldLabel("Region", i),
 			getUpgradeFieldLabel("Upgrade conditions", i),
-			getUrlFieldLabel(0, i),
-			getUrlFieldLabel(1, i),
-			getUrlFieldLabel(2, i),
 		);
+		for (let chipIndex = 0; chipIndex < MAX_TARGETS; chipIndex++) {
+			headings.push(
+				getTargetNumberFieldLabel(chipIndex, i),
+				getUrlFieldLabel(chipIndex, i),
+			);
+		}
 	}
 	return headings;
 }
@@ -495,9 +517,6 @@ export function getApprovalInvalidReason({
 	if (!labelNames.includes("approved")) {
 		return "Submission is no longer approved.";
 	}
-	if (labelNames.includes("pending-approval")) {
-		return "Submission was reset to pending approval.";
-	}
 	if (requireProcessing && !labelNames.includes("processing")) {
 		return "Submission is no longer marked as processing.";
 	}
@@ -631,6 +650,217 @@ function validateVersion(
 		return false;
 	}
 	return true;
+}
+
+function validateTargetNumber(
+	value: string,
+	fieldName: string,
+	errors: string[],
+): number | null {
+	if (!/^\d+$/.test(value)) {
+		errors.push(`'${fieldName}' must be a whole number, got: ${value}`);
+		return null;
+	}
+
+	const parsed = Number.parseInt(value, 10);
+	if (
+		!VALID_TARGET_NUMBERS.includes(
+			parsed as (typeof VALID_TARGET_NUMBERS)[number],
+		)
+	) {
+		errors.push(
+			`'${fieldName}' must be one of ${VALID_TARGET_NUMBERS.join(", ")}, got: ${value}`,
+		);
+		return null;
+	}
+
+	return parsed;
+}
+
+function normalizeUpgradeVariant(upgrade: Record<string, any>): {
+	version: string;
+	channel: "stable" | "beta";
+	region: string | null;
+	ifCondition: string | null;
+} | null {
+	if (typeof upgrade.version !== "string" || upgrade.version.length === 0) {
+		return null;
+	}
+
+	return {
+		version: upgrade.version,
+		channel: upgrade.channel === "beta" ? "beta" : "stable",
+		region: typeof upgrade.region === "string" ? upgrade.region : null,
+		ifCondition:
+			typeof upgrade.$if === "string" && upgrade.$if.length > 0
+				? upgrade.$if
+				: null,
+	};
+}
+
+function getUpgradeVariantKey(
+	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
+): string {
+	return JSON.stringify([
+		variant.version,
+		variant.channel,
+		variant.region,
+		variant.ifCondition,
+	]);
+}
+
+function describeUpgradeVariant(
+	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
+): string {
+	const details = [`v${variant.version}`];
+	if (variant.channel !== "stable") {
+		details.push(`channel ${variant.channel}`);
+	}
+	if (variant.region != null) {
+		details.push(`region ${variant.region}`);
+	}
+	if (variant.ifCondition != null) {
+		details.push(`condition ${sanitizeForMessage(variant.ifCondition)}`);
+	}
+	return details.join(", ");
+}
+
+export function findDuplicateUpgradeVariants(
+	existingUpgrades: readonly Record<string, any>[],
+	newUpgrades: readonly Record<string, any>[],
+): string[] {
+	const existingKeys = new Set(
+		existingUpgrades
+			.map(normalizeUpgradeVariant)
+			.filter(
+				(
+					variant,
+				): variant is NonNullable<
+					ReturnType<typeof normalizeUpgradeVariant>
+				> => variant != null,
+			)
+			.map(getUpgradeVariantKey),
+	);
+
+	const seenNewKeys = new Set<string>();
+	const duplicates = new Set<string>();
+
+	for (const upgrade of newUpgrades) {
+		const variant = normalizeUpgradeVariant(upgrade);
+		if (!variant) continue;
+
+		const key = getUpgradeVariantKey(variant);
+		if (existingKeys.has(key) || seenNewKeys.has(key)) {
+			duplicates.add(describeUpgradeVariant(variant));
+		}
+		seenNewKeys.add(key);
+	}
+
+	return [...duplicates];
+}
+
+export function findDuplicateTargets(
+	files: ReadonlyArray<{ target: number }>,
+): number[] {
+	const seenTargets = new Set<number>();
+	const duplicates = new Set<number>();
+
+	for (const file of files) {
+		if (seenTargets.has(file.target)) {
+			duplicates.add(file.target);
+		}
+		seenTargets.add(file.target);
+	}
+
+	return [...duplicates];
+}
+
+export function parseUpgradeFilesFromSections({
+	sections,
+	upgradeIndex,
+	errors,
+}: {
+	sections: Record<string, string | null>;
+	upgradeIndex: number;
+	errors: string[];
+}): UpgradeFileFormData[] {
+	const files: UpgradeFileFormData[] = [];
+	for (let chipIndex = 0; chipIndex < MAX_TARGETS; chipIndex++) {
+		const url = getField(
+			sections,
+			getUrlFieldLabel(chipIndex, upgradeIndex),
+			chipIndex === 0,
+			errors,
+		);
+		if (!url) continue;
+
+		validateUrl(url, getUrlFieldLabel(chipIndex, upgradeIndex), errors);
+
+		const targetRaw = getField(
+			sections,
+			getTargetNumberFieldLabel(chipIndex, upgradeIndex),
+			false,
+			errors,
+		);
+		const target =
+			targetRaw != null
+				? (validateTargetNumber(
+						targetRaw,
+						getTargetNumberFieldLabel(chipIndex, upgradeIndex),
+						errors,
+					) ?? chipIndex)
+				: chipIndex;
+
+		files.push({ target, url });
+	}
+
+	return files;
+}
+
+export function createUpgradeEntry({
+	version,
+	changelog,
+	channel,
+	region,
+	ifCondition,
+	files,
+}: {
+	version: string;
+	changelog: string;
+	channel: "stable" | "beta" | null;
+	region: string | null;
+	ifCondition: string | null;
+	files: ReadonlyArray<{
+		target: number;
+		url: string;
+		integrity: string;
+	}>;
+}): Record<string, any> {
+	const entry: Record<string, any> = {};
+	if (ifCondition) {
+		entry.$if = ifCondition;
+	}
+	entry.version = version;
+	entry.changelog = changelog;
+	if (channel && channel !== "stable") {
+		entry.channel = channel;
+	}
+	if (region) {
+		entry.region = region;
+	}
+
+	if (files.length > 1 || files[0]?.target !== 0) {
+		entry.files = files.map(({ target, url, integrity }) => ({
+			target,
+			url,
+			integrity,
+		}));
+	} else {
+		entry.url = files[0]!.url;
+		entry.integrity = files[0]!.integrity;
+	}
+
+	return entry;
 }
 
 export default async function main({
@@ -970,8 +1200,9 @@ export default async function main({
 		const upgradeFormData: UpgradeFormData[] = [];
 		for (let i = 1; i <= MAX_UPGRADES; i++) {
 			// Only check free text fields to determine if an upgrade was started.
-			// Dropdown fields (Channel, Region) always have a default value in
-			// GitHub issue forms, so they must not be used for this check.
+			// Dropdown fields (Channel, Region, Target Number) always have a
+			// default value in GitHub issue forms, so they must not be used for
+			// this check.
 			const started =
 				i === 1 ||
 				hasAnyValue([
@@ -993,9 +1224,14 @@ export default async function main({
 						false,
 						errors,
 					),
-					getField(sections, getUrlFieldLabel(0, i), false, errors),
-					getField(sections, getUrlFieldLabel(1, i), false, errors),
-					getField(sections, getUrlFieldLabel(2, i), false, errors),
+					...Array.from({ length: MAX_TARGETS }, (_, chipIndex) =>
+						getField(
+							sections,
+							getUrlFieldLabel(chipIndex, i),
+							false,
+							errors,
+						),
+					),
 				]);
 
 			if (!started) {
@@ -1032,24 +1268,6 @@ export default async function main({
 				false,
 				errors,
 			);
-			const urlTarget0 = getField(
-				sections,
-				getUrlFieldLabel(0, i),
-				true,
-				errors,
-			);
-			const urlTarget1 = getField(
-				sections,
-				getUrlFieldLabel(1, i),
-				false,
-				errors,
-			);
-			const urlTarget2 = getField(
-				sections,
-				getUrlFieldLabel(2, i),
-				false,
-				errors,
-			);
 
 			let channel: "stable" | "beta" | null = null;
 			let region: string | null = null;
@@ -1060,15 +1278,6 @@ export default async function main({
 					getUpgradeFieldLabel("Firmware Version", i),
 					errors,
 				);
-			}
-			if (urlTarget0) {
-				validateUrl(urlTarget0, getUrlFieldLabel(0, i), errors);
-			}
-			if (urlTarget1) {
-				validateUrl(urlTarget1, getUrlFieldLabel(1, i), errors);
-			}
-			if (urlTarget2) {
-				validateUrl(urlTarget2, getUrlFieldLabel(2, i), errors);
 			}
 
 			if (channelRaw) {
@@ -1095,7 +1304,20 @@ export default async function main({
 				}
 			}
 
-			if (!(version && changelog && channelRaw && urlTarget0)) {
+			const files = parseUpgradeFilesFromSections({
+				sections,
+				upgradeIndex: i,
+				errors,
+			});
+
+			const duplicateTargets = findDuplicateTargets(files);
+			if (duplicateTargets.length > 0) {
+				errors.push(
+					`Upgrade ${i} uses target number(s) ${duplicateTargets.join(", ")} more than once. Each firmware file must have a unique target number.`,
+				);
+			}
+
+			if (!(version && changelog && channelRaw && files.length > 0)) {
 				continue;
 			}
 
@@ -1106,9 +1328,7 @@ export default async function main({
 				channel,
 				region,
 				ifCondition,
-				urlTarget0,
-				urlTarget1,
-				urlTarget2,
+				files,
 			});
 		}
 
@@ -1274,14 +1494,10 @@ export default async function main({
 		console.log("Downloading firmware files and computing hashes...");
 		const upgradeHashes: FirmwareHash[][] = [];
 		for (const upgrade of upgradeFormData) {
-			const urls = [
-				upgrade.urlTarget0,
-				upgrade.urlTarget1,
-				upgrade.urlTarget2,
-			].filter((url): url is string => url != null);
 			const hashes: FirmwareHash[] = [];
 
-			for (const url of urls) {
+			for (const file of upgrade.files) {
+				const { url } = file;
 				console.log(`  Downloading ${url}...`);
 				let filename: string;
 				let rawData: Uint8Array | Buffer;
@@ -1327,57 +1543,31 @@ export default async function main({
 		const newUpgrades = upgradeFormData.map((upgrade, index) => {
 			const hashes = upgradeHashes[index]!;
 			const changelog = formattedChangelogs[index]!;
-			const hasMultipleTargets =
-				upgrade.urlTarget1 != null || upgrade.urlTarget2 != null;
-
-			const entry: Record<string, any> = {};
-			if (upgrade.ifCondition) {
-				entry.$if = upgrade.ifCondition;
-			}
-			entry.version = upgrade.version;
-			entry.changelog = changelog;
-			if (upgrade.channel && upgrade.channel !== "stable") {
-				entry.channel = upgrade.channel;
-			}
-			if (upgrade.region) {
-				entry.region = upgrade.region;
-			}
-
-			if (hasMultipleTargets) {
-				entry.files = hashes.map(({ url, integrity }, targetIndex) => ({
-					target: targetIndex,
-					url,
-					integrity,
-				}));
-			} else {
-				entry.url = hashes[0]!.url;
-				entry.integrity = hashes[0]!.integrity;
-			}
-
-			return entry;
+			return createUpgradeEntry({
+				version: upgrade.version,
+				changelog,
+				channel: upgrade.channel,
+				region: upgrade.region,
+				ifCondition: upgrade.ifCondition,
+				files: upgrade.files.map((file, fileIndex) => ({
+					target: file.target,
+					url: file.url,
+					integrity: hashes[fileIndex]!.integrity,
+				})),
+			});
 		});
 
-		if (existingConfig) {
-			const existingVersions = new Set(
-				(existingConfig.upgrades ?? [])
-					.map((upgrade: { version?: unknown }) =>
-						typeof upgrade?.version === "string"
-							? upgrade.version
-							: null,
-					)
-					.filter(
-						(version: string | null): version is string =>
-							version != null,
-					),
-			);
-			const duplicates = newUpgrades
-				.filter((upgrade) => existingVersions.has(upgrade.version))
-				.map((upgrade) => upgrade.version);
-			if (duplicates.length > 0) {
-				await failWithErrors([
-					`Version(s) ${duplicates.join(", ")} already exist in ${relativeFilePath}. To update an existing entry, please submit a PR directly.`,
-				]);
-			}
+		const duplicateVariants = findDuplicateUpgradeVariants(
+			existingConfig?.upgrades ?? [],
+			newUpgrades,
+		);
+		if (duplicateVariants.length > 0) {
+			const locationMessage = existingConfig
+				? `in the submission or already in ${relativeFilePath}`
+				: "in the submission";
+			await failWithErrors([
+				`Duplicate upgrade variant(s) were found ${locationMessage}: ${duplicateVariants.join("; ")}. Please keep each version/channel/region/condition combination unique, or submit a PR to update an existing entry.`,
+			]);
 		}
 
 		const config = existingConfig

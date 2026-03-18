@@ -271,29 +271,68 @@ body:
     validations:
       required: false
 
-  - type: input
-    id: url-target-0
+  - type: dropdown
+    id: target-number-0
     attributes:
-      label: Firmware URL (Target 0)
-      description: URL to the firmware file for the main chip (target 0)
-      placeholder: 'https://example.com/firmware/v1.23.ota'
+      label: Target Number (Chip 1)
+      description: Select which target number the firmware for chip 1 applies to. Leave this at 0 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 0
     validations:
       required: true
 
   - type: input
+    id: url-target-0
+    attributes:
+      label: Firmware URL (Chip 1)
+      description: URL for the firmware for the main chip.
+      placeholder: 'https://example.com/firmware/v1.23.ota'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-number-1
+    attributes:
+      label: Target Number (Chip 2)
+      description: Select which target number the firmware for chip 2 applies to. Leave this at 1 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 1
+    validations:
+      required: false
+
+  - type: input
     id: url-target-1
     attributes:
-      label: Firmware URL (Target 1)
-      description: Optional URL for a second chip. If filled, the multi-target format will be used.
+      label: Firmware URL (Chip 2)
+      description: Optional URL for the firmware for a second chip.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-number-2
+    attributes:
+      label: Target Number (Chip 3)
+      description: Select which target number the firmware for chip 3 applies to. Leave this at 2 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 2
     validations:
       required: false
 
   - type: input
     id: url-target-2
     attributes:
-      label: Firmware URL (Target 2)
-      description: Optional URL for a third chip.
+      label: Firmware URL (Chip 3)
+      description: Optional URL for the firmware for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
@@ -365,29 +404,68 @@ body:
     validations:
       required: false
 
+  - type: dropdown
+    id: target-2-number-0
+    attributes:
+      label: Target Number (Chip 1) (Upgrade 2)
+      description: Select which target number the firmware for chip 1 applies to. Leave this at 0 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 0
+    validations:
+      required: false
+
   - type: input
     id: url-2-target-0
     attributes:
-      label: Firmware URL (Target 0) (Upgrade 2)
-      description: URL to the firmware file for the main chip (target 0)
+      label: Firmware URL (Chip 1) (Upgrade 2)
+      description: URL for the firmware for the main chip.
       placeholder: 'https://example.com/firmware/v1.23.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-2-number-1
+    attributes:
+      label: Target Number (Chip 2) (Upgrade 2)
+      description: Select which target number the firmware for chip 2 applies to. Leave this at 1 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 1
     validations:
       required: false
 
   - type: input
     id: url-2-target-1
     attributes:
-      label: Firmware URL (Target 1) (Upgrade 2)
-      description: Optional URL for a second chip. If filled, the multi-target format will be used.
+      label: Firmware URL (Chip 2) (Upgrade 2)
+      description: Optional URL for the firmware for a second chip.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-2-number-2
+    attributes:
+      label: Target Number (Chip 3) (Upgrade 2)
+      description: Select which target number the firmware for chip 3 applies to. Leave this at 2 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 2
     validations:
       required: false
 
   - type: input
     id: url-2-target-2
     attributes:
-      label: Firmware URL (Target 2) (Upgrade 2)
-      description: Optional URL for a third chip.
+      label: Firmware URL (Chip 3) (Upgrade 2)
+      description: Optional URL for the firmware for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
@@ -459,29 +537,68 @@ body:
     validations:
       required: false
 
+  - type: dropdown
+    id: target-3-number-0
+    attributes:
+      label: Target Number (Chip 1) (Upgrade 3)
+      description: Select which target number the firmware for chip 1 applies to. Leave this at 0 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 0
+    validations:
+      required: false
+
   - type: input
     id: url-3-target-0
     attributes:
-      label: Firmware URL (Target 0) (Upgrade 3)
-      description: URL to the firmware file for the main chip (target 0)
+      label: Firmware URL (Chip 1) (Upgrade 3)
+      description: URL for the firmware for the main chip.
       placeholder: 'https://example.com/firmware/v1.23.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-3-number-1
+    attributes:
+      label: Target Number (Chip 2) (Upgrade 3)
+      description: Select which target number the firmware for chip 2 applies to. Leave this at 1 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 1
     validations:
       required: false
 
   - type: input
     id: url-3-target-1
     attributes:
-      label: Firmware URL (Target 1) (Upgrade 3)
-      description: Optional URL for a second chip. If filled, the multi-target format will be used.
+      label: Firmware URL (Chip 2) (Upgrade 3)
+      description: Optional URL for the firmware for a second chip.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-3-number-2
+    attributes:
+      label: Target Number (Chip 3) (Upgrade 3)
+      description: Select which target number the firmware for chip 3 applies to. Leave this at 2 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 2
     validations:
       required: false
 
   - type: input
     id: url-3-target-2
     attributes:
-      label: Firmware URL (Target 2) (Upgrade 3)
-      description: Optional URL for a third chip.
+      label: Firmware URL (Chip 3) (Upgrade 3)
+      description: Optional URL for the firmware for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
@@ -553,29 +670,68 @@ body:
     validations:
       required: false
 
+  - type: dropdown
+    id: target-4-number-0
+    attributes:
+      label: Target Number (Chip 1) (Upgrade 4)
+      description: Select which target number the firmware for chip 1 applies to. Leave this at 0 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 0
+    validations:
+      required: false
+
   - type: input
     id: url-4-target-0
     attributes:
-      label: Firmware URL (Target 0) (Upgrade 4)
-      description: URL to the firmware file for the main chip (target 0)
+      label: Firmware URL (Chip 1) (Upgrade 4)
+      description: URL for the firmware for the main chip.
       placeholder: 'https://example.com/firmware/v1.23.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-4-number-1
+    attributes:
+      label: Target Number (Chip 2) (Upgrade 4)
+      description: Select which target number the firmware for chip 2 applies to. Leave this at 1 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 1
     validations:
       required: false
 
   - type: input
     id: url-4-target-1
     attributes:
-      label: Firmware URL (Target 1) (Upgrade 4)
-      description: Optional URL for a second chip. If filled, the multi-target format will be used.
+      label: Firmware URL (Chip 2) (Upgrade 4)
+      description: Optional URL for the firmware for a second chip.
       placeholder: 'https://example.com/firmware/v1.23_target1.ota'
+    validations:
+      required: false
+
+  - type: dropdown
+    id: target-4-number-2
+    attributes:
+      label: Target Number (Chip 3) (Upgrade 4)
+      description: Select which target number the firmware for chip 3 applies to. Leave this at 2 unless the update must be applied in a different order.
+      options:
+        - '0'
+        - '1'
+        - '2'
+      default: 2
     validations:
       required: false
 
   - type: input
     id: url-4-target-2
     attributes:
-      label: Firmware URL (Target 2) (Upgrade 4)
-      description: Optional URL for a third chip.
+      label: Firmware URL (Chip 3) (Upgrade 4)
+      description: Optional URL for the firmware for a third chip.
       placeholder: 'https://example.com/firmware/v1.23_target2.ota'
     validations:
       required: false
