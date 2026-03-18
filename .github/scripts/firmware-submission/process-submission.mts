@@ -137,9 +137,38 @@ function getTargetNumberFieldLabel(
 	return `Target Number (${getChipLabel(chipIndex)}) (Upgrade ${upgradeIndex})`;
 }
 
-function buildIssueFieldHeadings(): string[] {
+function getSingleTargetUrlFieldLabel(upgradeIndex: number): string {
+	if (upgradeIndex === 1) {
+		return "Firmware URL";
+	}
+	return `Firmware URL (Upgrade ${upgradeIndex})`;
+}
+
+function getSingleTargetTargetNumberFieldLabel(upgradeIndex: number): string {
+	if (upgradeIndex === 1) {
+		return "Target Number";
+	}
+	return `Target Number (Upgrade ${upgradeIndex})`;
+}
+
+type IssueFileLayout =
+	| "multi-target"
+	| "single-target"
+	| "single-target-with-target"
+	| "single-target-chip-1"
+	| "single-target-chip-1-with-target";
+
+function buildCanonicalIssueFieldHeadingSequence({
+	deviceCount,
+	upgradeCount,
+	fileLayout,
+}: {
+	deviceCount: number;
+	upgradeCount: number;
+	fileLayout: IssueFileLayout;
+}): string[] {
 	const headings: string[] = [];
-	for (let i = 1; i <= MAX_DEVICES; i++) {
+	for (let i = 1; i <= deviceCount; i++) {
 		headings.push(
 			getDeviceFieldLabel("Brand", i),
 			getDeviceFieldLabel("Model", i),
@@ -150,7 +179,7 @@ function buildIssueFieldHeadings(): string[] {
 			getDeviceFieldLabel("Firmware Version (Max)", i),
 		);
 	}
-	for (let i = 1; i <= MAX_UPGRADES; i++) {
+	for (let i = 1; i <= upgradeCount; i++) {
 		headings.push(
 			getUpgradeFieldLabel("Firmware Version", i),
 			getUpgradeFieldLabel("Changelog", i),
@@ -158,17 +187,120 @@ function buildIssueFieldHeadings(): string[] {
 			getUpgradeFieldLabel("Region", i),
 			getUpgradeFieldLabel("Upgrade conditions", i),
 		);
-		for (let chipIndex = 0; chipIndex < MAX_TARGETS; chipIndex++) {
-			headings.push(
-				getTargetNumberFieldLabel(chipIndex, i),
-				getUrlFieldLabel(chipIndex, i),
-			);
+
+		switch (fileLayout) {
+			case "multi-target":
+				for (let chipIndex = 0; chipIndex < MAX_TARGETS; chipIndex++) {
+					headings.push(
+						getTargetNumberFieldLabel(chipIndex, i),
+						getUrlFieldLabel(chipIndex, i),
+					);
+				}
+				break;
+			case "single-target":
+				headings.push(getSingleTargetUrlFieldLabel(i));
+				break;
+			case "single-target-with-target":
+				headings.push(
+					getSingleTargetTargetNumberFieldLabel(i),
+					getSingleTargetUrlFieldLabel(i),
+				);
+				break;
+			case "single-target-chip-1":
+				headings.push(getUrlFieldLabel(0, i));
+				break;
+			case "single-target-chip-1-with-target":
+				headings.push(
+					getTargetNumberFieldLabel(0, i),
+					getUrlFieldLabel(0, i),
+				);
+				break;
 		}
 	}
 	return headings;
 }
 
-const ISSUE_FIELD_HEADINGS = buildIssueFieldHeadings();
+function parseYamlScalar(value: string): string {
+	const trimmed = value.trim();
+	if (
+		(trimmed.startsWith("'") && trimmed.endsWith("'")) ||
+		(trimmed.startsWith('"') && trimmed.endsWith('"'))
+	) {
+		return trimmed.slice(1, -1).replace(/''/g, "'");
+	}
+	return trimmed;
+}
+
+function extractIssueTemplateFieldHeadings(templateBody: string): string[] {
+	return templateBody
+		.split(/\r?\n/)
+		.map((line) => line.match(/^ {6}label:\s*(.+?)\s*$/)?.[1])
+		.filter((label): label is string => label != null)
+		.map(parseYamlScalar);
+}
+
+function loadIssueTemplateFieldHeadingSequences(): string[][] {
+	const issueTemplateDirectory = path.join(
+		workspaceRoot,
+		".github",
+		"ISSUE_TEMPLATE",
+	);
+	let files: string[];
+	try {
+		files = fs
+			.readdirSync(issueTemplateDirectory)
+			.filter((file) => /\.(ya?ml)$/i.test(file))
+			.sort();
+	} catch {
+		return [];
+	}
+
+	return files
+		.map((file) =>
+			extractIssueTemplateFieldHeadings(
+				fs.readFileSync(
+					path.join(issueTemplateDirectory, file),
+					"utf-8",
+				),
+			),
+		)
+		.filter((headings) => headings.length > 0);
+}
+
+function buildIssueFieldHeadingSequences(): string[][] {
+	const sequences = new Set<string>();
+
+	for (const templateHeadings of loadIssueTemplateFieldHeadingSequences()) {
+		sequences.add(JSON.stringify(templateHeadings));
+	}
+
+	const fileLayouts: IssueFileLayout[] = [
+		"multi-target",
+		"single-target",
+		"single-target-with-target",
+		"single-target-chip-1",
+		"single-target-chip-1-with-target",
+	];
+	for (let deviceCount = 1; deviceCount <= MAX_DEVICES; deviceCount++) {
+		for (let upgradeCount = 1; upgradeCount <= MAX_UPGRADES; upgradeCount++) {
+			for (const fileLayout of fileLayouts) {
+				sequences.add(
+					JSON.stringify(
+						buildCanonicalIssueFieldHeadingSequence({
+							deviceCount,
+							upgradeCount,
+							fileLayout,
+						}),
+					),
+				);
+			}
+		}
+	}
+
+	return [...sequences].map((sequence) => JSON.parse(sequence) as string[]);
+}
+
+const ISSUE_FIELD_HEADING_SEQUENCES = buildIssueFieldHeadingSequences();
 
 function git(...args: string[]): string {
 	const result = spawnSync("git", args, {
@@ -459,7 +591,10 @@ export function parseIssueBody(body: string): Record<string, string | null> {
 	const lines = body.split(/\r?\n/);
 	let currentHeading: string | null = null;
 	let currentLines: string[] = [];
-	let nextHeadingIndex = 0;
+	let candidateSequences = ISSUE_FIELD_HEADING_SEQUENCES.map((headings) => ({
+		headings,
+		nextHeadingIndex: 0,
+	}));
 
 	const finalizeSection = (): void => {
 		if (!currentHeading) return;
@@ -472,13 +607,25 @@ export function parseIssueBody(body: string): Record<string, string | null> {
 		const match = line.match(/^### (.+)$/);
 		const heading = match?.[1]?.trim();
 		// GitHub issue forms render each field as `### <label>` in a fixed order.
-		// Only advancing through that known sequence keeps Markdown headings inside
-		// textarea values attached to the current field instead of starting a new one.
-		if (heading && heading === ISSUE_FIELD_HEADINGS[nextHeadingIndex]) {
+		// Only advancing through one of the known heading sequences keeps
+		// Markdown headings inside textarea values attached to the current field
+		// instead of starting a new one.
+		const matchingSequences = heading
+			? candidateSequences
+					.filter(
+						(candidate) =>
+							candidate.headings[candidate.nextHeadingIndex] === heading,
+					)
+					.map((candidate) => ({
+						headings: candidate.headings,
+						nextHeadingIndex: candidate.nextHeadingIndex + 1,
+					}))
+			: [];
+		if (heading && matchingSequences.length > 0) {
 			finalizeSection();
 			currentHeading = heading;
 			currentLines = [];
-			nextHeadingIndex++;
+			candidateSequences = matchingSequences;
 			continue;
 		}
 		if (!currentHeading) continue;
@@ -528,11 +675,12 @@ function getField(
 	label: string,
 	required: boolean,
 	errors: string[],
+	displayLabel = label,
 ): string | null {
 	if (!(label in sections)) {
 		if (required) {
 			errors.push(
-				`Could not find the '${label}' field. Has the issue body been edited manually?`,
+				`Could not find the '${displayLabel}' field. Has the issue body been edited manually?`,
 			);
 		}
 		return null;
@@ -541,12 +689,49 @@ function getField(
 	const value = sections[label];
 	if (value == null) {
 		if (required) {
-			errors.push(`The '${label}' field is required but was left blank.`);
+			errors.push(
+				`The '${displayLabel}' field is required but was left blank.`,
+			);
 		}
 		return null;
 	}
 
 	return value;
+}
+
+function findExistingFieldLabel(
+	sections: Record<string, string | null>,
+	labels: readonly string[],
+): string | null {
+	return labels.find((label) => label in sections) ?? null;
+}
+
+function getFieldWithAliases({
+	sections,
+	labels,
+	required,
+	errors,
+	displayLabel = labels[0] ?? "field",
+}: {
+	sections: Record<string, string | null>;
+	labels: readonly string[];
+	required: boolean;
+	errors: string[];
+	displayLabel?: string;
+}): { label: string; value: string | null } {
+	const label = findExistingFieldLabel(sections, labels) ?? displayLabel;
+	return {
+		label,
+		value: getField(sections, label, required, errors, displayLabel),
+	};
+}
+
+function peekFieldWithAliases(
+	sections: Record<string, string | null>,
+	labels: readonly string[],
+): string | null {
+	const label = findExistingFieldLabel(sections, labels);
+	return label != null ? sections[label] : null;
 }
 
 const hexRegex = /^0x[a-f0-9]{4}$/i;
@@ -770,6 +955,46 @@ export function findDuplicateTargets(
 	return [...duplicates];
 }
 
+interface UpgradeFileFieldDescriptor {
+	urlLabels: string[];
+	targetLabels: string[];
+	required: boolean;
+	defaultTarget: number;
+	displayLabel: string;
+}
+
+function getUpgradeFileFieldDescriptors(
+	upgradeIndex: number,
+): UpgradeFileFieldDescriptor[] {
+	return [
+		{
+			urlLabels: [
+				getUrlFieldLabel(0, upgradeIndex),
+				getSingleTargetUrlFieldLabel(upgradeIndex),
+			],
+			targetLabels: [
+				getTargetNumberFieldLabel(0, upgradeIndex),
+				getSingleTargetTargetNumberFieldLabel(upgradeIndex),
+			],
+			required: true,
+			defaultTarget: 0,
+			displayLabel: getSingleTargetUrlFieldLabel(upgradeIndex),
+		},
+		...Array.from({ length: MAX_TARGETS - 1 }, (_, offset) => {
+			const chipIndex = offset + 1;
+			return {
+				urlLabels: [getUrlFieldLabel(chipIndex, upgradeIndex)],
+				targetLabels: [
+					getTargetNumberFieldLabel(chipIndex, upgradeIndex),
+				],
+				required: false,
+				defaultTarget: chipIndex,
+				displayLabel: getUrlFieldLabel(chipIndex, upgradeIndex),
+			};
+		}),
+	];
+}
+
 export function parseUpgradeFilesFromSections({
 	sections,
 	upgradeIndex,
@@ -780,31 +1005,36 @@ export function parseUpgradeFilesFromSections({
 	errors: string[];
 }): UpgradeFileFormData[] {
 	const files: UpgradeFileFormData[] = [];
-	for (let chipIndex = 0; chipIndex < MAX_TARGETS; chipIndex++) {
-		const url = getField(
+	for (const descriptor of getUpgradeFileFieldDescriptors(upgradeIndex)) {
+		const { label: urlLabel, value: url } = getFieldWithAliases({
 			sections,
-			getUrlFieldLabel(chipIndex, upgradeIndex),
-			chipIndex === 0,
+			labels: descriptor.urlLabels,
+			required: descriptor.required,
 			errors,
-		);
+			displayLabel: descriptor.displayLabel,
+		});
 		if (!url) continue;
 
-		validateUrl(url, getUrlFieldLabel(chipIndex, upgradeIndex), errors);
+		validateUrl(url, urlLabel, errors);
 
-		const targetRaw = getField(
+		const { label: targetLabel, value: targetRaw } = getFieldWithAliases({
 			sections,
-			getTargetNumberFieldLabel(chipIndex, upgradeIndex),
-			false,
+			labels: descriptor.targetLabels,
+			required: false,
 			errors,
-		);
+			displayLabel:
+				descriptor.defaultTarget === 0
+					? getSingleTargetTargetNumberFieldLabel(upgradeIndex)
+					: descriptor.targetLabels[0],
+		});
 		const target =
 			targetRaw != null
 				? (validateTargetNumber(
 						targetRaw,
-						getTargetNumberFieldLabel(chipIndex, upgradeIndex),
+						targetLabel,
 						errors,
-					) ?? chipIndex)
-				: chipIndex;
+					) ?? descriptor.defaultTarget)
+				: descriptor.defaultTarget;
 
 		files.push({ target, url });
 	}
@@ -1219,13 +1449,8 @@ export default async function main({
 						false,
 						errors,
 					),
-					...Array.from({ length: MAX_TARGETS }, (_, chipIndex) =>
-						getField(
-							sections,
-							getUrlFieldLabel(chipIndex, i),
-							false,
-							errors,
-						),
+					...getUpgradeFileFieldDescriptors(i).map((descriptor) =>
+						peekFieldWithAliases(sections, descriptor.urlLabels),
 					),
 				]);
 
