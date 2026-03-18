@@ -65,7 +65,6 @@ interface FirmwareConfigFile {
 	relativePath: string;
 	absolutePath: string;
 	directory: string;
-	rawConfig: string;
 	config: Record<string, any>;
 	devices: NormalizedDevice[];
 }
@@ -289,7 +288,11 @@ function buildIssueFieldHeadingSequences(): string[][] {
 		"single-target-chip-1-with-target",
 	];
 	for (let deviceCount = 1; deviceCount <= MAX_DEVICES; deviceCount++) {
-		for (let upgradeCount = 1; upgradeCount <= MAX_UPGRADES; upgradeCount++) {
+		for (
+			let upgradeCount = 1;
+			upgradeCount <= MAX_UPGRADES;
+			upgradeCount++
+		) {
 			for (const fileLayout of fileLayouts) {
 				sequences.add(
 					JSON.stringify(
@@ -426,8 +429,9 @@ function listFirmwareConfigPaths(dir: string): string[] {
 
 function loadFirmwareConfigs(): FirmwareConfigFile[] {
 	return listFirmwareConfigPaths(firmwareRoot).map((absolutePath) => {
-		const rawConfig = fs.readFileSync(absolutePath, "utf-8");
-		const config = JSON5.parse(rawConfig) as Record<string, any>;
+		const config = JSON5.parse(
+			fs.readFileSync(absolutePath, "utf-8"),
+		) as Record<string, any>;
 		if (!Array.isArray(config.devices)) {
 			throw new Error(
 				`Firmware config ${absolutePath} does not contain a devices array.`,
@@ -442,7 +446,6 @@ function loadFirmwareConfigs(): FirmwareConfigFile[] {
 			relativePath: path.posix.join("firmwares", relativeWithinFirmwares),
 			absolutePath,
 			directory: path.posix.dirname(relativeWithinFirmwares),
-			rawConfig,
 			config,
 			devices: config.devices.map((device: SubmissionDevice) =>
 				normalizeDevice(device),
@@ -464,10 +467,6 @@ export function appendUpgradesToFirmwareConfigText(
 		config.upgrades.push(upgrade);
 	}
 
-	return `${stringifyCommentJson(config, null, "\t")}\n`;
-}
-
-function stringifyFirmwareConfigText(config: Record<string, any>): string {
 	return `${stringifyCommentJson(config, null, "\t")}\n`;
 }
 
@@ -652,7 +651,8 @@ export function parseIssueBody(body: string): Record<string, string | null> {
 			? candidateSequences
 					.filter(
 						(candidate) =>
-							candidate.headings[candidate.nextHeadingIndex] === heading,
+							candidate.headings[candidate.nextHeadingIndex] ===
+							heading,
 					)
 					.map((candidate) => ({
 						headings: candidate.headings,
@@ -924,7 +924,11 @@ function normalizeUpgradeVariant(upgrade: Record<string, any>): {
 function getUpgradeVariantKey(
 	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
 ): string {
-	return JSON.stringify([variant.version, variant.region, variant.ifCondition]);
+	return JSON.stringify([
+		variant.version,
+		variant.region,
+		variant.ifCondition,
+	]);
 }
 
 function describeUpgradeVariant(
@@ -1066,21 +1070,15 @@ export function parseUpgradeFilesFromSections({
 					? getSingleTargetTargetNumberFieldLabel(upgradeIndex)
 					: descriptor.targetLabels[0],
 		});
-		if (
-			urlLabel === singleTargetUrlLabel &&
-			targetRaw != null
-		) {
+		if (urlLabel === singleTargetUrlLabel && targetRaw != null) {
 			errors.push(
 				`'${targetLabel}' is not supported in the single-target submission form. That form always uses target number 0. Use the 'Firmware Submission' form instead.`,
 			);
 		}
 		const target =
 			targetRaw != null && urlLabel !== singleTargetUrlLabel
-				? (validateTargetNumber(
-						targetRaw,
-						targetLabel,
-						errors,
-					) ?? descriptor.defaultTarget)
+				? (validateTargetNumber(targetRaw, targetLabel, errors) ??
+					descriptor.defaultTarget)
 				: descriptor.defaultTarget;
 
 		files.push({ target, url });
@@ -1840,25 +1838,29 @@ export default async function main({
 
 		const configText = matchedExistingFile
 			? appendUpgradesToFirmwareConfigText(
-					matchedExistingFile.rawConfig,
+					fs.readFileSync(matchedExistingFile.absolutePath, "utf-8"),
 					newUpgrades,
 				)
-			: stringifyFirmwareConfigText({
-					devices: devices.map((device) => {
-						const entry: Record<string, any> = {
-							brand: device.brand,
-							model: device.model,
-							manufacturerId: device.manufacturerId,
-							productType: device.productType,
-							productId: device.productId,
-						};
-						if (device.firmwareVersion) {
-							entry.firmwareVersion = device.firmwareVersion;
-						}
-						return entry;
+			: `${stringifyCommentJson(
+					{
+						devices: devices.map((device) => {
+							const entry: Record<string, any> = {
+								brand: device.brand,
+								model: device.model,
+								manufacturerId: device.manufacturerId,
+								productType: device.productType,
+								productId: device.productId,
+							};
+							if (device.firmwareVersion) {
+								entry.firmwareVersion = device.firmwareVersion;
+							}
+							return entry;
 						}),
 						upgrades: newUpgrades,
-					});
+					},
+					null,
+					"\t",
+				)}\n`;
 		const formattedConfigText = await formatWithPrettier(
 			configText,
 			"json",
