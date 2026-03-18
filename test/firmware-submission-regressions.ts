@@ -1,4 +1,5 @@
 import test from "ava";
+import JSON5 from "json5";
 import { readFile } from "node:fs/promises";
 
 const processSubmissionModulePath =
@@ -16,10 +17,12 @@ const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
 const {
+	appendUpgradesToFirmwareConfigText,
 	createUpgradeEntry,
 	extractIssueTemplateFieldHeadings,
 	findDuplicateTargets,
 	findDuplicateUpgradeVariants,
+	formatWithPrettier,
 	getApprovalInvalidReason,
 	parseIssueBody,
 	parseUpgradeFilesFromSections,
@@ -689,6 +692,68 @@ test("createUpgradeEntry preserves submitted file order and targets", (t) => {
 			{ target: 1, url: "https://example.com/target-1.gbl" },
 			{ target: 0, url: "https://example.com/target-0.gbl" },
 		],
+	);
+});
+
+test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after formatting", async (t) => {
+	const existingConfig = `{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN51", // existing model comment
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa008"
+		}
+	],
+	"upgrades": [
+		// existing upgrade comment
+		{
+			"version": "1.60",
+			"changelog": "Existing release",
+			"url": "https://example.com/existing.gbl",
+			"integrity": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+		}
+	]
+}
+`;
+
+	const updatedConfig = await formatWithPrettier(
+		appendUpgradesToFirmwareConfigText(existingConfig, [
+			createUpgradeEntry({
+				version: "1.61",
+				changelog: "New release",
+				channel: "stable",
+				region: null,
+				ifCondition: null,
+				files: [
+					{
+						target: 0,
+						url: "https://example.com/new.gbl",
+						integrity:
+							"sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+					},
+				],
+			}),
+			]),
+		"json",
+		{
+			endOfLine: "lf",
+			tabWidth: 4,
+			useTabs: true,
+		},
+	);
+
+	t.true(updatedConfig.includes("// existing model comment"));
+	t.true(updatedConfig.includes("// existing upgrade comment"));
+	t.true(updatedConfig.includes('\t"devices": ['));
+
+	const parsed: {
+		upgrades: Array<{ version: string }>;
+	} = JSON5.parse(updatedConfig);
+	t.deepEqual(
+		parsed.upgrades.map((upgrade) => upgrade.version),
+		["1.60", "1.61"],
 	);
 });
 

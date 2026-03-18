@@ -1,5 +1,9 @@
 import * as githubActions from "@actions/github";
 import { downloadFirmware, generateHash } from "@zwave-js/firmware-integrity";
+import {
+	parse as parseCommentJson,
+	stringify as stringifyCommentJson,
+} from "comment-json";
 import JSON5 from "json5";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
@@ -61,6 +65,7 @@ interface FirmwareConfigFile {
 	relativePath: string;
 	absolutePath: string;
 	directory: string;
+	rawConfig: string;
 	config: Record<string, any>;
 	devices: NormalizedDevice[];
 }
@@ -421,9 +426,8 @@ function listFirmwareConfigPaths(dir: string): string[] {
 
 function loadFirmwareConfigs(): FirmwareConfigFile[] {
 	return listFirmwareConfigPaths(firmwareRoot).map((absolutePath) => {
-		const config = JSON5.parse(
-			fs.readFileSync(absolutePath, "utf-8"),
-		) as Record<string, any>;
+		const rawConfig = fs.readFileSync(absolutePath, "utf-8");
+		const config = JSON5.parse(rawConfig) as Record<string, any>;
 		if (!Array.isArray(config.devices)) {
 			throw new Error(
 				`Firmware config ${absolutePath} does not contain a devices array.`,
@@ -438,11 +442,43 @@ function loadFirmwareConfigs(): FirmwareConfigFile[] {
 			relativePath: path.posix.join("firmwares", relativeWithinFirmwares),
 			absolutePath,
 			directory: path.posix.dirname(relativeWithinFirmwares),
+			rawConfig,
 			config,
 			devices: config.devices.map((device: SubmissionDevice) =>
 				normalizeDevice(device),
 			),
 		};
+	});
+}
+
+export function appendUpgradesToFirmwareConfigText(
+	configText: string,
+	newUpgrades: readonly Record<string, any>[],
+): string {
+	const config = parseCommentJson<Record<string, any>>(configText);
+	if (!Array.isArray(config.upgrades)) {
+		throw new Error("Firmware config does not contain an upgrades array.");
+	}
+
+	for (const upgrade of newUpgrades) {
+		config.upgrades.push(upgrade);
+	}
+
+	return `${stringifyCommentJson(config, null, "\t")}\n`;
+}
+
+function stringifyFirmwareConfigText(config: Record<string, any>): string {
+	return `${stringifyCommentJson(config, null, "\t")}\n`;
+}
+
+export async function formatWithPrettier(
+	text: string,
+	parser: string,
+	prettierConfig: Record<string, any> = {},
+): Promise<string> {
+	return prettier.format(text, {
+		...prettierConfig,
+		parser,
 	});
 }
 
@@ -1761,10 +1797,11 @@ export default async function main({
 		for (const upgrade of upgradeFormData) {
 			const raw = upgrade.changelog.trim().replace(/\r\n/g, "\n");
 			try {
-				const formatted = await prettier.format(raw, {
-					...prettierConfig,
-					parser: "markdown",
-				});
+				const formatted = await formatWithPrettier(
+					raw,
+					"markdown",
+					prettierConfig,
+				);
 				formattedChangelogs.push(formatted.trim());
 			} catch {
 				formattedChangelogs.push(raw);
@@ -1801,15 +1838,12 @@ export default async function main({
 			]);
 		}
 
-		const config = existingConfig
-			? {
-					...existingConfig,
-					upgrades: [
-						...(existingConfig.upgrades ?? []),
-						...newUpgrades,
-					],
-				}
-			: {
+		const configText = matchedExistingFile
+			? appendUpgradesToFirmwareConfigText(
+					matchedExistingFile.rawConfig,
+					newUpgrades,
+				)
+			: stringifyFirmwareConfigText({
 					devices: devices.map((device) => {
 						const entry: Record<string, any> = {
 							brand: device.brand,
@@ -1822,9 +1856,14 @@ export default async function main({
 							entry.firmwareVersion = device.firmwareVersion;
 						}
 						return entry;
-					}),
-					upgrades: newUpgrades,
-				};
+						}),
+						upgrades: newUpgrades,
+					});
+		const formattedConfigText = await formatWithPrettier(
+			configText,
+			"json",
+			prettierConfig,
+		);
 
 		console.log(
 			"Re-checking approved issue state before writing changes...",
@@ -1832,11 +1871,7 @@ export default async function main({
 		await ensureIssueStillApproved(true);
 		console.log(`Writing config to ${relativeFilePath}...`);
 		fs.mkdirSync(path.dirname(absoluteFilePath), { recursive: true });
-		fs.writeFileSync(
-			absoluteFilePath,
-			`${JSON.stringify(config, null, "\t")}\n`,
-			"utf-8",
-		);
+		fs.writeFileSync(absoluteFilePath, formattedConfigText, "utf-8");
 
 		git("add", relativeFilePath);
 		const lastVersion =

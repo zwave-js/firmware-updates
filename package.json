@@ -37,6 +37,7 @@
     "@typescript-eslint/parser": "^8.43.0",
     "@zwave-js/firmware-integrity": "^1.0.2",
     "ava": "^4.3.3",
+    "comment-json": "^4.6.2",
     "esbuild": "^0.15.7",
     "esbuild-register": "^3.3.3",
     "eslint": "^9.35.0",
