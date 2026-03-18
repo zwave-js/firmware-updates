@@ -124,7 +124,7 @@ export default tseslint.config(
 	
 	// Test files override
 	{
-		files: ['**/*.test.ts'],
+		files: ['**/*.test.ts', 'test/**/*.ts'],
 		rules: {
 			'@typescript-eslint/explicit-function-return-type': 'off',
 			'@typescript-eslint/no-empty-function': 'off',
