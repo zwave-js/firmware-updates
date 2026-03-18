@@ -17,6 +17,7 @@ const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
 const {
 	createUpgradeEntry,
+	extractIssueTemplateFieldHeadings,
 	findDuplicateTargets,
 	findDuplicateUpgradeVariants,
 	getApprovalInvalidReason,
@@ -319,6 +320,17 @@ test("parseIssueBody supports single-target issue bodies with single and multipl
 			`### Fixed\n\n* Change ${scenario.upgradeCount}`,
 		);
 	}
+});
+
+test("extractIssueTemplateFieldHeadings tolerates YAML indentation changes", (t) => {
+	const headings = extractIssueTemplateFieldHeadings(`
+attributes:
+    label: Brand
+  label: "Model"
+      label: 'Firmware URL'
+`);
+
+	t.deepEqual(headings, ["Brand", "Model", "Firmware URL"]);
 });
 
 test("parseIssueBody supports single-target issue bodies with explicit target-number fields", (t) => {

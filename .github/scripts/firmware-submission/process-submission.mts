@@ -231,10 +231,12 @@ function parseYamlScalar(value: string): string {
 	return trimmed;
 }
 
-function extractIssueTemplateFieldHeadings(templateBody: string): string[] {
+export function extractIssueTemplateFieldHeadings(
+	templateBody: string,
+): string[] {
 	return templateBody
 		.split(/\r?\n/)
-		.map((line) => line.match(/^ {6}label:\s*(.+?)\s*$/)?.[1])
+		.map((line) => line.match(/^\s*label:\s*(.+?)\s*$/)?.[1])
 		.filter((label): label is string => label != null)
 		.map(parseYamlScalar);
 }
