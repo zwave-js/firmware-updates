@@ -1,10 +1,10 @@
+import * as githubActions from "@actions/github";
+import { downloadFirmware, generateHash } from "@zwave-js/firmware-integrity";
+import JSON5 from "json5";
 import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import * as githubActions from "@actions/github";
-import { downloadFirmware, generateHash } from "@zwave-js/firmware-integrity";
-import JSON5 from "json5";
 import prettier from "prettier";
 import semver from "semver";
 import type { GitHubScriptContext } from "../types.mts";
@@ -27,6 +27,9 @@ const VALID_REGIONS = [
 	"japan",
 	"korea",
 ] as const;
+
+const MAX_DEVICES = 3;
+const MAX_UPGRADES = 4;
 
 const workspaceRoot = path.resolve(
 	path.dirname(fileURLToPath(import.meta.url)),
@@ -100,6 +103,51 @@ function getErrorMessage(error: unknown): string {
 	return error instanceof Error ? error.message : String(error);
 }
 
+function getDeviceFieldLabel(name: string, index: number): string {
+	return index === 1 ? name : `${name} (Device ${index})`;
+}
+
+function getUpgradeFieldLabel(name: string, index: number): string {
+	return index === 1 ? name : `${name} (Upgrade ${index})`;
+}
+
+function getUrlFieldLabel(targetIndex: number, upgradeIndex: number): string {
+	if (upgradeIndex === 1) {
+		return `Firmware URL (Target ${targetIndex})`;
+	}
+	return `Firmware URL (Target ${targetIndex}) (Upgrade ${upgradeIndex})`;
+}
+
+function buildIssueFieldHeadings(): string[] {
+	const headings: string[] = [];
+	for (let i = 1; i <= MAX_DEVICES; i++) {
+		headings.push(
+			getDeviceFieldLabel("Brand", i),
+			getDeviceFieldLabel("Model", i),
+			getDeviceFieldLabel("Manufacturer ID", i),
+			getDeviceFieldLabel("Product Type", i),
+			getDeviceFieldLabel("Product ID", i),
+			getDeviceFieldLabel("Firmware Version (Min)", i),
+			getDeviceFieldLabel("Firmware Version (Max)", i),
+		);
+	}
+	for (let i = 1; i <= MAX_UPGRADES; i++) {
+		headings.push(
+			getUpgradeFieldLabel("Firmware Version", i),
+			getUpgradeFieldLabel("Changelog", i),
+			getUpgradeFieldLabel("Channel", i),
+			getUpgradeFieldLabel("Region", i),
+			getUpgradeFieldLabel("Upgrade conditions", i),
+			getUrlFieldLabel(0, i),
+			getUrlFieldLabel(1, i),
+			getUrlFieldLabel(2, i),
+		);
+	}
+	return headings;
+}
+
+const ISSUE_FIELD_HEADINGS = buildIssueFieldHeadings();
+
 function git(...args: string[]): string {
 	const result = spawnSync("git", args, {
 		cwd: workspaceRoot,
@@ -145,7 +193,32 @@ function sameExactDevice(
 	);
 }
 
-function sameBaseDevice(left: NormalizedDevice, right: NormalizedDevice): boolean {
+function exactDeviceKey(device: NormalizedDevice): string {
+	return [
+		device.manufacturerId,
+		device.productType,
+		device.productId,
+		device.firmwareVersion.min,
+		device.firmwareVersion.max,
+	].join(":");
+}
+
+export function sameExactDeviceSet(
+	left: readonly NormalizedDevice[],
+	right: readonly NormalizedDevice[],
+): boolean {
+	if (left.length !== right.length) {
+		return false;
+	}
+	const leftKeys = [...left].map(exactDeviceKey).sort();
+	const rightKeys = [...right].map(exactDeviceKey).sort();
+	return leftKeys.every((key, index) => key === rightKeys[index]);
+}
+
+function sameBaseDevice(
+	left: NormalizedDevice,
+	right: NormalizedDevice,
+): boolean {
 	return (
 		left.manufacturerId === right.manufacturerId &&
 		left.productType === right.productType &&
@@ -161,8 +234,10 @@ function rangesOverlap(
 	a: FirmwareVersionRange,
 	b: FirmwareVersionRange,
 ): boolean {
-	return semver.compare(padVersion(a.min), padVersion(b.max)) <= 0
-		&& semver.compare(padVersion(b.min), padVersion(a.max)) <= 0;
+	return (
+		semver.compare(padVersion(a.min), padVersion(b.max)) <= 0 &&
+		semver.compare(padVersion(b.min), padVersion(a.max)) <= 0
+	);
 }
 
 function isFirmwareConfigFile(filePath: string): boolean {
@@ -286,7 +361,8 @@ function findPreferredDirectoryForDevice(
 				.filter((file) =>
 					file.devices.some(
 						(existingDevice) =>
-							existingDevice.manufacturerId === device.manufacturerId,
+							existingDevice.manufacturerId ===
+							device.manufacturerId,
 					),
 				)
 				.map((file) => file.directory),
@@ -313,7 +389,9 @@ function determineNewFileDirectory(
 	const resolvedDirectories = [
 		...new Set(
 			submittedDevices
-				.map((device) => findPreferredDirectoryForDevice(device, firmwareConfigs))
+				.map((device) =>
+					findPreferredDirectoryForDevice(device, firmwareConfigs),
+				)
 				.filter((directory): directory is string => directory != null),
 		),
 	];
@@ -346,25 +424,84 @@ function loadApprovedIssueSnapshot(
 	}
 
 	if (payload.issue?.number !== issueNumber) {
-		throw new Error("Workflow event payload does not match the submission issue.");
+		throw new Error(
+			"Workflow event payload does not match the submission issue.",
+		);
 	}
 
 	return payload.issue;
 }
 
-function parseIssueBody(body: string): Record<string, string | null> {
+export function parseIssueBody(body: string): Record<string, string | null> {
 	const sections: Record<string, string | null> = {};
-	const parts = body.split(/\r?\n(?=### )/);
-	for (const part of parts) {
-		const match = part.match(/^### (.+?)\r?\n\r?\n([\s\S]*)/);
-		if (!match) continue;
-		const heading = match[1]?.trim();
-		if (!heading) continue;
-		const value = (match[2] ?? "").trim();
-		sections[heading] =
+	const lines = body.split(/\r?\n/);
+	let currentHeading: string | null = null;
+	let currentLines: string[] = [];
+	let nextHeadingIndex = 0;
+
+	const finalizeSection = (): void => {
+		if (!currentHeading) return;
+		const value = currentLines.join("\n").trim();
+		sections[currentHeading] =
 			value === "_No response_" || value === "" ? null : value;
+	};
+
+	for (const line of lines) {
+		const match = line.match(/^### (.+)$/);
+		const heading = match?.[1]?.trim();
+		// GitHub issue forms render each field as `### <label>` in a fixed order.
+		// Only advancing through that known sequence keeps Markdown headings inside
+		// textarea values attached to the current field instead of starting a new one.
+		if (heading && heading === ISSUE_FIELD_HEADINGS[nextHeadingIndex]) {
+			finalizeSection();
+			currentHeading = heading;
+			currentLines = [];
+			nextHeadingIndex++;
+			continue;
+		}
+		if (!currentHeading) continue;
+		if (currentLines.length === 0 && line.trim() === "") {
+			continue;
+		}
+		currentLines.push(line);
 	}
+
+	finalizeSection();
 	return sections;
+}
+
+function getIssueLabelNames(
+	labels: ReadonlyArray<string | { name?: string | null }>,
+): string[] {
+	return labels.map((label) =>
+		typeof label === "string" ? label : (label.name ?? ""),
+	);
+}
+
+export function getApprovalInvalidReason({
+	approvedBody,
+	currentBody,
+	labelNames,
+	requireProcessing = false,
+}: {
+	approvedBody: string;
+	currentBody: string | null | undefined;
+	labelNames: readonly string[];
+	requireProcessing?: boolean;
+}): string | null {
+	if ((currentBody ?? "") !== approvedBody) {
+		return "Submission body no longer matches the approved snapshot.";
+	}
+	if (!labelNames.includes("approved")) {
+		return "Submission is no longer approved.";
+	}
+	if (labelNames.includes("pending-approval")) {
+		return "Submission was reset to pending approval.";
+	}
+	if (requireProcessing && !labelNames.includes("processing")) {
+		return "Submission is no longer marked as processing.";
+	}
+	return null;
 }
 
 function getField(
@@ -396,7 +533,11 @@ function getField(
 const hexRegex = /^0x[a-f0-9]{4}$/i;
 const versionRegex = /^\d{1,3}\.\d{1,3}(\.\d{1,3})?$/;
 
-function validateHex(value: string, fieldName: string, errors: string[]): boolean {
+function validateHex(
+	value: string,
+	fieldName: string,
+	errors: string[],
+): boolean {
 	if (!hexRegex.test(value)) {
 		errors.push(
 			`'${fieldName}' must be a 4-digit hex value (e.g. 0x001d), got: ${value}`,
@@ -406,7 +547,11 @@ function validateHex(value: string, fieldName: string, errors: string[]): boolea
 	return true;
 }
 
-function validateName(value: string, fieldName: string, errors: string[]): boolean {
+function validateName(
+	value: string,
+	fieldName: string,
+	errors: string[],
+): boolean {
 	if (/\.\./.test(value) || value.includes("\\")) {
 		errors.push(`'${fieldName}' contains invalid characters.`);
 		return false;
@@ -422,7 +567,10 @@ function sanitizePathComponent(value: string): string {
 }
 
 function sanitizeForMessage(value: string): string {
-	return value.replace(/[\r\n]+/g, " ").trim().slice(0, 100);
+	return value
+		.replace(/[\r\n]+/g, " ")
+		.trim()
+		.slice(0, 100);
 }
 
 function isIpAddress(hostname: string): boolean {
@@ -433,7 +581,11 @@ function isIpAddress(hostname: string): boolean {
 	return false;
 }
 
-function validateUrl(value: string, fieldName: string, errors: string[]): boolean {
+function validateUrl(
+	value: string,
+	fieldName: string,
+	errors: string[],
+): boolean {
 	let parsed: URL;
 	try {
 		parsed = new URL(value);
@@ -448,9 +600,7 @@ function validateUrl(value: string, fieldName: string, errors: string[]): boolea
 		return false;
 	}
 	if (parsed.username || parsed.password) {
-		errors.push(
-			`'${fieldName}' must not contain credentials.`,
-		);
+		errors.push(`'${fieldName}' must not contain credentials.`);
 		return false;
 	}
 	if (isIpAddress(parsed.hostname)) {
@@ -489,7 +639,9 @@ export default async function main({
 }: GitHubScriptContext): Promise<void> {
 	const issueNumber = context.payload.issue?.number;
 	if (issueNumber == null) {
-		throw new Error("Workflow event payload does not contain an issue number.");
+		throw new Error(
+			"Workflow event payload does not contain an issue number.",
+		);
 	}
 
 	const owner = context.repo.owner;
@@ -519,11 +671,14 @@ export default async function main({
 	};
 
 	const minimizeExistingStatusComments = async (): Promise<void> => {
-		const comments = await botOctokit.paginate(botOctokit.rest.issues.listComments, {
-			owner,
-			repo,
-			issue_number: issueNumber,
-		});
+		const comments = await botOctokit.paginate(
+			botOctokit.rest.issues.listComments,
+			{
+				owner,
+				repo,
+				issue_number: issueNumber,
+			},
+		);
 
 		const statusComments = comments.filter(
 			(comment) =>
@@ -563,7 +718,9 @@ export default async function main({
 		await removeLabel("processing");
 		await addLabel("checks-failed");
 
-		const errorList = errors.map((error, index) => `${index + 1}. ${error}`).join("\n");
+		const errorList = errors
+			.map((error, index) => `${index + 1}. ${error}`)
+			.join("\n");
 		await postStatusComment(
 			`There were problems with your submission:\n\n${errorList}\n\nPlease edit the issue body to fix these issues, then ask a maintainer to re-trigger processing.`,
 		);
@@ -575,10 +732,10 @@ export default async function main({
 		await removeLabel("processing");
 		await addLabel("checks-failed");
 		await postStatusComment(
-			"This submission was edited after it was approved, so processing was skipped. Please ask a maintainer to review the updated issue body and re-apply the `approved` label before processing again.",
+			"This submission changed after it was approved, or its approval was reset, so processing was skipped. Please ask a maintainer to review the current issue body and re-apply the `approved` label before processing again.",
 		);
 		throw new SubmissionHandledError(
-			"Submission was edited after it was approved.",
+			"Submission changed after approval or approval was reset.",
 		);
 	};
 
@@ -587,16 +744,28 @@ export default async function main({
 
 		const approvedIssue = loadApprovedIssueSnapshot(issueNumber);
 		const approvedBody = approvedIssue?.body ?? "";
+		const ensureIssueStillApproved = async (
+			requireProcessingLabel = false,
+		): Promise<void> => {
+			const { data: issue } = await github.rest.issues.get({
+				owner,
+				repo,
+				issue_number: issueNumber,
+			});
+			const invalidReason = getApprovalInvalidReason({
+				approvedBody,
+				currentBody: issue.body,
+				labelNames: getIssueLabelNames(issue.labels),
+				requireProcessing: requireProcessingLabel,
+			});
+			if (invalidReason != null) {
+				console.log(invalidReason);
+				await failBecauseIssueChangedAfterApproval();
+			}
+		};
 
-		console.log("Checking if issue body was modified after approval...");
-		const { data: issue } = await github.rest.issues.get({
-			owner,
-			repo,
-			issue_number: issueNumber,
-		});
-		if ((issue.body ?? "") !== approvedBody) {
-			await failBecauseIssueChangedAfterApproval();
-		}
+		console.log("Checking if the approved issue state is still valid...");
+		await ensureIssueStillApproved();
 
 		// Reset to a consistent label state before processing.
 		await removeLabel("pending-approval");
@@ -607,9 +776,6 @@ export default async function main({
 		const sections = parseIssueBody(approvedBody);
 		const errors: string[] = [];
 
-		const deviceLabel = (name: string, index: number): string =>
-			index === 1 ? name : `${name} (Device ${index})`;
-
 		const hasAnyValue = (values: Array<string | null>): boolean =>
 			values.some((value) => value != null);
 
@@ -617,25 +783,45 @@ export default async function main({
 			const started =
 				index === 1 ||
 				hasAnyValue([
-					getField(sections, deviceLabel("Brand", index), false, errors),
-					getField(sections, deviceLabel("Model", index), false, errors),
 					getField(
 						sections,
-						deviceLabel("Manufacturer ID", index),
-						false,
-						errors,
-					),
-					getField(sections, deviceLabel("Product Type", index), false, errors),
-					getField(sections, deviceLabel("Product ID", index), false, errors),
-					getField(
-						sections,
-						deviceLabel("Firmware Version (Min)", index),
+						getDeviceFieldLabel("Brand", index),
 						false,
 						errors,
 					),
 					getField(
 						sections,
-						deviceLabel("Firmware Version (Max)", index),
+						getDeviceFieldLabel("Model", index),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getDeviceFieldLabel("Manufacturer ID", index),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getDeviceFieldLabel("Product Type", index),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getDeviceFieldLabel("Product ID", index),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getDeviceFieldLabel("Firmware Version (Min)", index),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getDeviceFieldLabel("Firmware Version (Max)", index),
 						false,
 						errors,
 					),
@@ -645,70 +831,100 @@ export default async function main({
 				return null;
 			}
 
-			const brand = getField(sections, deviceLabel("Brand", index), true, errors);
-			const model = getField(sections, deviceLabel("Model", index), true, errors);
+			const brand = getField(
+				sections,
+				getDeviceFieldLabel("Brand", index),
+				true,
+				errors,
+			);
+			const model = getField(
+				sections,
+				getDeviceFieldLabel("Model", index),
+				true,
+				errors,
+			);
 			const manufacturerId = getField(
 				sections,
-				deviceLabel("Manufacturer ID", index),
+				getDeviceFieldLabel("Manufacturer ID", index),
 				true,
 				errors,
 			);
 			const productType = getField(
 				sections,
-				deviceLabel("Product Type", index),
+				getDeviceFieldLabel("Product Type", index),
 				true,
 				errors,
 			);
 			const productId = getField(
 				sections,
-				deviceLabel("Product ID", index),
+				getDeviceFieldLabel("Product ID", index),
 				true,
 				errors,
 			);
 			const firmwareVersionMin = getField(
 				sections,
-				deviceLabel("Firmware Version (Min)", index),
+				getDeviceFieldLabel("Firmware Version (Min)", index),
 				false,
 				errors,
 			);
 			const firmwareVersionMax = getField(
 				sections,
-				deviceLabel("Firmware Version (Max)", index),
+				getDeviceFieldLabel("Firmware Version (Max)", index),
 				false,
 				errors,
 			);
 
-			if (brand) validateName(brand, deviceLabel("Brand", index), errors);
-			if (model) validateName(model, deviceLabel("Model", index), errors);
+			if (brand)
+				validateName(
+					brand,
+					getDeviceFieldLabel("Brand", index),
+					errors,
+				);
+			if (model)
+				validateName(
+					model,
+					getDeviceFieldLabel("Model", index),
+					errors,
+				);
 			if (manufacturerId) {
 				validateHex(
 					manufacturerId,
-					deviceLabel("Manufacturer ID", index),
+					getDeviceFieldLabel("Manufacturer ID", index),
 					errors,
 				);
 			}
 			if (productType) {
-				validateHex(productType, deviceLabel("Product Type", index), errors);
+				validateHex(
+					productType,
+					getDeviceFieldLabel("Product Type", index),
+					errors,
+				);
 			}
 			if (productId) {
-				validateHex(productId, deviceLabel("Product ID", index), errors);
+				validateHex(
+					productId,
+					getDeviceFieldLabel("Product ID", index),
+					errors,
+				);
 			}
 			if (firmwareVersionMin) {
 				validateVersion(
 					firmwareVersionMin,
-					deviceLabel("Firmware Version (Min)", index),
+					getDeviceFieldLabel("Firmware Version (Min)", index),
 					errors,
 				);
 			}
 			if (firmwareVersionMax) {
 				validateVersion(
 					firmwareVersionMax,
-					deviceLabel("Firmware Version (Max)", index),
+					getDeviceFieldLabel("Firmware Version (Max)", index),
 					errors,
 				);
 			}
 
-			if (!(brand && model && manufacturerId && productType && productId)) {
+			if (
+				!(brand && model && manufacturerId && productType && productId)
+			) {
 				return null;
 			}
 
@@ -741,39 +957,45 @@ export default async function main({
 		const devices = [parseDevice(1), parseDevice(2), parseDevice(3)].filter(
 			(device): device is SubmissionDevice => device != null,
 		);
-		console.log(`Parsed ${devices.length} device(s):`,
-			devices.map((d) => `${d.brand} ${d.model} (${d.manufacturerId}/${d.productType}/${d.productId})`).join(", "),
+		console.log(
+			`Parsed ${devices.length} device(s):`,
+			devices
+				.map(
+					(d) =>
+						`${d.brand} ${d.model} (${d.manufacturerId}/${d.productType}/${d.productId})`,
+				)
+				.join(", "),
 		);
 
-		const upgradeLabel = (name: string, index: number): string =>
-			index === 1 ? name : `${name} (Upgrade ${index})`;
-
-		const urlLabel = (targetIndex: number, upgradeIndex: number): string => {
-			if (upgradeIndex === 1) {
-				return `Firmware URL (Target ${targetIndex})`;
-			}
-			return `Firmware URL (Target ${targetIndex}) (Upgrade ${upgradeIndex})`;
-		};
-
 		const upgradeFormData: UpgradeFormData[] = [];
-		for (let i = 1; i <= 4; i++) {
+		for (let i = 1; i <= MAX_UPGRADES; i++) {
 			// Only check free text fields to determine if an upgrade was started.
 			// Dropdown fields (Channel, Region) always have a default value in
 			// GitHub issue forms, so they must not be used for this check.
 			const started =
 				i === 1 ||
 				hasAnyValue([
-					getField(sections, upgradeLabel("Firmware Version", i), false, errors),
-					getField(sections, upgradeLabel("Changelog", i), false, errors),
 					getField(
 						sections,
-						upgradeLabel("Upgrade conditions", i),
+						getUpgradeFieldLabel("Firmware Version", i),
 						false,
 						errors,
 					),
-					getField(sections, urlLabel(0, i), false, errors),
-					getField(sections, urlLabel(1, i), false, errors),
-					getField(sections, urlLabel(2, i), false, errors),
+					getField(
+						sections,
+						getUpgradeFieldLabel("Changelog", i),
+						false,
+						errors,
+					),
+					getField(
+						sections,
+						getUpgradeFieldLabel("Upgrade conditions", i),
+						false,
+						errors,
+					),
+					getField(sections, getUrlFieldLabel(0, i), false, errors),
+					getField(sections, getUrlFieldLabel(1, i), false, errors),
+					getField(sections, getUrlFieldLabel(2, i), false, errors),
 				]);
 
 			if (!started) {
@@ -782,52 +1004,71 @@ export default async function main({
 
 			const version = getField(
 				sections,
-				upgradeLabel("Firmware Version", i),
+				getUpgradeFieldLabel("Firmware Version", i),
 				true,
 				errors,
 			);
 			const changelog = getField(
 				sections,
-				upgradeLabel("Changelog", i),
+				getUpgradeFieldLabel("Changelog", i),
 				true,
 				errors,
 			);
 			const channelRaw = getField(
 				sections,
-				upgradeLabel("Channel", i),
+				getUpgradeFieldLabel("Channel", i),
 				true,
 				errors,
 			);
 			const regionRaw = getField(
 				sections,
-				upgradeLabel("Region", i),
+				getUpgradeFieldLabel("Region", i),
 				false,
 				errors,
 			);
 			const ifCondition = getField(
 				sections,
-				upgradeLabel("Upgrade conditions", i),
+				getUpgradeFieldLabel("Upgrade conditions", i),
 				false,
 				errors,
 			);
-			const urlTarget0 = getField(sections, urlLabel(0, i), true, errors);
-			const urlTarget1 = getField(sections, urlLabel(1, i), false, errors);
-			const urlTarget2 = getField(sections, urlLabel(2, i), false, errors);
+			const urlTarget0 = getField(
+				sections,
+				getUrlFieldLabel(0, i),
+				true,
+				errors,
+			);
+			const urlTarget1 = getField(
+				sections,
+				getUrlFieldLabel(1, i),
+				false,
+				errors,
+			);
+			const urlTarget2 = getField(
+				sections,
+				getUrlFieldLabel(2, i),
+				false,
+				errors,
+			);
 
 			let channel: "stable" | "beta" | null = null;
 			let region: string | null = null;
 
 			if (version) {
-				validateVersion(version, upgradeLabel("Firmware Version", i), errors);
+				validateVersion(
+					version,
+					getUpgradeFieldLabel("Firmware Version", i),
+					errors,
+				);
 			}
 			if (urlTarget0) {
-				validateUrl(urlTarget0, urlLabel(0, i), errors);
+				validateUrl(urlTarget0, getUrlFieldLabel(0, i), errors);
 			}
 			if (urlTarget1) {
-				validateUrl(urlTarget1, urlLabel(1, i), errors);
+				validateUrl(urlTarget1, getUrlFieldLabel(1, i), errors);
 			}
 			if (urlTarget2) {
-				validateUrl(urlTarget2, urlLabel(2, i), errors);
+				validateUrl(urlTarget2, getUrlFieldLabel(2, i), errors);
 			}
 
 			if (channelRaw) {
@@ -835,17 +1076,21 @@ export default async function main({
 					channel = channelRaw;
 				} else {
 					errors.push(
-						`'${upgradeLabel("Channel", i)}' must be 'stable' or 'beta', got: ${channelRaw}`,
+						`'${getUpgradeFieldLabel("Channel", i)}' must be 'stable' or 'beta', got: ${channelRaw}`,
 					);
 				}
 			}
 
 			if (regionRaw && regionRaw !== "All regions") {
-				if (VALID_REGIONS.includes(regionRaw as (typeof VALID_REGIONS)[number])) {
+				if (
+					VALID_REGIONS.includes(
+						regionRaw as (typeof VALID_REGIONS)[number],
+					)
+				) {
 					region = regionRaw;
 				} else {
 					errors.push(
-						`'${upgradeLabel("Region", i)}' is not a valid region: ${regionRaw}`,
+						`'${getUpgradeFieldLabel("Region", i)}' is not a valid region: ${regionRaw}`,
 					);
 				}
 			}
@@ -867,8 +1112,11 @@ export default async function main({
 			});
 		}
 
-		console.log(`Parsed ${upgradeFormData.length} upgrade(s):`,
-			upgradeFormData.map((u) => `v${u.version} (${u.channel ?? "stable"})`).join(", "),
+		console.log(
+			`Parsed ${upgradeFormData.length} upgrade(s):`,
+			upgradeFormData
+				.map((u) => `v${u.version} (${u.channel ?? "stable"})`)
+				.join(", "),
 		);
 
 		if (devices.length === 0) {
@@ -924,7 +1172,9 @@ export default async function main({
 				? `_${firmwareVersionMin ?? "0.0"}-${firmwareVersionMax ?? "255.255"}`
 				: "";
 		const fileName = `${safeModel}${versionRangeSuffix}.json`;
-		const submittedDevices = devices.map((device) => normalizeDevice(device));
+		const submittedDevices = devices.map((device) =>
+			normalizeDevice(device),
+		);
 
 		let matchedExistingFile: FirmwareConfigFile | null = null;
 		let relativeFilePath = "";
@@ -933,16 +1183,14 @@ export default async function main({
 		try {
 			console.log("Loading existing firmware configs...");
 			const firmwareConfigs = loadFirmwareConfigs();
-			console.log(`Found ${firmwareConfigs.length} existing config files`);
-			const exactMatches = submittedDevices.map((device) =>
-				firmwareConfigs.filter((file) =>
-					file.devices.some((existingDevice) =>
-						sameExactDevice(existingDevice, device),
-					),
-				),
+			console.log(
+				`Found ${firmwareConfigs.length} existing config files`,
 			);
-
-			const matchedExistingFiles = [...new Set(exactMatches.flat())];
+			// Reuse an existing file only when the submitted device identifiers match
+			// its full normalized device set exactly.
+			const matchedExistingFiles = firmwareConfigs.filter((file) =>
+				sameExactDeviceSet(file.devices, submittedDevices),
+			);
 			if (matchedExistingFiles.length > 1) {
 				throw new SubmissionValidationError(
 					`This submission matches devices in multiple existing firmware files (${matchedExistingFiles.map((file) => file.relativePath).join(", ")}). We cannot determine which file to update. Please split the submission or open a PR directly.`,
@@ -951,21 +1199,25 @@ export default async function main({
 
 			if (matchedExistingFiles.length === 1) {
 				matchedExistingFile = matchedExistingFiles[0]!;
-				console.log(`Exact device match found: ${matchedExistingFile.relativePath}`);
-				const matchingDeviceCount = submittedDevices.filter((device) =>
-					matchedExistingFile!.devices.some((existingDevice) =>
-						sameExactDevice(existingDevice, device),
-					),
-				).length;
-				if (matchingDeviceCount !== submittedDevices.length) {
-					throw new SubmissionValidationError(
-						`This multi-device submission only partially matches the devices in ${matchedExistingFile.relativePath}. Adding the remaining device identifiers to that file could introduce unwanted upgrade paths. Please split the submission or open a PR directly.`,
-					);
-				}
-
+				console.log(
+					`Exact device match found: ${matchedExistingFile.relativePath}`,
+				);
 				relativeFilePath = matchedExistingFile.relativePath;
 				absoluteFilePath = matchedExistingFile.absolutePath;
 			} else {
+				const partialExactMatches = firmwareConfigs.filter((file) =>
+					file.devices.some((existingDevice) =>
+						submittedDevices.some((device) =>
+							sameExactDevice(existingDevice, device),
+						),
+					),
+				);
+				if (partialExactMatches.length > 0) {
+					throw new SubmissionValidationError(
+						`The submitted devices only partially match existing firmware file(s) (${partialExactMatches.map((file) => file.relativePath).join(", ")}). Reusing one of those files could introduce unwanted upgrade paths. Please split the submission or open a PR directly.`,
+					);
+				}
+
 				// No exact match — check if existing files have the same
 				// base device IDs with an overlapping firmware version range.
 				// This catches the case where a submitter leaves min/max blank
@@ -997,7 +1249,11 @@ export default async function main({
 					submittedDevices,
 					firmwareConfigs,
 				);
-				relativeFilePath = path.posix.join("firmwares", brandDir, fileName);
+				relativeFilePath = path.posix.join(
+					"firmwares",
+					brandDir,
+					fileName,
+				);
 				absoluteFilePath = path.join(workspaceRoot, relativeFilePath);
 
 				if (fs.existsSync(absoluteFilePath)) {
@@ -1052,7 +1308,8 @@ export default async function main({
 			upgradeHashes.push(hashes);
 		}
 
-		const prettierConfig = (await prettier.resolveConfig(workspaceRoot)) ?? {};
+		const prettierConfig =
+			(await prettier.resolveConfig(workspaceRoot)) ?? {};
 		const formattedChangelogs: string[] = [];
 		for (const upgrade of upgradeFormData) {
 			const raw = upgrade.changelog.trim().replace(/\r\n/g, "\n");
@@ -1104,10 +1361,13 @@ export default async function main({
 			const existingVersions = new Set(
 				(existingConfig.upgrades ?? [])
 					.map((upgrade: { version?: unknown }) =>
-						typeof upgrade?.version === "string" ? upgrade.version : null,
+						typeof upgrade?.version === "string"
+							? upgrade.version
+							: null,
 					)
 					.filter(
-						(version: string | null): version is string => version != null,
+						(version: string | null): version is string =>
+							version != null,
 					),
 			);
 			const duplicates = newUpgrades
@@ -1123,7 +1383,10 @@ export default async function main({
 		const config = existingConfig
 			? {
 					...existingConfig,
-					upgrades: [...(existingConfig.upgrades ?? []), ...newUpgrades],
+					upgrades: [
+						...(existingConfig.upgrades ?? []),
+						...newUpgrades,
+					],
 				}
 			: {
 					devices: devices.map((device) => {
@@ -1142,6 +1405,10 @@ export default async function main({
 					upgrades: newUpgrades,
 				};
 
+		console.log(
+			"Re-checking approved issue state before writing changes...",
+		);
+		await ensureIssueStillApproved(true);
 		console.log(`Writing config to ${relativeFilePath}...`);
 		fs.mkdirSync(path.dirname(absoluteFilePath), { recursive: true });
 		fs.writeFileSync(
@@ -1151,12 +1418,17 @@ export default async function main({
 		);
 
 		git("add", relativeFilePath);
-		const lastVersion = upgradeFormData[upgradeFormData.length - 1]!.version;
+		const lastVersion =
+			upgradeFormData[upgradeFormData.length - 1]!.version;
 		const safeBrand = sanitizeForMessage(brand);
 		const safeModelName = sanitizeForMessage(model);
 		const commitMessage = `Add ${safeBrand} ${safeModelName} firmware v${lastVersion}`;
 		console.log(`Committing: ${commitMessage}`);
 		git("commit", "-m", commitMessage);
+		console.log(
+			"Re-checking approved issue state before pushing changes...",
+		);
+		await ensureIssueStillApproved(true);
 		console.log(`Pushing to origin/${branchName}...`);
 		git("push", "--force-with-lease", "origin", branchName);
 

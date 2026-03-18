@@ -9,6 +9,21 @@ function getErrorMessage(error: unknown): string {
 	return error instanceof Error ? error.message : String(error);
 }
 
+export function workflowRunPassed(
+	conclusion: string | null | undefined,
+): boolean {
+	return conclusion === "success";
+}
+
+function shouldIncludeJobInFailureSummary(
+	conclusion: string | null | undefined,
+): boolean {
+	return (
+		conclusion != null &&
+		!["success", "neutral", "skipped"].includes(conclusion)
+	);
+}
+
 export default async function main({
 	github,
 	context,
@@ -71,19 +86,24 @@ export default async function main({
 		return;
 	}
 
-	const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun({
-		owner,
-		repo,
-		run_id: run.id,
-	});
-	const failedJobs = jobsData.jobs.filter((job) => job.conclusion === "failure");
+	const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun(
+		{
+			owner,
+			repo,
+			run_id: run.id,
+		},
+	);
+	const passed = workflowRunPassed(run.conclusion);
+	const unsuccessfulJobs = jobsData.jobs.filter((job) =>
+		shouldIncludeJobInFailureSummary(job.conclusion),
+	);
 
 	let commentBody: string;
-	if (failedJobs.length === 0) {
+	if (passed) {
 		commentBody = `All checks passed on the [pull request](${pr.html_url}). A maintainer will review and merge.`;
 	} else {
 		const sections: string[] = [];
-		for (const job of failedJobs) {
+		for (const job of unsuccessfulJobs) {
 			let errorLines = "";
 			try {
 				// downloadJobLogsForWorkflowRun follows the redirect and
@@ -101,16 +121,21 @@ export default async function main({
 						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /gm,
 						"",
 					);
-				const lines = clean.split("\n").filter(
-					(line) =>
-						line.includes("##[error]") ||
-						line.startsWith("Error:") ||
-						line.startsWith("error ") ||
-						line.includes("❌"),
-				);
+				const lines = clean
+					.split("\n")
+					.filter(
+						(line) =>
+							line.includes("##[error]") ||
+							line.startsWith("Error:") ||
+							line.startsWith("error ") ||
+							line.includes("❌"),
+					);
 				errorLines = lines
 					.map((line) => line.replace("##[error]", "").trim())
-					.filter((line) => line !== "Process completed with exit code 1.")
+					.filter(
+						(line) =>
+							line !== "Process completed with exit code 1.",
+					)
 					.slice(0, 50)
 					.join("\n");
 			} catch (error) {
@@ -120,7 +145,12 @@ export default async function main({
 				`**Job: \`${job.name}\`**\n\`\`\`\n${errorLines || "(No error output found)"}\n\`\`\``,
 			);
 		}
-		commentBody = `The following checks failed on the [pull request](${pr.html_url}):\n\n${sections.join("\n\n")}`;
+		const workflowConclusion = run.conclusion ?? "unknown";
+		if (sections.length === 0) {
+			commentBody = `Checks did not pass on the [pull request](${pr.html_url}). The workflow run concluded with \`${workflowConclusion}\`.`;
+		} else {
+			commentBody = `Checks did not pass on the [pull request](${pr.html_url}) (workflow conclusion: \`${workflowConclusion}\`):\n\n${sections.join("\n\n")}`;
+		}
 	}
 
 	const existingComments = await github.paginate(
@@ -183,7 +213,7 @@ export default async function main({
 	};
 
 	await removeLabel("processing");
-	if (failedJobs.length === 0) {
+	if (passed) {
 		await removeLabel("checks-failed");
 		await addLabel("submitted");
 		return;
