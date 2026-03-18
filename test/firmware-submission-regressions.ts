@@ -223,7 +223,7 @@ test("getApprovalInvalidReason rejects body or label changes after approval", (t
 	);
 });
 
-test("findDuplicateUpgradeVariants allows region variants but blocks exact variants", (t) => {
+test("findDuplicateUpgradeVariants allows region variants but blocks exact and cross-channel duplicates", (t) => {
 	t.deepEqual(
 		findDuplicateUpgradeVariants(
 			[{ version: "12.23", region: "europe" }],
@@ -247,6 +247,13 @@ test("findDuplicateUpgradeVariants allows region variants but blocks exact varia
 			],
 		),
 		["v12.23, region europe"],
+	);
+	t.deepEqual(
+		findDuplicateUpgradeVariants(
+			[{ version: "12.23", channel: "stable", region: "europe" }],
+			[{ version: "12.23", channel: "beta", region: "europe" }],
+		),
+		["v12.23, channel beta, region europe"],
 	);
 });
 

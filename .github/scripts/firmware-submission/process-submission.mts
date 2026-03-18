@@ -701,12 +701,7 @@ function normalizeUpgradeVariant(upgrade: Record<string, any>): {
 function getUpgradeVariantKey(
 	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
 ): string {
-	return JSON.stringify([
-		variant.version,
-		variant.channel,
-		variant.region,
-		variant.ifCondition,
-	]);
+	return JSON.stringify([variant.version, variant.region, variant.ifCondition]);
 }
 
 function describeUpgradeVariant(
@@ -1566,7 +1561,7 @@ export default async function main({
 				? `in the submission or already in ${relativeFilePath}`
 				: "in the submission";
 			await failWithErrors([
-				`Duplicate upgrade variant(s) were found ${locationMessage}: ${duplicateVariants.join("; ")}. Please keep each version/channel/region/condition combination unique, or submit a PR to update an existing entry.`,
+				`Duplicate upgrade variant(s) were found ${locationMessage}: ${duplicateVariants.join("; ")}. Please keep each version/region/condition combination unique, and do not publish the same version on multiple channels. If you need to update an existing entry, submit a PR.`,
 			]);
 		}
 
