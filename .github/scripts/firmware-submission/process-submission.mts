@@ -1863,7 +1863,7 @@ export default async function main({
 				)}\n`;
 		const formattedConfigText = await formatWithPrettier(
 			configText,
-			"json",
+			"jsonc",
 			prettierConfig,
 		);
 

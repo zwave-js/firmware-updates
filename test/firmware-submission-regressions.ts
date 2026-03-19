@@ -736,7 +736,7 @@ test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after
 				],
 			}),
 			]),
-		"json",
+		"jsonc",
 		{
 			endOfLine: "lf",
 			tabWidth: 4,
