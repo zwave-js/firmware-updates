@@ -36,6 +36,7 @@ export interface UpgradesQueryRow {
 	target: number;
 	url: string;
 	integrity: string;
+	position: number;
 }
 
 export async function createConfigVersion(
@@ -156,7 +157,7 @@ async function lookupConfigsChunk(
 		LEFT JOIN upgrades u ON du.upgrade_id = u.id  
 		LEFT JOIN upgrade_files uf ON u.id = uf.upgrade_id
 		WHERE d.version = ?
-		ORDER BY d.id, u.id, uf.target
+		ORDER BY d.id, u.id, uf.position
 	`;
 
 	bindParams.push(filesVersion);
@@ -370,16 +371,17 @@ export async function insertSingleConfigData(
 		const upgrade = upgrades[i];
 		const upgradeId = upgradeIds[i];
 
-		for (const file of upgrade.files) {
+		for (let j = 0; j < upgrade.files.length; j++) {
+			const file = upgrade.files[j];
 			fileStatements.push(
 				db
 					.prepare(
 						`
-					INSERT INTO upgrade_files (upgrade_id, target, url, integrity)
-					VALUES (?, ?, ?, ?)
+					INSERT INTO upgrade_files (upgrade_id, target, url, integrity, position)
+					VALUES (?, ?, ?, ?, ?)
 				`,
 					)
-					.bind(upgradeId, file.target, file.url, file.integrity),
+					.bind(upgradeId, file.target, file.url, file.integrity, j),
 			);
 		}
 	}
