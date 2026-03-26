@@ -1,0 +1,37 @@
+{
+	"devices": [
+		{
+			"brand": "Inovelli",
+			"model": "VZW32-SN",
+			"manufacturerId": "0x031e",
+			"productType": "0x0017",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.1",
+			"channel": "beta",
+			"changelog": "Fixed a situation where P101~P106 could not be configured correctly. Fixed the issue where meter energy would continue to increase even when the load was set to \"Off\".",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/InovelliUSA/Firmware/raw/5c324ee67348538c080b90000d28466f8afbd48b/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Beta/2.01/VZW32-SN_2.01.gbl",
+					"integrity": "sha256:09aac2fc30c1daa6eacc44e83f1907d117e9aac54cfa77aa5d37359fa7ba7194"
+				}
+			]
+		},
+		{
+			"version": "2.0",
+			"channel": "stable",
+			"changelog": "Initial production release.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/InovelliUSA/Firmware/raw/236ba776c9914b25b172fa1804c43a778484a6c4/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Production/2.00/VZW32-SN_2.00.gbl",
+					"integrity": "sha256:40ef3de2ef3d64dd4b818f21a5cc66d5b5a4242eceedaa1c517e898d4a2039d2"
+				}
+			]
+		}
+	]
+}
