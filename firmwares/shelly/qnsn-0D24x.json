@@ -23,6 +23,13 @@
 					"integrity": "sha256:7376ef6f758e89b68b04d5d6713407eb4bd3e9d6c8b33db6f8b67c7bea37dd92"
 				}
 			]
+		},
+		{
+			"version": "13.0",
+			"changelog": "- Fixed Association\n- Fixed Part number\n- Fixed Indicator CC support\n- Fixed short press for Central Scene manager (200ms -> 500ms)\n- Fixed Binary Switch now reports state at boot up\n- Fixed Parameters 1 - 4 to properly handle value\n- Added Parameter 117 - Reboot device\n- Added Support for EU LR\n- Changed Association handling into a more modern, safe, implementation\n- Other minor fixes and improvements",
+			"region": "europe",
+			"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/876e761b570b5f0f331bfaad431e859ebc826522/Wave_i4_DC/EU/Wave_i4_dc_800_EU_LR_20260312_0959_QLSN-0D24XEU_%5Bv13.00_2144DF1C.gbl",
+			"integrity": "sha256:7a05464b78d6a9312aa383c840e33662a9a5e0dcac0c451d8f9874b3b05a54d5"
 		}
 	]
 }
