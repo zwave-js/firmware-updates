@@ -10,9 +10,52 @@
 				"min": "0.0",
 				"max": "255.255"
 			}
+		},
+		{
+			// In firmware version 12.0, the product type was mistakenly
+			// changed to 0x0004:
+			// https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/issues/8#issuecomment-4153013931
+			"brand": "Shelly Qubino",
+			"model": "Wave PM Mini",
+			"manufacturerId": "0x0460",
+			"productType": "0x0004",
+			"productId": "0x0081",
+			"firmwareVersion": {
+				"min": "12.0",
+				"max": "12.255"
+			}
 		}
 	],
 	"upgrades": [
+		{
+			"version": "13.1",
+			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.0",
+			"region": "europe",
+			"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/876e761b570b5f0f331bfaad431e859ebc826522/Wave_PM_Mini/EU/Wave_PM_mini_EU_LR_20250916_1353_QTEM-0A1PC16EU_%5Bv13.01%5D_0FE4B35C.gbl",
+			"integrity": "sha256:bf98944a85b649187b268f002c2aed2a1f0f91ab6852283561a800e01c4a2d8f"
+		},
+		{
+			"version": "13.1",
+			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/ANZ/Wave_PM_mini_ANZ_20260317_1508_QMEM-0A1PC16AU_%5Bv13.01%5D_9DD2F96C.gbl",
+					"integrity": "sha256:42dc675a1bca56fdb79f11b55e0ffeb823853d2bac07180f34d2abe64102034f"
+				}
+			]
+		},
+		{
+			"version": "13.1",
+			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/US/Wave_PM_mini_US_LR_20260317_1507_QTEM-0A1PC16US_%5Bv13.01%5D_0FE4B35C.gbl",
+					"integrity": "sha256:dbcb0e1ac2e3c5f4eddcc23b1ddc0b0878ee7047d813da319a3f2eb3aa7dc629"
+				}
+			]
+		},
 		{
 			"version": "12.0",
 			"changelog": "- kWh precision set to 2 decimal points\n- Fix random 0W reports\n- Fix OTA color signalisation\n- other minor improvements",
@@ -34,35 +77,6 @@
 					"integrity": "sha256:fff63dbf054f6fd9ff52c58935dc1ccd84b035ab30d0fba5dc48d60f0a99ba4e"
 				}
 			]
-		},
-		{
-			"version": "13.1",
-			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.0",
-			"region": "europe",
-			"url": "https://github.com/QubinoHelp/Shelly_Wave_FW_OTA/raw/876e761b570b5f0f331bfaad431e859ebc826522/Wave_PM_Mini/EU/Wave_PM_mini_EU_LR_20250916_1353_QTEM-0A1PC16EU_%5Bv13.01%5D_0FE4B35C.gbl",
-			"integrity": "sha256:bf98944a85b649187b268f002c2aed2a1f0f91ab6852283561a800e01c4a2d8f"
 		}
 	]
-},
-		{
-			"version": "13.1",
-			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
-			"region": "australia/new zealand",
-			"files": [
-				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/ANZ/Wave_PM_mini_ANZ_20260317_1508_QMEM-0A1PC16AU_%5Bv13.01%5D_9DD2F96C.gbl",
-					"integrity": "sha256:42dc675a1bca56fdb79f11b55e0ffeb823853d2bac07180f34d2abe64102034f"
-				}
-			]
-		},
-		{
-			"version": "13.1",
-			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
-			"region": "USA",
-			"files": [
-				{
-					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/US/Wave_PM_mini_US_LR_20260317_1507_QTEM-0A1PC16US_%5Bv13.01%5D_0FE4B35C.gbl",
-					"integrity": "sha256:dbcb0e1ac2e3c5f4eddcc23b1ddc0b0878ee7047d813da319a3f2eb3aa7dc629"
-				}
-			]
-		},
+}
