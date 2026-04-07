@@ -43,4 +43,26 @@
 			"integrity": "sha256:bf98944a85b649187b268f002c2aed2a1f0f91ab6852283561a800e01c4a2d8f"
 		}
 	]
-}
+},
+		{
+			"version": "13.1",
+			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/ANZ/Wave_PM_mini_ANZ_20260317_1508_QMEM-0A1PC16AU_%5Bv13.01%5D_9DD2F96C.gbl",
+					"integrity": "sha256:42dc675a1bca56fdb79f11b55e0ffeb823853d2bac07180f34d2abe64102034f"
+				}
+			]
+		},
+		{
+			"version": "13.1",
+			"changelog": "- Fixed Power measurment spams on capacitive loads.\n- Corrected productType error introduced in 12.00",
+			"region": "USA",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/68354455ae3912c7dafa269c8793bc6dd34ebe65/Wave_PM_Mini/US/Wave_PM_mini_US_LR_20260317_1507_QTEM-0A1PC16US_%5Bv13.01%5D_0FE4B35C.gbl",
+					"integrity": "sha256:dbcb0e1ac2e3c5f4eddcc23b1ddc0b0878ee7047d813da319a3f2eb3aa7dc629"
+				}
+			]
+		},
