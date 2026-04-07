@@ -466,11 +466,12 @@ export function appendUpgradesToFirmwareConfigText(
 	for (const upgrade of newUpgrades) {
 		const newVersion =
 			typeof upgrade.version === "string" ? upgrade.version : "";
+		const existingUpgrades = config.upgrades as any[];
 		// Find the first existing upgrade whose version is strictly lower than
 		// the new upgrade's version, so higher versions come first.
 		const insertIndex =
 			newVersion !== ""
-				? (config.upgrades as any[]).findIndex(
+				? existingUpgrades.findIndex(
 						(existing) =>
 							typeof existing.version === "string" &&
 							semver.compare(
@@ -483,7 +484,7 @@ export function appendUpgradesToFirmwareConfigText(
 		if (insertIndex === -1) {
 			config.upgrades.push(upgrade);
 		} else {
-			(config.upgrades as any[]).splice(insertIndex, 0, upgrade);
+			existingUpgrades.splice(insertIndex, 0, upgrade);
 		}
 	}
 
