@@ -464,7 +464,27 @@ export function appendUpgradesToFirmwareConfigText(
 	}
 
 	for (const upgrade of newUpgrades) {
-		config.upgrades.push(upgrade);
+		const newVersion =
+			typeof upgrade.version === "string" ? upgrade.version : "";
+		// Find the first existing upgrade whose version is strictly lower than
+		// the new upgrade's version, so higher versions come first.
+		const insertIndex =
+			newVersion !== ""
+				? (config.upgrades as any[]).findIndex(
+						(existing) =>
+							typeof existing.version === "string" &&
+							semver.compare(
+								padVersion(newVersion),
+								padVersion(existing.version),
+							) > 0,
+					)
+				: -1;
+
+		if (insertIndex === -1) {
+			config.upgrades.push(upgrade);
+		} else {
+			(config.upgrades as any[]).splice(insertIndex, 0, upgrade);
+		}
 	}
 
 	return `${stringifyCommentJson(config, null, "\t")}\n`;

@@ -753,7 +753,72 @@ test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after
 	} = JSON5.parse(updatedConfig);
 	t.deepEqual(
 		parsed.upgrades.map((upgrade) => upgrade.version),
-		["1.60", "1.61"],
+		["1.61", "1.60"],
+	);
+});
+
+test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending version order", (t) => {
+	const makeConfig = (versions: string[]) =>
+		JSON.stringify({
+			devices: [],
+			upgrades: versions.map((version) => ({ version })),
+		});
+
+	// New higher version is inserted before existing lower version
+	let result = JSON5.parse(
+		appendUpgradesToFirmwareConfigText(makeConfig(["1.60"]), [
+			{ version: "1.70" },
+		]),
+	) as { upgrades: Array<{ version: string }> };
+	t.deepEqual(
+		result.upgrades.map((u) => u.version),
+		["1.70", "1.60"],
+	);
+
+	// New lower version is appended after existing higher version
+	result = JSON5.parse(
+		appendUpgradesToFirmwareConfigText(makeConfig(["1.70"]), [
+			{ version: "1.60" },
+		]),
+	) as { upgrades: Array<{ version: string }> };
+	t.deepEqual(
+		result.upgrades.map((u) => u.version),
+		["1.70", "1.60"],
+	);
+
+	// New version is inserted between two existing versions
+	result = JSON5.parse(
+		appendUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
+			{ version: "1.60" },
+		]),
+	) as { upgrades: Array<{ version: string }> };
+	t.deepEqual(
+		result.upgrades.map((u) => u.version),
+		["1.70", "1.60", "1.50"],
+	);
+
+	// Multiple new upgrades with the same version are grouped together
+	result = JSON5.parse(
+		appendUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
+			{ version: "1.60", region: "europe" },
+			{ version: "1.60", region: "usa" },
+		]),
+	) as { upgrades: Array<{ version: string }> };
+	t.deepEqual(
+		result.upgrades.map((u) => u.version),
+		["1.70", "1.60", "1.60", "1.50"],
+	);
+
+	// Multiple new upgrades with different versions are each inserted at the right position
+	result = JSON5.parse(
+		appendUpgradesToFirmwareConfigText(makeConfig(["1.80", "1.50"]), [
+			{ version: "1.60" },
+			{ version: "1.70" },
+		]),
+	) as { upgrades: Array<{ version: string }> };
+	t.deepEqual(
+		result.upgrades.map((u) => u.version),
+		["1.80", "1.70", "1.60", "1.50"],
 	);
 });
 
