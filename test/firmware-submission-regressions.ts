@@ -769,7 +769,7 @@ test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 		insertUpgradesToFirmwareConfigText(makeConfig(["1.60"]), [
 			{ version: "1.70" },
 		]),
-	) as { upgrades: Array<{ version: string }> };
+	);
 	t.deepEqual(
 		result.upgrades.map((u) => u.version),
 		["1.70", "1.60"],
@@ -780,7 +780,7 @@ test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 		insertUpgradesToFirmwareConfigText(makeConfig(["1.70"]), [
 			{ version: "1.60" },
 		]),
-	) as { upgrades: Array<{ version: string }> };
+	);
 	t.deepEqual(
 		result.upgrades.map((u) => u.version),
 		["1.70", "1.60"],
@@ -791,7 +791,7 @@ test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 		insertUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
 			{ version: "1.60" },
 		]),
-	) as { upgrades: Array<{ version: string }> };
+	);
 	t.deepEqual(
 		result.upgrades.map((u) => u.version),
 		["1.70", "1.60", "1.50"],
@@ -803,7 +803,7 @@ test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 			{ version: "1.60", region: "europe" },
 			{ version: "1.60", region: "usa" },
 		]),
-	) as { upgrades: Array<{ version: string }> };
+	);
 	t.deepEqual(
 		result.upgrades.map((u) => u.version),
 		["1.70", "1.60", "1.60", "1.50"],
@@ -815,7 +815,7 @@ test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 			{ version: "1.60" },
 			{ version: "1.70" },
 		]),
-	) as { upgrades: Array<{ version: string }> };
+	);
 	t.deepEqual(
 		result.upgrades.map((u) => u.version),
 		["1.80", "1.70", "1.60", "1.50"],
