@@ -474,10 +474,10 @@ export function insertUpgradesToFirmwareConfigText(
 				? existingUpgrades.findIndex(
 						(existing) =>
 							typeof existing.version === "string" &&
-							semver.compare(
+							semver.gt(
 								padVersion(newVersion),
 								padVersion(existing.version),
-							) > 0,
+							),
 					)
 				: -1;
 
