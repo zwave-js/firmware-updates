@@ -454,7 +454,7 @@ function loadFirmwareConfigs(): FirmwareConfigFile[] {
 	});
 }
 
-export function appendUpgradesToFirmwareConfigText(
+export function insertUpgradesToFirmwareConfigText(
 	configText: string,
 	newUpgrades: readonly Record<string, any>[],
 ): string {
@@ -1824,7 +1824,7 @@ export default async function main({
 		}
 
 		const configText = matchedExistingFile
-			? appendUpgradesToFirmwareConfigText(
+			? insertUpgradesToFirmwareConfigText(
 					fs.readFileSync(matchedExistingFile.absolutePath, "utf-8"),
 					newUpgrades,
 				)

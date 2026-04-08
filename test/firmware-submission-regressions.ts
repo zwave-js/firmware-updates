@@ -17,7 +17,7 @@ const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
 const {
-	appendUpgradesToFirmwareConfigText,
+	insertUpgradesToFirmwareConfigText,
 	createUpgradeEntry,
 	extractIssueTemplateFieldHeadings,
 	findDuplicateTargets,
@@ -695,7 +695,7 @@ test("createUpgradeEntry preserves submitted file order and targets", (t) => {
 	);
 });
 
-test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after formatting", async (t) => {
+test("insertUpgradesToFirmwareConfigText preserves existing JSONC comments after formatting", async (t) => {
 	const existingConfig = `{
 	"devices": [
 		{
@@ -719,7 +719,7 @@ test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after
 `;
 
 	const updatedConfig = await formatWithPrettier(
-		appendUpgradesToFirmwareConfigText(existingConfig, [
+		insertUpgradesToFirmwareConfigText(existingConfig, [
 			createUpgradeEntry({
 				version: "1.61",
 				changelog: "New release",
@@ -735,7 +735,7 @@ test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after
 					},
 				],
 			}),
-			]),
+		]),
 		"jsonc",
 		{
 			endOfLine: "lf",
@@ -757,7 +757,7 @@ test("appendUpgradesToFirmwareConfigText preserves existing JSONC comments after
 	);
 });
 
-test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending version order", (t) => {
+test("insertUpgradesToFirmwareConfigText inserts new upgrades in descending version order", (t) => {
 	const makeConfig = (versions: string[]) =>
 		JSON.stringify({
 			devices: [],
@@ -766,7 +766,7 @@ test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 
 	// New higher version is inserted before existing lower version
 	let result = JSON5.parse(
-		appendUpgradesToFirmwareConfigText(makeConfig(["1.60"]), [
+		insertUpgradesToFirmwareConfigText(makeConfig(["1.60"]), [
 			{ version: "1.70" },
 		]),
 	) as { upgrades: Array<{ version: string }> };
@@ -777,7 +777,7 @@ test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 
 	// New lower version is appended after existing higher version
 	result = JSON5.parse(
-		appendUpgradesToFirmwareConfigText(makeConfig(["1.70"]), [
+		insertUpgradesToFirmwareConfigText(makeConfig(["1.70"]), [
 			{ version: "1.60" },
 		]),
 	) as { upgrades: Array<{ version: string }> };
@@ -788,7 +788,7 @@ test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 
 	// New version is inserted between two existing versions
 	result = JSON5.parse(
-		appendUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
+		insertUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
 			{ version: "1.60" },
 		]),
 	) as { upgrades: Array<{ version: string }> };
@@ -799,7 +799,7 @@ test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 
 	// Multiple new upgrades with the same version are grouped together
 	result = JSON5.parse(
-		appendUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
+		insertUpgradesToFirmwareConfigText(makeConfig(["1.70", "1.50"]), [
 			{ version: "1.60", region: "europe" },
 			{ version: "1.60", region: "usa" },
 		]),
@@ -811,7 +811,7 @@ test("appendUpgradesToFirmwareConfigText inserts new upgrades in descending vers
 
 	// Multiple new upgrades with different versions are each inserted at the right position
 	result = JSON5.parse(
-		appendUpgradesToFirmwareConfigText(makeConfig(["1.80", "1.50"]), [
+		insertUpgradesToFirmwareConfigText(makeConfig(["1.80", "1.50"]), [
 			{ version: "1.60" },
 			{ version: "1.70" },
 		]),
