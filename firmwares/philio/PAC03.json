@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Philio",
+			"model": "PAC03",
+			"manufacturerId": "0x013c",
+			"productType": "0x0001",
+			"productId": "0x0059"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.10",
+			"changelog": "This version modifies the filtering and judgment of setpoint values.",
+			"region": "europe",
+			"url": "https://philio-technology.squarespace.com/s/PAC03_PLO_EU_V10_3502M_Security-20260128.otz",
+			"integrity": "sha256:5171305cb7869dd28e19c5a2e0e02f87c96f5b914a929a175d667d1f785daa8b"
+		}
+	]
+}
