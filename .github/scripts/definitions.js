@@ -7,6 +7,7 @@ const manufacturerAccounts = [
 	"InovellilUSA", // Inovelli
 	"chancehiblinds", // iBlinds
 	"jascoproducts", // Jasco
+	"philiotech", // Philio
 ];
 
 module.exports = {
