@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.00, 1.10, 1.20, 1.30.\n* Updated SDK from 7.19.3 to 7.24.1.",
+			"url": "https://www.getzooz.com/firmware/ZEN75_V01R30.gbl",
+			"integrity": "sha256:e9198ef7f00fcdd40c646d01bf34e8fe07b2f404393a94b176d8f22d3985c3e8"
+		},
+		{
 			"version": "1.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 1.00, 1.10, 1.20.\n* Added new parameters: 20 - Scene Control Multi-Tap, 21 - LED Indicator Multi-Color.",
