@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN77",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xa007",
+			"firmwareVersion": {
+				"min": "5.0",
+				"max": "5.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "5.10.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 5.00, 5.10.\n* Updated SDK from 7.19.3 to 7.24.1.",
+			"url": "https://www.getzooz.com/firmware/ZEN77_V05R10.gbl",
+			"integrity": "sha256:0e7bb0c051c0498aa3848ee747be60816792f2c20649255b374bb0742a114b13"
+		}
+	]
+}
