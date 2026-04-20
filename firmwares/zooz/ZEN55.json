@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.50.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50.\n* Fixed an issue introduced in firmware 1.40 where parameter 8 no longer created or removed child devices correctly. Parameter 8 now works as expected.",
+			"url": "https://www.getzooz.com/firmware/ZEN55_V01R50.gbl",
+			"integrity": "sha256:843b1a75187ddc90d5cc7b73f2fe123e1285b48b467760ffbef70e520cd5ddb9"
+		},
+		{
 			"version": "1.40.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.\n* Optimized Z-Wave reporting behavior: when Basic Set or Binary Set commands are sent from the Z-Wave controller (Lifeline), the device will no longer send redundant report or notification commands back to the controller.\n* Updated parameter 5 (Input Trigger) with two new values: 2 - Relay follows Smoke Notification only; 3 - Relay follows CO Notification only.",
