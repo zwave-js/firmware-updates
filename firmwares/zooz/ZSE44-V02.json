@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.40.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40.\n* Updated the scale range for parameter 15 (Humidity Reporting Offset) from 0-200 (default 100) to 0-400 (default 200).",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R40_US.gbl",
+			"integrity": "sha256:f66bef39e0cec386255ed5ea34b5efc6bba0adf75a50172b9715a412b1f3d6c6"
+		},
+		{
+			"version": "2.40.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40.\n* Updated the scale range for parameter 15 (Humidity Reporting Offset) from 0-200 (default 100) to 0-400 (default 200).",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R40_EU.gbl",
+			"integrity": "sha256:0870c011e23c1d20c40855512126ca7840e03c796c955a2d0203c3b870014aaf"
+		},
+		{
 			"version": "2.30.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Fixed temperature reporting edge case: Resolved an issue where the temperature sensor could incorrectly report 32°F (0°C) in certain edge cases (firmware 2.10 and/or 2.20). This was caused by the device requiring additional time to wake from sleep mode, which occasionally resulted in a software read timeout. The new firmware extends the timeout period to ensure accurate data retrieval.",
