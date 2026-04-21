@@ -1,0 +1,31 @@
+{
+  "devices": [
+    {
+      "brand": "Zooz",
+      "model": "ZAC93",
+      "manufacturerId": "0x027a",
+      "productType": "0x0004",
+      "productId": "0x0611",
+      "firmwareVersion": {
+        "min": "2.0",
+        "max": "2.255"
+      }
+    }
+  ],
+  "upgrades": [
+    {
+      "version": "2.20.0",
+      "region": "usa",
+      "changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Firmware version 2.10 may show compatibility issues when updating from versions 1.50 or 2.00. This is due to legacy restrictions in the Silicon Labs bootloader, which can result in a 0x18 error (firmware version/product type mismatch) during OTW. In version 2.20, the firmware version and product type now use the default values defined by the SDK.",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.23.2_US-LR_V02R20.gbl",
+      "integrity": "sha256:93479058f4416143066b6bc966686e6d2cae5d79cb4736ab13855a94008b59dd"
+    },
+    {
+      "version": "2.20.0",
+      "region": "europe",
+      "changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Firmware version 2.10 may show compatibility issues when updating from versions 1.50 or 2.00. This is due to legacy restrictions in the Silicon Labs bootloader, which can result in a 0x18 error (firmware version/product type mismatch) during OTW. In version 2.20, the firmware version and product type now use the default values defined by the SDK.",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.23.2_EU-LR_V02R20.gbl",
+      "integrity": "sha256:24e4a23c9d64a5b3185ed7754086e87b2cd47ec6b7a32b5c2fcb053177750f40"
+    }
+  ]
+}
