@@ -14,7 +14,22 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Fixed an issue with PIR disable (Parameter 12): Previously, disabling the PIR via Parameter 12 only turned off motion detection but did not cut power to the PIR sensor, resulting in higher power consumption. The PIR sensor is now fully powered down when disabled, reducing energy usage.",
+			"url": "https://www.getzooz.com/firmware/ZSE11_V02R20_US.gbl",
+			"integrity": "sha256:4dd8d98f53e86a54214bf4cc41ce231ed01e3d5153bd7052f23c4e8f9ccd54db"
+		},
+		{
+			"version": "2.20.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Fixed an issue with PIR disable (Parameter 12): Previously, disabling the PIR via Parameter 12 only turned off motion detection but did not cut power to the PIR sensor, resulting in higher power consumption. The PIR sensor is now fully powered down when disabled, reducing energy usage.",
+			"url": "https://www.getzooz.com/firmware/ZSE11_V02R20_EU.gbl",
+			"integrity": "sha256:0cbc56a39af88a85797b3ca5beb9ba1491c5b0c83241fc4b2600d3a4016028fa"
+		},
+		{
 			"version": "2.10.0",
+			"region": "usa",
 			"changelog": "Includes firmware versions: 2.0, 2.10.\n* Resolved an issue where setting the Humidity Offset to a value below 100 would incorrectly display 0%. For example, entering [95] resulted in a 0% humidity reading.\n* Fixed a bug that caused the sensor to report negative lux values under certain conditions on specific platforms.\n* Updated parameter names and short descriptions in the Configuration Command Class for improved clarity and consistency.",
 			"url": "https://www.getzooz.com/firmware/ZSE11_V02R10.gbl",
 			"integrity": "sha256:b2d16fe4912085f191ff7e176d16684e8d4be2a095be95b875e29e98d13da42e"
