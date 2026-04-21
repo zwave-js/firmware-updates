@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Fixed an issue with Parameter 1, Value 4: When Playback Mode was set to Value 4 (No sound, LED indicator only), the siren speaker produced an unintended background feedback/humming noise.\n* Fixed an issue with Parameter 14 not being applied during hub or scene control. Parameter 14 now correctly controls both the alarm LED brightness and the device status indicator brightness in all activation methods.\n* Fixed an incorrect voice prompt: Corrected the voice prompt played during network setup failure.\n* Updated SDK from 7.18.8 to 7.24.1.",
+			"url": "https://www.getzooz.com/firmware/ZSE50_V01R30_US.gbl",
+			"integrity": "sha256:6cee60a418f91f252d234510a97f7c75001c629d6d8befcc6325390c7de58813"
+		},
+		{
 			"version": "1.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 1.0, 1.10, 1.20.\n* Improved Tone File Management: Resolved the tone file ordering issue by introducing fixed, addressable locations for each tone. Adding or removing sound files will no longer alter the sequence of existing tones. This update ensures that scenes remain consistent and unchanged when new files are loaded.",
