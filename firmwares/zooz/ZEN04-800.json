@@ -16,7 +16,7 @@
 		{
 			"version": "2.50.0",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40, 2.50. \n* Updated SDK from 7.19.3 to 7.24.1.",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40, 2.50.\n* Updated SDK from 7.19.3 to 7.24.1.",
 			"url": "https://www.getzooz.com/firmware/ZEN04_V02R50.gbl",
 			"integrity": "sha256:775b05a7e35f89a619ca3360980e94a6c8e3db656274790cb717d218525482c5"
 		},
@@ -37,7 +37,7 @@
 		{
 			"version": "2.20.1",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* 800 Series Z-Wave chip.\n* Based on 1.30 firmware.\n* Long Range ready.\n * Improved Direct Association for the basic set on/off functionality.",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* 800 Series Z-Wave chip.\n* Based on 1.30 firmware.\n* Long Range ready.\n* Improved Direct Association for the basic set on/off functionality.",
 			"url": "https://www.getzooz.com/firmware/ZEN04_V02R20.gbl",
 			"integrity": "sha256:c43e5a005247bdbedb8ae39ede2f041eb4727bc98b833f6ff76a12c26e6096ac"
 		}
