@@ -16,7 +16,7 @@
 		{
 			"version": "1.20.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.10, 1.20.\n *Fixed a bug where a ZEN78 powered on outside the Z-Wave network and later added would fail to start scheduled kWh reporting correctly. Now, the device reports kWh properly regardless of when it is added to the network and follows parameter 6 settings as expected.",
+			"changelog": "Includes firmware versions: 1.10, 1.20.\n* Fixed a bug where a ZEN78 powered on outside the Z-Wave network and later added would fail to start scheduled kWh reporting correctly. Now, the device reports kWh properly regardless of when it is added to the network and follows parameter 6 settings as expected.",
 			"url": "https://www.getzooz.com/firmware/ZEN78_V01R20.gbl",
 			"integrity": "sha256:5f9f9d79ac74efcb949c6011ee8d219c5dc4f2da521a75004125f8cd80deec32"
 		}
