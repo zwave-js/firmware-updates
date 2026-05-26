@@ -1,14 +1,12 @@
 import { build } from "./app.js";
 
 export interface CloudflareEnvironment {
-	API_REQUIRE_KEY: string;
-	API_KEY_ENC_KEY: string;
 	ADMIN_SECRET?: string;
 
 	CONFIG_FILES: D1Database;
 
-	API_KEYS: KVNamespace;
-	RL_FREE: RateLimit;
+	RL_GLOBAL: RateLimit;
+	RL_BURST: RateLimit;
 
 	responseHeaders: Record<string, string>;
 }

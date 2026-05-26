@@ -1,5 +1,5 @@
 import test from "ava";
-import { UnstableDevWorker, unstable_dev } from "wrangler";
+import { Unstable_DevWorker, unstable_dev } from "wrangler";
 
 test.before(async (t) => {
 	const worker = await unstable_dev("src/worker.ts", {
@@ -14,10 +14,8 @@ test.after.always(async (t) => {
 });
 
 test("GET `/` route", async (t) => {
-	process.env.API_REQUIRE_KEY = "false";
-
 	// Get the worker instance
-	const worker = (t.context as any).worker as UnstableDevWorker;
+	const worker = (t.context as any).worker as Unstable_DevWorker;
 	// Dispatch a fetch event to our worker
 	const res = await worker.fetch("/");
 

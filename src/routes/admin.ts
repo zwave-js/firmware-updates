@@ -1,6 +1,5 @@
-import { json, text, withParams } from "itty-router";
+import { json, text } from "itty-router";
 import JSON5 from "json5";
-import { encryptAPIKey } from "../lib/apiKeys.js";
 import { ConditionalUpdateConfig } from "../lib/config.js";
 import {
 	createConfigVersion,
@@ -8,7 +7,6 @@ import {
 	getCurrentVersion,
 	insertSingleConfigData,
 } from "../lib/d1Operations.js";
-import { hex2array } from "../lib/shared.js";
 import {
 	clientError,
 	ContentProps,
@@ -31,48 +29,6 @@ export default function register(router: any): void {
 			return new Response(undefined, { status: 404 });
 		}
 	});
-
-	// Creates an API key with the given information. In order to work, the
-	// API_KEY_ENC_KEY environment variable must be set to the same value as on production
-	// and the ADMIN_SECRET environment variable must be configured.
-	//
-	// Call this using a HTTP request
-	//
-	// POST http://127.0.0.1:8787/admin/makeKey/:id/:requests-per-hour
-	// x-admin-secret: <your-admin-secret>
-	router.post(
-		"/admin/makeKey/:id/:limit",
-		withParams,
-		async (
-			req: RequestWithProps<[{ params: { id: string; limit: string } }]>,
-			env: CloudflareEnvironment,
-		) => {
-			const id = parseInt(req.params.id);
-			const limit = parseInt(req.params.limit);
-			if (
-				Number.isNaN(id) ||
-				id < 1 ||
-				Number.isNaN(limit) ||
-				limit < 1
-			) {
-				console.error("Usage: /admin/makeKey/:id/:limit");
-				return clientError("Invalid id or limit");
-			}
-
-			const key = hex2array(env.API_KEY_ENC_KEY);
-			const apiKey = await encryptAPIKey(key.slice().buffer, {
-				id,
-				rateLimit: limit,
-			});
-			// ONLY log on the console
-			console.log(" ");
-			console.log(`key for ID`, id, "limit:", limit);
-			console.log(apiKey);
-			console.log(" ");
-
-			return json({ ok: true });
-		},
-	);
 
 	router.post(
 		"/admin/config/upload",
