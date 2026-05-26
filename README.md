@@ -23,21 +23,18 @@ See [the documentation](docs/firmware-files.md) for more information on how to a
 
 ## How to use?
 
-### API Keys
+### Authentication and rate limiting
 
-All requests to the API require an API key, provided using the `X-API-Key` HTTP header. API keys are **free for non-commercial use** or installations in non-commercial environments. Commercial use will be charged.
+The service is free to use on a fair-use basis. **No API key is required.**
+
+All requests **must** include a descriptive `User-Agent` HTTP header identifying the application and version (for example, `my-app/1.2.3`). Requests without a `User-Agent` header are rejected with HTTP `400`.
 
 > [!NOTE]
-> Home Assistant and official Z-Wave JS projects already have an API key for non-commercial use. Requesting an API key is not necessary for those.
+> Users running Z-Wave JS via **Home Assistant** or **Z-Wave JS UI** already have a valid `User-Agent` set automatically — no action is needed.
+>
+> Developers of **third-party / custom applications** must set a descriptive `User-Agent` for their application.
 
-To request an API key, please [reach out](mailto:info@zwave-js.io) and provide the following information:
-
-- Project/Company name
-- Open source / Commercial
-- Repository URL (open source only)
-- Approximate no. of requests/hour
-
-Once you have your API key, you can use it to make HTTP requests to the API endpoints. Currently these are defined:
+The available API endpoints are defined below.
 
 ### API v1, get updates
 
@@ -47,7 +44,7 @@ Once you have your API key, you can use it to make HTTP requests to the API endp
 ```
 POST https://firmware.zwave-js.io/api/v1/updates
 Content-Type: application/json
-X-API-Key: <Your API Key>
+User-Agent: <your-app>/<version>
 
 {
     "manufacturerId": "0x1234",
@@ -127,7 +124,7 @@ type APIv1_Response = {
 ```
 POST https://firmware.zwave-js.io/api/v2/updates
 Content-Type: application/json
-X-API-Key: <Your API Key>
+User-Agent: <your-app>/<version>
 
 {
     "manufacturerId": "0x1234",
@@ -207,7 +204,7 @@ type APIv2_Response = {
 ```
 POST https://firmware.zwave-js.io/api/v3/updates
 Content-Type: application/json
-X-API-Key: <Your API Key>
+User-Agent: <your-app>/<version>
 
 {
     "manufacturerId": "0x1234",
@@ -290,9 +287,9 @@ type APIv3_Response = {
 ### API v4, get updates for multiple devices
 
 ```
-POST https://firmware.zwave-js.io/api/v3/updates
+POST https://firmware.zwave-js.io/api/v4/updates
 Content-Type: application/json
-X-API-Key: <Your API Key>
+User-Agent: <your-app>/<version>
 
 {
     "region": "europe",

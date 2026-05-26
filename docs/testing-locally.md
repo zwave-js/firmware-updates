@@ -12,7 +12,6 @@ yarn build
 and create a file `.env` with the following content
 
 ```ini
-API_REQUIRE_KEY=false
 ADMIN_SECRET=your-random-admin-secret
 ```
 

@@ -1,4 +1,3 @@
-import type { RateLimit } from "@cloudflare/workers-types";
 import { json } from "itty-router";
 import { compare } from "semver";
 import {
@@ -30,7 +29,7 @@ import {
 	serverError,
 	type RequestWithProps,
 } from "../lib/shared_cloudflare.js";
-import { APIKeyProps, withAPIKey } from "../middleware/withAPIKey.js";
+import { UserAgentProps, withUserAgent } from "../middleware/withUserAgent.js";
 import type { CloudflareEnvironment } from "../worker.js";
 
 function getUpdatesCacheUrl(
@@ -136,40 +135,22 @@ async function handleUpdateRequest(
 	);
 }
 
-function getBucket(rateLimit: number): string {
-	if (rateLimit === 9) return "TEST";
-	if (rateLimit <= 100) return "FREE";
-	if (rateLimit <= 1000) return "1k";
-	if (rateLimit <= 10000) return "10k";
-	if (rateLimit <= 100000) return "100k";
-	return "FREE";
-}
-
 export default function register(router: any): void {
-	// Check API keys and apply rate limiter
-	router.all("/api/*", withAPIKey, (async (
-		req: RequestWithProps<[APIKeyProps]>,
+	// Require User-Agent and apply global rate limiters
+	router.all("/api/*", withUserAgent, (async (
+		_req: RequestWithProps<[UserAgentProps]>,
 		env: CloudflareEnvironment,
 	) => {
-		const bucket =
-			req.apiKey?.bucket ??
-			(req.apiKey?.rateLimit && getBucket(req.apiKey.rateLimit)) ??
-			"FREE";
-		const rateLimiter = ((env as any)[`RL_${bucket}`] ??
-			env.RL_FREE) as RateLimit;
-		const apiKeyId = req.apiKey?.id ?? 0;
+		const [burst, sustained] = await Promise.all([
+			env.RL_BURST.limit({ key: "global" }),
+			env.RL_GLOBAL.limit({ key: "global" }),
+		]);
 
-		const { success } = await rateLimiter.limit({
-			key: apiKeyId.toString(),
-		});
-
-		if (!success) {
-			// Rate limit exceeded
-
+		if (!burst.success || !sustained.success) {
 			return new Response(undefined, {
 				status: 429,
 				headers: {
-					// Right now we have no way to know when the rate limit will reset
+					// We have no way to know exactly when the rate limit will reset
 					"retry-after": "60",
 				},
 			});
