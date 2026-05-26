@@ -1,0 +1,20 @@
+{
+	"devices": [
+		{
+			"brand": "Heatit Controls",
+			"model": "Z-Temp2",
+			"manufacturerId": "0x019b",
+			"productType": "0x0004",
+			"productId": "0x0204"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.2.4",
+			"changelog": "- Updated SDK\n- Other minor bugfixes",
+			"region": "europe",
+			"url": "https://media.heatit.com/5313?type=ota",
+			"integrity": "sha256:6412dcbf142b1d644148eca42006516f93bf6ea9f35d9192dc4a6d6e35cec065"
+		}
+	]
+}
