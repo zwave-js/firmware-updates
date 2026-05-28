@@ -136,6 +136,19 @@ So: decide per-file by reading the other (unchanged) changelogs in the same JSON
 
 Regardless of the style decision, genuine normalizations (trimmed stray whitespace, fixed malformed bullets, escape-fix for bad markdown) are always worth committing.
 
+#### Splitting prose into bullets
+
+Submitters often paste a changelog as a single run-on sentence-stream like `"Fixed X. Optimized Y. Added Z."`. When the prose contains 2+ distinct changes, split it into a bullet list — it renders far better on the consumer side (z-wave-js, Home Assistant, etc.).
+
+Heuristic: if the prose has two or more sentences and each describes an independent change, split. One bullet per change. Don't split a single change that happens to span two sentences ("Added X. This also fixes Y as a side effect." stays as one bullet — or as prose).
+
+Mechanics:
+
+- Keep each bullet a complete sentence ending in `.`.
+- Don't reword the submitter's wording beyond what splitting demands; this is a formatting change, not a copy-edit.
+- Use the same bullet character (`*` or `-`) the rest of the file uses; default to `-` when there's no precedent.
+- Re-run `format-changelogs.cjs` after the split — the result should be idempotent under the pipeline.
+
 #### Real normalizations seen in the wild
 
 - **Trailing space before `\n`**: `"…2.50. \n* Updated"` → `"…2.50.\n* Updated"`
