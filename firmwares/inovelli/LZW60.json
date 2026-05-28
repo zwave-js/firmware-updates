@@ -1,0 +1,26 @@
+{
+	"devices": [
+		{
+			"brand": "Inovelli",
+			"model": "LZW60",
+			"manufacturerId": "0x031e",
+			"productType": "0x000d",
+			"productId": "0x0001"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.4",
+			"changelog": "- Fixed: Bug where parameter 101..104 cannot set to 0 to close the interval reporting.\n- Fixed: Bug where parameter 111..114 cannot work independently with parameter 101..104.\n- Fixed: Bug where the luminance change threshold of parameter 113 work abnormal.\n- Fixed: Bug that did not send sensor report when repowered.",
+			"url": "https://raw.githubusercontent.com/InovelliUSA/Firmware/ec05e86280e6d6632537346c744584c3c135e5e2/Red-Series/Z-Wave/LZW60-4-1-Sensor/Production/2.40/LZW60_2.4-Production.otz",
+			"integrity": "sha256:13c97eb85838f1e24bfdd85fdfc0d6a11185031348b25eca358caa787513fd9e"
+		},
+		{
+			"version": "2.5",
+			"changelog": "Fixed: Bug where interval reporting wasn't reporting.",
+			"channel": "beta",
+			"url": "https://raw.githubusercontent.com/InovelliUSA/Firmware/ec05e86280e6d6632537346c744584c3c135e5e2/Red-Series/Z-Wave/LZW60-4-1-Sensor/Beta/2.50/LZW60_2.50-Beta.otz",
+			"integrity": "sha256:32f3312e99221c6e96f5d8e486ab479063527a25e392fa731d3c1e668578d7bf"
+		}
+	]
+}
