@@ -10,6 +10,18 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.2",
+			"channel": "beta",
+			"changelog": "Optimized the interaction logic between the switch and the mmWave module. Fixed the incorrect use of duration in the SwitchMultilevel Set command. When the switch is restarted, P240 will be reported to indicate that the switch has been restarted.",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://files.inovelli.com/firmware/VZW32-SN/Beta/2.02/VZW32-SN_2.02.gbl",
+					"integrity": "sha256:e94a8ebe3ea87e25d00d6389cd411c2c797972ceb74bfbf4a272145723e30f85"
+				}
+			]
+		},
+		{
 			"version": "2.1",
 			"channel": "beta",
 			"changelog": "Fixed a situation where P101~P106 could not be configured correctly. Fixed the issue where meter energy would continue to increase even when the load was set to \"Off\".",
