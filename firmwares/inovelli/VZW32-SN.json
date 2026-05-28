@@ -12,7 +12,7 @@
 		{
 			"version": "2.2",
 			"channel": "beta",
-			"changelog": "Optimized the interaction logic between the switch and the mmWave module. Fixed the incorrect use of duration in the SwitchMultilevel Set command. When the switch is restarted, P240 will be reported to indicate that the switch has been restarted.",
+			"changelog": "- Optimized the interaction logic between the switch and the mmWave module.\n- Fixed the incorrect use of duration in the SwitchMultilevel Set command.\n- When the switch is restarted, P240 will be reported to indicate that the switch has been restarted.",
 			"files": [
 				{
 					"target": 0,
