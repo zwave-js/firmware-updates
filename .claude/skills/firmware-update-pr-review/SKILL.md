@@ -35,14 +35,16 @@ The title should carry these pieces of information, in this order:
 3. **Model** — bare model ID plus any variant suffixes from the filename (e.g. `ZEN71-V04-800-LR`, `ZSE42-V02`). Keep the suffix so the variant stays identifiable. Never include the `.json` extension.
 4. **Region(s)** — *optional* when the device supports only one region; the region is obvious from the body in that case. When present, use a consistent format: `US`, `EU`, `US and EU`, `US / AUS / EU` (slash-separated for 3+ regions, space-padded).
 5. **Added firmware version(s)** — *optional* when the PR touches multiple devices, since listing them all makes the title unreadable. Either `1.30` or `1.30.0` is fine; keep all three parts when the patch is non-zero (`1.30.1` stays `1.30.1`). Spell as `firmware <V>` normally; contract to `FW <V>` when the title is otherwise too long.
+6. **Channel** — *optional* and only called out when the upgrade's `channel` is not the default `stable`. For `beta` entries, prefix the word `firmware` with the channel: `beta firmware <V>`. Omit for `stable` (it's the default and adding it just adds noise).
 
 Typical shapes:
 
 ```
-<Verb> <Vendor> <Model>, firmware <Version>                             # single region implicit
+<Verb> <Vendor> <Model>, firmware <Version>                             # single region implicit, stable
 <Verb> <Vendor> <Model>, <Region>, firmware <Version>                   # explicit region
 <Verb> <Vendor> <Model>, <Region1> and <Region2>, firmware <Version>    # two regions
 <Verb> <Vendor> <Model>, <R1> / <R2> / <R3>, firmware <Version>         # three or more
+<Verb> <Vendor> <Model>, beta firmware <Version>                        # beta channel
 Update <Vendor> <Model1> to <V1>, <Model2> [<Region>] to <V2>           # two-device compact
 <Verb> <Vendor> <Model1>, <Model2>, ... firmware updates                # multi-device bundle (3+)
 ```
@@ -56,6 +58,7 @@ Examples:
 - `Add Zooz ZSE70-V01-800-LR, US / AUS / EU, firmware 1.30.1`
 - `Update Zooz ZST39 to 1.2.0, ZEN88-800 EU to 10.80.55`
 - `Add Shelly Wave Plug S, 1PM, Pro Shutter firmware updates` (version omitted for multi-device)
+- `Update Inovelli VZW32-SN, beta firmware 2.2` (beta channel called out; verb is `Update` because the existing beta entry was modified in place)
 
 ### Shortening overly long titles
 
@@ -132,6 +135,19 @@ Exception: when the rest of the file uses `*` bullets and no blank-line-before-l
 So: decide per-file by reading the other (unchanged) changelogs in the same JSON. Match what's there.
 
 Regardless of the style decision, genuine normalizations (trimmed stray whitespace, fixed malformed bullets, escape-fix for bad markdown) are always worth committing.
+
+#### Splitting prose into bullets
+
+Submitters often paste a changelog as a single run-on sentence-stream like `"Fixed X. Optimized Y. Added Z."`. When the prose contains 2+ distinct changes, split it into a bullet list — it renders far better on the consumer side (z-wave-js, Home Assistant, etc.).
+
+Heuristic: if the prose has two or more sentences and each describes an independent change, split. One bullet per change. Don't split a single change that happens to span two sentences ("Added X. This also fixes Y as a side effect." stays as one bullet — or as prose).
+
+Mechanics:
+
+- Keep each bullet a complete sentence ending in `.`.
+- Don't reword the submitter's wording beyond what splitting demands; this is a formatting change, not a copy-edit.
+- Use the same bullet character (`*` or `-`) the rest of the file uses; default to `-` when there's no precedent.
+- Re-run `format-changelogs.cjs` after the split — the result should be idempotent under the pipeline.
 
 #### Real normalizations seen in the wild
 
