@@ -932,6 +932,14 @@ function getGitHubApiErrorStatus(error: unknown): number | undefined {
 	return undefined;
 }
 
+function decodeGitHubPathSegments(segments: readonly string[]): string[] {
+	return segments.map((segment) => decodeURIComponent(segment));
+}
+
+function encodeGitHubPathSegments(segments: readonly string[]): string {
+	return segments.map((segment) => encodeURIComponent(segment)).join("/");
+}
+
 export async function resolveGitHubFirmwarePermalink(
 	github: GitHubScriptContext["github"],
 	value: string,
@@ -939,8 +947,8 @@ export async function resolveGitHubFirmwarePermalink(
 	const location = getGitHubHostedFirmwareLocation(value);
 	if (!location) return value;
 
-	const decodedSegments = location.refAndPathSegments.map((segment) =>
-		decodeURIComponent(segment),
+	const decodedSegments = decodeGitHubPathSegments(
+		location.refAndPathSegments,
 	);
 
 	for (let splitIndex = 1; splitIndex < decodedSegments.length; splitIndex++) {
@@ -961,10 +969,9 @@ export async function resolveGitHubFirmwarePermalink(
 				ref,
 			});
 
-			return `https://raw.githubusercontent.com/${location.owner}/${location.repo}/${commit.sha}/${decodedSegments
-				.slice(splitIndex)
-				.map((segment) => encodeURIComponent(segment))
-				.join("/")}`;
+			return `https://raw.githubusercontent.com/${location.owner}/${location.repo}/${commit.sha}/${encodeGitHubPathSegments(
+				decodedSegments.slice(splitIndex),
+			)}`;
 		} catch (error) {
 			if (getGitHubApiErrorStatus(error) === 404) continue;
 			throw error;
@@ -1857,7 +1864,7 @@ export default async function main({
 					);
 				} catch (error) {
 					if (error instanceof SubmissionValidationError) {
-						await failWithErrors([error.message]);
+						return await failWithErrors([error.message]);
 					}
 					throw error;
 				}
