@@ -22,18 +22,6 @@
 			]
 		},
 		{
-			"version": "2.1",
-			"channel": "beta",
-			"changelog": "Fixed a situation where P101~P106 could not be configured correctly. Fixed the issue where meter energy would continue to increase even when the load was set to \"Off\".",
-			"files": [
-				{
-					"target": 0,
-					"url": "https://github.com/InovelliUSA/Firmware/raw/5c324ee67348538c080b90000d28466f8afbd48b/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Beta/2.01/VZW32-SN_2.01.gbl",
-					"integrity": "sha256:09aac2fc30c1daa6eacc44e83f1907d117e9aac54cfa77aa5d37359fa7ba7194"
-				}
-			]
-		},
-		{
 			"version": "2.0",
 			"channel": "stable",
 			"changelog": "Initial production release.",
