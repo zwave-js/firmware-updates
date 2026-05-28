@@ -940,6 +940,33 @@ function encodeGitHubPathSegments(segments: readonly string[]): string {
 	return segments.map((segment) => encodeURIComponent(segment)).join("/");
 }
 
+const COMMIT_SHA_REGEX = /^[0-9a-f]{40}$/i;
+
+function buildRawPermalink(
+	owner: string,
+	repo: string,
+	sha: string,
+	pathSegments: readonly string[],
+): string {
+	return `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${encodeGitHubPathSegments(pathSegments)}`;
+}
+
+// Resolves a GitHub blob or raw URL to a raw URL pinned at a commit SHA so the
+// stored firmware link doesn't depend on a mutable ref.
+//
+// The ref is resolved to its current HEAD commit at submission time, by design:
+// the firmware hash is computed in the same pass, so URL and hash are pinned
+// together as a snapshot. The permalink is not a historical reference to "the
+// commit where the URL was correct when the submitter copied it" — if the
+// branch moves between copy-paste and submission, we pin to whatever the
+// branch points to *now*.
+//
+// Refs may contain `/`, which makes URLs of the form
+// `raw.githubusercontent.com/<owner>/<repo>/<segments…>` ambiguous: the
+// boundary between the ref and the file path is not encoded. We disambiguate
+// by trying the longest possible ref first, which matches the GitHub web UI
+// behavior and avoids a shorter branch name accidentally winning over the
+// fully-qualified ref the submitter actually used.
 export async function resolveGitHubFirmwarePermalink(
 	github: GitHubScriptContext["github"],
 	value: string,
@@ -947,11 +974,34 @@ export async function resolveGitHubFirmwarePermalink(
 	const location = getGitHubHostedFirmwareLocation(value);
 	if (!location) return value;
 
-	const decodedSegments = decodeGitHubPathSegments(
-		location.refAndPathSegments,
-	);
+	let decodedSegments: string[];
+	try {
+		decodedSegments = decodeGitHubPathSegments(location.refAndPathSegments);
+	} catch {
+		// Malformed percent-encoding — not a URL we can normalize.
+		return value;
+	}
 
-	for (let splitIndex = 1; splitIndex < decodedSegments.length; splitIndex++) {
+	// Fast path: the URL is already pinned to a commit SHA. SHAs cannot contain
+	// `/`, so there's no ambiguity and no API call needed — just rebuild as a
+	// canonical raw URL.
+	if (
+		decodedSegments.length >= 2
+		&& COMMIT_SHA_REGEX.test(decodedSegments[0]!)
+	) {
+		return buildRawPermalink(
+			location.owner,
+			location.repo,
+			decodedSegments[0]!.toLowerCase(),
+			decodedSegments.slice(1),
+		);
+	}
+
+	for (
+		let splitIndex = decodedSegments.length - 1;
+		splitIndex >= 1;
+		splitIndex--
+	) {
 		const ref = decodedSegments.slice(0, splitIndex).join("/");
 		const filePath = decodedSegments.slice(splitIndex).join("/");
 		try {
@@ -969,9 +1019,12 @@ export async function resolveGitHubFirmwarePermalink(
 				ref,
 			});
 
-			return `https://raw.githubusercontent.com/${location.owner}/${location.repo}/${commit.sha}/${encodeGitHubPathSegments(
+			return buildRawPermalink(
+				location.owner,
+				location.repo,
+				commit.sha,
 				decodedSegments.slice(splitIndex),
-			)}`;
+			);
 		} catch (error) {
 			if (getGitHubApiErrorStatus(error) === 404) continue;
 			throw error;
@@ -1851,8 +1904,8 @@ export default async function main({
 
 		const existingConfig = matchedExistingFile?.config ?? null;
 
-		console.log("Resolving GitHub-hosted firmware URLs...");
 		const normalizedUpgradeFormData: UpgradeFormData[] = [];
+		let announcedResolution = false;
 		for (const upgrade of upgradeFormData) {
 			const normalizedFiles: UpgradeFileFormData[] = [];
 			for (const file of upgrade.files) {
@@ -1870,6 +1923,12 @@ export default async function main({
 				}
 
 				if (resolvedUrl !== file.url) {
+					if (!announcedResolution) {
+						console.log(
+							"Resolving GitHub-hosted firmware URLs...",
+						);
+						announcedResolution = true;
+					}
 					console.log(`  Resolved ${file.url} -> ${resolvedUrl}`);
 				}
 				normalizedFiles.push({

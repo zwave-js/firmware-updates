@@ -681,9 +681,10 @@ test("resolveGitHubFirmwarePermalink converts blob URLs on named branches to raw
 				}) => {
 					t.is(owner, "InovelliUSA");
 					t.is(repo, "Firmware");
-					t.is(path, "dir/fw.otz");
-					t.is(ref, "main");
-					return { data: { type: "file" } };
+					if (ref === "main" && path === "dir/fw.otz") {
+						return { data: { type: "file" } };
+					}
+					throw Object.assign(new Error("Not Found"), { status: 404 });
 				},
 				getCommit: async ({
 					owner,
@@ -745,13 +746,194 @@ test("resolveGitHubFirmwarePermalink handles refs with slashes in raw.githubuser
 		"https://raw.githubusercontent.com/acme/firmware/release/v1/firmwares/fw.bin",
 	);
 
+	// Longest ref prefix is tried first so a fully-qualified ref like
+	// `release/v1` wins over a coincidental shorter `release` branch. The
+	// loop attempts every prefix from the longest down, so the bogus
+	// `release/v1/firmwares` split is tried (and 404s) before the real one.
 	t.deepEqual(attempts, [
-		"release:v1/firmwares/fw.bin",
+		"release/v1/firmwares:fw.bin",
 		"release/v1:firmwares/fw.bin",
 	]);
 	t.is(
 		result,
 		"https://raw.githubusercontent.com/acme/firmware/0123456789abcdef0123456789abcdef01234567/firmwares/fw.bin",
+	);
+});
+
+test("resolveGitHubFirmwarePermalink prefers longest ref when a shorter one also exists", async (t) => {
+	// Branch `release` exists with a `v1/firmwares/fw.bin` file by coincidence,
+	// and branch `release/v1` also exists with `firmwares/fw.bin`. Longest-first
+	// must pick the latter — the submitter explicitly typed the longer ref.
+	const attempts: string[] = [];
+	const github = {
+		rest: {
+			repos: {
+				getContent: async ({
+					path,
+					ref,
+				}: {
+					path: string;
+					ref: string;
+				}) => {
+					attempts.push(`${ref}:${path}`);
+					if (ref === "release/v1" && path === "firmwares/fw.bin") {
+						return { data: { type: "file" } };
+					}
+					if (ref === "release" && path === "v1/firmwares/fw.bin") {
+						return { data: { type: "file" } };
+					}
+					throw Object.assign(new Error("Not Found"), { status: 404 });
+				},
+				getCommit: async ({ ref }: { ref: string }) => {
+					t.is(ref, "release/v1");
+					return { data: { sha: "abcdefabcdefabcdefabcdefabcdefabcdefabcd" } };
+				},
+			},
+		},
+	} as any;
+
+	const result = await resolveGitHubFirmwarePermalink(
+		github,
+		"https://raw.githubusercontent.com/acme/firmware/release/v1/firmwares/fw.bin",
+	);
+
+	t.deepEqual(attempts, [
+		"release/v1/firmwares:fw.bin",
+		"release/v1:firmwares/fw.bin",
+	]);
+	t.is(
+		result,
+		"https://raw.githubusercontent.com/acme/firmware/abcdefabcdefabcdefabcdefabcdefabcdefabcd/firmwares/fw.bin",
+	);
+});
+
+test("resolveGitHubFirmwarePermalink returns non-GitHub URLs unchanged without API calls", async (t) => {
+	const github = {
+		rest: {
+			repos: {
+				getContent: async () => {
+					t.fail("getContent should not be called for non-GitHub URLs");
+					throw new Error("unreachable");
+				},
+				getCommit: async () => {
+					t.fail("getCommit should not be called for non-GitHub URLs");
+					throw new Error("unreachable");
+				},
+			},
+		},
+	} as any;
+
+	const inputs = [
+		"https://example.com/firmware.bin",
+		"https://gist.github.com/foo/bar/raw/abc/file.bin",
+		"https://github.com/owner/repo/releases/download/v1.0/file.bin",
+		"https://github.com/owner/repo/tree/main/firmware",
+	];
+	for (const url of inputs) {
+		t.is(await resolveGitHubFirmwarePermalink(github, url), url);
+	}
+});
+
+test("resolveGitHubFirmwarePermalink short-circuits URLs already pinned to a commit SHA", async (t) => {
+	const github = {
+		rest: {
+			repos: {
+				getContent: async () => {
+					t.fail("getContent should not be called for SHA-pinned URLs");
+					throw new Error("unreachable");
+				},
+				getCommit: async () => {
+					t.fail("getCommit should not be called for SHA-pinned URLs");
+					throw new Error("unreachable");
+				},
+			},
+		},
+	} as any;
+
+	const sha = "ec05e86280e6d6632537346c744584c3c135e5e2";
+
+	t.is(
+		await resolveGitHubFirmwarePermalink(
+			github,
+			`https://raw.githubusercontent.com/owner/repo/${sha}/dir/fw.bin`,
+		),
+		`https://raw.githubusercontent.com/owner/repo/${sha}/dir/fw.bin`,
+	);
+
+	t.is(
+		await resolveGitHubFirmwarePermalink(
+			github,
+			`https://github.com/owner/repo/blob/${sha}/dir/fw.bin`,
+		),
+		`https://raw.githubusercontent.com/owner/repo/${sha}/dir/fw.bin`,
+	);
+
+	// Uppercase SHA is normalized to lowercase.
+	t.is(
+		await resolveGitHubFirmwarePermalink(
+			github,
+			`https://github.com/owner/repo/blob/${sha.toUpperCase()}/dir/fw.bin`,
+		),
+		`https://raw.githubusercontent.com/owner/repo/${sha}/dir/fw.bin`,
+	);
+});
+
+test("resolveGitHubFirmwarePermalink throws SubmissionValidationError when no ref/path split resolves", async (t) => {
+	const github = {
+		rest: {
+			repos: {
+				getContent: async () => {
+					throw Object.assign(new Error("Not Found"), { status: 404 });
+				},
+				getCommit: async () => {
+					t.fail("getCommit should not be called when no split resolves");
+					throw new Error("unreachable");
+				},
+			},
+		},
+	} as any;
+
+	await t.throwsAsync(
+		resolveGitHubFirmwarePermalink(
+			github,
+			"https://github.com/owner/repo/blob/nope/missing/path/file.bin",
+		),
+		{ message: /could not be resolved to a raw permalink/ },
+	);
+});
+
+test("resolveGitHubFirmwarePermalink decodes percent-encoded path segments and re-encodes them in the permalink", async (t) => {
+	const github = {
+		rest: {
+			repos: {
+				getContent: async ({
+					path,
+					ref,
+				}: {
+					path: string;
+					ref: string;
+				}) => {
+					if (ref === "main" && path === "dir with space/fw+1.bin") {
+						return { data: { type: "file" } };
+					}
+					throw Object.assign(new Error("Not Found"), { status: 404 });
+				},
+				getCommit: async ({ ref }: { ref: string }) => {
+					t.is(ref, "main");
+					return { data: { sha: "1111111111111111111111111111111111111111" } };
+				},
+			},
+		},
+	} as any;
+
+	const result = await resolveGitHubFirmwarePermalink(
+		github,
+		"https://github.com/owner/repo/blob/main/dir%20with%20space/fw%2B1.bin",
+	);
+
+	t.is(
+		result,
+		"https://raw.githubusercontent.com/owner/repo/1111111111111111111111111111111111111111/dir%20with%20space/fw%2B1.bin",
 	);
 });
 
