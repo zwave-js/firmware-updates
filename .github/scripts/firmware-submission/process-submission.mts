@@ -875,6 +875,167 @@ function validateUrl(
 	return true;
 }
 
+function getGitHubHostedFirmwareLocation(
+	value: string,
+):
+	| {
+			owner: string;
+			repo: string;
+			refAndPathSegments: string[];
+	  }
+	| undefined {
+	let parsed: URL;
+	try {
+		parsed = new URL(value);
+	} catch {
+		return undefined;
+	}
+
+	const pathnameSegments = parsed.pathname
+		.split("/")
+		.filter((segment) => segment.length > 0);
+
+	if (parsed.hostname === "github.com") {
+		if (pathnameSegments.length < 5 || pathnameSegments[2] !== "blob") {
+			return undefined;
+		}
+		return {
+			owner: pathnameSegments[0]!,
+			repo: pathnameSegments[1]!,
+			refAndPathSegments: pathnameSegments.slice(3),
+		};
+	}
+
+	if (parsed.hostname === "raw.githubusercontent.com") {
+		if (pathnameSegments.length < 4) {
+			return undefined;
+		}
+		return {
+			owner: pathnameSegments[0]!,
+			repo: pathnameSegments[1]!,
+			refAndPathSegments: pathnameSegments.slice(2),
+		};
+	}
+
+	return undefined;
+}
+
+function getGitHubApiErrorStatus(error: unknown): number | undefined {
+	if (
+		typeof error === "object"
+		&& error != null
+		&& "status" in error
+		&& typeof error.status === "number"
+	) {
+		return error.status;
+	}
+	return undefined;
+}
+
+function decodeGitHubPathSegments(segments: readonly string[]): string[] {
+	return segments.map((segment) => decodeURIComponent(segment));
+}
+
+function encodeGitHubPathSegments(segments: readonly string[]): string {
+	return segments.map((segment) => encodeURIComponent(segment)).join("/");
+}
+
+const COMMIT_SHA_REGEX = /^[0-9a-f]{40}$/i;
+
+function buildRawPermalink(
+	owner: string,
+	repo: string,
+	sha: string,
+	pathSegments: readonly string[],
+): string {
+	return `https://raw.githubusercontent.com/${owner}/${repo}/${sha}/${encodeGitHubPathSegments(pathSegments)}`;
+}
+
+// Resolves a GitHub blob or raw URL to a raw URL pinned at a commit SHA so the
+// stored firmware link doesn't depend on a mutable ref.
+//
+// The ref is resolved to its current HEAD commit at submission time, by design:
+// the firmware hash is computed in the same pass, so URL and hash are pinned
+// together as a snapshot. The permalink is not a historical reference to "the
+// commit where the URL was correct when the submitter copied it" — if the
+// branch moves between copy-paste and submission, we pin to whatever the
+// branch points to *now*.
+//
+// Refs may contain `/`, which makes URLs of the form
+// `raw.githubusercontent.com/<owner>/<repo>/<segments…>` ambiguous: the
+// boundary between the ref and the file path is not encoded. We disambiguate
+// by trying the longest possible ref first, which matches the GitHub web UI
+// behavior and avoids a shorter branch name accidentally winning over the
+// fully-qualified ref the submitter actually used.
+export async function resolveGitHubFirmwarePermalink(
+	github: GitHubScriptContext["github"],
+	value: string,
+): Promise<string> {
+	const location = getGitHubHostedFirmwareLocation(value);
+	if (!location) return value;
+
+	let decodedSegments: string[];
+	try {
+		decodedSegments = decodeGitHubPathSegments(location.refAndPathSegments);
+	} catch {
+		// Malformed percent-encoding — not a URL we can normalize.
+		return value;
+	}
+
+	// Fast path: the URL is already pinned to a commit SHA. SHAs cannot contain
+	// `/`, so there's no ambiguity and no API call needed — just rebuild as a
+	// canonical raw URL.
+	if (
+		decodedSegments.length >= 2
+		&& COMMIT_SHA_REGEX.test(decodedSegments[0]!)
+	) {
+		return buildRawPermalink(
+			location.owner,
+			location.repo,
+			decodedSegments[0]!.toLowerCase(),
+			decodedSegments.slice(1),
+		);
+	}
+
+	for (
+		let splitIndex = decodedSegments.length - 1;
+		splitIndex >= 1;
+		splitIndex--
+	) {
+		const ref = decodedSegments.slice(0, splitIndex).join("/");
+		const filePath = decodedSegments.slice(splitIndex).join("/");
+		try {
+			const { data } = await github.rest.repos.getContent({
+				owner: location.owner,
+				repo: location.repo,
+				path: filePath,
+				ref,
+			});
+			if (Array.isArray(data) || data.type !== "file") continue;
+
+			const { data: commit } = await github.rest.repos.getCommit({
+				owner: location.owner,
+				repo: location.repo,
+				ref,
+			});
+
+			return buildRawPermalink(
+				location.owner,
+				location.repo,
+				commit.sha,
+				decodedSegments.slice(splitIndex),
+			);
+		} catch (error) {
+			if (getGitHubApiErrorStatus(error) === 404) continue;
+			throw error;
+		}
+	}
+
+	throw new SubmissionValidationError(
+		`GitHub firmware URL could not be resolved to a raw permalink because no valid ref/path combination was found: ${value}`,
+	);
+}
+
 function validateVersion(
 	value: string,
 	fieldName: string,
@@ -1743,9 +1904,47 @@ export default async function main({
 
 		const existingConfig = matchedExistingFile?.config ?? null;
 
+		const normalizedUpgradeFormData: UpgradeFormData[] = [];
+		let announcedResolution = false;
+		for (const upgrade of upgradeFormData) {
+			const normalizedFiles: UpgradeFileFormData[] = [];
+			for (const file of upgrade.files) {
+				let resolvedUrl: string;
+				try {
+					resolvedUrl = await resolveGitHubFirmwarePermalink(
+						github,
+						file.url,
+					);
+				} catch (error) {
+					if (error instanceof SubmissionValidationError) {
+						return await failWithErrors([error.message]);
+					}
+					throw error;
+				}
+
+				if (resolvedUrl !== file.url) {
+					if (!announcedResolution) {
+						console.log(
+							"Resolving GitHub-hosted firmware URLs...",
+						);
+						announcedResolution = true;
+					}
+					console.log(`  Resolved ${file.url} -> ${resolvedUrl}`);
+				}
+				normalizedFiles.push({
+					...file,
+					url: resolvedUrl,
+				});
+			}
+			normalizedUpgradeFormData.push({
+				...upgrade,
+				files: normalizedFiles,
+			});
+		}
+
 		console.log("Downloading firmware files and computing hashes...");
 		const upgradeHashes: FirmwareHash[][] = [];
-		for (const upgrade of upgradeFormData) {
+		for (const upgrade of normalizedUpgradeFormData) {
 			const hashes: FirmwareHash[] = [];
 
 			for (const file of upgrade.files) {
@@ -1779,7 +1978,7 @@ export default async function main({
 		const prettierConfig =
 			(await prettier.resolveConfig(absoluteFilePath)) ?? {};
 		const formattedChangelogs: string[] = [];
-		for (const upgrade of upgradeFormData) {
+		for (const upgrade of normalizedUpgradeFormData) {
 			const raw = upgrade.changelog.trim().replace(/\r\n/g, "\n");
 			try {
 				const formatted = await formatWithPrettier(
@@ -1793,7 +1992,7 @@ export default async function main({
 			}
 		}
 
-		const newUpgrades = upgradeFormData.map((upgrade, index) => {
+		const newUpgrades = normalizedUpgradeFormData.map((upgrade, index) => {
 			const hashes = upgradeHashes[index]!;
 			const changelog = formattedChangelogs[index]!;
 			return createUpgradeEntry({
