@@ -26,6 +26,7 @@ const {
 	getApprovalInvalidReason,
 	parseIssueBody,
 	parseUpgradeFilesFromSections,
+	resolveGitHubFirmwarePermalink,
 	sameExactDeviceSet,
 } = processSubmissionModule;
 const { workflowRunPassed } = mirrorPrChecksModule;
@@ -661,6 +662,97 @@ test("parseUpgradeFilesFromSections accepts chip 1 labels without explicit targe
 	t.deepEqual(files, [
 		{ target: 0, url: "https://example.com/fw-chip-1.gbl" },
 	]);
+});
+
+test("resolveGitHubFirmwarePermalink converts blob URLs on named branches to raw commit permalinks", async (t) => {
+	const github = {
+		rest: {
+			repos: {
+				getContent: async ({
+					owner,
+					repo,
+					path,
+					ref,
+				}: {
+					owner: string;
+					repo: string;
+					path: string;
+					ref: string;
+				}) => {
+					t.is(owner, "InovelliUSA");
+					t.is(repo, "Firmware");
+					t.is(path, "dir/fw.otz");
+					t.is(ref, "main");
+					return { data: { type: "file" } };
+				},
+				getCommit: async ({
+					owner,
+					repo,
+					ref,
+				}: {
+					owner: string;
+					repo: string;
+					ref: string;
+				}) => {
+					t.is(owner, "InovelliUSA");
+					t.is(repo, "Firmware");
+					t.is(ref, "main");
+					return { data: { sha: "ec05e86280e6d6632537346c744584c3c135e5e2" } };
+				},
+			},
+		},
+	} as any;
+
+	const result = await resolveGitHubFirmwarePermalink(
+		github,
+		"https://github.com/InovelliUSA/Firmware/blob/main/dir/fw.otz",
+	);
+
+	t.is(
+		result,
+		"https://raw.githubusercontent.com/InovelliUSA/Firmware/ec05e86280e6d6632537346c744584c3c135e5e2/dir/fw.otz",
+	);
+});
+
+test("resolveGitHubFirmwarePermalink handles refs with slashes in raw.githubusercontent URLs", async (t) => {
+	const attempts: string[] = [];
+	const github = {
+		rest: {
+			repos: {
+				getContent: async ({
+					path,
+					ref,
+				}: {
+					path: string;
+					ref: string;
+				}) => {
+					attempts.push(`${ref}:${path}`);
+					if (ref === "release/v1" && path === "firmwares/fw.bin") {
+						return { data: { type: "file" } };
+					}
+					throw Object.assign(new Error("Not Found"), { status: 404 });
+				},
+				getCommit: async ({ ref }: { ref: string }) => {
+					t.is(ref, "release/v1");
+					return { data: { sha: "0123456789abcdef0123456789abcdef01234567" } };
+				},
+			},
+		},
+	} as any;
+
+	const result = await resolveGitHubFirmwarePermalink(
+		github,
+		"https://raw.githubusercontent.com/acme/firmware/release/v1/firmwares/fw.bin",
+	);
+
+	t.deepEqual(attempts, [
+		"release:v1/firmwares/fw.bin",
+		"release/v1:firmwares/fw.bin",
+	]);
+	t.is(
+		result,
+		"https://raw.githubusercontent.com/acme/firmware/0123456789abcdef0123456789abcdef01234567/firmwares/fw.bin",
+	);
 });
 
 test("createUpgradeEntry preserves submitted file order and targets", (t) => {

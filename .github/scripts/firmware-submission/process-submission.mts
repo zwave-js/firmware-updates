@@ -875,6 +875,107 @@ function validateUrl(
 	return true;
 }
 
+function getGitHubHostedFirmwareLocation(
+	value: string,
+):
+	| {
+			owner: string;
+			repo: string;
+			refAndPathSegments: string[];
+	  }
+	| undefined {
+	let parsed: URL;
+	try {
+		parsed = new URL(value);
+	} catch {
+		return undefined;
+	}
+
+	const pathnameSegments = parsed.pathname
+		.split("/")
+		.filter((segment) => segment.length > 0);
+
+	if (parsed.hostname === "github.com") {
+		if (pathnameSegments.length < 5 || pathnameSegments[2] !== "blob") {
+			return undefined;
+		}
+		return {
+			owner: pathnameSegments[0]!,
+			repo: pathnameSegments[1]!,
+			refAndPathSegments: pathnameSegments.slice(3),
+		};
+	}
+
+	if (parsed.hostname === "raw.githubusercontent.com") {
+		if (pathnameSegments.length < 4) {
+			return undefined;
+		}
+		return {
+			owner: pathnameSegments[0]!,
+			repo: pathnameSegments[1]!,
+			refAndPathSegments: pathnameSegments.slice(2),
+		};
+	}
+
+	return undefined;
+}
+
+function getGitHubApiErrorStatus(error: unknown): number | undefined {
+	if (
+		typeof error === "object"
+		&& error != null
+		&& "status" in error
+		&& typeof error.status === "number"
+	) {
+		return error.status;
+	}
+	return undefined;
+}
+
+export async function resolveGitHubFirmwarePermalink(
+	github: GitHubScriptContext["github"],
+	value: string,
+): Promise<string> {
+	const location = getGitHubHostedFirmwareLocation(value);
+	if (!location) return value;
+
+	const decodedSegments = location.refAndPathSegments.map((segment) =>
+		decodeURIComponent(segment),
+	);
+
+	for (let splitIndex = 1; splitIndex < decodedSegments.length; splitIndex++) {
+		const ref = decodedSegments.slice(0, splitIndex).join("/");
+		const filePath = decodedSegments.slice(splitIndex).join("/");
+		try {
+			const { data } = await github.rest.repos.getContent({
+				owner: location.owner,
+				repo: location.repo,
+				path: filePath,
+				ref,
+			});
+			if (Array.isArray(data) || data.type !== "file") continue;
+
+			const { data: commit } = await github.rest.repos.getCommit({
+				owner: location.owner,
+				repo: location.repo,
+				ref,
+			});
+
+			return `https://raw.githubusercontent.com/${location.owner}/${location.repo}/${commit.sha}/${decodedSegments
+				.slice(splitIndex)
+				.map((segment) => encodeURIComponent(segment))
+				.join("/")}`;
+		} catch (error) {
+			if (getGitHubApiErrorStatus(error) === 404) continue;
+			throw error;
+		}
+	}
+
+	throw new SubmissionValidationError(
+		`GitHub firmware URL could not be resolved to a raw permalink: ${value}`,
+	);
+}
+
 function validateVersion(
 	value: string,
 	fieldName: string,
@@ -1743,9 +1844,41 @@ export default async function main({
 
 		const existingConfig = matchedExistingFile?.config ?? null;
 
+		console.log("Resolving GitHub-hosted firmware URLs...");
+		const normalizedUpgradeFormData: UpgradeFormData[] = [];
+		for (const upgrade of upgradeFormData) {
+			const normalizedFiles: UpgradeFileFormData[] = [];
+			for (const file of upgrade.files) {
+				let resolvedUrl: string;
+				try {
+					resolvedUrl = await resolveGitHubFirmwarePermalink(
+						github,
+						file.url,
+					);
+				} catch (error) {
+					if (error instanceof SubmissionValidationError) {
+						await failWithErrors([error.message]);
+					}
+					throw error;
+				}
+
+				if (resolvedUrl !== file.url) {
+					console.log(`  Resolved ${file.url} -> ${resolvedUrl}`);
+				}
+				normalizedFiles.push({
+					...file,
+					url: resolvedUrl,
+				});
+			}
+			normalizedUpgradeFormData.push({
+				...upgrade,
+				files: normalizedFiles,
+			});
+		}
+
 		console.log("Downloading firmware files and computing hashes...");
 		const upgradeHashes: FirmwareHash[][] = [];
-		for (const upgrade of upgradeFormData) {
+		for (const upgrade of normalizedUpgradeFormData) {
 			const hashes: FirmwareHash[] = [];
 
 			for (const file of upgrade.files) {
@@ -1779,7 +1912,7 @@ export default async function main({
 		const prettierConfig =
 			(await prettier.resolveConfig(absoluteFilePath)) ?? {};
 		const formattedChangelogs: string[] = [];
-		for (const upgrade of upgradeFormData) {
+		for (const upgrade of normalizedUpgradeFormData) {
 			const raw = upgrade.changelog.trim().replace(/\r\n/g, "\n");
 			try {
 				const formatted = await formatWithPrettier(
@@ -1793,7 +1926,7 @@ export default async function main({
 			}
 		}
 
-		const newUpgrades = upgradeFormData.map((upgrade, index) => {
+		const newUpgrades = normalizedUpgradeFormData.map((upgrade, index) => {
 			const hashes = upgradeHashes[index]!;
 			const changelog = formattedChangelogs[index]!;
 			return createUpgradeEntry({
