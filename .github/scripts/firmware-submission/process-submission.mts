@@ -979,7 +979,7 @@ export async function resolveGitHubFirmwarePermalink(
 	}
 
 	throw new SubmissionValidationError(
-		`GitHub firmware URL could not be resolved to a raw permalink: ${value}`,
+		`GitHub firmware URL could not be resolved to a raw permalink because no valid ref/path combination was found: ${value}`,
 	);
 }
 
