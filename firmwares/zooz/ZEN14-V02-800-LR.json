@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated Z-Wave SDK from 7.19.3 to 7.24.1.\n* Fixed an issue where the Root Endpoint (Endpoint 0) could report an incorrect ON status after a power outage when Parameter 6 (On/Off Status After Power Failure) was set to 0 (Always Off).",
+			"url": "https://www.getzooz.com/firmware/ZEN14_V02R30.gbl",
+			"integrity": "sha256:66ef394a9f6cfdb1791d66962a0642c14a3f677cd17b1b0ea6e37d3e75241706"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20\n* Updated parameter 6 (On/Off Status After Power Failure) with two new values: 3 - Outlet 1 always on, Outlet 2 always off once restored, and 4 - Outlet 1 always off, Outlet 2 always on once restored.",
