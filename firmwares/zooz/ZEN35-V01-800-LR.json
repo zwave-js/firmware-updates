@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30, 1.40.\n* Fixed an issue introduced in firmware 1.30 (new SDK) where Parameter 32 (3-way switch type) did not function correctly with mechanical and momentary switches in 3-way and 4-way installations after a power cycle or factory reset of the ZEN35.\n* Fixed an issue in firmware 1.30 where the device did not correctly respect the value set in Parameter 18 (On/Off Status After Power Failure).\n* Updated LED brightness settings for Parameters 11-15, changing the supported value range from 0-2 to 1-10.",
+			"url": "https://www.getzooz.com/firmware/ZEN35_V01R40.gbl",
+			"integrity": "sha256:14aa63a8403c16459a1c2f1677ba4b4ca4f6e7a1669425f76d16abe4a9dfb1dc"
+		},
+		{
 			"version": "1.30.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Updated SDK from 7.19.3 to 7.24.1 to address issues with the scene controller occasionally showing offline or becoming unresponsive on select platforms",
