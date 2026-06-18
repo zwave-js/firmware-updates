@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Fixed a bug where the child input could become stuck in the ON state when parameter 5 = 10 and parameter 11 = 1.\n* Fixed a bug where the device stopped reporting relay and input states to the controller after a power loss in a garage door opener configuration (relay + door sensor). The ZEN58 continued to accept commands, but status reports were no longer transmitted.",
+			"url": "https://www.getzooz.com/firmware/ZEN58_V01R30_US.gbl",
+			"integrity": "sha256:884f7b76cefd5f25608b6c9bab91a4b4f2168552a31bcbf132b761f5af14899e"
+		},
+		{
+			"version": "1.30.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Fixed a bug where the child input could become stuck in the ON state when parameter 5 = 10 and parameter 11 = 1.\n* Fixed a bug where the device stopped reporting relay and input states to the controller after a power loss in a garage door opener configuration (relay + door sensor). The ZEN58 continued to accept commands, but status reports were no longer transmitted.",
+			"url": "https://www.getzooz.com/firmware/ZEN58_V01R30_EU.gbl",
+			"integrity": "sha256:530e5f47678a45bd2753946c989ed888e006dd1d8837c5011c0271309eabe195"
+		},
+		{
 			"version": "1.20.1",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20.\n* Updated SDK from 7.18.8 to 7.24.1",
