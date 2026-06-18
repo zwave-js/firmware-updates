@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.70.0",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70.\n* Fixed an issue introduced in firmware 1.60 where the ZEN54 ignored Parameters 17 and 18 (Z-Wave ramp rates) when controlled from the Z-Wave hub. The device was incorrectly using the ramp rate defined by Parameter 3 instead of the values set in Parameters 17 and 18.\n* Fixed an issue introduced in firmware 1.60 where Parameter 16 (Physical Ramp Rate Off) did not work as expected when Parameter 12 was set to its default value of 2.",
+			"region": "usa",
+			"url": "https://www.getzooz.com/firmware/ZEN54_V01R70_US.gbl",
+			"integrity": "sha256:7f095c2b93968406f4e7c9a6099610ade0962a6fef7c0f942700ce2bf519e535"
+		},
+		{
+			"version": "1.70.0",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50, 1.60, 1.70.\n* Fixed an issue introduced in firmware 1.60 where the ZEN54 ignored Parameters 17 and 18 (Z-Wave ramp rates) when controlled from the Z-Wave hub. The device was incorrectly using the ramp rate defined by Parameter 3 instead of the values set in Parameters 17 and 18.\n* Fixed an issue introduced in firmware 1.60 where Parameter 16 (Physical Ramp Rate Off) did not work as expected when Parameter 12 was set to its default value of 2.",
+			"region": "europe",
+			"url": "https://www.getzooz.com/firmware/ZEN54_V01R70_EU.gbl",
+			"integrity": "sha256:fe7670e280c95fdfb04069f0e2ca21d49fb3f89c7ab8bede4712d4e0212e7f79"
+		},
+		{
 			"version": "1.60.0",
 			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50, 1.60.\n* Fixed: A bug (introduced in 1.50 firmware) affecting Home Assistant and Z-Wave JS users, where the dimmer part was not correctly updating. Both target value and current value now report as expected.",
 			"region": "usa",
