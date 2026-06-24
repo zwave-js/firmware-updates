@@ -1,0 +1,50 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave Pro Dimmer 2PM",
+			"manufacturerId": "0x0460",
+			"productType": "0x0001",
+			"productId": "0x0082",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "12.7",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Inclusion over inputs\n- Fixed part number\n- Fixed Associations not working properly\n- Fixed Meter CC\n- Fixed last on value\n- Fixed avoid switch ON after SmartStart\n- Fixed switch multilevel root\n- Fixed auto off timer not working\n- Improved calibration range\n- other minor fixes and improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_Dimmer_2PM/ANZ/Wave_PRO_Dimmer_2PM_ANZ_20250217_0905_QPDM-0A2P01AU_%5Bv12.07%5D_2144DF1C.gbl",
+					"integrity": "sha256:8719cf8f30ff859757df7a303715c43f9d00fb953de1b946fd967fff709002da"
+				}
+			]
+		},
+		{
+			"version": "12.7",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Inclusion over inputs\n- Fixed part number\n- Fixed Associations not working properly\n- Fixed Meter CC\n- Fixed last on value\n- Fixed avoid switch ON after SmartStart\n- Fixed switch multilevel root\n- Fixed auto off timer not working\n- Improved calibration range\n- other minor fixes and improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_Dimmer_2PM/EU/Wave_PRO_Dimmer_2PM_EU_LR_20250209_1705_QUDM-0A2P01EU_%5Bv12.07%5D_2144DF1C.gbl",
+					"integrity": "sha256:d9ac700fabc3501ddc12617ea31f21efe3ffb24d8769aebc68ac74e4a502d92c"
+				}
+			]
+		},
+		{
+			"version": "12.7",
+			"changelog": "- SDK with fixed dead node issue\n- Fixed Inclusion over inputs\n- Fixed part number\n- Fixed Associations not working properly\n- Fixed Meter CC\n- Fixed last on value\n- Fixed avoid switch ON after SmartStart\n- Fixed switch multilevel root\n- Fixed auto off timer not working\n- Improved calibration range\n- other minor fixes and improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/8697a36fafa4caf58729157b52431865b4672845/Wave_Pro_Dimmer_2PM/US/Wave_PRO_Dimmer_2PM_US_LR_20250216_1420_QUDM-0A2P01US_%5Bv12.07%5D_2144DF1C.gbl",
+					"integrity": "sha256:045cdb116efeaba4de6ba6c106f7ee04b79de5e1f90f5001fc83ddd7eac47c0c"
+				}
+			]
+		}
+	]
+}

@@ -15,7 +15,29 @@
 	"upgrades": [
 		{
 			"version": "11.9",
-			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements ",
+			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d88014ae3cd8e58e88ee247c40f7211217efda7d/Wave_Door/Window/ANZ/Wave_Window_Door_Sensor_800_ANZ_20260623_1521_QNDW-002CAU_%5Bv11.09%5D_2144DF1C.gbl",
+					"integrity": "sha256:b95b3d2d46014f331b59be33d8b8c78643c8548fe1ed790862a653320799c10f"
+				}
+			]
+		},
+		{
+			"version": "11.9",
+			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/d88014ae3cd8e58e88ee247c40f7211217efda7d/Wave_Door/Window/US/Wave_Window_Door_Sensor_800_US_LR_20260623_1520_QLDW-002CUS_%5Bv11.09%5D_2144DF1C.gbl",
+					"integrity": "sha256:82212979f741a0813d46ffbcc356be860e4bdfa259437373f3bfdf8aed8d6431"
+				}
+			]
+		},
+		{
+			"version": "11.9",
+			"changelog": "- Fixed Z-Wave node info during inclusion\n- Fixed parameter 157 - Default value\n- Fixed no comunication after inclusion state change\n- Fixed inclination bug\n- Improved Angle measuring\n- other minor improvements",
 			"region": "europe",
 			"files": [
 				{
