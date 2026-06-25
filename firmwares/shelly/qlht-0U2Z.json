@@ -1,0 +1,50 @@
+{
+	"devices": [
+		{
+			"brand": "Shelly",
+			"model": "Wave H&T",
+			"manufacturerId": "0x0460",
+			"productType": "0x0100",
+			"productId": "0x0083",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "255.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "11.13",
+			"changelog": "- Fixed No communication after inclusion state change\n- Changed parameter 157 value\n- Improved Angle measuring\n- other fixes and improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_HT/ANZ/Wave_HT_800_AU_20260623_1518_QNHT-0U2ZAU_%5Bv11.13%5D_0FE4B35C.gbl",
+					"integrity": "sha256:052c949348b25cb6c9d1760bf2a7c7bfa910ebb4c97091b2092b39f66df06215"
+				}
+			]
+		},
+		{
+			"version": "11.13",
+			"changelog": "- Fixed No communication after inclusion state change\n- Changed parameter 157 value\n- Improved Angle measuring\n- other fixes and improvements",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_HT/EU/Wave_HT_800_EU_LR_20252101_1100_QLHT-0U2ZEU_%5Bv11.13%5D_EB201890.gbl",
+					"integrity": "sha256:a25194dc9cd3d4a1db63fb75531a50ccc9ce9cc29b7eb21857221bbc16fbf667"
+				}
+			]
+		},
+		{
+			"version": "11.13",
+			"changelog": "- Fixed No communication after inclusion state change\n- Changed parameter 157 value\n- Improved Angle measuring\n- other fixes and improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/main/Wave_HT/US/Wave_HT_800_US_LR_20260623_1516_QLHT-0U2ZUS_%5Bv11.13%5D_EB201890.gbl",
+					"integrity": "sha256:740530e8ceb6c6ca44f033834dccfe31b3b6881da53866ad5aa7805df314794f"
+				}
+			]
+		}
+	]
+}

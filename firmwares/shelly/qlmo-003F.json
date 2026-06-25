@@ -15,7 +15,29 @@
 	"upgrades": [
 		{
 			"version": "11.10",
-			"changelog": "- Fixed OTA by adding sign and encription keys to post build rules\n- Fixed PIR sensor config\n- Fixed wake up Interval ignored\n- Fixed multilevel sensor read value to endpoint\n- Fixed wakeup intervals\n- Change sensitivity values of pir sensor\n- Change size of 159 parameter\n- other minor improvements",
+			"changelog": "- Fixed OTA and encryption keys\n- Fixed PIR sensor config\n- Fixed wake up Interval ignored\n- Fixed multilevel sensor read value to endpoint\n- Fixed wakeup intervals\n- Change sensitivity values of pir sensor\n- Change size of 159 parameter\n- other minor improvements",
+			"region": "australia/new zealand",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/2dd13b95f2fe86aab3f80ddb624568386af6abc4/Wave_Motion/ANZ/Wave_Motion_800_ANZ_20260303_0920_QNMO-003FAU_%5Bv11.10%5D_EB201890.gbl",
+					"integrity": "sha256:bb90b0f0c5e18b3c40c9d981f6d94000a8f54ccf0a2d7acb94324c8b286402d5"
+				}
+			]
+		},
+		{
+			"version": "11.10",
+			"changelog": "- Fixed OTA and encryption keys\n- Fixed PIR sensor config\n- Fixed wake up Interval ignored\n- Fixed multilevel sensor read value to endpoint\n- Fixed wakeup intervals\n- Change sensitivity values of pir sensor\n- Change size of 159 parameter\n- other minor improvements",
+			"region": "usa",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/2dd13b95f2fe86aab3f80ddb624568386af6abc4/Wave_Motion/US/Wave_Motion_800_US_LR_20260303_0921_QLMO-003FUS_%5Bv11.10%5D_2144DF1C.gbl",
+					"integrity": "sha256:53dcfd0a9238d214083b2bd403431b94de5e9736cdb6288b15a6fb601acd48d6"
+				}
+			]
+		},
+		{
+			"version": "11.10",
+			"changelog": "- Fixed OTA and encryption keys\n- Fixed PIR sensor config\n- Fixed wake up Interval ignored\n- Fixed multilevel sensor read value to endpoint\n- Fixed wakeup intervals\n- Change sensitivity values of pir sensor\n- Change size of 159 parameter\n- other minor improvements",
 			"region": "europe",
 			"files": [
 				{

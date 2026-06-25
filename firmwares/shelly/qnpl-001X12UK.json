@@ -14,6 +14,17 @@
 	],
 	"upgrades": [
 		{
+			"version": "12.0",
+			"changelog": "- Fixed kWh report at boot-up\n- Fixed Par 105 min value 30 -> 0\n- Fixed Association group 2 triggered at S-Button push\n- Added User can enter setting mode at any time\n- Added kWh reset to 0 at factory reset\n- Removed Voltage Meter Report\n- Removed Current Meter Report",
+			"region": "europe",
+			"files": [
+				{
+					"url": "https://raw.githubusercontent.com/QubinoHelp/Shelly_Wave_FW_OTA/afe2c5478760576d6dfad356397ca7f1f18e5433/Wave_Plug_UK/EU/Wave_Plug_UK_800_EU_LR_20260309_1321_QLPL-001X12UK_%5B12.00%5D_0FE4B35C.gbl",
+					"integrity": "sha256:c976b673c32d55c484cf796bc823eee62417bdd7b859d065a4f3dd40a2d995ed"
+				}
+			]
+		},
+		{
 			"version": "10.5",
 			"changelog": "- Fixed very low power reports\n- Improved voltage resolution\n- Meter report is now in mA (precision 3)\n- Added Association for Multilevel-Switch\n- other minor fixes and improvements",
 			"region": "europe",
