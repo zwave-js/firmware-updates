@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "UltraPro",
+			"model": "ZWN4017 / 76601",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3534"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.10",
+			"changelog": "1. Original Release Firmware"
+		},
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/UltraPro/ZWN4017/76601%20-%20In-Wall%20Paddle%20Switch,%20800S/8.20/ZWN4017_UltraPro_76601_8.20.gbl",
+			"integrity": "sha256:cc3dbd7ff6517d29b0aee39c363753728c8fbcd9e87d126c4b2cf5510659a940"
+		}
+	]
+}

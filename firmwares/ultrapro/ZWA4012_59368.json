@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "UltraPro",
+			"model": "ZWA4012 / 59368",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3334"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/UltraPro/ZWA4012/59368%20-%20In-Wall%20Toggle%20Switch,%20700S/1.22/ZWA4012_UltraPro_59368_1.22.gbl",
+			"integrity": "sha256:b37c262525fb2b97fc67406c4e497c01cb6525635662c86f8dd853fd20bbb067"
+		}
+	]
+}

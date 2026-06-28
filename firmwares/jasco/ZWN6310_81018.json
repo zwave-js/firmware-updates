@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN6310 / 81018",
+			"manufacturerId": "0x0063",
+			"productType": "0x4953",
+			"productId": "0x3433"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.10",
+			"changelog": "1. Original Release Firmware"
+		},
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN6310/81018%20-%20Water%20Leak%20Sensor,%20800S/8.20/ZWN6310_Jasco_81018_8.20.gbl",
+			"integrity": "sha256:b81ae9c6d8a1e1674cca65c18446c0ca849c1f5132be8cb0773e5e0c423159b0"
+		}
+	]
+}

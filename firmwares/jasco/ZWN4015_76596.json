@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN4015 / 76596",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3437"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.11",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN4015/76596%20-%20In-Wall%20Paddle%20Switch,%20800S/8.11/ZWN4015_Jasco_76596_8.11.gbl",
+			"integrity": "sha256:ee1d556eb1b80f0c13f3684fe377bd2039439cce3cd4c53b95cbec34c1514123"
+		}
+	]
+}

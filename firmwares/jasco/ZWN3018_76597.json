@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN3018 / 76597",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3539"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN3018/76597%20-%20In-Wall%20Paddle%20Dimmer,%20800S/8.20/ZWN3018_Jasco_76597_8.20.gbl",
+			"integrity": "sha256:876ecd808c664a1456afe28bffb2702d3af67ec95fa5eb3c18dc3ac9ff6d18f9"
+		}
+	]
+}

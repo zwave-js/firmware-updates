@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN3109 / 76723",
+			"manufacturerId": "0x0063",
+			"productType": "0x5044",
+			"productId": "0x3137"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN3109/76723%20-%20Plug-in%202-Outlet%20Dimmer,%201%20Controlled,%20800S/8.20/ZWN3109_Jasco_76723_8.20.gbl",
+			"integrity": "sha256:0657d75be7e7b74dfccef99b094ef4e3049e33858b6144d73f5317eb82cf66a7"
+		}
+	]
+}

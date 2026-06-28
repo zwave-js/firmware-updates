@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWA1003 / 59387",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3434"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.07",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWA1003/59387%20-%20In-Wall%20Outlet,%20TR,%20700S/1.07/ZWA1003_Enbrighten_58449_1.07.gbl",
+			"integrity": "sha256:680a5dd80b4c6a82b7f9247dd6d5095a7ae14fe11aa2496b02c2f70e1ce00bca"
+		}
+	]
+}

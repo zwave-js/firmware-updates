@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN3019 / 76599",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3631"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.11",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN3019/76599%20-%20In-Wall%20Toggle%20Dimmer,%20800S/8.11/ZWN3019_Jasco_76599_8.11.gbl",
+			"integrity": "sha256:416b8e2bbbefc58331eb97f7e4f094ba6d5ee6ad67c665e9ea04164a96ddd77c"
+		}
+	]
+}

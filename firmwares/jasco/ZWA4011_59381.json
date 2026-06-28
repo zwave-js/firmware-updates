@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWA4011 / 59381",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3335"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "1. Original Release Firmware",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWA4011/59381%20-%20In-Wall%20Paddle%20Switch,%20700S/1.22/ZWA4011_Jasco_59381_1.22.gbl",
+			"integrity": "sha256:c0ba8a21d80a518a7f6321ac70c46c4a7a585eed9a6de904d96c3aa4380927e8"
+		}
+	]
+}

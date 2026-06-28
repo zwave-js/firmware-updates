@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "UltraPro",
+			"model": "ZWA4013 / 58446",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3432"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.10",
+			"changelog": "1. Original Release Firmware"
+		},
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/UltraPro/ZWN3020/76602%20-%20In-Wall%20Paddle%20Dimmer,%20800S/8.20/ZWN3020_UltraPro_76602_8.20.gbl",
+			"integrity": "sha256:6dadc2c05f39618f055c96e8ca118fbc76c520e0c473f88f260286e3ef04e852"
+		}
+	]
+}

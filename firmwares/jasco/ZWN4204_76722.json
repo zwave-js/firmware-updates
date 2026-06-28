@@ -1,0 +1,23 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN4204 / 76722",
+			"manufacturerId": "0x0063",
+			"productType": "0x4F50",
+			"productId": "0x3039"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.10",
+			"changelog": "1. Original Release Firmware"
+		},
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://github.com/jascoproducts/firmware/raw/refs/heads/main/zwave/Jasco/ZWN4204/76722%20-%20Plug-in%20Outdoor%20Switch,%20800S/8.20/ZWN4204_Jasco_76722_8.20.gbl",
+			"integrity": "sha256:f27e2ffa2f9497ad4286e0a8c144c3c8375ca223b0c1072ee1b1a990da664e1d"
+		}
+	]
+}
