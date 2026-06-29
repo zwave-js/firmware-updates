@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN4016 / 76598",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3530"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "Fixes latching issue",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN4016/76598%20-%20In-Wall%20Toggle%20Switch%2C%20800S/8.20/ZWN4016_Jasco_76598_8.20.gbl",
+			"integrity": "sha256:e1ee4a4355e0035edc0652ddd05b4b6cc099a9d69c9be14b1ef28a46c7152d95"
+		}
+	]
+}
