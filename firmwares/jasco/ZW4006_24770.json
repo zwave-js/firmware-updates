@@ -16,7 +16,7 @@
 		{
 			"version": "5.39",
 			"changelog": "1. Changed button press behavior: If the button is pressed and held for more than 0.5s, the light will turn on/off at the 0.5s mark. Then, if the button is released before the 3s mark, no further operation will be done. If the button is held for more than 3s, it will change the timeout duration setting.",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/refs/heads/main/zwave/Jasco/ZW4006/24770%20-%20In-Wall%20Motion%20Switch%2C%20500S/5.39/ZW4006_Jasco_24770_5.39.hex",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZW4006/24770%20-%20In-Wall%20Motion%20Switch%2C%20500S/5.39/ZW4006_Jasco_24770_5.39.hex",
 			"integrity": "sha256:9de131688516ab2bba500509c5ceee96022efd1d926efdc44bcc7122e5f860c2"
 		}
 	]
