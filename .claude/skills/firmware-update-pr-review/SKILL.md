@@ -10,6 +10,7 @@ description: Use this skill when reviewing any pull request against the zwave-js
 PRs that add or modify `firmwares/<vendor>/*.json` often arrive with:
 - Non-canonical titles (missing vendor, `.json` suffix, unusual phrasing)
 - Changelogs with stray whitespace or malformed bullets
+- Changelogs written as a single numbered list item (`"1. Fixed X"`) — the `1.` prefix is meaningless with only one item
 - Typos in text fields
 - Spaces instead of tabs for indentation
 
@@ -135,6 +136,17 @@ Exception: when the rest of the file uses `*` bullets and no blank-line-before-l
 So: decide per-file by reading the other (unchanged) changelogs in the same JSON. Match what's there.
 
 Regardless of the style decision, genuine normalizations (trimmed stray whitespace, fixed malformed bullets, escape-fix for bad markdown) are always worth committing.
+
+#### Single-item numbered lists
+
+A changelog written as `"1. Some description"` — a single numbered-list item — should have the `1. ` prefix stripped. A list with one entry is just prose; the numbering adds noise without organizational value.
+
+```
+"1. Original Release Firmware"  →  "Original Release Firmware"
+"1. Fixes latching issue"       →  "Fixes latching issue"
+```
+
+Only strip when the changelog contains **exactly one item** — i.e., no `\n` followed by `2.`. Multi-item numbered lists (`"1. ...\n2. ..."`) are valid and must be left unchanged.
 
 #### Splitting prose into bullets
 
