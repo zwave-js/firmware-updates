@@ -10,10 +10,6 @@
 	],
 	"upgrades": [
 		{
-			"version": "8.10",
-			"changelog": "Original Release Firmware"
-		},
-		{
 			"version": "8.20",
 			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN6310/81018%20-%20Water%20Leak%20Sensor%2C%20800S/8.20/ZWN6310_Jasco_81018_8.20.gbl",

@@ -4,15 +4,11 @@
 			"brand": "Jasco",
 			"model": "ZWN4204 / 76722",
 			"manufacturerId": "0x0063",
-			"productType": "0x4F50",
+			"productType": "0x4f50",
 			"productId": "0x3039"
 		}
 	],
 	"upgrades": [
-		{
-			"version": "8.10",
-			"changelog": "Original Release Firmware"
-		},
 		{
 			"version": "8.20",
 			"changelog": "Fixes latching issue",

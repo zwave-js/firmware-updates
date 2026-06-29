@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "1.23",
-			"changelog": "",
+			"changelog": "Original Release Firmware",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWA3016/59383%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/1.23/ZWA3016_Jasco_59383_1.23.gbl",
 			"integrity": "sha256:16eb4eae22724e90a7e9a141c2a5f0246847fffebb5e0fea674ba6bbaf2b16bf"
 		},

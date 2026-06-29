@@ -4,15 +4,11 @@
 			"brand": "Jasco",
 			"model": "ZW4006 / 24770",
 			"manufacturerId": "0x0063",
-			"productType": "0x494D",
+			"productType": "0x494d",
 			"productId": "0x3031"
 		}
 	],
 	"upgrades": [
-		{
-			"version": "5.28",
-			"changelog": "Original Release Firmware"
-		},
 		{
 			"version": "5.39",
 			"changelog": "Changed button press behavior: If the button is pressed and held for more than 0.5s, the light will turn on/off at the 0.5s mark. Then, if the button is released before the 3s mark, no further operation will be done. If the button is held for more than 3s, it will change the timeout duration setting.",
