@@ -17,7 +17,7 @@
 		},
 		{
 			"version": "1.24",
-			"changelog": "1. Added 0.5s delay to dimming process to fix flashing occuring at the end of max brightness ramp",
+			"changelog": "Added 0.5s delay to dimming process to fix flashing occuring at the end of max brightness ramp",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWA3016/59383%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/1.24/ZWA3016_Jasco_59383_1.24.gbl",
 			"integrity": "sha256:430bb1602a2dad55588af1505a7abc609c17bad5bb5f2860ec75f3b231cc1537"
 		},

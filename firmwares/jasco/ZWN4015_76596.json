@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "8.11",
-			"changelog": "1. Fixes latching issue",
+			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN4015/76596%20-%20In-Wall%20Paddle%20Switch%2C%20800S/8.11/ZWN4015_Jasco_76596_8.11.gbl",
 			"integrity": "sha256:ee1d556eb1b80f0c13f3684fe377bd2039439cce3cd4c53b95cbec34c1514123"
 		}

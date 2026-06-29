@@ -11,13 +11,13 @@
 	"upgrades": [
 		{
 			"version": "1.23",
-			"changelog": "1. Original Release Firmware",
+			"changelog": "Original Release Firmware",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWA3017/59384%20-%20In-Wall%20Toggle%20Dimmer%2C%20700S/1.23/ZWA3017_Jasco_59384_1.23.gbl",
 			"integrity": "sha256:05ed8bce8dcf50e5fdf97ba25abe1ba633967da67bec6f227e9c206a201fff33"
 		},
 		{
 			"version": "1.24",
-			"changelog": "1. Added 0.5s delay to dimming process to fix flashing occuring at the end of max brightness ramp",
+			"changelog": "Added 0.5s delay to dimming process to fix flashing occuring at the end of max brightness ramp",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWA3017/59384%20-%20In-Wall%20Toggle%20Dimmer%2C%20700S/1.24/ZWA3017_Jasco_59384_1.24.gbl",
 			"integrity": "sha256:430bb1602a2dad55588af1505a7abc609c17bad5bb5f2860ec75f3b231cc1537"
 		},

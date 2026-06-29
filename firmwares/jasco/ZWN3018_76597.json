@@ -11,7 +11,7 @@
 	"upgrades": [
 		{
 			"version": "8.20",
-			"changelog": "1. Fixes latching issue",
+			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN3018/76597%20-%20In-Wall%20Paddle%20Dimmer%2C%20800S/8.20/ZWN3018_Jasco_76597_8.20.gbl",
 			"integrity": "sha256:876ecd808c664a1456afe28bffb2702d3af67ec95fa5eb3c18dc3ac9ff6d18f9"
 		}

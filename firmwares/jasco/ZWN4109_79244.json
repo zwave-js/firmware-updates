@@ -11,11 +11,11 @@
 	"upgrades": [
 		{
 			"version": "8.10",
-			"changelog": "1. Original Release Firmware"
+			"changelog": "Original Release Firmware"
 		},
 		{
 			"version": "8.20",
-			"changelog": "1. Fixes latching issue",
+			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN4109/79244%20-%20Plug-in%201-Outlet%20Switch%2C%20800S/8.20/ZWN4109_Jasco_79244_8.20.gbl",
 			"integrity": "sha256:ef864a21fbbbcb7495eb24ed2e15e55cc097e84d6295a62eed816cc56f94c170"
 		}

@@ -11,11 +11,11 @@
 	"upgrades": [
 		{
 			"version": "8.10",
-			"changelog": "1. Original Release Firmware"
+			"changelog": "Original Release Firmware"
 		},
 		{
 			"version": "8.20",
-			"changelog": "1. Fixes latching issue",
+			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/UltraPro/ZWN4017/76601%20-%20In-Wall%20Paddle%20Switch%2C%20800S/8.20/ZWN4017_UltraPro_76601_8.20.gbl",
 			"integrity": "sha256:cc3dbd7ff6517d29b0aee39c363753728c8fbcd9e87d126c4b2cf5510659a940"
 		}

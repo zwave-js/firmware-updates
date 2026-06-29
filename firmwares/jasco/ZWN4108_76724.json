@@ -11,11 +11,11 @@
 	"upgrades": [
 		{
 			"version": "8.10",
-			"changelog": "1. Original Release Firmware"
+			"changelog": "Original Release Firmware"
 		},
 		{
 			"version": "8.20",
-			"changelog": "1. Fixes latching issue",
+			"changelog": "Fixes latching issue",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN4108/76724%20-%20Plug-in%202-Outlet%20Switch%2C%201%20Controlled%2C%20800S/8.20/ZWN4108_Jasco_76724_8.20.gbl",
 			"integrity": "sha256:2ed579bb0e05b4d6d9c75a407c3bfc2e7748829bdaa88d92391a7031fc05b4c5"
 		}
