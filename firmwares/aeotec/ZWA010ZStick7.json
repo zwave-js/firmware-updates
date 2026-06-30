@@ -1,0 +1,58 @@
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA010", //Z-Stick7 Z-Wave
+			"manufacturerId": "0x0371",
+			"productType": "0x0004",
+			"productId": "0x0004",
+			"firmwareVersion": {
+				"min": "2.11",
+				"max": "2.18"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.18.8",
+			"channel": "stable",
+			"changelog": "Update ZWave SDK to 2.18.8 used in controller",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/raw/refs/heads/main/Series_700/zwave_ncp_serial_api_controller_BRD4206A_7_18_8.gbl",
+					"integrity": "sha256:4956129655347aecd93198a1ca227136b50d6aefb75e496d1b0aab67f32e870d"
+				}
+			]
+		}
+	]
+},
+{
+	"devices": [
+		{
+			"brand": "Aeotec",
+			"model": "ZWA010", //Z-Stick7 Z-Wave
+			"manufacturerId": "0x0371",
+			"productType": "0x0004",
+			"productId": "0x0004",
+			"firmwareVersion": {
+				"min": "2.18",
+				"max": "2.21"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.21.7",
+			"channel": "stable",
+			"changelog": "Update ZWave SDK to 2.18.8 used in controller",
+			"files": [
+				{
+					"target": 0,
+					"url": "https://github.com/Aeotec-ccheng/aeotecZWaveOtaUpdateFiles/raw/refs/heads/main/Series_700/zwave_ncp_serial_api_controller_BRD4206A_7_21_7.gbl",
+					"integrity": "sha256:7092353ee2a71be98d6aa00ac36c1f1fb99c5fed5249db245d0e9fc92704d175"
+				}
+			]
+		}
+	]
+}
