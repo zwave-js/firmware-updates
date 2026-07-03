@@ -404,6 +404,17 @@ export default function register(router: any): void {
 				results.push(cachedConfig);
 			}
 
+			// Temporary logging to investigate client-side caching behavior
+			console.log(
+				`v4: ${uniqueDevices.length} devices (${cacheMisses.length} edge cache misses): ` +
+					uniqueDevices
+						.map(
+							(d) =>
+								`${d.manufacturerId}:${d.productType}:${d.productId}:${d.firmwareVersion}`,
+						)
+						.join(","),
+			);
+
 			// Step 2: Perform single batch request to database for all cache misses
 			if (cacheMisses.length > 0) {
 				const batchResults = await lookupConfigsBatch(
