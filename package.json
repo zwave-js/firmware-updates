@@ -52,5 +52,5 @@
     "wrangler": "^4.94.0",
     "zod-to-json-schema": "^3.17.1"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@4.17.0"
 }
