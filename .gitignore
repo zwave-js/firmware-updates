@@ -25,3 +25,6 @@ test_requests
 
 # Auto-generated firmware index
 firmwares/index.json
+
+# Prebuilt firmware update data
+dist/

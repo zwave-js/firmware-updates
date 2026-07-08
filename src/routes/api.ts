@@ -11,17 +11,12 @@ import {
 	APIv4_Response,
 } from "../apiDefinitions.js";
 import { withCache } from "../lib/cache.js";
-import {
-	cacheD1Config,
-	getCurrentVersionCached,
-	getD1CachedConfig,
-} from "../lib/cachedD1Operations.js";
 import type { UpgradeInfo } from "../lib/configSchema.js";
 import {
-	DeviceLookupRequest,
+	getDataVersion,
 	lookupConfig,
 	lookupConfigsBatch,
-} from "../lib/d1Operations.js";
+} from "../lib/dataOperations.js";
 import { compareVersions, padVersion } from "../lib/shared.js";
 import {
 	clientError,
@@ -79,11 +74,7 @@ async function handleUpdateRequest(
 	const { manufacturerId, productType, productId, firmwareVersion } =
 		result.data;
 
-	const filesVersion = await getCurrentVersionCached(
-		req.url,
-		context,
-		env.CONFIG_FILES,
-	);
+	const filesVersion = await getDataVersion(env.DATA);
 	if (!filesVersion) {
 		return serverError("Database empty");
 	}
@@ -113,8 +104,7 @@ async function handleUpdateRequest(
 		},
 		async () => {
 			const deviceInfo = await lookupConfig(
-				env.CONFIG_FILES,
-				filesVersion,
+				env.DATA,
 				manufacturerId,
 				productType,
 				productId,
@@ -324,7 +314,7 @@ export default function register(router: any): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			context: ExecutionContext,
+			_context: ExecutionContext,
 		) => {
 			// Parse and validate the v4 request
 			const result = await APIv4_RequestSchema.safeParseAsync(
@@ -335,11 +325,7 @@ export default function register(router: any): void {
 			}
 			const { region, devices } = result.data;
 
-			const filesVersion = await getCurrentVersionCached(
-				req.url,
-				context,
-				env.CONFIG_FILES,
-			);
+			const filesVersion = await getDataVersion(env.DATA);
 			if (!filesVersion) {
 				return serverError("Database empty");
 			}
@@ -374,59 +360,10 @@ export default function register(router: any): void {
 					return a.firmwareVersion.localeCompare(b.firmwareVersion);
 				});
 
-			// Step 1: Try to find cached responses for each unique device
-			const cacheMisses: DeviceLookupRequest[] = [];
-			const results: APIv4_DeviceInfo[] = [];
-
-			for (const device of uniqueDevices) {
-				// Try to get cached config for this device using D1 cache utilities
-				const cachedConfig = await getD1CachedConfig(
-					req.url,
-					filesVersion,
-					device.manufacturerId,
-					device.productType,
-					device.productId,
-					device.firmwareVersion,
-				);
-
-				if (cachedConfig === undefined) {
-					// Cache miss - add to batch lookup
-					cacheMisses.push(device);
-					continue;
-				}
-
-				if (cachedConfig === null) {
-					// Cached as "not found"
-					continue;
-				}
-
-				// Cache hit - add to results
-				results.push(cachedConfig);
-			}
-
-			// Step 2: Perform single batch request to database for all cache misses
-			if (cacheMisses.length > 0) {
-				const batchResults = await lookupConfigsBatch(
-					env.CONFIG_FILES,
-					filesVersion,
-					cacheMisses,
-				);
-				results.push(...batchResults);
-
-				// Cache the results of the batch lookup
-				for (const deviceInfo of batchResults) {
-					cacheD1Config(
-						req.url,
-						context,
-						filesVersion,
-						deviceInfo.manufacturerId,
-						deviceInfo.productType,
-						deviceInfo.productId,
-						deviceInfo.firmwareVersion,
-						deviceInfo,
-					);
-				}
-			}
+			const results: APIv4_DeviceInfo[] = await lookupConfigsBatch(
+				env.DATA,
+				uniqueDevices,
+			);
 
 			// Post-process the results to apply region filtering etc.
 			const response: APIv4_Response = results.map((device) => {
@@ -477,43 +414,6 @@ export default function register(router: any): void {
 				device.updates = filteredUpgrades;
 				return device;
 			});
-
-			// Track which devices were NOT found in the DB and cache them as `null`
-			const requestedFingerprints = new Set(
-				uniqueDevices.map(
-					(d) =>
-						`${d.manufacturerId}:${d.productType}:${d.productId}:${d.firmwareVersion}`,
-				),
-			);
-			const foundFingerprints = new Set(
-				results.map(
-					(d) =>
-						`${d.manufacturerId}:${d.productType}:${d.productId}:${d.firmwareVersion}`,
-				),
-			);
-			const missingFromDb =
-				requestedFingerprints.difference(foundFingerprints);
-
-			for (const fingerprint of missingFromDb) {
-				const [
-					manufacturerId,
-					productType,
-					productId,
-					firmwareVersion,
-				] = fingerprint.split(":");
-
-				// Cache as "not found"
-				cacheD1Config(
-					req.url,
-					context,
-					filesVersion,
-					manufacturerId,
-					productType,
-					productId,
-					firmwareVersion,
-					null,
-				);
-			}
 
 			return json(response);
 		},
