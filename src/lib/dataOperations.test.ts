@@ -177,6 +177,90 @@ test("lookupConfig merges updates from multiple matching configs", async (t) => 
 	);
 });
 
+test("transient fetch errors are not memoized", async (t) => {
+	let calls = 0;
+	const inner = mockAssets(defaultManifest, defaultShards);
+	const assets = {
+		fetch: (input: any) => {
+			calls++;
+			if (calls === 1) throw new Error("transient");
+			return inner.fetch(input);
+		},
+	} as any;
+
+	await t.throwsAsync(() => getDataVersion(assets));
+	// The failed manifest fetch was not cached, so the retry succeeds
+	t.is(await getDataVersion(assets), "abcd1234");
+});
+
+test("non-404 error responses throw instead of reading as missing data", async (t) => {
+	const assets = {
+		fetch: () => Promise.resolve(new Response(null, { status: 500 })),
+	} as any;
+	await t.throwsAsync(() => getDataVersion(assets), {
+		message: /500/,
+	});
+});
+
+test("malformed shard JSON is not memoized", async (t) => {
+	let broken = true;
+	const inner = mockAssets(defaultManifest, defaultShards);
+	const assets = {
+		fetch: (input: any) => {
+			const path = new URL(input).pathname;
+			if (broken && path.startsWith("/shards/")) {
+				return Promise.resolve(
+					new Response("{ not json", { status: 200 }),
+				);
+			}
+			return inner.fetch(input);
+		},
+	} as any;
+
+	await t.throwsAsync(() =>
+		lookupConfig(assets, "0x0086", "0x0002", "0x0064", "1.5"),
+	);
+	broken = false;
+	t.truthy(await lookupConfig(assets, "0x0086", "0x0002", "0x0064", "1.5"));
+});
+
+test("a shard listed in the manifest but missing degrades to no results", async (t) => {
+	const assets = mockAssets(defaultManifest, {});
+	const results = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.5",
+		},
+	]);
+	t.deepEqual(results, []);
+});
+
+test("a manifest without a shards array degrades to no data", async (t) => {
+	const assets = mockAssets({ version: "abcd1234" } as any, defaultShards);
+	t.is(await getDataVersion(assets), undefined);
+});
+
+test("concurrent lookups share one shard fetch", async (t) => {
+	let shardFetches = 0;
+	const inner = mockAssets(defaultManifest, defaultShards);
+	const assets = {
+		fetch: (input: any) => {
+			if (new URL(input).pathname.startsWith("/shards/")) shardFetches++;
+			return inner.fetch(input);
+		},
+	} as any;
+
+	const [a, b] = await Promise.all([
+		lookupConfig(assets, "0x0086", "0x0002", "0x0064", "1.5"),
+		lookupConfig(assets, "0x0086", "0x0002", "0x0064", "0.5"),
+	]);
+	t.truthy(a);
+	t.truthy(b);
+	t.is(shardFetches, 1);
+});
+
 test("lookupConfigsBatch skips unknown devices", async (t) => {
 	const assets = mockAssets(defaultManifest, defaultShards);
 	const results = await lookupConfigsBatch(assets, [

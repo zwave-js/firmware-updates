@@ -39,7 +39,11 @@ async function fetchJSON<T>(
 ): Promise<T | undefined> {
 	// The assets binding only routes on the pathname, the origin is arbitrary
 	const resp = await assets.fetch(`https://assets.local${path}`);
-	if (!resp.ok) return undefined;
+	// A missing asset is expected (unknown manufacturer), anything else is not
+	if (resp.status === 404) return undefined;
+	if (!resp.ok) {
+		throw new Error(`Fetching asset ${path} failed with ${resp.status}`);
+	}
 	return (await resp.json()) as T;
 }
 
@@ -48,11 +52,16 @@ function getManifest(assets: Fetcher): Promise<DataManifest | undefined> {
 	cache.manifest ??= fetchJSON<DataManifest>(assets, MANIFEST_PATH).then(
 		(manifest) => {
 			// Do not memoize failures, so a transient error heals on the next request
-			if (!manifest) cache.manifest = undefined;
+			if (!manifest || !Array.isArray(manifest.shards)) {
+				cache.manifest = undefined;
+				console.error("Data manifest is missing or malformed");
+				return undefined;
+			}
 			return manifest;
 		},
 		(e) => {
 			cache.manifest = undefined;
+			console.error(`Failed to load data manifest: ${e}`);
 			throw e;
 		},
 	);
@@ -71,11 +80,18 @@ async function getShard(
 	if (!shard) {
 		shard = fetchJSON<DataShard>(assets, getShardPath(manufacturerId)).then(
 			(result) => {
-				if (!result) cache.shards.delete(manufacturerId);
+				if (!result) {
+					cache.shards.delete(manufacturerId);
+					// The manifest promised this shard, so this is a broken deployment
+					console.error(
+						`Shard ${manufacturerId} is listed in the manifest but missing`,
+					);
+				}
 				return result;
 			},
 			(e) => {
 				cache.shards.delete(manufacturerId);
+				console.error(`Failed to load shard ${manufacturerId}: ${e}`);
 				throw e;
 			},
 		);
@@ -96,6 +112,14 @@ export async function lookupConfigsBatch(
 	devices: DeviceLookupRequest[],
 ): Promise<APIv4_DeviceInfo[]> {
 	const results: APIv4_DeviceInfo[] = [];
+
+	// Load all needed shards in parallel before the sequential matching below
+	const manufacturerIds = new Set(
+		devices.map((d) => formatId(d.manufacturerId)),
+	);
+	await Promise.all(
+		[...manufacturerIds].map((id) => getShard(assets, id)),
+	);
 
 	for (const device of devices) {
 		const manufacturerId = formatId(device.manufacturerId);
@@ -134,7 +158,12 @@ export async function lookupConfigsBatch(
 					changelog: upgrade.changelog,
 					channel: upgrade.channel,
 					...(upgrade.region ? { region: upgrade.region } : {}),
-					files: upgrade.files,
+					// Keep the key order the D1 path produced, for stable response bodies
+					files: upgrade.files.map((f) => ({
+						target: f.target,
+						url: f.url,
+						integrity: f.integrity,
+					})),
 					// These two will be filled in or filtered by the downstream handler
 					downgrade: undefined as any,
 					normalizedVersion: undefined as any,

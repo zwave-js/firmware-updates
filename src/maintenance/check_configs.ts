@@ -4,6 +4,7 @@ import path from "path-browserify";
 import { ConditionalUpdateConfig } from "../lib/config.js";
 import { parseLogic } from "../lib/Logic.js";
 import { getErrorMessage } from "../lib/shared.js";
+import { discoverConfigFiles } from "./dataBuild.js";
 import { NodeFS } from "./nodeFS.js";
 
 import { dirname } from "path";
@@ -128,15 +129,7 @@ void (async () => {
 	try {
 		console.log("🔍 Validating config files...\n");
 
-		// Find all config files (same logic as upload.ts)
-		const configFiles = (await NodeFS.readDir(configDir, true)).filter(
-			(file) =>
-				file.endsWith(".json") &&
-				!file.endsWith("index.json") &&
-				!path.basename(file).startsWith("_") &&
-				!file.includes("/templates/") &&
-				!file.includes("\\templates\\"),
-		);
+		const configFiles = await discoverConfigFiles(NodeFS, configDir);
 
 		console.log(`Found ${configFiles.length} config files to validate.`);
 

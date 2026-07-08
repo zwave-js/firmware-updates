@@ -17,7 +17,7 @@ import {
 	lookupConfig,
 	lookupConfigsBatch,
 } from "../lib/dataOperations.js";
-import { compareVersions, padVersion } from "../lib/shared.js";
+import { array2hex, compareVersions, padVersion } from "../lib/shared.js";
 import {
 	clientError,
 	ContentProps,
@@ -76,7 +76,7 @@ async function handleUpdateRequest(
 
 	const filesVersion = await getDataVersion(env.DATA);
 	if (!filesVersion) {
-		return serverError("Database empty");
+		return serverError("Firmware update data not available");
 	}
 
 	// Figure out if this info is already cached
@@ -314,7 +314,7 @@ export default function register(router: any): void {
 		async (
 			req: RequestWithProps<[ContentProps]>,
 			env: CloudflareEnvironment,
-			_context: ExecutionContext,
+			context: ExecutionContext,
 		) => {
 			// Parse and validate the v4 request
 			const result = await APIv4_RequestSchema.safeParseAsync(
@@ -327,7 +327,7 @@ export default function register(router: any): void {
 
 			const filesVersion = await getDataVersion(env.DATA);
 			if (!filesVersion) {
-				return serverError("Database empty");
+				return serverError("Firmware update data not available");
 			}
 
 			// Remove duplicates, normalize and sort devices for consistent processing
@@ -360,62 +360,92 @@ export default function register(router: any): void {
 					return a.firmwareVersion.localeCompare(b.firmwareVersion);
 				});
 
-			const results: APIv4_DeviceInfo[] = await lookupConfigsBatch(
-				env.DATA,
-				uniqueDevices,
-			);
-
-			// Post-process the results to apply region filtering etc.
-			const response: APIv4_Response = results.map((device) => {
-				if (!device.updates) return device;
-				let filteredUpgrades = device.updates
-					// Filter out upgrades for a different region
-					.filter((u) => !u.region || u.region === region)
-					// Filter out the current version
-					.filter(
-						(u) =>
-							padVersion(u.version) !==
-							padVersion(device.firmwareVersion),
-					)
-					// Add missing fields to the returned objects
-
-					.map((u: UpgradeInfo) => {
-						const downgrade =
-							compareVersions(u.version, device.firmwareVersion) <
-							0;
-						let normalizedVersion = padVersion(u.version, "0");
-						if (u.channel === "beta") normalizedVersion += "-beta";
-
-						return {
-							...u,
-							downgrade,
-							normalizedVersion,
-						};
-					})
-					// Sort by version ascending...
-					.sort((a: any, b: any) => {
-						const ret = compare(
-							a.normalizedVersion,
-							b.normalizedVersion,
-						);
-						if (ret !== 0) return ret;
-						// ... and put updates for a specific region first
-						return -(a.region ?? "").localeCompare(b.region ?? "");
-					});
-				// If there are multiple updates for the same version, only return the first one
-				// This happens when there are updates for a specific region and a general update for the same version
-				filteredUpgrades = filteredUpgrades.filter(
-					(u: any, i: number, arr: any[]) => {
-						if (i > 0 && u.version === arr[i - 1].version)
-							return false;
-						return true;
-					},
-				);
-				device.updates = filteredUpgrades;
-				return device;
+			// The devices are deduplicated and sorted, so identical queries against
+			// the same data version share one cache entry regardless of input order
+			const fingerprint = JSON.stringify({
+				region: region ?? null,
+				devices: uniqueDevices,
 			});
+			const fingerprintHash = array2hex(
+				new Uint8Array(
+					await crypto.subtle.digest(
+						"SHA-256",
+						new TextEncoder().encode(fingerprint),
+					),
+				),
+			);
+			const cacheKey = new URL(
+				`./${filesVersion}/${fingerprintHash}`,
+				req.url.endsWith("/") ? req.url : req.url + "/",
+			).toString();
 
-			return json(response);
+			return withCache(
+				{
+					req,
+					context,
+					cacheKey,
+					// Same policy as v1-v3: 1 hour on the client, 1 day at the edge
+					// (the cache key includes the data version)
+					maxAge: 60 * 60,
+					sMaxAge: 60 * 60 * 24,
+				},
+				async () => {
+					const results: APIv4_DeviceInfo[] =
+						await lookupConfigsBatch(env.DATA, uniqueDevices);
+
+					// Post-process the results to apply region filtering etc.
+					const response: APIv4_Response = results.map((device) => {
+						if (!device.updates) return device;
+						let filteredUpgrades = device.updates
+							// Filter out upgrades for a different region
+							.filter((u) => !u.region || u.region === region)
+							// Filter out the current version
+							.filter(
+								(u) =>
+									padVersion(u.version) !==
+									padVersion(device.firmwareVersion),
+							)
+							// Add missing fields to the returned objects
+
+							.map((u: UpgradeInfo) => {
+								const downgrade =
+									compareVersions(u.version, device.firmwareVersion) <
+									0;
+								let normalizedVersion = padVersion(u.version, "0");
+								if (u.channel === "beta") normalizedVersion += "-beta";
+
+								return {
+									...u,
+									downgrade,
+									normalizedVersion,
+								};
+							})
+							// Sort by version ascending...
+							.sort((a: any, b: any) => {
+								const ret = compare(
+									a.normalizedVersion,
+									b.normalizedVersion,
+								);
+								if (ret !== 0) return ret;
+								// ... and put updates for a specific region first
+								return -(a.region ?? "").localeCompare(b.region ?? "");
+							});
+						// If there are multiple updates for the same version, only return the first one
+						// This happens when there are updates for a specific region and a general update for the same version
+						filteredUpgrades = filteredUpgrades.filter(
+							(u: any, i: number, arr: any[]) => {
+								if (i > 0 && u.version === arr[i - 1].version)
+									return false;
+								return true;
+							},
+						);
+						device.updates = filteredUpgrades;
+						return device;
+					});
+
+					return json(response);
+				},
+			);
 		},
 	);
 }

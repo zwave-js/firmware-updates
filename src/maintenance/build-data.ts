@@ -1,15 +1,12 @@
-import JSON5 from "json5";
-import crypto from "node:crypto";
 import fs from "node:fs/promises";
 import path from "path-browserify";
-import { ConditionalUpdateConfig } from "../lib/config.js";
+import { getShardPath, MANIFEST_PATH } from "../lib/dataFormat.js";
 import {
-	DataManifest,
-	DataShard,
-	getShardPath,
-	MANIFEST_PATH,
-} from "../lib/dataFormat.js";
-import { getErrorMessage, padVersion, versionToNumber } from "../lib/shared.js";
+	buildDataShards,
+	buildManifest,
+	hashConfigFiles,
+	readConfigFiles,
+} from "./dataBuild.js";
 import { NodeFS } from "./nodeFS.js";
 
 import { dirname, join } from "node:path";
@@ -19,68 +16,28 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const configDir = path.resolve(__dirname, "../../firmwares");
 const outDir = join(__dirname, "../../dist/data");
 
-void (async () => {
-	const configFiles = (await NodeFS.readDir(configDir, true))
-		.filter(
-			(file) =>
-				file.endsWith(".json") &&
-				!file.endsWith("index.json") &&
-				!path.basename(file).startsWith("_") &&
-				!file.includes("/templates/") &&
-				!file.includes("\\templates\\"),
-		)
-		// Sort for a deterministic version hash and shard layout
-		.sort();
+// Fail the build (and thereby the deploy) if the dataset shrinks implausibly,
+// e.g. because a failed directory read silently yielded an empty file list
+const MIN_CONFIG_FILES = 100;
+const MIN_SHARDS = 10;
 
-	const files: { filename: string; data: string }[] = [];
-	for (const filePath of configFiles) {
-		const relativePath = path
-			.relative(configDir, filePath)
-			.replace(/\\/g, "/");
-		const fileContent = await NodeFS.readFile(filePath);
-		files.push({ filename: relativePath, data: fileContent });
+void (async () => {
+	const files = await readConfigFiles(NodeFS, configDir);
+	const version = hashConfigFiles(files);
+
+	let shards;
+	try {
+		shards = buildDataShards(files);
+	} catch (e) {
+		console.error(e instanceof Error ? e.message : e);
+		process.exit(1);
 	}
 
-	const hasher = crypto.createHash("sha256");
-	const version = hasher
-		.update(JSON.stringify(files), "utf8")
-		.digest("hex")
-		.slice(0, 8);
-
-	const shards = new Map<string, DataShard>();
-	for (const file of files) {
-		let config: ConditionalUpdateConfig;
-		try {
-			config = new ConditionalUpdateConfig(JSON5.parse(file.data));
-		} catch (e) {
-			console.error(
-				`Error parsing config file ${file.filename}: ${getErrorMessage(e)}`,
-			);
-			process.exit(1);
-		}
-
-		const byManufacturer = Map.groupBy(
-			config.devices,
-			(d) => d.manufacturerId,
+	if (files.length < MIN_CONFIG_FILES || shards.size < MIN_SHARDS) {
+		console.error(
+			`ERROR: Implausibly small dataset (${files.length} config files, ${shards.size} shards), refusing to build`,
 		);
-		for (const [manufacturerId, devices] of byManufacturer) {
-			let shard = shards.get(manufacturerId);
-			if (!shard) {
-				shard = { configs: [] };
-				shards.set(manufacturerId, shard);
-			}
-			shard.configs.push({
-				devices: devices.map((d) => ({
-					productType: d.productType,
-					productId: d.productId,
-					min: versionToNumber(padVersion(d.firmwareVersion.min, "0")),
-					max: versionToNumber(
-						padVersion(d.firmwareVersion.max, "255"),
-					),
-				})),
-				upgrades: config.upgrades,
-			});
-		}
+		process.exit(1);
 	}
 
 	await fs.rm(outDir, { recursive: true, force: true });
@@ -94,13 +51,9 @@ void (async () => {
 		);
 	}
 
-	const manifest: DataManifest = {
-		version,
-		shards: [...shards.keys()].sort(),
-	};
 	await fs.writeFile(
 		join(outDir, MANIFEST_PATH),
-		JSON.stringify(manifest),
+		JSON.stringify(buildManifest(version, shards)),
 		"utf8",
 	);
 
