@@ -10,26 +10,26 @@
 	],
 	"upgrades": [
 		{
-			"version": "2.2",
+			"version": "2.3",
 			"channel": "beta",
-			"changelog": "- Optimized the interaction logic between the switch and the mmWave module.\n- Fixed the incorrect use of duration in the SwitchMultilevel Set command.\n- When the switch is restarted, P240 will be reported to indicate that the switch has been restarted.",
+			"changelog": "- Fixed an issue where the P20 could not restore its default settings.\n- Changed the default value of P50 (Button Delay) to 3.\n- Optimized the network re-connection logic.\n- Further optimized the interaction logic between the mmWave module and the Z-Wave chip.\n- Optimized the processing logic of the metering module.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://files.inovelli.com/firmware/VZW32-SN/Beta/2.02/VZW32-SN_2.02.gbl",
-					"integrity": "sha256:e94a8ebe3ea87e25d00d6389cd411c2c797972ceb74bfbf4a272145723e30f85"
+					"url": "https://github.com/InovelliUSA/Firmware/raw/e7e2f6daa7b8d6633b4b9ee22142bf6dab1c1945/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Beta/2.03/VZW32-SN_2.03.gbl",
+					"integrity": "sha256:ca611992b304e843ca523085aa20fb674d4cd8018760937baf0ad23086fbe96a"
 				}
 			]
 		},
 		{
-			"version": "2.0",
+			"version": "2.2",
 			"channel": "stable",
-			"changelog": "Initial production release.",
+			"changelog": "- Optimized the interaction logic between the switch and the mmWave module.\n- Fixed the incorrect use of duration in the SwitchMultilevel Set command.\n- When the switch is restarted, P240 will be reported to indicate that the switch has been restarted.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://github.com/InovelliUSA/Firmware/raw/236ba776c9914b25b172fa1804c43a778484a6c4/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Production/2.00/VZW32-SN_2.00.gbl",
-					"integrity": "sha256:40ef3de2ef3d64dd4b818f21a5cc66d5b5a4242eceedaa1c517e898d4a2039d2"
+					"url": "https://github.com/InovelliUSA/Firmware/raw/7b6f602d2e3d58fe00f8434b3bb16aa94ffc34fd/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Production/2.02/VZW32-SN_2.02.gbl",
+					"integrity": "sha256:e94a8ebe3ea87e25d00d6389cd411c2c797972ceb74bfbf4a272145723e30f85"
 				}
 			]
 		}
