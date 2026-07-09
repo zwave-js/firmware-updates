@@ -114,16 +114,20 @@ export async function lookupConfigsBatch(
 	const results: APIv4_DeviceInfo[] = [];
 
 	// Load all needed shards in parallel before the sequential matching below
-	const manufacturerIds = new Set(
-		devices.map((d) => formatId(d.manufacturerId)),
-	);
-	await Promise.all(
-		[...manufacturerIds].map((id) => getShard(assets, id)),
+	const manufacturerIds = [
+		...new Set(devices.map((d) => formatId(d.manufacturerId))),
+	];
+	const shardsById = new Map(
+		await Promise.all(
+			manufacturerIds.map(
+				async (id) => [id, await getShard(assets, id)] as const,
+			),
+		),
 	);
 
 	for (const device of devices) {
 		const manufacturerId = formatId(device.manufacturerId);
-		const shard = await getShard(assets, manufacturerId);
+		const shard = shardsById.get(manufacturerId);
 		if (!shard) continue;
 
 		const productType = formatId(device.productType);
