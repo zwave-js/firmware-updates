@@ -83,15 +83,12 @@ jobs:
     - name: Install dependencies
       run: yarn install --immutable
 
+    - name: Build firmware update data
+      run: yarn build:data
+
     - name: Publish to Cloudflare
       uses: cloudflare/wrangler-action@v3
       with:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         packageManager: yarn
-    
-    - name: Upload config files to Cloudflare
-      env:
-        BASE_URL: ${{ secrets.BASE_URL }}
-        ADMIN_SECRET: ${{ secrets.ADMIN_SECRET }}
-      run: yarn upload

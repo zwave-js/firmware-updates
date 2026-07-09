@@ -5,6 +5,9 @@ export interface CloudflareEnvironment {
 
 	CONFIG_FILES: D1Database;
 
+	/** Static assets containing the prebuilt firmware update data */
+	DATA: Fetcher;
+
 	RL_GLOBAL: RateLimit;
 	RL_BURST: RateLimit;
 
