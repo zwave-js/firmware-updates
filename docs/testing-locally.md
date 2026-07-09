@@ -2,17 +2,10 @@
 
 ## Getting started
 
-The firmware update service can be tested locally. To get started, install and build everything:
+The firmware update service can be tested locally. To get started, install everything:
 
 ```bash
 yarn
-yarn build
-```
-
-and create a file `.env` with the following content
-
-```ini
-ADMIN_SECRET=your-random-admin-secret
 ```
 
 To start the service, run
@@ -21,25 +14,7 @@ To start the service, run
 yarn dev
 ```
 
-This will also rebuild on changes.
-
-## Uploading firmware files
-
-The database behind the local service is initially empty and decoupled from the repository contents. Firmware definition files need to be uploaded manually.
-
-To do so, build the index, which also checks the files for errors:
-
-```bash
-yarn build:index
-```
-
-Then upload the files to the running service:
-
-```bash
-ADMIN_SECRET=your-random-admin-secret BASE_URL=http://localhost:8787 yarn upload
-```
-
-These steps need to be repeated whenever the firmware files change.
+This compiles the firmware definition files into the data served by the worker (`yarn build:data`) and starts a local server. Unlike production, it does not rebuild automatically when the firmware files change — rerun `yarn dev` (or `yarn build:data`) after editing them.
 
 ## Using the local service
 

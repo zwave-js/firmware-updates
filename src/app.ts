@@ -1,5 +1,4 @@
 import { error, Router, withContent } from "itty-router";
-import registerAdmin from "./routes/admin.js";
 import registerAPI from "./routes/api.js";
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -26,7 +25,6 @@ export function build() {
 	router.post("*", withContent);
 
 	registerAPI(router);
-	registerAdmin(router);
 
 	router.all("*", () => error(404));
 

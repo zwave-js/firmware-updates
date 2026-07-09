@@ -13,8 +13,7 @@
     "build:data": "yarn tsx src/maintenance/build-data.ts",
     "test:ci": "yarn build:data && NODE_OPTIONS='--loader=tsx' ava",
     "test": "yarn test:ci",
-    "dev": "yarn build:data && wrangler dev",
-    "upload": "yarn tsx src/maintenance/upload.ts"
+    "dev": "yarn build:data && wrangler dev"
   },
   "dependencies": {
     "itty-router": "^5.0.22",
