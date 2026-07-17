@@ -12,7 +12,7 @@
 		{
 			"version": "2.2",
 			"channel": "beta",
-			"changelog": "Fixed LED color distortion for some colors at low brightness. Fixed the incorrect mapping of dimming duration (P1-P8). Fixed duration in the Switch Multilevel command.",
+			"changelog": "- Fixed LED color distortion for some colors at low brightness.\n- Fixed the incorrect mapping of dimming duration (P1-P8).\n- Fixed duration in the Switch Multilevel command.",
 			"files": [
 				{
 					"target": 0,
