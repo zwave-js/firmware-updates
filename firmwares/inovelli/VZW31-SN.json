@@ -10,14 +10,14 @@
 	],
 	"upgrades": [
 		{
-			"version": "2.1",
+			"version": "2.2",
 			"channel": "beta",
-			"changelog": "Changed default mode from On/Off to Dimmer; after updating, confirm the mode is correct for your load. Modified parameter P121 range from 0 to 0-1. Changed default value of parameter P158 to 0. Changed default value of parameter P15 to 100. Fixed an issue with LED notifications not working as expected. Fixed an issue where the device could stop sending reports after an update or after factory reset/exclusion. Fixed a situation where a lifeline report was not made when a multicast message was received. Resolved bug in Association Group Behavior. Upgrade Z-Wave SDK.",
+			"changelog": "Fixed LED color distortion for some colors at low brightness. Fixed the incorrect mapping of dimming duration (P1-P8). Fixed duration in the Switch Multilevel command.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://github.com/InovelliUSA/Firmware/raw/5c324ee67348538c080b90000d28466f8afbd48b/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/2.01/VZW31-SN_2.01.gbl",
-					"integrity": "sha256:58a174779c2a92ce6f87819c6227f87babeae8509623ff3f1bbfff441e2513ce"
+					"url": "https://github.com/InovelliUSA/Firmware/raw/8614a94873c6f582029b128558283ca1217652e2/Red-Series/Z-Wave/VZW31-SN-2-1-Switch/Beta/2.02/VZW31-SN_2.02.gbl",
+					"integrity": "sha256:2446557820b35cd1281a93b16bd8992b3e35a21925ac1e75688810f9313fb58f"
 				}
 			]
 		},
