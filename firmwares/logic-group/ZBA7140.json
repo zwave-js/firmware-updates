@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Logic Group",
+			"model": "ZBA7140 Matrix ZBA",
+			"manufacturerId": "0x0234",
+			"productType": "0x0004",
+			"productId": "0x0129"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.8",
+			"changelog": "Bugfix.",
+			"url": "https://logic-group.com/download/6936/",
+			"integrity": "sha256:feb977032263e7e4081c31a45ae65307b9a2dd47852fd83719cc8b25748410df"
+		}
+	]
+}
