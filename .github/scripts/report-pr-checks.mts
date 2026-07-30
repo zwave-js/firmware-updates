@@ -4,6 +4,30 @@ import {
 } from "./firmware-submission/submission-pr.mts";
 import type { GitHubScriptContext } from "./types.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
+const FIRMWARE_DEFINITION_FILE_REGEX = /^firmwares\/[^/]+\/[^/]+\.json$/;
+
+interface PullRequestSource {
+	head?: {
+		repo?: {
+			full_name?: string;
+		} | null;
+	};
+}
+
+export function shouldReportChecksForDirectPR(
+	pr: PullRequestSource,
+	owner: string,
+	repo: string,
+	changedFiles: readonly string[],
+): boolean {
+	return (
+		pr.head?.repo?.full_name != null &&
+		pr.head.repo.full_name !== `${owner}/${repo}` &&
+		changedFiles.some((filename) =>
+			FIRMWARE_DEFINITION_FILE_REGEX.test(filename)
+		)
+	);
+}
 
 function getErrorMessage(error: unknown): string {
 	return error instanceof Error ? error.message : String(error);
@@ -116,6 +140,28 @@ export default async function main({
 	}
 
 	const issueNumber = getSubmissionIssueNumberFromPR(pr, owner, repo);
+	// Preserve issue-generated submission reporting; scope direct PR comments to external firmware definitions
+	if (issueNumber == null) {
+		const changedFiles = await github.paginate(github.rest.pulls.listFiles, {
+			owner,
+			repo,
+			pull_number: prNumber,
+		});
+		if (
+			!shouldReportChecksForDirectPR(
+				pr,
+				owner,
+				repo,
+				changedFiles.map((file) => file.filename),
+			)
+		) {
+			console.log(
+				"PR is not an external firmware definition contribution, skipping",
+			);
+			return;
+		}
+	}
+
 	let labelNames: string[] = [];
 	if (issueNumber != null) {
 		const { data: issue } = await github.rest.issues.get({

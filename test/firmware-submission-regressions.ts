@@ -31,8 +31,12 @@ const {
 	resolveGitHubFirmwarePermalink,
 	sameExactDeviceSet,
 } = processSubmissionModule;
-const { extractErrorOutput, formatCodeBlock, workflowRunPassed } =
-	reportPrChecksModule;
+const {
+	extractErrorOutput,
+	formatCodeBlock,
+	shouldReportChecksForDirectPR,
+	workflowRunPassed,
+} = reportPrChecksModule;
 const { postStatusComment, SUBMISSION_COMMENT_TAG } = submissionPrModule;
 const resetOnEdit = resetOnEditModule.default;
 const cleanupLabels = cleanupLabelsModule.default;
@@ -1325,6 +1329,57 @@ test("workflowRunPassed only treats successful conclusions as passing", (t) => {
 	t.false(workflowRunPassed("cancelled"));
 	t.false(workflowRunPassed("timed_out"));
 	t.false(workflowRunPassed(null));
+});
+
+test("shouldReportChecksForDirectPR only accepts external firmware definition changes", (t) => {
+	const externalPR = {
+		head: {
+			repo: {
+				full_name: "contributor/firmware-updates",
+			},
+		},
+	};
+	const internalPR = {
+		head: {
+			repo: {
+				full_name: "zwave-js/firmware-updates",
+			},
+		},
+	};
+	const firmwareDefinitionFiles = ["firmwares/Aeotec/ZW189.json"];
+
+	t.true(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			firmwareDefinitionFiles,
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			internalPR,
+			"zwave-js",
+			"firmware-updates",
+			firmwareDefinitionFiles,
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			[".github/workflows/report-pr-checks.yml"],
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			["firmwares/Aeotec/nested/ZW189.json"],
+		),
+	);
 });
 
 test("extractErrorOutput preserves multiline action errors", (t) => {
