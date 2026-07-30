@@ -4,15 +4,14 @@ import { readFile } from "node:fs/promises";
 
 const processSubmissionModulePath =
 	"../.github/scripts/firmware-submission/process-submission.mts";
-const mirrorPrChecksModulePath =
-	"../.github/scripts/firmware-submission/mirror-pr-checks.mts";
+const reportPrChecksModulePath = "../.github/scripts/report-pr-checks.mts";
 const resetOnEditModulePath =
 	"../.github/scripts/firmware-submission/reset-on-edit.mts";
 const cleanupLabelsModulePath =
 	"../.github/scripts/firmware-submission/cleanup-labels.mts";
 
 const processSubmissionModule = await import(processSubmissionModulePath);
-const mirrorPrChecksModule = await import(mirrorPrChecksModulePath);
+const reportPrChecksModule = await import(reportPrChecksModulePath);
 const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
@@ -30,7 +29,7 @@ const {
 	sameExactDeviceSet,
 } = processSubmissionModule;
 const { extractErrorOutput, formatCodeBlock, workflowRunPassed } =
-	mirrorPrChecksModule;
+	reportPrChecksModule;
 const resetOnEdit = resetOnEditModule.default;
 const cleanupLabels = cleanupLabelsModule.default;
 

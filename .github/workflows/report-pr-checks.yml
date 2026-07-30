@@ -19,12 +19,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Mirror results to submission issue
+      - name: Report check results
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.BOT_TOKEN }}
           script: |
             const { default: action } = await import(
-              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/mirror-pr-checks.mts`
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/report-pr-checks.mts`
             );
             await action({github, context});

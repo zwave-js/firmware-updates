@@ -1,8 +1,8 @@
-import type { GitHubScriptContext } from "../types.mts";
 import {
 	getSubmissionIssueNumberFromPR,
 	postStatusComment,
-} from "./submission-pr.mts";
+} from "./firmware-submission/submission-pr.mts";
+import type { GitHubScriptContext } from "./types.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
 
 function getErrorMessage(error: unknown): string {
