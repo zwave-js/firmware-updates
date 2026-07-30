@@ -16,8 +16,8 @@
 		{
 			"version": "4.30.0",
 			"region": "usa",
-			"changelog": "* Includes firmware versions: 4.0, 4.10, 4.20, 4.30\n* Updated SDK from 7.22.1 to 7.23.1\n *Fixed startup status reporting issues: 1-Endpoint 0 was not reporting its status after startup. 2-Endpoint 1 could generate duplicate status reports.\n *Optimized the status reporting delay for single-channel devices when operated from the main toggle (Endpoint 0).\n *Prevented redundant Endpoint 0 status reports triggered by Supervision commands.\n *Ensured that all controllable endpoints report their status correctly after any operation.",
-			"url": "https://www.getzooz.com/firmware/ZEN34_V02R20.gbl",
+			"changelog": "* Includes firmware versions: 4.0, 4.10, 4.20, 4.30\n* Updated SDK from 7.22.1 to 7.23.1\n* Fixed startup status reporting issues: 1-Endpoint 0 was not reporting its status after startup. 2-Endpoint 1 could generate duplicate status reports.\n* Optimized the status reporting delay for single-channel devices when operated from the main toggle (Endpoint 0).\n* Prevented redundant Endpoint 0 status reports triggered by Supervision commands.\n* Ensured that all controllable endpoints report their status correctly after any operation.",
+			"url": "https://www.getzooz.com/firmware/ZEN20_V04R30.gbl",
 			"integrity": "sha256:4ffdc2722562b25403d3d4af05369a18059a00a4d4347004c3d1cb797695e69a"
 		},
 		{
