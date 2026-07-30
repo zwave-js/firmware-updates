@@ -86,6 +86,7 @@ export default async function main({
 			owner,
 			repo,
 			state: "open",
+			head: `${run.head_repository.owner.login}:${run.head_branch}`,
 		});
 		prNumber = prs.find(
 			(pr) =>
