@@ -16,14 +16,14 @@
 		{
 			"version": "1.30.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.10, 1.20, 1.30.\n* Fixed: Resolved an issue where Parameter 16 (Turn-On Delay After Power Outage) was not applied when Parameter 2 (On/Off Status After Power Failure) was set to Always ON, and the load was already physically ON before the outage. The configured startup delay is now correctly respected regardless of the load's previous state.",
+			"changelog": "* Includes firmware versions: 1.10, 1.20, 1.30.\n* Fixed: Resolved an issue where Parameter 16 (Turn-On Delay After Power Outage) was not applied when Parameter 2 (On/Off Status After Power Failure) was set to Always ON, and the load was already physically ON before the outage. The configured startup delay is now correctly respected regardless of the load's previous state.",
 			"url": "https://www.getzooz.com/firmware/ZEN78_V01R30.gbl",
 			"integrity": "sha256:042fc2e0b717358732c2c0ebe8f9db9047ccc230cf3cd178e11ac17463f26021"
 		},
 		{
 			"version": "1.20.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.10, 1.20.\n* Fixed a bug where a ZEN78 powered on outside the Z-Wave network and later added would fail to start scheduled kWh reporting correctly. Now, the device reports kWh properly regardless of when it is added to the network and follows parameter 6 settings as expected.",
+			"changelog": "* Includes firmware versions: 1.10, 1.20.\n* Fixed a bug where a ZEN78 powered on outside the Z-Wave network and later added would fail to start scheduled kWh reporting correctly. Now, the device reports kWh properly regardless of when it is added to the network and follows parameter 6 settings as expected.",
 			"url": "https://www.getzooz.com/firmware/ZEN78_V01R20.gbl",
 			"integrity": "sha256:5f9f9d79ac74efcb949c6011ee8d219c5dc4f2da521a75004125f8cd80deec32"
 		}
