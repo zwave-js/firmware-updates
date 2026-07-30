@@ -1,9 +1,8 @@
 import {
-	deleteExistingStatusComments,
 	getSubmissionIssueNumberFromPR,
 	postStatusComment,
 } from "./firmware-submission/submission-pr.mts";
-import type { GitHubClient, GitHubScriptContext } from "./types.mts";
+import type { GitHubScriptContext } from "./types.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
 const FIRMWARE_DEFINITION_FILE_REGEX = /^firmwares\/[^/]+\/[^/]+\.json$/;
 
@@ -84,29 +83,6 @@ export function workflowRunPassed(
 	return conclusion === "success";
 }
 
-export async function publishCheckStatus(
-	github: GitHubClient,
-	owner: string,
-	repo: string,
-	prNumber: number,
-	issueNumber: number | null,
-	passed: boolean,
-	commentBody: string,
-): Promise<void> {
-	const commentTarget = issueNumber ?? prNumber;
-	if (passed && issueNumber == null) {
-		await deleteExistingStatusComments(
-			github,
-			owner,
-			repo,
-			commentTarget,
-		);
-		return;
-	}
-
-	await postStatusComment(github, owner, repo, commentTarget, commentBody);
-}
-
 function shouldIncludeJobInFailureSummary(
 	conclusion: string | null | undefined,
 ): boolean {
@@ -164,8 +140,22 @@ export default async function main({
 	}
 
 	const issueNumber = getSubmissionIssueNumberFromPR(pr, owner, repo);
-	// Preserve issue-generated submission reporting; scope direct PR comments to external firmware definitions
-	if (issueNumber == null) {
+
+	let labelNames: string[] = [];
+	if (issueNumber != null) {
+		const { data: issue } = await github.rest.issues.get({
+			owner,
+			repo,
+			issue_number: issueNumber,
+		});
+		labelNames = issue.labels.map((label) =>
+			typeof label === "string" ? label : (label.name ?? ""),
+		);
+		if (!SUBMISSION_LABELS.some((label) => labelNames.includes(label))) {
+			console.log("Issue does not have a submission label, skipping");
+			return;
+		}
+	} else {
 		const changedFiles = await github.paginate(github.rest.pulls.listFiles, {
 			owner,
 			repo,
@@ -182,22 +172,6 @@ export default async function main({
 			console.log(
 				"PR is not an external firmware definition contribution, skipping",
 			);
-			return;
-		}
-	}
-
-	let labelNames: string[] = [];
-	if (issueNumber != null) {
-		const { data: issue } = await github.rest.issues.get({
-			owner,
-			repo,
-			issue_number: issueNumber,
-		});
-		labelNames = issue.labels.map((label) =>
-			typeof label === "string" ? label : (label.name ?? ""),
-		);
-		if (!SUBMISSION_LABELS.some((label) => labelNames.includes(label))) {
-			console.log("Issue does not have a submission label, skipping");
 			return;
 		}
 	}
@@ -249,14 +223,14 @@ ${errorLines || "(No error output found)"}`;
 		}
 	}
 
-	await publishCheckStatus(
+	// Direct PRs are only commented on while checks fail, so a passing run just
+	// clears the stale comment. Submission issues always get a status comment.
+	await postStatusComment(
 		github,
 		owner,
 		repo,
-		prNumber,
-		issueNumber,
-		passed,
-		commentBody,
+		issueNumber ?? prNumber,
+		issueNumber == null && passed ? null : commentBody,
 	);
 
 	if (issueNumber == null) return;
