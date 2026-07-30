@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 const processSubmissionModulePath =
 	"../.github/scripts/firmware-submission/process-submission.mts";
 const reportPrChecksModulePath = "../.github/scripts/report-pr-checks.mts";
+const submissionPrModulePath =
+	"../.github/scripts/firmware-submission/submission-pr.mts";
 const resetOnEditModulePath =
 	"../.github/scripts/firmware-submission/reset-on-edit.mts";
 const cleanupLabelsModulePath =
@@ -12,6 +14,7 @@ const cleanupLabelsModulePath =
 
 const processSubmissionModule = await import(processSubmissionModulePath);
 const reportPrChecksModule = await import(reportPrChecksModulePath);
+const submissionPrModule = await import(submissionPrModulePath);
 const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
@@ -30,6 +33,7 @@ const {
 } = processSubmissionModule;
 const { extractErrorOutput, formatCodeBlock, workflowRunPassed } =
 	reportPrChecksModule;
+const { postStatusComment, SUBMISSION_COMMENT_TAG } = submissionPrModule;
 const resetOnEdit = resetOnEditModule.default;
 const cleanupLabels = cleanupLabelsModule.default;
 
@@ -174,6 +178,184 @@ function createIssuesMock(labels: string[] = []) {
 		addLabelsCalls,
 	};
 }
+
+type IssueComment = {
+	id: number;
+	body: string | null;
+	created_at: string;
+	user: {
+		login: string;
+	} | null;
+};
+
+function createStatusCommentMock(comments: IssueComment[]) {
+	const updatedComments: { id: number; body: string }[] = [];
+	const deletedCommentIds: number[] = [];
+	const createdBodies: string[] = [];
+	const issues = {
+		listComments: async () => ({ data: comments }),
+		updateComment: async (
+			{ comment_id, body }: { comment_id: number; body: string },
+		) => {
+			updatedComments.push({ id: comment_id, body });
+		},
+		deleteComment: async ({ comment_id }: { comment_id: number }) => {
+			deletedCommentIds.push(comment_id);
+		},
+		createComment: async ({ body }: { body: string }) => {
+			createdBodies.push(body);
+		},
+	};
+
+	return {
+		octokit: {
+			paginate: async () => comments,
+			rest: { issues },
+		},
+		updatedComments,
+		deletedCommentIds,
+		createdBodies,
+	};
+}
+
+test("postStatusComment updates the newest matching comment and deletes older duplicates", async (t) => {
+	const comments: IssueComment[] = [
+		{
+			id: 1,
+			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-27T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Another bot\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "other-bot" },
+		},
+		{
+			id: 3,
+			body: `Older status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-28T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 4,
+			body: "An unrelated comment",
+			created_at: "2026-07-30T11:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 5,
+			body: `Newest status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-29T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	];
+	const mock = createStatusCommentMock(comments);
+
+	await postStatusComment(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		"Latest status",
+	);
+
+	t.deepEqual(mock.updatedComments, [
+		{ id: 5, body: `Latest status\n${SUBMISSION_COMMENT_TAG}` },
+	]);
+	t.deepEqual(mock.deletedCommentIds, [3, 1]);
+	t.deepEqual(mock.createdBodies, []);
+});
+
+test("postStatusComment creates a tagged comment when no matching comment exists", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: "An unrelated comment",
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Another bot\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T11:00:00Z",
+			user: { login: "other-bot" },
+		},
+	]);
+
+	await postStatusComment(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		"First status",
+	);
+
+	t.deepEqual(mock.updatedComments, []);
+	t.deepEqual(mock.deletedCommentIds, []);
+	t.deepEqual(mock.createdBodies, [
+		`First status\n${SUBMISSION_COMMENT_TAG}`,
+	]);
+});
+
+test("postStatusComment propagates update failures without creating a comment", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+	mock.octokit.rest.issues.updateComment = async () => {
+		throw new Error("update failed");
+	};
+
+	await t.throwsAsync(
+		postStatusComment(
+			mock.octokit,
+			"zwave-js",
+			"firmware-updates",
+			351,
+			"Latest status",
+		),
+		{ message: "update failed" },
+	);
+	t.deepEqual(mock.createdBodies, []);
+});
+
+test("postStatusComment propagates delete failures without creating a comment", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-29T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Newest status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+	mock.octokit.rest.issues.deleteComment = async () => {
+		throw new Error("delete failed");
+	};
+
+	await t.throwsAsync(
+		postStatusComment(
+			mock.octokit,
+			"zwave-js",
+			"firmware-updates",
+			351,
+			"Latest status",
+		),
+		{ message: "delete failed" },
+	);
+	t.deepEqual(mock.createdBodies, []);
+});
 
 test("parseIssueBody supports multiple-target issue bodies and preserves markdown headings inside textarea fields", (t) => {
 	const body = `
