@@ -40,15 +40,16 @@ export async function deleteExistingStatusComments(
 	}
 }
 
-/** Delete previous status comments and post a fresh one. */
+/** Delete previous status comments and post a fresh one, or none if `body` is null. */
 export async function postStatusComment(
 	octokit: GitHubClient,
 	owner: string,
 	repo: string,
 	issueNumber: number,
-	body: string,
+	body: string | null,
 ): Promise<void> {
 	await deleteExistingStatusComments(octokit, owner, repo, issueNumber);
+	if (body == null) return;
 
 	await octokit.rest.issues.createComment({
 		owner,

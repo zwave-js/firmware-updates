@@ -344,6 +344,28 @@ test("postStatusComment propagates delete failures without creating a comment", 
 	t.deepEqual(mock.operations, []);
 });
 
+test("postStatusComment removes stale comments without posting when body is null", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Previous failure\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+
+	await postStatusComment(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		null,
+	);
+
+	t.deepEqual(mock.operations, ["delete:1"]);
+	t.deepEqual(mock.createdBodies, []);
+});
+
 test("parseIssueBody supports multiple-target issue bodies and preserves markdown headings inside textarea fields", (t) => {
 	const body = `
 ### Brand
