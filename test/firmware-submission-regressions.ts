@@ -34,6 +34,7 @@ const {
 const {
 	extractErrorOutput,
 	formatCodeBlock,
+	publishCheckStatus,
 	shouldReportChecksForDirectPR,
 	workflowRunPassed,
 } = reportPrChecksModule;
@@ -342,6 +343,77 @@ test("postStatusComment propagates delete failures without creating a comment", 
 	);
 	t.deepEqual(mock.createdBodies, []);
 	t.deepEqual(mock.operations, []);
+});
+
+test("publishCheckStatus posts a fresh failure comment on direct PRs", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Previous failure\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+
+	await publishCheckStatus(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		null,
+		false,
+		"Latest failure",
+	);
+
+	t.deepEqual(mock.operations, ["delete:1", "create"]);
+	t.deepEqual(mock.createdBodies, [
+		`Latest failure\n${SUBMISSION_COMMENT_TAG}`,
+	]);
+});
+
+test("publishCheckStatus removes stale comments without posting on direct PR success", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Previous failure\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+
+	await publishCheckStatus(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		null,
+		true,
+		"All checks passed",
+	);
+
+	t.deepEqual(mock.operations, ["delete:1"]);
+	t.deepEqual(mock.createdBodies, []);
+});
+
+test("publishCheckStatus posts success comments on submission issues", async (t) => {
+	const mock = createStatusCommentMock([]);
+	const successMessage =
+		"All checks passed on the pull request. A maintainer will review and merge.";
+
+	await publishCheckStatus(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		400,
+		351,
+		true,
+		successMessage,
+	);
+
+	t.deepEqual(mock.operations, ["create"]);
+	t.deepEqual(mock.createdBodies, [
+		`${successMessage}\n${SUBMISSION_COMMENT_TAG}`,
+	]);
 });
 
 test("parseIssueBody supports multiple-target issue bodies and preserves markdown headings inside textarea fields", (t) => {

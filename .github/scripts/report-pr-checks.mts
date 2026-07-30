@@ -1,8 +1,9 @@
 import {
+	deleteExistingStatusComments,
 	getSubmissionIssueNumberFromPR,
 	postStatusComment,
 } from "./firmware-submission/submission-pr.mts";
-import type { GitHubScriptContext } from "./types.mts";
+import type { GitHubClient, GitHubScriptContext } from "./types.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
 const FIRMWARE_DEFINITION_FILE_REGEX = /^firmwares\/[^/]+\/[^/]+\.json$/;
 
@@ -81,6 +82,29 @@ export function workflowRunPassed(
 	conclusion: string | null | undefined,
 ): boolean {
 	return conclusion === "success";
+}
+
+export async function publishCheckStatus(
+	github: GitHubClient,
+	owner: string,
+	repo: string,
+	prNumber: number,
+	issueNumber: number | null,
+	passed: boolean,
+	commentBody: string,
+): Promise<void> {
+	const commentTarget = issueNumber ?? prNumber;
+	if (passed && issueNumber == null) {
+		await deleteExistingStatusComments(
+			github,
+			owner,
+			repo,
+			commentTarget,
+		);
+		return;
+	}
+
+	await postStatusComment(github, owner, repo, commentTarget, commentBody);
 }
 
 function shouldIncludeJobInFailureSummary(
@@ -225,8 +249,15 @@ ${errorLines || "(No error output found)"}`;
 		}
 	}
 
-	const commentTarget = issueNumber ?? prNumber;
-	await postStatusComment(github, owner, repo, commentTarget, commentBody);
+	await publishCheckStatus(
+		github,
+		owner,
+		repo,
+		prNumber,
+		issueNumber,
+		passed,
+		commentBody,
+	);
 
 	if (issueNumber == null) return;
 
