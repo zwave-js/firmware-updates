@@ -189,21 +189,18 @@ type IssueComment = {
 };
 
 function createStatusCommentMock(comments: IssueComment[]) {
-	const updatedComments: { id: number; body: string }[] = [];
 	const deletedCommentIds: number[] = [];
 	const createdBodies: string[] = [];
+	const operations: string[] = [];
 	const issues = {
 		listComments: async () => ({ data: comments }),
-		updateComment: async (
-			{ comment_id, body }: { comment_id: number; body: string },
-		) => {
-			updatedComments.push({ id: comment_id, body });
-		},
 		deleteComment: async ({ comment_id }: { comment_id: number }) => {
 			deletedCommentIds.push(comment_id);
+			operations.push(`delete:${comment_id}`);
 		},
 		createComment: async ({ body }: { body: string }) => {
 			createdBodies.push(body);
+			operations.push("create");
 		},
 	};
 
@@ -212,13 +209,13 @@ function createStatusCommentMock(comments: IssueComment[]) {
 			paginate: async () => comments,
 			rest: { issues },
 		},
-		updatedComments,
 		deletedCommentIds,
 		createdBodies,
+		operations,
 	};
 }
 
-test("postStatusComment updates the newest matching comment and deletes older duplicates", async (t) => {
+test("postStatusComment deletes all matching comments before creating a fresh one", async (t) => {
 	const comments: IssueComment[] = [
 		{
 			id: 1,
@@ -261,11 +258,22 @@ test("postStatusComment updates the newest matching comment and deletes older du
 		"Latest status",
 	);
 
-	t.deepEqual(mock.updatedComments, [
-		{ id: 5, body: `Latest status\n${SUBMISSION_COMMENT_TAG}` },
+	t.deepEqual(mock.deletedCommentIds, [1, 3, 5]);
+	t.deepEqual(
+		comments
+			.filter((comment) => !mock.deletedCommentIds.includes(comment.id))
+			.map((comment) => comment.id),
+		[2, 4],
+	);
+	t.deepEqual(mock.createdBodies, [
+		`Latest status\n${SUBMISSION_COMMENT_TAG}`,
 	]);
-	t.deepEqual(mock.deletedCommentIds, [3, 1]);
-	t.deepEqual(mock.createdBodies, []);
+	t.deepEqual(mock.operations, [
+		"delete:1",
+		"delete:3",
+		"delete:5",
+		"create",
+	]);
 });
 
 test("postStatusComment creates a tagged comment when no matching comment exists", async (t) => {
@@ -292,37 +300,11 @@ test("postStatusComment creates a tagged comment when no matching comment exists
 		"First status",
 	);
 
-	t.deepEqual(mock.updatedComments, []);
 	t.deepEqual(mock.deletedCommentIds, []);
 	t.deepEqual(mock.createdBodies, [
 		`First status\n${SUBMISSION_COMMENT_TAG}`,
 	]);
-});
-
-test("postStatusComment propagates update failures without creating a comment", async (t) => {
-	const mock = createStatusCommentMock([
-		{
-			id: 1,
-			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
-			created_at: "2026-07-30T10:00:00Z",
-			user: { login: "zwave-js-bot" },
-		},
-	]);
-	mock.octokit.rest.issues.updateComment = async () => {
-		throw new Error("update failed");
-	};
-
-	await t.throwsAsync(
-		postStatusComment(
-			mock.octokit,
-			"zwave-js",
-			"firmware-updates",
-			351,
-			"Latest status",
-		),
-		{ message: "update failed" },
-	);
-	t.deepEqual(mock.createdBodies, []);
+	t.deepEqual(mock.operations, ["create"]);
 });
 
 test("postStatusComment propagates delete failures without creating a comment", async (t) => {
@@ -355,6 +337,7 @@ test("postStatusComment propagates delete failures without creating a comment", 
 		{ message: "delete failed" },
 	);
 	t.deepEqual(mock.createdBodies, []);
+	t.deepEqual(mock.operations, []);
 });
 
 test("parseIssueBody supports multiple-target issue bodies and preserves markdown headings inside textarea fields", (t) => {
