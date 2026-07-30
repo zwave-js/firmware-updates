@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN34",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0xf001",
+			"firmwareVersion": {
+				"min": "2.0",
+				"max": "2.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.20.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20.\n* Updated SDK from 7.19.3 to 7.24.1.\n* Added new parameter 6 - Scene Control Multi-Tap.\n* Fixed the Range Test Tool feature.",
+			"url": "https://www.getzooz.com/firmware/ZEN34_V02R20.gbl",
+			"integrity": "sha256:b6d13e00fef867865d6dab4a43f3adf3cda0710e5317e6295886f183177690bb"
+		}
+	]
+}
