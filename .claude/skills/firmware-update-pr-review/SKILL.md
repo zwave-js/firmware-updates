@@ -1,6 +1,7 @@
 ---
 name: firmware-update-pr-review
 description: Use this skill when reviewing any pull request against the zwave-js/firmware-updates repo that touches firmware definition files (`firmwares/<vendor>/*.json`), regardless of author. Covers title normalization, changelog formatting via the submission pipeline (prettier markdown, style-preserving), fixing typos and indentation, and pushing fixups back to the PR's branch.
+allowed-tools: Bash(gh pr checkout:*) Bash(git checkout:*) Bash(git add:*) Bash(git commit:*) Bash(git push:*) Bash(git branch:*) Bash(gh api --method PATCH repos/zwave-js/firmware-updates/pulls/:*)
 ---
 
 # Firmware Update PR Review
@@ -8,6 +9,7 @@ description: Use this skill when reviewing any pull request against the zwave-js
 ## Overview
 
 PRs that add or modify `firmwares/<vendor>/*.json` often arrive with:
+
 - Non-canonical titles (missing vendor, `.json` suffix, unusual phrasing)
 - Changelogs with stray whitespace or malformed bullets
 - Changelogs written as a single numbered list item (`"1. Fixed X"`) — the `1.` prefix is meaningless with only one item
@@ -34,9 +36,9 @@ The title should carry these pieces of information, in this order:
 1. **Verb** — `Add` when the PR introduces a new file or a new upgrade entry; `Update` when it only modifies an existing entry in place.
 2. **Vendor / brand / manufacturer** — `Zooz`, `Shelly`, `Aeotec`, `Leviton`, etc. Always present; read it from the JSON's `devices[].brand` if unclear.
 3. **Model** — bare model ID plus any variant suffixes from the filename (e.g. `ZEN71-V04-800-LR`, `ZSE42-V02`). Keep the suffix so the variant stays identifiable. Never include the `.json` extension.
-4. **Region(s)** — *optional* when the device supports only one region; the region is obvious from the body in that case. When present, use a consistent format: `US`, `EU`, `US and EU`, `US / AUS / EU` (slash-separated for 3+ regions, space-padded).
-5. **Added firmware version(s)** — *optional* when the PR touches multiple devices, since listing them all makes the title unreadable. Either `1.30` or `1.30.0` is fine; keep all three parts when the patch is non-zero (`1.30.1` stays `1.30.1`). Spell as `firmware <V>` normally; contract to `FW <V>` when the title is otherwise too long.
-6. **Channel** — *optional* and only called out when the upgrade's `channel` is not the default `stable`. For `beta` entries, prefix the word `firmware` with the channel: `beta firmware <V>`. Omit for `stable` (it's the default and adding it just adds noise).
+4. **Region(s)** — _optional_ when the device supports only one region; the region is obvious from the body in that case. When present, use a consistent format: `US`, `EU`, `US and EU`, `US / AUS / EU` (slash-separated for 3+ regions, space-padded).
+5. **Added firmware version(s)** — _optional_ when the PR touches multiple devices, since listing them all makes the title unreadable. Either `1.30` or `1.30.0` is fine; keep all three parts when the patch is non-zero (`1.30.1` stays `1.30.1`). Spell as `firmware <V>` normally; contract to `FW <V>` when the title is otherwise too long.
+6. **Channel** — _optional_ and only called out when the upgrade's `channel` is not the default `stable`. For `beta` entries, prefix the word `firmware` with the channel: `beta firmware <V>`. Omit for `stable` (it's the default and adding it just adds noise).
 
 Typical shapes:
 
