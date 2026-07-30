@@ -6,17 +6,18 @@ export const SUBMISSION_PR_MARKER = "<!-- firmware-submission-pr -->";
 export const SUBMISSION_COMMENT_TAG = "<!-- firmware-submission-status -->";
 export const SUBMISSION_PR_AUTHOR = "zwave-js-bot";
 
-/** Minimize all existing status comments posted by the bot on the given issue. */
-export async function minimizeExistingStatusComments(
+/** Delete existing status comments posted by the bot on the given issue. */
+export async function deleteExistingStatusComments(
 	octokit: GitHubClient,
 	owner: string,
 	repo: string,
 	issueNumber: number,
 ): Promise<void> {
-	const comments = await octokit.paginate(
-		octokit.rest.issues.listComments,
-		{ owner, repo, issue_number: issueNumber },
-	);
+	const comments = await octokit.paginate(octokit.rest.issues.listComments, {
+		owner,
+		repo,
+		issue_number: issueNumber,
+	});
 
 	const statusComments = comments.filter(
 		(comment) =>
@@ -25,34 +26,21 @@ export async function minimizeExistingStatusComments(
 	);
 
 	console.log(
-		`Found ${statusComments.length} status comment(s) to minimize`
-		+ ` (out of ${comments.length} total).`,
+		`Found ${statusComments.length} status comment(s) to delete` +
+			` (out of ${comments.length} total).`,
 	);
 
 	for (const comment of statusComments) {
-		try {
-			console.log(
-				`Minimizing comment ${comment.id} (node_id: ${comment.node_id})...`,
-			);
-			const result = await octokit.graphql(
-				`mutation($id: ID!) {
-					minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) {
-						minimizedComment { isMinimized }
-					}
-				}`,
-				{ id: comment.node_id },
-			);
-			console.log("Minimize result:", JSON.stringify(result));
-		} catch (error) {
-			console.log(
-				"Failed to minimize comment:",
-				error instanceof Error ? error.message : String(error),
-			);
-		}
+		console.log(`Deleting status comment ${comment.id}...`);
+		await octokit.rest.issues.deleteComment({
+			owner,
+			repo,
+			comment_id: comment.id,
+		});
 	}
 }
 
-/** Delete previous status comments and post a new one. */
+/** Delete previous status comments and post a fresh one. */
 export async function postStatusComment(
 	octokit: GitHubClient,
 	owner: string,
@@ -60,7 +48,8 @@ export async function postStatusComment(
 	issueNumber: number,
 	body: string,
 ): Promise<void> {
-	await minimizeExistingStatusComments(octokit, owner, repo, issueNumber);
+	await deleteExistingStatusComments(octokit, owner, repo, issueNumber);
+
 	await octokit.rest.issues.createComment({
 		owner,
 		repo,

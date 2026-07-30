@@ -5,6 +5,8 @@ import { readFile } from "node:fs/promises";
 const processSubmissionModulePath =
 	"../.github/scripts/firmware-submission/process-submission.mts";
 const reportPrChecksModulePath = "../.github/scripts/report-pr-checks.mts";
+const submissionPrModulePath =
+	"../.github/scripts/firmware-submission/submission-pr.mts";
 const resetOnEditModulePath =
 	"../.github/scripts/firmware-submission/reset-on-edit.mts";
 const cleanupLabelsModulePath =
@@ -12,6 +14,7 @@ const cleanupLabelsModulePath =
 
 const processSubmissionModule = await import(processSubmissionModulePath);
 const reportPrChecksModule = await import(reportPrChecksModulePath);
+const submissionPrModule = await import(submissionPrModulePath);
 const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
@@ -28,8 +31,13 @@ const {
 	resolveGitHubFirmwarePermalink,
 	sameExactDeviceSet,
 } = processSubmissionModule;
-const { extractErrorOutput, formatCodeBlock, workflowRunPassed } =
-	reportPrChecksModule;
+const {
+	extractErrorOutput,
+	formatCodeBlock,
+	shouldReportChecksForDirectPR,
+	workflowRunPassed,
+} = reportPrChecksModule;
+const { postStatusComment, SUBMISSION_COMMENT_TAG } = submissionPrModule;
 const resetOnEdit = resetOnEditModule.default;
 const cleanupLabels = cleanupLabelsModule.default;
 
@@ -174,6 +182,167 @@ function createIssuesMock(labels: string[] = []) {
 		addLabelsCalls,
 	};
 }
+
+type IssueComment = {
+	id: number;
+	body: string | null;
+	created_at: string;
+	user: {
+		login: string;
+	} | null;
+};
+
+function createStatusCommentMock(comments: IssueComment[]) {
+	const deletedCommentIds: number[] = [];
+	const createdBodies: string[] = [];
+	const operations: string[] = [];
+	const issues = {
+		listComments: async () => ({ data: comments }),
+		deleteComment: async ({ comment_id }: { comment_id: number }) => {
+			deletedCommentIds.push(comment_id);
+			operations.push(`delete:${comment_id}`);
+		},
+		createComment: async ({ body }: { body: string }) => {
+			createdBodies.push(body);
+			operations.push("create");
+		},
+	};
+
+	return {
+		octokit: {
+			paginate: async () => comments,
+			rest: { issues },
+		},
+		deletedCommentIds,
+		createdBodies,
+		operations,
+	};
+}
+
+test("postStatusComment deletes all matching comments before creating a fresh one", async (t) => {
+	const comments: IssueComment[] = [
+		{
+			id: 1,
+			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-27T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Another bot\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "other-bot" },
+		},
+		{
+			id: 3,
+			body: `Older status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-28T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 4,
+			body: "An unrelated comment",
+			created_at: "2026-07-30T11:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 5,
+			body: `Newest status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-29T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	];
+	const mock = createStatusCommentMock(comments);
+
+	await postStatusComment(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		"Latest status",
+	);
+
+	t.deepEqual(mock.deletedCommentIds, [1, 3, 5]);
+	t.deepEqual(
+		comments
+			.filter((comment) => !mock.deletedCommentIds.includes(comment.id))
+			.map((comment) => comment.id),
+		[2, 4],
+	);
+	t.deepEqual(mock.createdBodies, [
+		`Latest status\n${SUBMISSION_COMMENT_TAG}`,
+	]);
+	t.deepEqual(mock.operations, [
+		"delete:1",
+		"delete:3",
+		"delete:5",
+		"create",
+	]);
+});
+
+test("postStatusComment creates a tagged comment when no matching comment exists", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: "An unrelated comment",
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Another bot\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T11:00:00Z",
+			user: { login: "other-bot" },
+		},
+	]);
+
+	await postStatusComment(
+		mock.octokit,
+		"zwave-js",
+		"firmware-updates",
+		351,
+		"First status",
+	);
+
+	t.deepEqual(mock.deletedCommentIds, []);
+	t.deepEqual(mock.createdBodies, [
+		`First status\n${SUBMISSION_COMMENT_TAG}`,
+	]);
+	t.deepEqual(mock.operations, ["create"]);
+});
+
+test("postStatusComment propagates delete failures without creating a comment", async (t) => {
+	const mock = createStatusCommentMock([
+		{
+			id: 1,
+			body: `Old status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-29T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+		{
+			id: 2,
+			body: `Newest status\n${SUBMISSION_COMMENT_TAG}`,
+			created_at: "2026-07-30T10:00:00Z",
+			user: { login: "zwave-js-bot" },
+		},
+	]);
+	mock.octokit.rest.issues.deleteComment = async () => {
+		throw new Error("delete failed");
+	};
+
+	await t.throwsAsync(
+		postStatusComment(
+			mock.octokit,
+			"zwave-js",
+			"firmware-updates",
+			351,
+			"Latest status",
+		),
+		{ message: "delete failed" },
+	);
+	t.deepEqual(mock.createdBodies, []);
+	t.deepEqual(mock.operations, []);
+});
 
 test("parseIssueBody supports multiple-target issue bodies and preserves markdown headings inside textarea fields", (t) => {
 	const body = `
@@ -1160,6 +1329,57 @@ test("workflowRunPassed only treats successful conclusions as passing", (t) => {
 	t.false(workflowRunPassed("cancelled"));
 	t.false(workflowRunPassed("timed_out"));
 	t.false(workflowRunPassed(null));
+});
+
+test("shouldReportChecksForDirectPR only accepts external firmware definition changes", (t) => {
+	const externalPR = {
+		head: {
+			repo: {
+				full_name: "contributor/firmware-updates",
+			},
+		},
+	};
+	const internalPR = {
+		head: {
+			repo: {
+				full_name: "zwave-js/firmware-updates",
+			},
+		},
+	};
+	const firmwareDefinitionFiles = ["firmwares/Aeotec/ZW189.json"];
+
+	t.true(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			firmwareDefinitionFiles,
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			internalPR,
+			"zwave-js",
+			"firmware-updates",
+			firmwareDefinitionFiles,
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			[".github/workflows/report-pr-checks.yml"],
+		),
+	);
+	t.false(
+		shouldReportChecksForDirectPR(
+			externalPR,
+			"zwave-js",
+			"firmware-updates",
+			["firmwares/Aeotec/nested/ZW189.json"],
+		),
+	);
 });
 
 test("extractErrorOutput preserves multiline action errors", (t) => {
