@@ -1,12 +1,56 @@
-import type { GitHubScriptContext } from "../types.mts";
 import {
 	getSubmissionIssueNumberFromPR,
 	postStatusComment,
-} from "./submission-pr.mts";
+} from "./firmware-submission/submission-pr.mts";
+import type { GitHubScriptContext } from "./types.mts";
 const SUBMISSION_LABELS = ["processing", "submitted", "checks-failed"];
 
 function getErrorMessage(error: unknown): string {
 	return error instanceof Error ? error.message : String(error);
+}
+
+export function formatCodeBlock(content: string): string {
+	const longestBacktickRun = (content.match(/`+/g) ?? []).reduce(
+		(longest, run) => Math.max(longest, run.length),
+		2,
+	);
+	const fence = "`".repeat(longestBacktickRun + 1);
+	return `${fence}\n${content}\n${fence}`;
+}
+
+export function extractErrorOutput(logText: string): string {
+	const timestamp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /;
+	const lines = logText.replace(/\x1B\[[0-9;]*m/g, "").split("\n");
+	const errorBlocks: string[] = [];
+
+	for (let index = 0; index < lines.length; index++) {
+		const rawLine = lines[index];
+		const line = rawLine.replace(timestamp, "");
+
+		if (line.includes("##[error]")) {
+			const block = [line.replace("##[error]", "").trim()];
+			while (
+				index + 1 < lines.length &&
+				!timestamp.test(lines[index + 1])
+			) {
+				block.push(lines[++index].trimEnd());
+			}
+			errorBlocks.push(block.join("\n").trim());
+		} else if (
+			line.startsWith("Error:") ||
+			line.startsWith("error ") ||
+			line.includes("❌")
+		) {
+			errorBlocks.push(line.trim());
+		}
+	}
+
+	return errorBlocks
+		.filter(
+			(block) => block && block !== "Process completed with exit code 1.",
+		)
+		.slice(0, 50)
+		.join("\n\n");
 }
 
 export function workflowRunPassed(
@@ -34,22 +78,26 @@ export default async function main({
 	const owner = context.repo.owner;
 	const repo = context.repo.repo;
 
-	let prNumber: number;
+	let prNumber: number | undefined;
 	if (run.pull_requests && run.pull_requests.length > 0) {
 		prNumber = run.pull_requests[0].number;
 	} else {
-		const { data: prs } = await github.rest.pulls.list({
+		const prs = await github.paginate(github.rest.pulls.list, {
 			owner,
 			repo,
 			state: "open",
-			head: `${owner}:${run.head_branch}`,
+			head: `${run.head_repository.owner.login}:${run.head_branch}`,
 		});
-		const matched = prs.find((pr) => pr.head.sha === run.head_sha);
-		if (!matched) {
-			console.log("No PR found for this workflow run, skipping");
-			return;
-		}
-		prNumber = matched.number;
+		prNumber = prs.find(
+			(pr) =>
+				pr.head.sha === run.head_sha &&
+				pr.head.ref === run.head_branch &&
+				pr.head.repo?.full_name === run.head_repository.full_name,
+		)?.number;
+	}
+	if (prNumber == null) {
+		console.log("No PR found for this workflow run, skipping");
+		return;
 	}
 
 	const { data: pr } = await github.rest.pulls.get({
@@ -68,25 +116,24 @@ export default async function main({
 	}
 
 	const issueNumber = getSubmissionIssueNumberFromPR(pr, owner, repo);
-	if (issueNumber == null) {
-		console.log("PR is not a bot-managed submission PR, skipping");
-		return;
+	let labelNames: string[] = [];
+	if (issueNumber != null) {
+		const { data: issue } = await github.rest.issues.get({
+			owner,
+			repo,
+			issue_number: issueNumber,
+		});
+		labelNames = issue.labels.map((label) =>
+			typeof label === "string" ? label : (label.name ?? ""),
+		);
+		if (!SUBMISSION_LABELS.some((label) => labelNames.includes(label))) {
+			console.log("Issue does not have a submission label, skipping");
+			return;
+		}
 	}
 
-	const { data: issue } = await github.rest.issues.get({
-		owner,
-		repo,
-		issue_number: issueNumber,
-	});
-	const labelNames = issue.labels.map((label) =>
-		typeof label === "string" ? label : (label.name ?? ""),
-	);
-	if (!SUBMISSION_LABELS.some((label) => labelNames.includes(label))) {
-		console.log("Issue does not have a submission label, skipping");
-		return;
-	}
-
-	const { data: jobsData } = await github.rest.actions.listJobsForWorkflowRun(
+	const jobs = await github.paginate(
+		github.rest.actions.listJobsForWorkflowRun,
 		{
 			owner,
 			repo,
@@ -94,7 +141,7 @@ export default async function main({
 		},
 	);
 	const passed = workflowRunPassed(run.conclusion);
-	const unsuccessfulJobs = jobsData.jobs.filter((job) =>
+	const unsuccessfulJobs = jobs.filter((job) =>
 		shouldIncludeJobInFailureSummary(job.conclusion),
 	);
 
@@ -106,8 +153,6 @@ export default async function main({
 		for (const job of unsuccessfulJobs) {
 			let errorLines = "";
 			try {
-				// downloadJobLogsForWorkflowRun follows the redirect and
-				// returns the plain-text job log directly in `data`.
 				const logResponse =
 					await github.rest.actions.downloadJobLogsForWorkflowRun({
 						owner,
@@ -115,34 +160,15 @@ export default async function main({
 						job_id: job.id,
 					});
 				const logText = logResponse.data as unknown as string;
-				const clean = logText
-					.replace(/\x1B\[[0-9;]*m/g, "")
-					.replace(
-						/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z /gm,
-						"",
-					);
-				const lines = clean
-					.split("\n")
-					.filter(
-						(line) =>
-							line.includes("##[error]") ||
-							line.startsWith("Error:") ||
-							line.startsWith("error ") ||
-							line.includes("❌"),
-					);
-				errorLines = lines
-					.map((line) => line.replace("##[error]", "").trim())
-					.filter(
-						(line) =>
-							line !== "Process completed with exit code 1.",
-					)
-					.slice(0, 50)
-					.join("\n");
+				errorLines = extractErrorOutput(logText);
 			} catch (error) {
 				errorLines = `(Could not retrieve logs: ${getErrorMessage(error)})`;
 			}
+			const output = `Job: ${job.name}
+
+${errorLines || "(No error output found)"}`;
 			sections.push(
-				`**Job: \`${job.name}\`**\n\`\`\`\n${errorLines || "(No error output found)"}\n\`\`\``,
+				`**Failed job: [View logs](${job.html_url})**\n\n${formatCodeBlock(output)}`,
 			);
 		}
 		const workflowConclusion = run.conclusion ?? "unknown";
@@ -153,7 +179,10 @@ export default async function main({
 		}
 	}
 
-	await postStatusComment(github, owner, repo, issueNumber, commentBody);
+	const commentTarget = issueNumber ?? prNumber;
+	await postStatusComment(github, owner, repo, commentTarget, commentBody);
+
+	if (issueNumber == null) return;
 
 	const addLabel = async (label: string): Promise<void> => {
 		try {

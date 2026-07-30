@@ -1,4 +1,4 @@
-name: 'Z-Wave Bot: Mirror PR check results to issue'
+name: 'Z-Wave Bot: Report PR check results'
 
 on:
   workflow_run:
@@ -6,7 +6,9 @@ on:
     types: [completed]
 
 jobs:
-  mirror:
+  report:
+    name: Report check results
+    if: github.event.workflow_run.event == 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -18,12 +20,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Mirror results to submission issue
+      - name: Report check results
         uses: actions/github-script@v8
         with:
           github-token: ${{ secrets.BOT_TOKEN }}
           script: |
             const { default: action } = await import(
-              `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/mirror-pr-checks.mts`
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/report-pr-checks.mts`
             );
             await action({github, context});

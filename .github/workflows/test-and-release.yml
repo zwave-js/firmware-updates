@@ -48,8 +48,30 @@ jobs:
     - name: Run component tests
       run: yarn run test:ci
 
+  # ===================
+  # Validates firmware downloads and integrity hashes
+  integrity:
+    name: Firmware integrity
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v7
+
+    - name: Use Node.js 24
+      uses: actions/setup-node@v6
+      with:
+        node-version: 24
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --immutable
+
     - name: Check file download/integrity of changed files
-      if: github.event_name == 'pull_request'
       uses: actions/github-script@v8
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}

@@ -4,15 +4,14 @@ import { readFile } from "node:fs/promises";
 
 const processSubmissionModulePath =
 	"../.github/scripts/firmware-submission/process-submission.mts";
-const mirrorPrChecksModulePath =
-	"../.github/scripts/firmware-submission/mirror-pr-checks.mts";
+const reportPrChecksModulePath = "../.github/scripts/report-pr-checks.mts";
 const resetOnEditModulePath =
 	"../.github/scripts/firmware-submission/reset-on-edit.mts";
 const cleanupLabelsModulePath =
 	"../.github/scripts/firmware-submission/cleanup-labels.mts";
 
 const processSubmissionModule = await import(processSubmissionModulePath);
-const mirrorPrChecksModule = await import(mirrorPrChecksModulePath);
+const reportPrChecksModule = await import(reportPrChecksModulePath);
 const resetOnEditModule = await import(resetOnEditModulePath);
 const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 
@@ -29,7 +28,8 @@ const {
 	resolveGitHubFirmwarePermalink,
 	sameExactDeviceSet,
 } = processSubmissionModule;
-const { workflowRunPassed } = mirrorPrChecksModule;
+const { extractErrorOutput, formatCodeBlock, workflowRunPassed } =
+	reportPrChecksModule;
 const resetOnEdit = resetOnEditModule.default;
 const cleanupLabels = cleanupLabelsModule.default;
 
@@ -1160,4 +1160,36 @@ test("workflowRunPassed only treats successful conclusions as passing", (t) => {
 	t.false(workflowRunPassed("cancelled"));
 	t.false(workflowRunPassed("timed_out"));
 	t.false(workflowRunPassed(null));
+});
+
+test("extractErrorOutput preserves multiline action errors", (t) => {
+	const output = extractErrorOutput(
+		[
+			"2026-07-29T20:27:15.2368423Z ##[error]firmwares/device.json, version 1.0",
+			"Failed to generate integrity hash",
+			"Expected: sha256:111",
+			"Got: sha256:222",
+			"2026-07-29T20:27:15.2376414Z Continuing",
+			"2026-07-29T20:27:15.6887181Z ##[error]Process completed with exit code 1.",
+		].join("\n"),
+	);
+
+	t.is(
+		output,
+		[
+			"firmwares/device.json, version 1.0",
+			"Failed to generate integrity hash",
+			"Expected: sha256:111",
+			"Got: sha256:222",
+		].join("\n"),
+	);
+});
+
+test("formatCodeBlock contains untrusted Markdown", (t) => {
+	const output = formatCodeBlock(
+		"Job: ````\n@zwave-js/maintainers\n[link](https://example.com)",
+	);
+
+	t.true(output.startsWith("`````\n"));
+	t.true(output.endsWith("\n`````"));
 });
