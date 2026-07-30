@@ -97,7 +97,6 @@ async function main(param) {
 Failed to download ${url}
 ${e.message}`,
 					);
-					core.error(errors[errors.length - 1]);
 					continue;
 				}
 
@@ -111,7 +110,6 @@ ${e.message}`,
 Failed to generate integrity hash
 ${e.message}`,
 					);
-					core.error(errors[errors.length - 1]);
 					continue;
 				}
 
@@ -124,7 +122,6 @@ Expected: ${integrity}
 Got:      ${hash}
 \`\`\``,
 					);
-					core.error(errors[errors.length - 1]);
 					continue;
 				}
 
