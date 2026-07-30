@@ -27,3 +27,27 @@ jobs:
               `${process.env.GITHUB_WORKSPACE}/.github/scripts/firmware-submission/mirror-pr-checks.mts`
             );
             await action({github, context});
+
+  comment-integrity:
+    name: Report firmware integrity
+    if: github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      actions: read
+      pull-requests: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Comment on integrity failure
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { default: action } = await import(
+              `${process.env.GITHUB_WORKSPACE}/.github/scripts/comment-integrity-result.mts`
+            );
+            await action({github, context});
