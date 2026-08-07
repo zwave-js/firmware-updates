@@ -13,8 +13,8 @@
 			"version": "8.10",
 			"changelog": "Latest Versa Firmware",
 			"target": 0,
-			"url": "https://versawireless-my.sharepoint.com/:u:/p/justin/IQDAPu51kE5XQacsKTbLzn2pAQh9xCPMPSA2VMdBNsrYzIw?e=2NYc6c",
-			"integrity": "sha256-5PpvUwIU4DCgzxpOSQ+etKipga+Ng9ZV2bDWwikfbdM="
+			"url": "https://github.com/VersaWireless/firmware/releases/download/v8.10.0/LAMP-ZW2_v8.10.0_hw1_US-LR_0464FF00FF0D_2026-01-15.gbl",
+			"integrity": "sha256:e4fa6f530214e030a0cf1a4e490f9eb4a8a981af8d83d655d9b0d6c2291f6dd3"
 		}
 	]
 }
