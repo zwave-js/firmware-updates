@@ -8,6 +8,7 @@ const manufacturerAccounts = [
 	"chancehiblinds", // iBlinds
 	"jascoproducts", // Jasco
 	"philiotech", // Philio
+	"Frankenweeni", // Heatit
 ];
 
 module.exports = {
