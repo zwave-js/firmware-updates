@@ -1,6 +1,6 @@
 import jsonLogic, { type RulesLogic } from "json-logic-js";
 import * as semver from "semver";
-import { parse } from "./LogicParser.js";
+import { parse, toRulesLogic } from "./LogicParser.js";
 import { DeviceID, padVersion } from "./shared.js";
 
 const { add_operation, apply } = jsonLogic;
@@ -38,9 +38,17 @@ add_operation(
 	"ver ===",
 	tryOr((a, b) => semver.eq(padVersion(a), padVersion(b)), false),
 );
+add_operation(
+	"ver !==",
+	tryOr((a, b) => !semver.eq(padVersion(a), padVersion(b)), false),
+);
 
 export function parseLogic(logic: string): RulesLogic {
-	return parse(logic);
+	const expr = parse(logic);
+	if (!expr) {
+		throw new Error(`Failed to parse expression: ${logic}`);
+	}
+	return toRulesLogic(expr);
 }
 
 export function evaluate(
