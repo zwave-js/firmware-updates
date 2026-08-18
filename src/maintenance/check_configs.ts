@@ -20,6 +20,7 @@ const VERSION_OPERATORS = new Set([
 	"ver <=",
 	"ver <",
 	"ver ===",
+	"ver !==",
 ]);
 
 /** Returns true if a version string has a part with a leading zero, e.g. "2.00" */
