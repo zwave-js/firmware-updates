@@ -411,6 +411,7 @@ function parseIdentifier(s: ParserState): Identifier | undefined {
 	if (token?.kind === TokenKind.Identifier) {
 		s.pos++;
 		let name = token.value!;
+		// Capture subscripts as part of the identifier, e.g. firmwareVersion[1]
 		if (
 			s.tokens[s.pos]?.kind === TokenKind.LeftBracket
 			&& s.tokens[s.pos + 1]?.kind === TokenKind.NumberLiteral

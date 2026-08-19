@@ -160,10 +160,11 @@ export async function lookupConfigsBatch(
 			"firmwareVersion[0]": firmwareVersion,
 		};
 		if (device.additionalFirmwareVersions) {
-			for (const [target, version] of Object.entries(
+			for (const [key, version] of Object.entries(
 				device.additionalFirmwareVersions,
 			)) {
-				conditionContext[`firmwareVersion[${target}]` as `firmwareVersion[${number}]`] =
+				const target: number = parseInt(key, 10);
+				conditionContext[`firmwareVersion[${target}]`] =
 					padVersion(version, "0");
 			}
 		}

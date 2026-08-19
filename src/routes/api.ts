@@ -27,6 +27,18 @@ import {
 import { UserAgentProps, withUserAgent } from "../middleware/withUserAgent.js";
 import type { CloudflareEnvironment } from "../worker.js";
 
+function additionalFirmwareVersionsEqual(
+	a: Record<string, string> | undefined,
+	b: Record<string, string> | undefined,
+): boolean {
+	if (a === b) return true;
+	if (!a || !b) return false;
+	const keysA = Object.keys(a);
+	const keysB = Object.keys(b);
+	if (keysA.length !== keysB.length) return false;
+	return keysA.every((k) => a[k] === b[k]);
+}
+
 function getUpdatesCacheUrl(
 	requestUrl: string,
 	dbVersion: string,
@@ -344,8 +356,10 @@ export default function register(router: any): void {
 								d.productType === device.productType &&
 								d.productId === device.productId &&
 								d.firmwareVersion === device.firmwareVersion &&
-								JSON.stringify(d.additionalFirmwareVersions) ===
-									JSON.stringify(device.additionalFirmwareVersions),
+								additionalFirmwareVersionsEqual(
+									d.additionalFirmwareVersions,
+									device.additionalFirmwareVersions,
+								),
 						) === index,
 				)
 				.sort((a, b) => {
