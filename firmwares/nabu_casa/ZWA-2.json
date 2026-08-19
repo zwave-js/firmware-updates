@@ -14,6 +14,14 @@
 	],
 	"upgrades": [
 		{
+			"$if": "firmwareVersion < 1.3.0",
+			"version": "1.3.1",
+			"changelog": "The SDK was updated to Simplicity SDK 2026.12.1 (Z-Wave SDK 8.1.1), which includes the following fixes and improvements, among others:\n\n- Added a proprietary Serial API command to query the bootloader version and capabilities without rebooting into the bootloader.\n- Fixed an issue where the radio could turn off after one received frame. This affected some controllers migrated from 500 series, where the listening flag in the controller's own node info was left unset.\n- Resynced the Serial API application with the new SDK reference application, including its DMA and sleep timer driver changes.\n- Restored runtime Image Rejection calibration.\n- Fixed a transmission stall that could occur under LBT/CSMA.\n- Fixed fragmented-beam handling for the Japanese region.",
+			"channel": "beta",
+			"url": "https://github.com/NabuCasa/silabs-firmware-builder/raw/refs/heads/releases/v2026.08.18-beta1/zwa2_controller_1.3.1.gbl",
+			"integrity": "sha256:13d111b35a19307665965f222044b1bb761bf853ff8bf6511ed3fa83099b44ac"
+		},
+		{
 			"$if": "firmwareVersion < 1.2.0",
 			"version": "1.2.0",
 			"channel": "stable",
