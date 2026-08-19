@@ -31,12 +31,23 @@ function additionalFirmwareVersionsEqual(
 	a: Record<string, string> | undefined,
 	b: Record<string, string> | undefined,
 ): boolean {
-	if (a === b) return true;
-	if (!a || !b) return false;
-	const keysA = Object.keys(a);
-	const keysB = Object.keys(b);
+	const aEmpty = !a || Object.keys(a).length === 0;
+	const bEmpty = !b || Object.keys(b).length === 0;
+	if (aEmpty && bEmpty) return true;
+	if (aEmpty || bEmpty) return false;
+	const keysA = Object.keys(a!);
+	const keysB = Object.keys(b!);
 	if (keysA.length !== keysB.length) return false;
-	return keysA.every((k) => a[k] === b[k]);
+	return keysA.every((k) => a![k] === b![k]);
+}
+
+function canonicalizeAdditionalVersions(
+	v: Record<string, string> | undefined,
+): string {
+	if (!v) return "";
+	const keys = Object.keys(v).sort();
+	if (keys.length === 0) return "";
+	return keys.map((k) => `${k}=${v[k]}`).join(",");
 }
 
 function getUpdatesCacheUrl(
@@ -373,7 +384,12 @@ export default function register(router: any): void {
 					if (a.productId !== b.productId) {
 						return a.productId.localeCompare(b.productId);
 					}
-					return a.firmwareVersion.localeCompare(b.firmwareVersion);
+					const fwCmp = a.firmwareVersion.localeCompare(
+						b.firmwareVersion,
+					);
+					if (fwCmp !== 0) return fwCmp;
+					return canonicalizeAdditionalVersions(a.additionalFirmwareVersions)
+						.localeCompare(canonicalizeAdditionalVersions(b.additionalFirmwareVersions));
 				});
 
 			// The devices are deduplicated and sorted, so identical queries against

@@ -30,7 +30,7 @@ export const APIv3_RequestSchema = APIv1v2_RequestSchema.merge(
 /** The per-device schema for API version 4, with optional additional firmware versions */
 export const APIv4_DeviceRequestSchema = APIv1v2_RequestSchema.extend({
 	additionalFirmwareVersions: z
-		.record(z.string().regex(/^\d+$/), firmwareVersionSchema)
+		.record(z.string().regex(/^[1-9]\d*$/), firmwareVersionSchema)
 		.optional(),
 });
 

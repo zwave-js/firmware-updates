@@ -164,6 +164,8 @@ export async function lookupConfigsBatch(
 				device.additionalFirmwareVersions,
 			)) {
 				const target: number = parseInt(key, 10);
+				// Target 0 is already covered by firmwareVersion
+				if (target === 0) continue;
 				conditionContext[`firmwareVersion[${target}]`] =
 					padVersion(version, "0");
 			}

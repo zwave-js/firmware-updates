@@ -317,7 +317,7 @@ Changes compared to v3:
 
 - Moves device information to a `devices` array in the request body to allow for querying multiple devices in a single request.
 - Allows distinguishing between devices that have no updates (empty `devices` array) and devices that are unknown to the service (omitted from response).
-- Adds the **optional** `additionalFirmwareVersions` field per device. This is a record containing the target indizes and versions of additional upgradeable chips on the device. This allows the service to return updates for those chips as well.
+- Adds the **optional** `additionalFirmwareVersions` field per device. This is a record containing the target indices and versions of additional upgradeable chips on the device. This allows the service to return updates for those chips as well.
 
 If the `region` field is present in the request, the response will only contain updates for that region, or updates without a specified region (which are assumed to be region-agnostic).
 If no `region` is specified in the request, the response will only contain updates without a specified region.
