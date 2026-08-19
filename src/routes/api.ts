@@ -27,18 +27,25 @@ import {
 import { UserAgentProps, withUserAgent } from "../middleware/withUserAgent.js";
 import type { CloudflareEnvironment } from "../worker.js";
 
+function normalizeAdditionalVersions(
+	v: Record<string, string> | undefined,
+): Record<string, string> | undefined {
+	if (!v || Object.keys(v).length === 0) return undefined;
+	return v;
+}
+
 function additionalFirmwareVersionsEqual(
 	a: Record<string, string> | undefined,
 	b: Record<string, string> | undefined,
 ): boolean {
-	const aEmpty = !a || Object.keys(a).length === 0;
-	const bEmpty = !b || Object.keys(b).length === 0;
-	if (aEmpty && bEmpty) return true;
-	if (aEmpty || bEmpty) return false;
-	const keysA = Object.keys(a!);
-	const keysB = Object.keys(b!);
+	a = normalizeAdditionalVersions(a);
+	b = normalizeAdditionalVersions(b);
+	if (a === b) return true;
+	if (!a || !b) return false;
+	const keysA = Object.keys(a);
+	const keysB = Object.keys(b);
 	if (keysA.length !== keysB.length) return false;
-	return keysA.every((k) => a![k] === b![k]);
+	return keysA.every((k) => a[k] === b[k]);
 }
 
 function canonicalizeAdditionalVersions(
