@@ -264,7 +264,7 @@ test("concurrent lookups share one shard fetch", async (t) => {
 const upgradeGatedOnTarget1 = {
 	$if: "firmwareVersion[1] >= 2.0",
 	version: "2.0",
-	changelog: "Requires bootloader 2.0+",
+	changelog: "Requires target 1 firmware 2.0+",
 	channel: "stable" as const,
 	files: [
 		{
