@@ -261,6 +261,153 @@ test("concurrent lookups share one shard fetch", async (t) => {
 	t.is(shardFetches, 1);
 });
 
+const upgradeGatedOnTarget1 = {
+	$if: "firmwareVersion[1] >= 2.0",
+	version: "2.0",
+	changelog: "Requires bootloader 2.0+",
+	channel: "stable" as const,
+	files: [
+		{
+			target: 0,
+			url: "https://example.com/2.0.otz",
+			integrity: "sha256:" + "2".repeat(64),
+		},
+	],
+};
+
+test("lookupConfigsBatch evaluates firmwareVersion[N] conditions", async (t) => {
+	const shards: Record<string, DataShard> = {
+		"0x0086": {
+			configs: [
+				{
+					devices: [
+						{
+							productType: "0x0002",
+							productId: "0x0064",
+							min: 0,
+							max: versionToNumber("255.255.255"),
+						},
+					],
+					upgrades: [upgradeGatedOnTarget1],
+				},
+			],
+		},
+	};
+	const assets = mockAssets(defaultManifest, shards);
+
+	const passing = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			additionalFirmwareVersions: { "1": "2.5" },
+		},
+	]);
+	t.is(passing.length, 1);
+	t.is(passing[0].updates.length, 1);
+	t.is(passing[0].updates[0].version, "2.0");
+
+	const failing = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			additionalFirmwareVersions: { "1": "1.0" },
+		},
+	]);
+	t.is(failing.length, 1);
+	t.is(failing[0].updates.length, 0);
+});
+
+test("firmwareVersion[N] condition fails when no additional versions provided", async (t) => {
+	const shards: Record<string, DataShard> = {
+		"0x0086": {
+			configs: [
+				{
+					devices: [
+						{
+							productType: "0x0002",
+							productId: "0x0064",
+							min: 0,
+							max: versionToNumber("255.255.255"),
+						},
+					],
+					upgrades: [upgradeGatedOnTarget1],
+				},
+			],
+		},
+	};
+	const assets = mockAssets(defaultManifest, shards);
+
+	const result = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+		},
+	]);
+	t.is(result.length, 1);
+	t.is(result[0].updates.length, 0);
+});
+
+test("firmwareVersion[0] behaves identically to bare firmwareVersion", async (t) => {
+	const upgrade = {
+		$if: "firmwareVersion[0] < 1.0",
+		version: "1.0",
+		changelog: "Upgrade",
+		channel: "stable" as const,
+		files: [
+			{
+				target: 0,
+				url: "https://example.com/1.0.otz",
+				integrity: "sha256:" + "3".repeat(64),
+			},
+		],
+	};
+	const shards: Record<string, DataShard> = {
+		"0x0086": {
+			configs: [
+				{
+					devices: [
+						{
+							productType: "0x0002",
+							productId: "0x0064",
+							min: 0,
+							max: versionToNumber("255.255.255"),
+						},
+					],
+					upgrades: [upgrade],
+				},
+			],
+		},
+	};
+	const assets = mockAssets(defaultManifest, shards);
+
+	const matching = await lookupConfig(assets, "0x0086", "0x0002", "0x0064", "0.5");
+	t.is(matching!.updates.length, 1);
+
+	const notMatching = await lookupConfig(assets, "0x0086", "0x0002", "0x0064", "1.5");
+	t.is(notMatching!.updates.length, 0);
+});
+
+test("additionalFirmwareVersions is echoed in the response", async (t) => {
+	const assets = mockAssets(defaultManifest, defaultShards);
+	const results = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			additionalFirmwareVersions: { "1": "2.0" },
+		},
+	]);
+	t.is(results.length, 1);
+	t.deepEqual(results[0].additionalFirmwareVersions, { "1": "2.0" });
+});
+
 test("lookupConfigsBatch skips unknown devices", async (t) => {
 	const assets = mockAssets(defaultManifest, defaultShards);
 	const results = await lookupConfigsBatch(assets, [

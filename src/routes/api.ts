@@ -343,7 +343,9 @@ export default function register(router: any): void {
 								d.manufacturerId === device.manufacturerId &&
 								d.productType === device.productType &&
 								d.productId === device.productId &&
-								d.firmwareVersion === device.firmwareVersion,
+								d.firmwareVersion === device.firmwareVersion &&
+								JSON.stringify(d.additionalFirmwareVersions) ===
+									JSON.stringify(device.additionalFirmwareVersions),
 						) === index,
 				)
 				.sort((a, b) => {

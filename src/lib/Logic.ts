@@ -63,18 +63,15 @@ export interface ConditionalItem {
 	readonly $if?: string;
 }
 
-/** Checks if a given condition applies for the given device ID */
 export function conditionApplies(
 	self: ConditionalItem,
-	deviceId: DeviceID | undefined,
+	context: DeviceID | undefined,
 ): boolean {
-	// No condition? Always applies
 	if (!self.$if) return true;
-	// No device ID? Always applies
-	if (!deviceId) return true;
+	if (!context) return true;
 
 	try {
-		return !!evaluate(self.$if, deviceId);
+		return !!evaluate(self.$if, context);
 	} catch {
 		throw new Error(`Invalid condition "${self.$if}"!`);
 	}
