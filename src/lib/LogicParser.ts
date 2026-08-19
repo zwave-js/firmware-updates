@@ -76,6 +76,8 @@ export enum TokenKind {
 	LessThanEquals, // "<="
 	GreaterThan, // ">"
 	GreaterThanEquals, // ">="
+	LeftBracket, // "["
+	RightBracket, // "]"
 }
 
 export type Token = {
@@ -100,6 +102,14 @@ export function* tokenize(input: string): Generator<Token> {
 			}
 			case ")": {
 				yield { kind: TokenKind.RightParen, start: i };
+				break;
+			}
+			case "[": {
+				yield { kind: TokenKind.LeftBracket, start: i };
+				break;
+			}
+			case "]": {
+				yield { kind: TokenKind.RightBracket, start: i };
 				break;
 			}
 			case "|": {
@@ -400,7 +410,17 @@ function parseIdentifier(s: ParserState): Identifier | undefined {
 	const token = s.tokens[s.pos];
 	if (token?.kind === TokenKind.Identifier) {
 		s.pos++;
-		return { kind: SyntaxKind.Identifier, name: token.value! };
+		let name = token.value!;
+		// Capture subscripts as part of the identifier, e.g. firmwareVersion[1]
+		if (
+			s.tokens[s.pos]?.kind === TokenKind.LeftBracket
+			&& s.tokens[s.pos + 1]?.kind === TokenKind.NumberLiteral
+			&& s.tokens[s.pos + 2]?.kind === TokenKind.RightBracket
+		) {
+			name += `[${s.tokens[s.pos + 1].value!}]`;
+			s.pos += 3;
+		}
+		return { kind: SyntaxKind.Identifier, name };
 	}
 }
 

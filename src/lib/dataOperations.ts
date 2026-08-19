@@ -7,13 +7,19 @@ import {
 	MANIFEST_PATH,
 } from "./dataFormat.js";
 import { conditionApplies } from "./Logic.js";
-import { formatId, padVersion, versionToNumber } from "./shared.js";
+import {
+	ConditionContext,
+	formatId,
+	padVersion,
+	versionToNumber,
+} from "./shared.js";
 
 export interface DeviceLookupRequest {
 	manufacturerId: number | string;
 	productType: number | string;
 	productId: number | string;
 	firmwareVersion: string;
+	additionalFirmwareVersions?: Record<string, string>;
 }
 
 // Assets are immutable per deployment and isolates die on redeploy,
@@ -146,16 +152,28 @@ export async function lookupConfigsBatch(
 		);
 		if (matchingConfigs.length === 0) continue;
 
-		const deviceId = {
+		const conditionContext: ConditionContext = {
 			manufacturerId: parseInt(manufacturerId, 16),
 			productType: parseInt(productType, 16),
 			productId: parseInt(productId, 16),
 			firmwareVersion,
+			"firmwareVersion[0]": firmwareVersion,
 		};
+		if (device.additionalFirmwareVersions) {
+			for (const [key, version] of Object.entries(
+				device.additionalFirmwareVersions,
+			)) {
+				const target: number = parseInt(key, 10);
+				// Target 0 is already covered by firmwareVersion
+				if (target === 0) continue;
+				conditionContext[`firmwareVersion[${target}]`] =
+					padVersion(version, "0");
+			}
+		}
 
 		const updates = matchingConfigs
 			.flatMap((config) => config.upgrades)
-			.filter((upgrade) => conditionApplies(upgrade, deviceId))
+			.filter((upgrade) => conditionApplies(upgrade, conditionContext))
 			.map(({ $if, ...upgrade }): APIv3_UpgradeInfo => {
 				return {
 					version: upgrade.version,
@@ -179,6 +197,9 @@ export async function lookupConfigsBatch(
 			productType,
 			productId,
 			firmwareVersion,
+			...(device.additionalFirmwareVersions
+				? { additionalFirmwareVersions: device.additionalFirmwareVersions }
+				: {}),
 			updates,
 		});
 	}

@@ -447,6 +447,67 @@ test("toRulesLogic, all version operators", (t) => {
 	}
 });
 
+test("tokenize, subscript syntax", (t) => {
+	const input = "firmwareVersion[1] >= 2.0";
+	const actual: Omit<Token, "start">[] = Array.from(tokenize(input)).map(
+		(token) => {
+			const { start, ...rest } = token;
+			return rest;
+		},
+	);
+	const expected: Omit<Token, "start">[] = [
+		{ kind: TokenKind.Identifier, value: "firmwareVersion" },
+		{ kind: TokenKind.LeftBracket },
+		{ kind: TokenKind.NumberLiteral, value: "1" },
+		{ kind: TokenKind.RightBracket },
+		{ kind: TokenKind.GreaterThanEquals },
+		{ kind: TokenKind.NumberLiteral, value: "2" },
+		{ kind: TokenKind.Dot },
+		{ kind: TokenKind.NumberLiteral, value: "0" },
+	];
+	t.deepEqual(actual, expected);
+});
+
+test("parse, subscript identifier", (t) => {
+	const actual = parse("firmwareVersion[1] >= 2.0");
+	const expected: Expression = {
+		kind: SyntaxKind.Comparison,
+		operator: Operator.GreaterThanOrEqual,
+		left: {
+			kind: SyntaxKind.Identifier,
+			name: "firmwareVersion[1]",
+		},
+		right: {
+			kind: SyntaxKind.Version,
+			value: "2.0",
+		},
+	};
+	t.deepEqual(actual, expected);
+});
+
+test("parse, subscript identifier with target 0", (t) => {
+	const actual = parse("firmwareVersion[0] >= 1.5");
+	t.is(actual?.kind, SyntaxKind.Comparison);
+	t.is((actual as any).left.name, "firmwareVersion[0]");
+});
+
+test("parse, subscript in AND chain", (t) => {
+	const actual = parse(
+		"firmwareVersion >= 1.0 && firmwareVersion[1] >= 2.0",
+	);
+	t.is(actual?.kind, SyntaxKind.And);
+	const and = actual as any;
+	t.is(and.operands[0].left.name, "firmwareVersion");
+	t.is(and.operands[1].left.name, "firmwareVersion[1]");
+});
+
+test("toRulesLogic, subscript version comparison", (t) => {
+	const expr = parse("firmwareVersion[1] >= 2.0")!;
+	t.deepEqual(toRulesLogic(expr), {
+		"ver >=": [{ var: "firmwareVersion[1]" }, "2.0"],
+	});
+});
+
 test("toRulesLogic, grouped expression", (t) => {
 	const expr = parse("(a > 1 || b < 2) && c === 3")!;
 	t.deepEqual(toRulesLogic(expr), {

@@ -77,6 +77,18 @@
 			]
 		},
 		{
+			// Conditions can reference other firmware targets using firmwareVersion[N].
+			// This is useful for gating updates on the version of another firmware target.
+			// firmwareVersion[0] is equivalent to firmwareVersion (target 0).
+			"$if": "firmwareVersion >= 1.0 && firmwareVersion[1] >= 2.0",
+
+			"version": "2.0",
+			"changelog": "Requires firmware target 1 at version 2.0 or higher",
+
+			"url": "https://example.com/firmware/2.0.otz",
+			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
+		},
+		{
 			"version": "1.7",
 			"changelog": "Bugfixes for EU only",
 

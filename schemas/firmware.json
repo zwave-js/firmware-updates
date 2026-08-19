@@ -151,7 +151,7 @@
 		"condition": {
 			"type": "string",
 			"minLength": 1,
-			"description": "A condition that must be fulfilled for this entry to exist. See https://zwave-js.github.io/node-zwave-js/#/config-files/conditional-settings?id=conditional-configuration-settings for a description of the syntax."
+			"description": "A condition that must be fulfilled for this entry to exist. Available variables: firmwareVersion (target 0), firmwareVersion[N] (target N, e.g. firmwareVersion[1] for bootloader), manufacturerId, productType, productId. Supports comparison operators (>=, >, <=, <, ===, !==) with version literals or hex/decimal numbers, combined with && and ||."
 		},
 		"hexId": {
 			"type": "string",

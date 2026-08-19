@@ -28,6 +28,10 @@ export interface DeviceID {
 	firmwareVersion: string;
 }
 
+export interface ConditionContext extends DeviceID {
+	[key: `firmwareVersion[${number}]`]: string;
+}
+
 export function getErrorMessage(e: unknown, includeStack?: boolean): string {
 	if (e instanceof Error)
 		return includeStack && e.stack ? e.stack : e.message;

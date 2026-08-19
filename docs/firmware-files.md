@@ -263,6 +263,29 @@ For example, the following upgrade only applies if the device currently has firm
 }
 ```
 
+Conditions can also reference the firmware version of other targets using `firmwareVersion[N]` syntax, where `N` is the zero-based firmware target index. `firmwareVersion[0]` is equivalent to `firmwareVersion`. This requires the requesting application to provide the additional firmware versions in the API request.
+
+For example, the following upgrade only applies if the device's second firmware target (target 1) is at version 2.0 or higher:
+
+```jsonc
+{
+	"devices": [
+		// ...
+	],
+
+	"upgrades": [
+		{
+			"$if": "firmwareVersion[1] >= 2.0",
+
+			"version": "3.0",
+			"changelog": "* Requires target 1 firmware 2.0+"
+
+			// ...
+		}
+	]
+}
+```
+
 > [!NOTE]
 > This feature should only be used when necessary, for example:
 >

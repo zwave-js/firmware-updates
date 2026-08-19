@@ -27,10 +27,17 @@ export const APIv3_RequestSchema = APIv1v2_RequestSchema.merge(
 	})
 );
 
+/** The per-device schema for API version 4, with optional additional firmware versions */
+export const APIv4_DeviceRequestSchema = APIv1v2_RequestSchema.extend({
+	additionalFirmwareVersions: z
+		.record(z.string().regex(/^[1-9]\d*$/), firmwareVersionSchema)
+		.optional(),
+});
+
 /** The request schema for API version 4 */
 export const APIv4_RequestSchema = z.object({
 	region: regionSchema.optional(),
-	devices: z.array(APIv1v2_RequestSchema).min(1),
+	devices: z.array(APIv4_DeviceRequestSchema).min(1),
 });
 
 export interface APIv1v3_UpgradeMeta {
@@ -54,6 +61,7 @@ export type APIv4_DeviceInfo = {
 	productType: string;
 	productId: string;
 	firmwareVersion: string;
+	additionalFirmwareVersions?: Record<string, string>;
 	updates: APIv3_UpgradeInfo[];
 };
 export type APIv4_Response = ExpandRecursively<APIv4_DeviceInfo[]>;

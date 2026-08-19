@@ -27,6 +27,36 @@ import {
 import { UserAgentProps, withUserAgent } from "../middleware/withUserAgent.js";
 import type { CloudflareEnvironment } from "../worker.js";
 
+function normalizeAdditionalVersions(
+	v: Record<string, string> | undefined,
+): Record<string, string> | undefined {
+	if (!v || Object.keys(v).length === 0) return undefined;
+	return v;
+}
+
+function additionalFirmwareVersionsEqual(
+	a: Record<string, string> | undefined,
+	b: Record<string, string> | undefined,
+): boolean {
+	a = normalizeAdditionalVersions(a);
+	b = normalizeAdditionalVersions(b);
+	if (a === b) return true;
+	if (!a || !b) return false;
+	const keysA = Object.keys(a);
+	const keysB = Object.keys(b);
+	if (keysA.length !== keysB.length) return false;
+	return keysA.every((k) => a[k] === b[k]);
+}
+
+function canonicalizeAdditionalVersions(
+	v: Record<string, string> | undefined,
+): string {
+	if (!v) return "";
+	const keys = Object.keys(v).sort();
+	if (keys.length === 0) return "";
+	return keys.map((k) => `${k}=${v[k]}`).join(",");
+}
+
 function getUpdatesCacheUrl(
 	requestUrl: string,
 	dbVersion: string,
@@ -343,7 +373,11 @@ export default function register(router: any): void {
 								d.manufacturerId === device.manufacturerId &&
 								d.productType === device.productType &&
 								d.productId === device.productId &&
-								d.firmwareVersion === device.firmwareVersion,
+								d.firmwareVersion === device.firmwareVersion &&
+								additionalFirmwareVersionsEqual(
+									d.additionalFirmwareVersions,
+									device.additionalFirmwareVersions,
+								),
 						) === index,
 				)
 				.sort((a, b) => {
@@ -357,7 +391,12 @@ export default function register(router: any): void {
 					if (a.productId !== b.productId) {
 						return a.productId.localeCompare(b.productId);
 					}
-					return a.firmwareVersion.localeCompare(b.firmwareVersion);
+					const fwCmp = a.firmwareVersion.localeCompare(
+						b.firmwareVersion,
+					);
+					if (fwCmp !== 0) return fwCmp;
+					return canonicalizeAdditionalVersions(a.additionalFirmwareVersions)
+						.localeCompare(canonicalizeAdditionalVersions(b.additionalFirmwareVersions));
 				});
 
 			// The devices are deduplicated and sorted, so identical queries against
