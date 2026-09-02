@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "4.50.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 4.10, 4.20, 4.30, 4.40, 4.50.\n* Fixed an issue where two or more ZEN30 relay endpoints (Endpoint 2) were included in the same Direct Association group; triggering the association could activate both Endpoint 1 (dimmer) and Endpoint 2 (relay) on each associated ZEN30. Direct Association commands now correctly activate only the intended relay endpoints.",
+			"url": "https://www.getzooz.com/firmware/ZEN30_V04R50.gbl",
+			"integrity": "sha256:4f3a3b2580b0ebfdd788efeedc1a29b4b71b0d77119f83bd6d713afd9db4beef"
+		},
+		{
 			"version": "4.40.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 4.10, 4.20, 4.30, 4.40\n* Added new parameter 38 - Dimmer Gamma Factor.\n* Added new parameters: 39 - Relay Scene Control Multi-Tap and 40 - Dimmer Scene Control Multi-Tap.\n* Added new parameters: 41 - Relay LED Indicator Multi-Color and 42 - Dimmer LED Indicator Multi-Color.\n* Fixed: A bug affecting Home Assistant and Z-Wave JS users, where the dimmer part was not correctly updating. Both target value and current value now report as expected.",
