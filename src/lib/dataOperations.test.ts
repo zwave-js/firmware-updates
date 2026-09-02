@@ -408,6 +408,106 @@ test("additionalFirmwareVersions is echoed in the response", async (t) => {
 	t.deepEqual(results[0].additionalFirmwareVersions, { "1": "2.0" });
 });
 
+const upgradeGatedOnSdk = {
+	$if: "sdkVersion >= 7.19",
+	version: "2.1",
+	changelog: "Requires SDK 7.19+",
+	channel: "stable" as const,
+	files: [
+		{
+			target: 0,
+			url: "https://example.com/2.1.otz",
+			integrity: "sha256:" + "4".repeat(64),
+		},
+	],
+};
+
+const sdkShards: Record<string, DataShard> = {
+	"0x0086": {
+		configs: [
+			{
+				devices: [
+					{
+						productType: "0x0002",
+						productId: "0x0064",
+						min: 0,
+						max: versionToNumber("255.255.255"),
+					},
+				],
+				upgrades: [upgradeGatedOnSdk],
+			},
+		],
+	},
+};
+
+test("lookupConfigsBatch evaluates sdkVersion conditions", async (t) => {
+	const assets = mockAssets(defaultManifest, sdkShards);
+
+	const passing = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			sdkVersion: "7.19.3",
+		},
+	]);
+	t.is(passing.length, 1);
+	t.is(passing[0].updates.length, 1);
+	t.is(passing[0].updates[0].version, "2.1");
+
+	const failing = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			sdkVersion: "7.18.1",
+		},
+	]);
+	t.is(failing.length, 1);
+	t.is(failing[0].updates.length, 0);
+});
+
+test("sdkVersion condition fails when no SDK version is provided", async (t) => {
+	const assets = mockAssets(defaultManifest, sdkShards);
+	const result = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+		},
+	]);
+	t.is(result.length, 1);
+	t.is(result[0].updates.length, 0);
+});
+
+test("sdkVersion is echoed padded in the response", async (t) => {
+	const assets = mockAssets(defaultManifest, defaultShards);
+	const results = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+			sdkVersion: "7.19",
+		},
+	]);
+	t.is(results.length, 1);
+	t.is(results[0].sdkVersion, "7.19.0");
+
+	const without = await lookupConfigsBatch(assets, [
+		{
+			manufacturerId: "0x0086",
+			productType: "0x0002",
+			productId: "0x0064",
+			firmwareVersion: "1.0",
+		},
+	]);
+	t.false("sdkVersion" in without[0]);
+});
+
 test("lookupConfigsBatch skips unknown devices", async (t) => {
 	const assets = mockAssets(defaultManifest, defaultShards);
 	const results = await lookupConfigsBatch(assets, [
