@@ -16,7 +16,7 @@
 		{
 			"version": "3.70.0",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50, 3.60, 3.70.\n* Updated SDK from 7.19.3 to 7.24.1",
+			"changelog": "Includes firmware versions: 3.10, 3.20, 3.30, 3.40, 3.50, 3.60, 3.70.\n* Updated SDK from 7.19.3 to 7.24.1.",
 			"url": "https://www.getzooz.com/firmware/ZEN76_V03R70.gbl",
 			"integrity": "sha256:086dd6b0ec501db95ddd934109f60718146459e932ff69604e8adcb3f2e6ea32"
 		},
