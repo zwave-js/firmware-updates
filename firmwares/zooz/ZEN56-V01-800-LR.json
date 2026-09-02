@@ -1,0 +1,31 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN56 800LR",
+			"manufacturerId": "0x027a",
+			"productType": "0x0004",
+			"productId": "0x0250",
+			"firmwareVersion": {
+				"min": "1.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.20.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20.\n* Added: Support for turning the RGBW dimmer ON and OFF using the Z-Wave Button on the ZEN56.",
+			"url": "https://www.getzooz.com/firmware/ZEN56_V01R20_US.gbl",
+			"integrity": "sha256:fff6818a8e39dc53dd04dfec8d5e9ae5d0c99bd2377dfee69c2738115d6bd287"
+		},
+		{
+			"version": "1.20.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20.\n* Added: Support for turning the RGBW dimmer ON and OFF using the Z-Wave Button on the ZEN56.",
+			"url": "https://www.getzooz.com/firmware/ZEN56_V01R20_EU.gbl",
+			"integrity": "sha256:9118b9c3c4e948cd17fdf6783dea12dc1105b7554131491b1123683529b3a536"
+		}
+	]
+}
