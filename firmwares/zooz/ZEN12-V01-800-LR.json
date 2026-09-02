@@ -1,0 +1,24 @@
+{
+	"devices": [
+		{
+			"brand": "Zooz",
+			"model": "ZEN12 800LR",
+			"manufacturerId": "0x027a",
+			"productType": "0x7000",
+			"productId": "0x0012",
+			"firmwareVersion": {
+				"min": "0.0",
+				"max": "1.255"
+			}
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.0.1",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 1.0, 1.0.1.\n* Fixed a bug where the ZEN12 could turn the light off prematurely if additional motion was detected during the Motion Clear Delay (Parameter 17). The device now resets the internal motion timer whenever new motion is detected, keeping the light on until the full Motion Clear Delay has elapsed after the last detected movement.",
+			"url": "https://www.getzooz.com/firmware/ZEN12_V01R00P01.gbl",
+			"integrity": "sha256:92f989b7071f7fba4823c029c24fd9412ee3f5f0c5e6848fa77c93f44ec0e058"
+		}
+	]
+}
