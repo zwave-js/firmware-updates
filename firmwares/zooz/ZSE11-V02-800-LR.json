@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated: Expanded Parameter 15 (Basic Set Reporting Values) by adding two new configuration options: Value 2 and Value 3.",
+			"url": "https://www.getzooz.com/firmware/ZSE11_V02R30_US.gbl",
+			"integrity": "sha256:10d9515e59aec744379229956fbfa493b560c33f90fda5df47b080219f97b9a9"
+		},
+		{
+			"version": "2.30.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated: Expanded Parameter 15 (Basic Set Reporting Values) by adding two new configuration options: Value 2 and Value 3.",
+			"url": "https://www.getzooz.com/firmware/ZSE11_V02R30_EU.gbl",
+			"integrity": "sha256:893ef24390dec3834cc2d738e2a48da9280d53e859afb717e939b48e1c18bcbd"
+		},
+		{
 			"version": "2.20.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20.\n* Fixed an issue with PIR disable (Parameter 12): Previously, disabling the PIR via Parameter 12 only turned off motion detection but did not cut power to the PIR sensor, resulting in higher power consumption. The PIR sensor is now fully powered down when disabled, reducing energy usage.",
