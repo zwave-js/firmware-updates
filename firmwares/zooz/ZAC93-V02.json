@@ -13,6 +13,20 @@
     }
   ],
   "upgrades": [
+	{
+      "version": "2.30.0",
+      "region": "usa",
+      "changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Based on Z-Wave SDK version 7.24.2.",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.24.2_US-LR_V02R30.gbl",
+      "integrity": "sha256:6334f5036b93d72b6fd3b248b0b6cbb5a940515d40abf740233da16733324524"
+    },
+    {
+      "version": "2.30.0",
+      "region": "europe",
+      "changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Based on Z-Wave SDK version 7.24.2.",
+      "url": "https://www.getzooz.com/firmware/ZAC93_SDK_7.24.2_EU-LR_V02R30.gbl",
+      "integrity": "sha256:2002e292e3ce06d2b1a72cdfc943ea431344281c794796d78abbdbe259a54330"
+    },
     {
       "version": "2.20.0",
       "region": "usa",
