@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.30.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 3.0, 3.10, 3.20, 3.30.\n* Fixed: When the ZEN16 was included via SmartStart (Z-Wave mesh or Z-Wave Long Range) and child devices were created using Parameters 2, 3, and 4, the child devices could stop updating their status after a power outage once power was restored. This issue has been resolved.",
+			"url": "https://www.getzooz.com/firmware/ZEN16_V03R30.gbl",
+			"integrity": "sha256:569ade2ad48abb7de64de9cd5bbbe645fb60d08fe3284b68bd53d782313ae2de"
+		},
+		{
 			"version": "3.20.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 3.0, 3.10, 3.20.\n* Updated parameter names and short descriptions in the Configuration Command Class to match the Advanced Settings.\n* Fixed a bug where manual operation (using the button on the ZEN16) in garage door mode now functions as described in the Advanced Settings Article.\n* Resolved an issue where parameter values 1 and 2 for parameters 21, 22, and 23 were not functioning properly, causing NC mode to revert to NO mode.\n* When parameters 21, 22, and 23 are set to NC mode, parameters 2, 3, and 4 can now be configured with any value from 0-11 (previously limited to 0-3)",
