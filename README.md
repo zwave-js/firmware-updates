@@ -301,7 +301,8 @@ User-Agent: <your-app>/<version>
             "firmwareVersion": "1.6",
             "additionalFirmwareVersions": {
                 "1": "2.3"
-            }
+            },
+            "sdkVersion": "7.19.3"
         },
         {
             "manufacturerId": "0x5678",
@@ -318,6 +319,7 @@ Changes compared to v3:
 - Moves device information to a `devices` array in the request body to allow for querying multiple devices in a single request.
 - Allows distinguishing between devices that have no updates (empty `devices` array) and devices that are unknown to the service (omitted from response).
 - Adds the **optional** `additionalFirmwareVersions` field per device. This is a record containing the target indices and versions of additional upgradeable chips on the device. This allows the service to return updates for those chips as well.
+- Adds the **optional** `sdkVersion` field per device. This is the version of the Z-Wave SDK the device firmware is built with. Update definitions can use it in `$if` conditions.
 
 If the `region` field is present in the request, the response will only contain updates for that region, or updates without a specified region (which are assumed to be region-agnostic).
 If no `region` is specified in the request, the response will only contain updates without a specified region.
@@ -336,6 +338,7 @@ The response contains an array of unique devices from the request. Duplicates ar
         "additionalFirmwareVersions": {
             "1": "2.3"
         },
+        "sdkVersion": "7.19.3",
         "updates": [
             {
                 "version": "1.7",
@@ -373,6 +376,7 @@ type APIv4_Response = {
     productId: string;
     firmwareVersion: string;
     additionalFirmwareVersions?: Record<string, string>;
+    sdkVersion?: string;
     updates: {
         version: string;
         changelog: string;

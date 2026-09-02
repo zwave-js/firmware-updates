@@ -30,6 +30,7 @@ export interface DeviceID {
 
 export interface ConditionContext extends DeviceID {
 	[key: `firmwareVersion[${number}]`]: string;
+	sdkVersion?: string;
 }
 
 export function getErrorMessage(e: unknown, includeStack?: boolean): string {

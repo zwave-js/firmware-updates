@@ -27,11 +27,12 @@ export const APIv3_RequestSchema = APIv1v2_RequestSchema.merge(
 	})
 );
 
-/** The per-device schema for API version 4, with optional additional firmware versions */
+/** The per-device schema for API version 4, with optional additional firmware versions and SDK version */
 export const APIv4_DeviceRequestSchema = APIv1v2_RequestSchema.extend({
 	additionalFirmwareVersions: z
 		.record(z.string().regex(/^[1-9]\d*$/), firmwareVersionSchema)
 		.optional(),
+	sdkVersion: firmwareVersionSchema.optional(),
 });
 
 /** The request schema for API version 4 */
@@ -62,6 +63,7 @@ export type APIv4_DeviceInfo = {
 	productId: string;
 	firmwareVersion: string;
 	additionalFirmwareVersions?: Record<string, string>;
+	sdkVersion?: string;
 	updates: APIv3_UpgradeInfo[];
 };
 export type APIv4_Response = ExpandRecursively<APIv4_DeviceInfo[]>;

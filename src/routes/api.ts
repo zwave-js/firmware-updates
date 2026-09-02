@@ -364,6 +364,7 @@ export default function register(router: any): void {
 			const uniqueDevices = devices
 				.map((d) => {
 					d.firmwareVersion = padVersion(d.firmwareVersion);
+					if (d.sdkVersion) d.sdkVersion = padVersion(d.sdkVersion);
 					return d;
 				})
 				.filter(
@@ -374,6 +375,7 @@ export default function register(router: any): void {
 								d.productType === device.productType &&
 								d.productId === device.productId &&
 								d.firmwareVersion === device.firmwareVersion &&
+								d.sdkVersion === device.sdkVersion &&
 								additionalFirmwareVersionsEqual(
 									d.additionalFirmwareVersions,
 									device.additionalFirmwareVersions,
@@ -381,7 +383,7 @@ export default function register(router: any): void {
 						) === index,
 				)
 				.sort((a, b) => {
-					// Sort by manufacturerId, productType, productId, firmwareVersion
+					// Sort by manufacturerId, productType, productId, firmwareVersion, sdkVersion
 					if (a.manufacturerId !== b.manufacturerId) {
 						return a.manufacturerId.localeCompare(b.manufacturerId);
 					}
@@ -395,6 +397,10 @@ export default function register(router: any): void {
 						b.firmwareVersion,
 					);
 					if (fwCmp !== 0) return fwCmp;
+					const sdkCmp = (a.sdkVersion ?? "").localeCompare(
+						b.sdkVersion ?? "",
+					);
+					if (sdkCmp !== 0) return sdkCmp;
 					return canonicalizeAdditionalVersions(a.additionalFirmwareVersions)
 						.localeCompare(canonicalizeAdditionalVersions(b.additionalFirmwareVersions));
 				});

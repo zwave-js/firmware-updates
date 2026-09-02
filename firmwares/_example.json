@@ -89,6 +89,17 @@
 			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
 		},
 		{
+			// Conditions can reference the Z-Wave SDK version using sdkVersion.
+			// This requires the requesting application to provide it.
+			"$if": "sdkVersion >= 7.19",
+
+			"version": "2.1",
+			"changelog": "Requires Z-Wave SDK 7.19 or higher",
+
+			"url": "https://example.com/firmware/2.1.otz",
+			"integrity": "sha256:cd19da525f20096a817197bf263f3fdbe6485f00ec7354b691171358ebb9f1a1"
+		},
+		{
 			"version": "1.7",
 			"changelog": "Bugfixes for EU only",
 

@@ -286,6 +286,29 @@ For example, the following upgrade only applies if the device's second firmware 
 }
 ```
 
+Conditions can also reference the version of the Z-Wave SDK the device firmware is built with using `sdkVersion`. This requires the requesting application to provide the SDK version in the API request. If it is missing, the condition evaluates to `false`.
+
+For example, the following upgrade only applies to devices running SDK 7.19 or higher:
+
+```jsonc
+{
+	"devices": [
+		// ...
+	],
+
+	"upgrades": [
+		{
+			"$if": "sdkVersion >= 7.19",
+
+			"version": "3.0",
+			"changelog": "* Requires SDK 7.19+"
+
+			// ...
+		}
+	]
+}
+```
+
 > [!NOTE]
 > This feature should only be used when necessary, for example:
 >

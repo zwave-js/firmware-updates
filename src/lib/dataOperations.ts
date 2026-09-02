@@ -20,6 +20,7 @@ export interface DeviceLookupRequest {
 	productId: number | string;
 	firmwareVersion: string;
 	additionalFirmwareVersions?: Record<string, string>;
+	sdkVersion?: string;
 }
 
 // Assets are immutable per deployment and isolates die on redeploy,
@@ -170,6 +171,9 @@ export async function lookupConfigsBatch(
 					padVersion(version, "0");
 			}
 		}
+		if (device.sdkVersion) {
+			conditionContext.sdkVersion = padVersion(device.sdkVersion, "0");
+		}
 
 		const updates = matchingConfigs
 			.flatMap((config) => config.upgrades)
@@ -199,6 +203,9 @@ export async function lookupConfigsBatch(
 			firmwareVersion,
 			...(device.additionalFirmwareVersions
 				? { additionalFirmwareVersions: device.additionalFirmwareVersions }
+				: {}),
+			...(device.sdkVersion
+				? { sdkVersion: padVersion(device.sdkVersion, "0") }
 				: {}),
 			updates,
 		});
