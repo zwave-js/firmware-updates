@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.40.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40.\n* Added new parameter 10 - Scene Control Multi-Tap.",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R40_US.gbl",
+			"integrity": "sha256:5f9d604e5995a084dcba66b6c95339b7e6e3d0035475ec23989263e95c7779f7"
+		},
+		{
+			"version": "2.40.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40.\n* Added new parameter 10 - Scene Control Multi-Tap.",
+			"url": "https://www.getzooz.com/firmware/ZEN37_V02R40_EU.gbl",
+			"integrity": "sha256:d34d41a7e475f0c0189a71f5293c131ed704e325ca866589597f385c2056df82"
+		},
+		{
 			"version": "2.30.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 2.0, 2.10, 2.20, 2.30.\n* Updated SDK from 7.19.3 to 7.24.1",
