@@ -14,6 +14,12 @@
 	],
 	"upgrades": [
 		{
+			"version": "3.30.0",
+			"changelog": "Includes firmware versions: 3.00, 3.10, 3.20, 3.30.\n* Updated SDK from 7.19.3 to 7.24.1.\n* Updated LED brightness settings for Parameters 11-15, changing the supported value range from 0-2 to 1-10.\n* Fixed the Range Test Tool to match the description.",
+			"url": "https://www.getzooz.com/firmware/ZEN32_V03R30.gbl",
+			"integrity": "sha256:978ec5424165c50cc229d1d68818d6ffd1217b3a41d1e516f95107352e071110"
+		},
+		{
 			"version": "3.20.1",
 			"changelog": "Includes firmware versions: 3.00, 3.10, 3.20.\n* Added new parameters: 28 - Scene Control Multi-Tap.",
 			"url": "https://www.getzooz.com/firmware/ZEN32_V03R20.gbl",
