@@ -21,12 +21,6 @@ For more complex cases, or if you prefer to edit the files directly, you can als
 
 See [the documentation](docs/firmware-files.md) for more information on how to author these files.
 
-## AI-assisted contributions
-
-AI assistance is welcome when you personally review, understand, and can explain
-the result. Autonomous contributions and unreviewed AI-generated communication
-are not accepted. Read the full [AI policy](AI_POLICY.md) before contributing.
-
 ## How to use?
 
 ### Authentication and rate limiting
