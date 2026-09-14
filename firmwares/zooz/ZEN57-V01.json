@@ -14,9 +14,23 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.30.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Fixed a bug where the child input could become stuck in the ON state when parameter 5 = 10 and parameter 11 = 1. The issue occurred only while the relay was ON, even though keypress events from input wire changes were still being generated.\n* Fixed a bug where the device stopped reporting relay and input states to the controller after a power loss. The ZEN57 continued to accept commands, but status reports were no longer transmitted.",
+			"url": "https://www.getzooz.com/firmware/ZEN57_V01R30_US.gbl",
+			"integrity": "sha256:e1bf0aacc387818d2fae81930a5a8404c30e508f94e5e36423ac7a772b38de77"
+		},
+		{
+			"version": "1.30.0",
+			"region": "europe",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20, 1.30.\n* Fixed a bug where the child input could become stuck in the ON state when parameter 5 = 10 and parameter 11 = 1. The issue occurred only while the relay was ON, even though keypress events from input wire changes were still being generated.\n* Fixed a bug where the device stopped reporting relay and input states to the controller after a power loss. The ZEN57 continued to accept commands, but status reports were no longer transmitted.",
+			"url": "https://www.getzooz.com/firmware/ZEN57_V01R30_EU.gbl",
+			"integrity": "sha256:e6a201d05f624192229bbe86c7c8c3a37a823a693e7eaed5d079e4fe13ba4881"
+		},
+		{
 			"version": "1.20.1",
 			"region": "usa",
-			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20\n* Updated SDK from 7.18.8 to 7.24.1",
+			"changelog": "Includes firmware versions: 1.0, 1.10, 1.20.\n* Updated SDK from 7.18.8 to 7.24.1",
 			"url": "https://www.getzooz.com/firmware/ZEN57_V01R20_US.gbl",
 			"integrity": "sha256:47b8e73a9334e2478d988d6ee62fa283bef028778ca0bc9f78a72131611a3298"
 		}
