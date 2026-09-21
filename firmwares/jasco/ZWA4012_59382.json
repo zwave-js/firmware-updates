@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWA4012 / 59382",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3336"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "Original Release Firmware",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWA4012/59382%20-%20In-Wall%20Toggle%20Switch%2C%20700S/1.22/ZWA4012_Jasco_59382_1.22.gbl",
+			"integrity": "sha256:48a94b7c87741f9127fd56bdd5ce39250d886d4641ee8f8c7ae8e36759b2dbce"
+		}
+	]
+}
