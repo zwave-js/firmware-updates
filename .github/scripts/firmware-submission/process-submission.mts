@@ -1759,9 +1759,10 @@ export default async function main({
 				}
 			}
 
-			if (regionRaw && regionRaw !== "All regions") {
+			const regionInput = regionRaw?.trim().toLowerCase();
+			if (regionRaw && regionInput && regionInput !== "all regions") {
 				const normalizedRegion = VALID_REGIONS.find(
-					(r) => r === regionRaw.trim().toLowerCase(),
+					(r) => r === regionInput,
 				);
 				if (normalizedRegion) {
 					region = normalizedRegion;
