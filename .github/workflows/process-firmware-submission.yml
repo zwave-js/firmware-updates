@@ -4,13 +4,15 @@ on:
   issues:
     types: [labeled]
 
-concurrency:
-  group: firmware-submission-${{ github.event.issue.number }}
-  cancel-in-progress: true
-
 jobs:
   process:
     if: github.event.label.name == 'approved'
+    # Job-level concurrency: label changes made by the bot (e.g. adding
+    # `processing`) trigger this workflow again. Those runs are skipped by the
+    # `if` above and must not cancel the submission that is being processed.
+    concurrency:
+      group: firmware-submission-${{ github.event.issue.number }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     permissions:
       contents: write

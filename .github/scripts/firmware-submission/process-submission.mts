@@ -1331,7 +1331,7 @@ export default async function main({
 	const botOctokit = getOctokit(getRequiredEnv("BOT_TOKEN"));
 
 	const addLabel = async (label: string): Promise<void> => {
-		await github.rest.issues.addLabels({
+		await botOctokit.rest.issues.addLabels({
 			owner,
 			repo,
 			issue_number: issueNumber,
@@ -1341,7 +1341,7 @@ export default async function main({
 
 	const removeLabel = async (label: string): Promise<void> => {
 		try {
-			await github.rest.issues.removeLabel({
+			await botOctokit.rest.issues.removeLabel({
 				owner,
 				repo,
 				issue_number: issueNumber,
