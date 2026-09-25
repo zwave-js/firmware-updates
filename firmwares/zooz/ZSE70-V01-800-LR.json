@@ -18,7 +18,7 @@
 			"region": "usa",
 			"changelog": "* Fixed a bug introduced in firmware 1.30 where waking up to measure temperature or ambient light could incorrectly trigger a change in the PIR motion status. The PIR status now remains unaffected during scheduled sensor measurements.\n* Fixed a bug in S2 Authenticated Security where direct association commands could fail due to duplicate Supervision session IDs (SDK 7.24.2 issue), preventing the associated device from turning off after motion was cleared.",
 			"target": 0,
-			"url": "https://www.getzooz.com/firmware/ZSE70_V01R40_US.zip",
+			"url": "https://www.getzooz.com/firmware/ZSE70_V01R40_US.gbl",
 			"integrity": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
 		},
 		{
