@@ -404,6 +404,44 @@ function rangesOverlap(
 	);
 }
 
+function formatDeviceForMessage(device: NormalizedDevice): string {
+	return `${device.brand} ${device.model} (Manufacturer ID ${device.manufacturerId}, Product Type ${device.productType}, Product ID ${device.productId}), firmware version range ${device.firmwareVersion.min} - ${device.firmwareVersion.max}`;
+}
+
+/**
+ * Lists the device entries of the given firmware files and of the submission,
+ * so submitters can see which values would be accepted.
+ */
+export function describeDeviceMismatch(
+	files: ReadonlyArray<{ relativePath: string; devices: NormalizedDevice[] }>,
+	submittedDevices: readonly NormalizedDevice[],
+): string {
+	const lines = ["Existing device entries:"];
+	for (const file of files) {
+		lines.push(`- \`${file.relativePath}\`:`);
+		for (const device of file.devices) {
+			lines.push(`  - ${formatDeviceForMessage(device)}`);
+		}
+	}
+	lines.push("Your submission:");
+	for (const device of submittedDevices) {
+		lines.push(`- ${formatDeviceForMessage(device)}`);
+	}
+	return lines.join("\n");
+}
+
+export function formatValidRegions(): string {
+	return ["All regions", ...VALID_REGIONS].map((r) => `\`${r}\``).join(", ");
+}
+
+export function getFirmwareFormatHint(filename: string): string {
+	return [
+		`The downloaded file was named \`${sanitizeForMessage(filename).replace(/`/g, "")}\`.`,
+		"Supported firmware formats are: `.gbl` (Gecko bootloader), `.hex`, `.ota`, `.otz`, `.hec` (encrypted HEX), `.bin`, and Aeotec's `.exe`/`.ex_` updaters.",
+		"Archives like `.zip` are not supported. Please link directly to the firmware file itself.",
+	].join(" ");
+}
+
 function isFirmwareConfigFile(filePath: string): boolean {
 	const normalizedPath = filePath.replace(/\\/g, "/");
 	return (
@@ -1129,6 +1167,21 @@ function describeUpgradeVariant(
 	return details.join(", ");
 }
 
+export function describeUpgradeVariants(
+	upgrades: readonly Record<string, any>[],
+): string[] {
+	return upgrades
+		.map(normalizeUpgradeVariant)
+		.filter(
+			(
+				variant,
+			): variant is NonNullable<
+				ReturnType<typeof normalizeUpgradeVariant>
+			> => variant != null,
+		)
+		.map(describeUpgradeVariant);
+}
+
 export function findDuplicateUpgradeVariants(
 	existingUpgrades: readonly Record<string, any>[],
 	newUpgrades: readonly Record<string, any>[],
@@ -1367,7 +1420,10 @@ export default async function main({
 		await addLabel("checks-failed");
 
 		const errorList = errors
-			.map((error, index) => `${index + 1}. ${error}`)
+			.map(
+				(error, index) =>
+					`${index + 1}. ${error.replace(/\n/g, "\n   ")}`,
+			)
 			.join("\n");
 		await postStatusComment(
 			`There were problems with your submission:\n\n${errorList}\n\nPlease edit the issue body to fix these issues, then ask a maintainer to re-trigger processing.`,
@@ -1703,16 +1759,16 @@ export default async function main({
 				}
 			}
 
-			if (regionRaw && regionRaw !== "All regions") {
-				if (
-					VALID_REGIONS.includes(
-						regionRaw as (typeof VALID_REGIONS)[number],
-					)
-				) {
-					region = regionRaw;
+			const regionInput = regionRaw?.trim().toLowerCase();
+			if (regionRaw && regionInput && regionInput !== "all regions") {
+				const normalizedRegion = VALID_REGIONS.find(
+					(r) => r === regionInput,
+				);
+				if (normalizedRegion) {
+					region = normalizedRegion;
 				} else {
 					errors.push(
-						`'${getUpgradeFieldLabel("Region", i)}' is not a valid region: ${regionRaw}`,
+						`'${getUpgradeFieldLabel("Region", i)}' is not a valid region: \`${sanitizeForMessage(regionRaw).replace(/`/g, "")}\`. Valid values are: ${formatValidRegions()}`,
 					);
 				}
 			}
@@ -1847,7 +1903,7 @@ export default async function main({
 				);
 				if (partialExactMatches.length > 0) {
 					throw new SubmissionValidationError(
-						`The submitted devices only partially match existing firmware file(s) (${partialExactMatches.map((file) => file.relativePath).join(", ")}). Reusing one of those files could introduce unwanted upgrade paths. Please split the submission or open a PR directly.`,
+						`The submitted devices only partially match existing firmware file(s) (${partialExactMatches.map((file) => file.relativePath).join(", ")}). Reusing one of those files could introduce unwanted upgrade paths. To add the firmware to an existing file, submit exactly the same set of devices as that file. Otherwise, please split the submission or open a PR directly.\n${describeDeviceMismatch(partialExactMatches, submittedDevices)}`,
 					);
 				}
 
@@ -1873,7 +1929,7 @@ export default async function main({
 						.map((f) => f.relativePath)
 						.join(", ");
 					throw new SubmissionValidationError(
-						`The submitted device identifiers match existing firmware file(s) (${fileList}), but with a different firmware version range. Please adjust the firmware version range to match exactly, or open a PR directly.`,
+						`The submitted device identifiers match existing firmware file(s) (${fileList}), but with a different firmware version range. To add the firmware to an existing file, use exactly the same devices and firmware version ranges as listed below. To create a separate file instead, the firmware version range must not overlap with the existing ones. Otherwise, please open a PR directly.\n${describeDeviceMismatch(overlappingFiles, submittedDevices)}`,
 					);
 				}
 
@@ -1964,8 +2020,14 @@ export default async function main({
 				try {
 					integrity = generateHash(filename!, Buffer.from(rawData!));
 				} catch (error) {
+					const message = getErrorMessage(error);
+					const hint = message.includes(
+						"Could not detect firmware format",
+					)
+						? ` ${getFirmwareFormatHint(filename!)}`
+						: "";
 					await failWithErrors([
-						`Failed to compute integrity hash for ${url}: ${getErrorMessage(error)}`,
+						`Failed to compute integrity hash for ${url}: ${message}${hint}`,
 					]);
 				}
 
@@ -2017,8 +2079,15 @@ export default async function main({
 			const locationMessage = existingConfig
 				? `in the submission or already in ${relativeFilePath}`
 				: "in the submission";
+			const existingVariants = describeUpgradeVariants(
+				existingConfig?.upgrades ?? [],
+			);
+			const existingMessage =
+				existingVariants.length > 0
+					? `\nUpgrades already in \`${relativeFilePath}\`:\n${existingVariants.map((v) => `- ${v}`).join("\n")}`
+					: "";
 			await failWithErrors([
-				`Duplicate upgrade variant(s) were found ${locationMessage}: ${duplicateVariants.join("; ")}. Please keep each version/region/condition combination unique, and do not publish the same version on multiple channels. If you need to update an existing entry, submit a PR.`,
+				`Duplicate upgrade variant(s) were found ${locationMessage}: ${duplicateVariants.join("; ")}. Please keep each version/region/condition combination unique, and do not publish the same version on multiple channels. If you need to update an existing entry, submit a PR.${existingMessage}`,
 			]);
 		}
 
