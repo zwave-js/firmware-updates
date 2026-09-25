@@ -815,13 +815,13 @@ test("describeDeviceMismatch lists existing and submitted device entries", (t) =
 
 test("formatValidRegions lists all accepted region values", (t) => {
 	const regions = formatValidRegions();
-	t.true(regions.startsWith("'All regions', 'europe', 'usa'"));
-	t.true(regions.includes("'australia/new zealand'"));
+	t.true(regions.startsWith("`All regions`, `europe`, `usa`"));
+	t.true(regions.includes("`australia/new zealand`"));
 });
 
 test("getFirmwareFormatHint names the file and the supported formats", (t) => {
 	const hint = getFirmwareFormatHint("ZSE70_V01R40_US.zip");
-	t.true(hint.includes("'ZSE70_V01R40_US.zip'"));
+	t.true(hint.includes("`ZSE70_V01R40_US.zip`"));
 	t.true(hint.includes("`.gbl`"));
 	t.true(hint.includes("`.zip` are not supported"));
 });

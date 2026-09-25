@@ -431,12 +431,12 @@ export function describeDeviceMismatch(
 }
 
 export function formatValidRegions(): string {
-	return ["All regions", ...VALID_REGIONS].map((r) => `'${r}'`).join(", ");
+	return ["All regions", ...VALID_REGIONS].map((r) => `\`${r}\``).join(", ");
 }
 
 export function getFirmwareFormatHint(filename: string): string {
 	return [
-		`The downloaded file was named '${sanitizeForMessage(filename)}'.`,
+		`The downloaded file was named \`${sanitizeForMessage(filename).replace(/`/g, "")}\`.`,
 		"Supported firmware formats are: `.gbl` (Gecko bootloader), `.hex`, `.ota`, `.otz`, `.hec` (encrypted HEX), `.bin`, and Aeotec's `.exe`/`.ex_` updaters.",
 		"Archives like `.zip` are not supported. Please link directly to the firmware file itself.",
 	].join(" ");
@@ -1767,7 +1767,7 @@ export default async function main({
 					region = normalizedRegion;
 				} else {
 					errors.push(
-						`'${getUpgradeFieldLabel("Region", i)}' is not a valid region: ${sanitizeForMessage(regionRaw)}. Valid values are: ${formatValidRegions()}`,
+						`'${getUpgradeFieldLabel("Region", i)}' is not a valid region: \`${sanitizeForMessage(regionRaw).replace(/`/g, "")}\`. Valid values are: ${formatValidRegions()}`,
 					);
 				}
 			}
