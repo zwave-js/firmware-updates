@@ -10,14 +10,14 @@
 	],
 	"upgrades": [
 		{
-			"version": "2.3",
+			"version": "2.4",
 			"channel": "beta",
-			"changelog": "- Fixed an issue where the P20 could not restore its default settings.\n- Changed the default value of P50 (Button Delay) to 3.\n- Optimized the network re-connection logic.\n- Further optimized the interaction logic between the mmWave module and the Z-Wave chip.\n- Optimized the processing logic of the metering module.",
+			"changelog": "Note: 2.4 disables P116 reporting by default, so the \"Person in Reporting Area (Read Only)\" value will no longer update on its own. This report duplicates the \"motion\" notification and adds extra packets to the network every few seconds, so it is better to base automations on \"motion\" instead. It can be re-enabled by setting parameter 107=2.\n\n- Updated P107 (mmWave Report Bit Mask): Bit 1 reports mmWave target information, and Bit 2 reports P116.\n- Fixed an issue where the P20 could not restore its default settings.\n- Changed the default value of P50 (Button Delay) to 3.\n- Optimized the network re-connection logic.\n- Further optimized the interaction logic between the mmWave module and the Z-Wave chip.\n- Optimized the processing logic of the metering module.",
 			"files": [
 				{
 					"target": 0,
-					"url": "https://github.com/InovelliUSA/Firmware/raw/e7e2f6daa7b8d6633b4b9ee22142bf6dab1c1945/Red-Series/Z-Wave/VZW32-SN-MMWave-Switch/Beta/2.03/VZW32-SN_2.03.gbl",
-					"integrity": "sha256:ca611992b304e843ca523085aa20fb674d4cd8018760937baf0ad23086fbe96a"
+					"url": "https://files.inovelli.com/firmware/VZW32-SN/Beta/2.04/VZW32-SN_2.04.gbl",
+					"integrity": "sha256:7eabe58a95fdcb4792259a9a5808cbda72695be7da4dca36de69bb09feb5b879"
 				}
 			]
 		},
