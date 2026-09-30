@@ -1420,10 +1420,12 @@ export default async function main({
 		await addLabel("checks-failed");
 
 		const errorList = errors
-			.map(
-				(error, index) =>
-					`${index + 1}. ${error.replace(/\n/g, "\n   ")}`,
-			)
+			.map((error, index) => {
+				const prefix = `${index + 1}. `;
+				// Indent continuation lines to the item's content column so they stay nested
+				const indent = " ".repeat(prefix.length);
+				return `${prefix}${error.replace(/\n/g, `\n${indent}`)}`;
+			})
 			.join("\n");
 		await postStatusComment(
 			`There were problems with your submission:\n\n${errorList}\n\nPlease edit the issue body to fix these issues, then ask a maintainer to re-trigger processing.`,
