@@ -1172,7 +1172,7 @@ export function describeUpgradeVariants(
 ): string[] {
 	return upgrades
 		.map(normalizeUpgradeVariant)
-		.filter((variant): variant is UpgradeVariant => variant != null)
+		.filter((variant) => variant != null)
 		.map(describeUpgradeVariant);
 }
 
@@ -1183,7 +1183,7 @@ export function findDuplicateUpgradeVariants(
 	const existingKeys = new Set(
 		existingUpgrades
 			.map(normalizeUpgradeVariant)
-			.filter((variant): variant is UpgradeVariant => variant != null)
+			.filter((variant) => variant != null)
 			.map(getUpgradeVariantKey),
 	);
 
