@@ -21,11 +21,15 @@ const cleanupLabelsModule = await import(cleanupLabelsModulePath);
 const {
 	insertUpgradesToFirmwareConfigText,
 	createUpgradeEntry,
+	describeDeviceMismatch,
+	describeUpgradeVariants,
 	extractIssueTemplateFieldHeadings,
 	findDuplicateTargets,
 	findDuplicateUpgradeVariants,
+	formatValidRegions,
 	formatWithPrettier,
 	getApprovalInvalidReason,
+	getFirmwareFormatHint,
 	parseIssueBody,
 	parseUpgradeFilesFromSections,
 	resolveGitHubFirmwarePermalink,
@@ -775,6 +779,60 @@ test("findDuplicateUpgradeVariants allows region variants but blocks exact and c
 			[{ version: "12.23", channel: "beta", region: "europe" }],
 		),
 		["v12.23, channel beta, region europe"],
+	);
+});
+
+test("describeDeviceMismatch lists existing and submitted device entries", (t) => {
+	const existing = createDevice({
+		model: "ZSE70",
+		productType: "0x0004",
+		productId: "0x0006",
+		firmwareVersion: { min: "0.0", max: "1.255" },
+	});
+	const submitted = {
+		...existing,
+		firmwareVersion: { min: "1.0", max: "1.255" },
+	};
+	t.is(
+		describeDeviceMismatch(
+			[
+				{
+					relativePath: "firmwares/zooz/ZSE70-V01-800-LR.json",
+					devices: [existing],
+				},
+			],
+			[submitted],
+		),
+		[
+			"Existing device entries:",
+			"- `firmwares/zooz/ZSE70-V01-800-LR.json`:",
+			"  - Zooz ZSE70 (Manufacturer ID 0x027a, Product Type 0x0004, Product ID 0x0006), firmware version range 0.0 - 1.255",
+			"Your submission:",
+			"- Zooz ZSE70 (Manufacturer ID 0x027a, Product Type 0x0004, Product ID 0x0006), firmware version range 1.0 - 1.255",
+		].join("\n"),
+	);
+});
+
+test("formatValidRegions lists all accepted region values", (t) => {
+	const regions = formatValidRegions();
+	t.true(regions.startsWith("`All regions`, `europe`, `usa`"));
+	t.true(regions.includes("`australia/new zealand`"));
+});
+
+test("getFirmwareFormatHint names the file and the supported formats", (t) => {
+	const hint = getFirmwareFormatHint("ZSE70_V01R40_US.zip");
+	t.true(hint.includes("`ZSE70_V01R40_US.zip`"));
+	t.true(hint.includes("`.gbl`"));
+	t.true(hint.includes("`.zip` are not supported"));
+});
+
+test("describeUpgradeVariants describes existing upgrades", (t) => {
+	t.deepEqual(
+		describeUpgradeVariants([
+			{ version: "1.30.1", region: "usa" },
+			{ version: "1.40", channel: "beta" },
+		]),
+		["v1.30.1, region usa", "v1.40, channel beta"],
 	);
 });
 
