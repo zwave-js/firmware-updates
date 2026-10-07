@@ -1120,12 +1120,16 @@ function validateTargetNumber(
 	return parsed;
 }
 
-function normalizeUpgradeVariant(upgrade: Record<string, any>): {
+interface UpgradeVariant {
 	version: string;
 	channel: "stable" | "beta";
 	region: string | null;
 	ifCondition: string | null;
-} | null {
+}
+
+function normalizeUpgradeVariant(
+	upgrade: Record<string, any>,
+): UpgradeVariant | null {
 	if (typeof upgrade.version !== "string" || upgrade.version.length === 0) {
 		return null;
 	}
@@ -1141,9 +1145,7 @@ function normalizeUpgradeVariant(upgrade: Record<string, any>): {
 	};
 }
 
-function getUpgradeVariantKey(
-	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
-): string {
+function getUpgradeVariantKey(variant: UpgradeVariant): string {
 	return JSON.stringify([
 		variant.version,
 		variant.region,
@@ -1151,9 +1153,7 @@ function getUpgradeVariantKey(
 	]);
 }
 
-function describeUpgradeVariant(
-	variant: NonNullable<ReturnType<typeof normalizeUpgradeVariant>>,
-): string {
+function describeUpgradeVariant(variant: UpgradeVariant): string {
 	const details = [`v${variant.version}`];
 	if (variant.channel !== "stable") {
 		details.push(`channel ${variant.channel}`);
@@ -1172,13 +1172,7 @@ export function describeUpgradeVariants(
 ): string[] {
 	return upgrades
 		.map(normalizeUpgradeVariant)
-		.filter(
-			(
-				variant,
-			): variant is NonNullable<
-				ReturnType<typeof normalizeUpgradeVariant>
-			> => variant != null,
-		)
+		.filter((variant): variant is UpgradeVariant => variant != null)
 		.map(describeUpgradeVariant);
 }
 
@@ -1189,13 +1183,7 @@ export function findDuplicateUpgradeVariants(
 	const existingKeys = new Set(
 		existingUpgrades
 			.map(normalizeUpgradeVariant)
-			.filter(
-				(
-					variant,
-				): variant is NonNullable<
-					ReturnType<typeof normalizeUpgradeVariant>
-				> => variant != null,
-			)
+			.filter((variant): variant is UpgradeVariant => variant != null)
 			.map(getUpgradeVariantKey),
 	);
 
