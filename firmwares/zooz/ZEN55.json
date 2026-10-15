@@ -14,6 +14,13 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.60.0",
+			"region": "usa",
+			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50, 1.60.\n* Fixed a bug where the ZEN55 could generate false CO alerts at regular intervals when connected to a Kidde Smoke and Carbon Monoxide Detector (30CUAR-VRF) that was wirelessly interconnected with another Kidde detector using the Kidde RF protocol.",
+			"url": "https://www.getzooz.com/firmware/ZEN55_V01R60.gbl",
+			"integrity": "sha256:802b5893e5fbcbacf8823041f18559bf6a93d8ab0e6533bd66205541967cfdd6"
+		},
+		{
 			"version": "1.50.0",
 			"region": "usa",
 			"changelog": "Includes firmware versions: 1.0, 1.20, 1.30, 1.40, 1.50.\n* Fixed an issue introduced in firmware 1.40 where parameter 8 no longer created or removed child devices correctly. Parameter 8 now works as expected.",
