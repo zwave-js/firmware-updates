@@ -14,6 +14,20 @@
 	],
 	"upgrades": [
 		{
+			"version": "2.50.0",
+			"region": "usa",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40, 2.50.\n* Fixed an issue where High Temperature Alert/Overheat Detection did not trigger when the temperature scale was set to Celsius, despite normal temperature reporting. The firmware now automatically handles temperature unit conversion and interprets Parameter 13 according to the selected temperature scale (e.g., 80 = 80°F or 27 = 27°C).",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R50_US.gbl",
+			"integrity": "sha256:746cd815ad9ef336475d6577855f352a4ec9e5cb6911c8d008280911b26edb07"
+		},
+		{
+			"version": "2.50.0",
+			"region": "europe",
+			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40, 2.50.\n* Fixed an issue where High Temperature Alert/Overheat Detection did not trigger when the temperature scale was set to Celsius, despite normal temperature reporting. The firmware now automatically handles temperature unit conversion and interprets Parameter 13 according to the selected temperature scale (e.g., 80 = 80°F or 27 = 27°C).",
+			"url": "https://www.getzooz.com/firmware/ZSE44_V02R50_EU.gbl",
+			"integrity": "sha256:a6445c2359efe41b091aab7d634915465467252b30997cd36031971d20b84668"
+		},
+		{
 			"version": "2.40.0",
 			"region": "usa",
 			"changelog": "* Includes firmware versions: 2.0, 2.10, 2.20, 2.30, 2.40.\n* Updated the scale range for parameter 15 (Humidity Reporting Offset) from 0-200 (default 100) to 0-400 (default 200).",
