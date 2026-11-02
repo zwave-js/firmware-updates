@@ -95,6 +95,22 @@ Fix obvious typos in free-text fields (changelog, description). Leave URLs, hash
 
 If you spot typos in **unrelated** changelogs (entries the PR didn't touch) while reviewing the file, fix them too — they're worth a small extra commit while you're already in the file.
 
+#### Unit spacing
+
+Put a plain space between a number and its unit. This includes temperatures:
+
+```
+27°C    →  27 °C
+80°F    →  80 °F
+230V    →  230 V
+10A     →  10 A
+500ms   →  500 ms
+2.4GHz  →  2.4 GHz
+1.5kWh  →  1.5 kWh
+```
+
+Leave `%` alone (`50%` stays `50%`). Also leave units inside model IDs, URLs, filenames, and parameter names untouched (`ZEN15-20A`, `VZW32-SN`).
+
 ### 3c. Changelog formatting
 
 #### Pipeline reference
