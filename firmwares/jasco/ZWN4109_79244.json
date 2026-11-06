@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN4109 / 79244",
+			"manufacturerId": "0x0063",
+			"productType": "0x5052",
+			"productId": "0x3139"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "Fixes latching issue",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/bd8e69acc98518f13e49fdf85e38c454e88c334e/zwave/Jasco/ZWN4109/79244%20-%20Plug-in%201-Outlet%20Switch%2C%20800S/8.20/ZWN4109_Jasco_79244_8.20.gbl",
+			"integrity": "sha256:ef864a21fbbbcb7495eb24ed2e15e55cc097e84d6295a62eed816cc56f94c170"
+		}
+	]
+}
