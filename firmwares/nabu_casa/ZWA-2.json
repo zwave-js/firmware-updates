@@ -14,12 +14,13 @@
 	],
 	"upgrades": [
 		{
+			// 1.4.1 and 1.4.0 are indistinguishable through Serial API. If we'd check < 1.4.1, every user on 1.4.1 would get perpetual update notifications.
 			"$if": "firmwareVersion < 1.4.0",
-			"version": "1.4.0",
-			"changelog": "The SDK was updated to Simplicity SDK 2026.6.2 (Z-Wave SDK 8.1.2), which includes the following fixes and improvements, among others:\n\n- Fixed an issue where the controller could stop sending frames after several transmission failures on a congested network.\n- Fixed the Serial API Setup command Set Max LR Tx Power, which did not apply the requested Long Range transmit power on 20 dBm devices like the ZWA-2.\n- Fixed an issue where NVM backup and restore could read or write outside the NVM region.\n- Prevented an external SUC Node ID advertisement from removing the SUC role from the controller.\n- Added validation of NODES_EXIST topology updates.",
+			"version": "1.4.1",
+			"changelog": "- Fixed the top LED not responding to on/off commands and staying at a dim brightness since firmware 1.3.0.\n- Fixed the LED state being reported as off after a reboot, even when the LED was on.\n\nThe SDK was updated to Simplicity SDK 2026.6.2 (Z-Wave SDK 8.1.2), which includes the following fixes and improvements, among others:\n\n- Fixed an issue where the controller could stop sending frames after several transmission failures on a congested network.\n- Fixed the Serial API Setup command Set Max LR Tx Power, which did not apply the requested Long Range transmit power on 20 dBm devices like the ZWA-2.\n- Fixed an issue where NVM backup and restore could read or write outside the NVM region.\n- Prevented an external SUC Node ID advertisement from removing the SUC role from the controller.\n- Added validation of NODES_EXIST topology updates.",
 			"channel": "beta",
-			"url": "https://github.com/NabuCasa/silabs-firmware-builder/releases/download/v2026.09.17-beta2/zwa2_controller_1.4.0.gbl",
-			"integrity": "sha256:e6b2bb1e06ee180b43b79f175d636164b727edd43d86239125696b8481e865cb"
+			"url": "https://github.com/NabuCasa/silabs-firmware-builder/releases/download/v2026.09.17-beta2/zwa2_controller_1.4.1.gbl",
+			"integrity": "sha256:62cd1bc7bc93cc8bb5776b67a0a8fc01c96d57d70452f89e154f9a220394aea7"
 		},
 		{
 			// 1.3.1 and 1.3.0 are indistinguishable through Serial API. If we'd check < 1.3.1, every user on 1.3.1 would get perpetual update notifications.
