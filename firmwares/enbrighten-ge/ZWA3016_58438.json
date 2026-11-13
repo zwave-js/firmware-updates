@@ -10,9 +10,27 @@
 	],
 	"upgrades": [
 		{
+			"version": "1.23",
+			"changelog": "1. Original Release Firmware 2245",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/1.23/ZWA3016_Enbrighten_58438_1.23.gbl",
+			"integrity": "sha256:70ec35e6a7840b907a372ee10f9f0d803b642cdd9e20aa138fa175da3c1b587a"
+		},
+		{
+			"version": "1.24",
+			"changelog": "1. Added 0.5s delay to dimming process to fix flashing occuring at the end of max brightness ramp N/A",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/1.24/ZWA3016_Enbrighten_58438_1.24.gbl",
+			"integrity": "sha256:430bb1602a2dad55588af1505a7abc609c17bad5bb5f2860ec75f3b231cc1537"
+		},
+		{
+			"version": "1.25",
+			"changelog": "1. Shortened dimming speed for 1-100 to 10 seconds TBD 2. Updated to ignore invalid zero value for parameters 30, 31, 34, 35 and 36",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/1.25/ZWA3016_Enbrighten_58438_1.25.gbl",
+			"integrity": "sha256:17e050705d8a79f14e14ebd6234b6b682c93ea0904f0a8f12ad49be4fb06a63c"
+		},
+		{
 			"version": "2.01",
 			"changelog": "1. Updated to latest Silicon Labs SDK which fixes offline bugs",
-			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/a8c2414f7984529a14e89290ee040bb47dc3c0fd/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/2.01/ZWA3016_Enbrighten_58438_2.01.gbl",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/2.01/ZWA3016_Enbrighten_58438_2.01.gbl",
 			"integrity": "sha256:fff4f449db0373ff186f4cec30ab90bb0690c2b17b1d8357240b35a2aba6b99e"
 		}
 	]

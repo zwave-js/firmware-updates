@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWA4012 / 58436",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3330"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "1. Original Release Firmware ALL",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA4012/58436%20-%20In-Wall%20Toggle%20Switch%2C%20700S/1.22/ZWA4012_Enbrighten_58436_1.22.gbl",
+			"integrity": "sha256:87a360b7882c53707f441a6eb9b2a9b313452f60753251deb4514a8343ec62e7"
+		}
+	]
+}

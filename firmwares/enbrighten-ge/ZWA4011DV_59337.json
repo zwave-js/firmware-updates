@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWA4011DV / 59337",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3331"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.22",
+			"changelog": "1. Original Release Firmware ALL",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA4011DV/59337%20-%20In-Wall%20Paddle%20Switch%2C%20120%2B277%2C%20700S/1.22/ZWA4011DV_Enbrighten_59337_1.22.gbl",
+			"integrity": "sha256:bf6c01165541e125ff0736d3e15d2ea576066374333325829c1d8b27c11b2147"
+		}
+	]
+}

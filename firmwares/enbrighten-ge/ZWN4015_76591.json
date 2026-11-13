@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWN4015 / 76591",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3435"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "1. Updated to latest Silicon Labs SDK which fixes offline bugs",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWN4015/76591%20-%20In-Wall%20Paddle%20Switch%2C%20800S/8.20/ZWN4015_Enbrighten_76591_8.20.hex",
+			"integrity": "sha256:36da3d259634456b6c2690d1485a373efc8c493ad5ee91c92af0f80db9c25bb6"
+		}
+	]
+}

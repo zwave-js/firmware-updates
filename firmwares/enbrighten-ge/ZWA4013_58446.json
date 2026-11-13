@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWA4013 / 58446",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3432"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "1.26",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZWA4013/58446%20-%20In-Wall%20Fan%20Speed%20Control%2C%20700S/1.26/ZWA4013_Enbrighten_58446_1.26.gbl",
+			"integrity": "sha256:c0cde8eb0d3792cf850d08a222d1b3437c8b0b35c11da86036ffe1f692cb3ae9"
+		}
+	]
+}

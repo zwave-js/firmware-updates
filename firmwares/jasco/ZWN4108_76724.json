@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Jasco",
+			"model": "ZWN4108 / 76724",
+			"manufacturerId": "0x0063",
+			"productType": "0x5052",
+			"productId": "0x3137"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "8.20",
+			"changelog": "1. Fixes latching issue",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Jasco/ZWN4108/76724%20-%20Plug-in%202-Outlet%20Switch%2C%201%20Controlled%2C%20800S/8.20/ZWN4108_Jasco_76724_8.20.gbl",
+			"integrity": "sha256:2ed579bb0e05b4d6d9c75a407c3bfc2e7748829bdaa88d92391a7031fc05b4c5"
+		}
+	]
+}
