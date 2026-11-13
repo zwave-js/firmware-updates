@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWA4011 / 58433",
+			"manufacturerId": "0x0063",
+			"productType": "0x4952",
+			"productId": "0x3239"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.03",
+			"changelog": "1. Updated to latest Silicon Labs SDK which fixes offline bugs",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/a8c2414f7984529a14e89290ee040bb47dc3c0fd/zwave/Enbrighten-GE/ZWA4011/58433%20-%20In-Wall%20Paddle%20Switch%2C%20700S/2.03/ZWA4011_Enbrighten_58433_2.03.gbl",
+			"integrity": "sha256:3bda51d5e09c66c96193ea24c07fd4f81102f68945b67c7ac0b23e2aec8eb865"
+		}
+	]
+}

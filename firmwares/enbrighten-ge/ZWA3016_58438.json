@@ -1,0 +1,19 @@
+{
+	"devices": [
+		{
+			"brand": "Enbrighten-GE",
+			"model": "ZWA3016 / 58438",
+			"manufacturerId": "0x0063",
+			"productType": "0x4944",
+			"productId": "0x3430"
+		}
+	],
+	"upgrades": [
+		{
+			"version": "2.01",
+			"changelog": "1. Updated to latest Silicon Labs SDK which fixes offline bugs",
+			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/a8c2414f7984529a14e89290ee040bb47dc3c0fd/zwave/Enbrighten-GE/ZWA3016/58438%20-%20In-Wall%20Paddle%20Dimmer%2C%20700S/2.01/ZWA3016_Enbrighten_58438_2.01.gbl",
+			"integrity": "sha256:fff4f449db0373ff186f4cec30ab90bb0690c2b17b1d8357240b35a2aba6b99e"
+		}
+	]
+}
