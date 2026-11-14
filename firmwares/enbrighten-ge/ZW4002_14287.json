@@ -11,13 +11,13 @@
 	"upgrades": [
 		{
 			"version": "5.22",
-			"changelog": "1. Fixed the reset and exclusion failed status if the host is powered off and associated with G1, G2 and G3 1730 2. Fixed the manual reset failed status if the host is powered off and excluded 3. Updated the Devkit from 6.51.06 to 6.51.10",
+			"changelog": "1. Fixed the reset and exclusion failed status if the host is powered off and associated with G1, G2 and G3\n2. Fixed the manual reset failed status if the host is powered off and excluded\n3. Updated the Devkit from 6.51.06 to 6.51.10",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZW4002/14287%20-%20In-Wall%20Fan%20Speed%20Control%2C%20500S/5.22/ZW4002_Enbrighten-GE_14287_5.22.hex",
 			"integrity": "sha256:f682320d3c936e20d7e1c2bcf802aaf3a647f025ae56097e2204484f4d661714"
 		},
 		{
 			"version": "5.24",
-			"changelog": "1. Added parameter 3 1931 2. Added parameter 19 for alternate exclusion",
+			"changelog": "1. Added parameter 3\n2. Added parameter 19 for alternate exclusion",
 			"url": "https://raw.githubusercontent.com/jascoproducts/firmware/e9bfc89810f879fc5d3333c14aaf6c66e454adf5/zwave/Enbrighten-GE/ZW4002/14287%20-%20In-Wall%20Fan%20Speed%20Control%2C%20500S/5.24/ZW4002_Enbrighten-GE_14287_5.24.hex",
 			"integrity": "sha256:16aa4b144ff9d207ada3a4d916e480c951a289199f44dd58e5367a0d4cbb90af"
 		}
